@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0DD03E1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732E81EBF8E8100A5785E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E61EBF8E8100A5785E /* Main.storyboard */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C0DD03E1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerLogoCollectionViewController.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E71EBF8E8100A5785E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				4C3733101EBF968900A5785E /* AddPlayerViewController.swift */,
 				4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
+				4C0DD03E1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift */,
 				4C3733121EBFA35C00A5785E /* Players.storyboard */,
 				4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */,
 			);
@@ -285,6 +288,7 @@
 				4C37331A1EBFC4EF00A5785E /* EditPlayerViewController.swift in Sources */,
 				4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
+				4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,6 +538,7 @@
 				4C3733091EBF8E8100A5785E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4C37330A1EBF8E8100A5785E /* Build configuration list for PBXNativeTarget "MixTeamTests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +547,7 @@
 				4C37330C1EBF8E8100A5785E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4C37330D1EBF8E8100A5785E /* Build configuration list for PBXNativeTarget "MixTeamUITests" */ = {
 			isa = XCConfigurationList;
@@ -550,6 +556,7 @@
 				4C37330F1EBF8E8100A5785E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

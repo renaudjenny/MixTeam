@@ -11,7 +11,7 @@ import UIKit
 class EditPlayerViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var logoButton: UIButton!
     
     var player: Player? = nil
 
@@ -22,9 +22,9 @@ class EditPlayerViewController: UIViewController {
             return
         }
         
-        titleLabel.text = player.name
-        nameTextField.text = player.name
-        logoImageView.image = player.image
+        self.titleLabel.text = player.name
+        self.nameTextField.text = player.name
+        self.logoButton.imageView?.image = player.image
     }
     
     @IBAction func validateForm() {
@@ -42,7 +42,7 @@ class EditPlayerViewController: UIViewController {
         }
         
         player.name = self.nameTextField.text ?? "ERROR"
-        player.image = self.logoImageView.image
+        player.image = self.logoButton.imageView?.image
     }
     
     @IBAction func cancelForm() {

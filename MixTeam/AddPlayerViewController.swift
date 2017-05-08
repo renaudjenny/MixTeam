@@ -11,7 +11,7 @@ import UIKit
 class AddPlayerViewController: UIViewController {
     @IBOutlet weak var validateButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var logoButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,7 @@ class AddPlayerViewController: UIViewController {
         var placeholders = ["John", "Mathilde", "Renaud"]
         
         let randomIndex = Int(arc4random_uniform(UInt32(placeholders.count)))
-        nameTextField.text = placeholders[randomIndex]
+        self.nameTextField.text = placeholders[randomIndex]
     }
     
     @IBAction func nameTextFieldDone() {
@@ -33,7 +33,7 @@ class AddPlayerViewController: UIViewController {
         // * player name not already exist
         // * not empty string
         playerName = nameTextField.text ?? "ERROR"
-        Player.players.append(Player(name: playerName, image: logoImageView.image))
+        Player.players.append(Player(name: playerName, image: self.logoButton.imageView?.image))
         
         self.navigationController?.popViewController(animated: true)
     }

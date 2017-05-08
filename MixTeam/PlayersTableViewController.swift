@@ -8,7 +8,7 @@
 
 import UIKit
 
-let kPlayersTableViewCellIdentifier = "playersTableViewCellIdentifier"
+private let kPlayersTableViewCellIdentifier = "playersTableViewCellIdentifier"
 
 class PlayersTableViewController: UITableViewController {
     var players: [Player] = []
@@ -44,6 +44,14 @@ class PlayersTableViewController: UITableViewController {
             self.players.remove(at: indexPath.row)
             Player.players.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let editPlayerViewController = segue.destination as? EditPlayerViewController, let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+            editPlayerViewController.player = self.players[playerTableCellIndexPath.row]
         }
     }
 }
