@@ -11,8 +11,9 @@ import UIKit
 private let kPlayerLogoCollectionViewIdentifier = "playerLogoCollectionViewIdentifier"
 
 class PlayerLogoCollectionViewController: UICollectionViewController {
-    var player: Player? = nil
+    var selectedImage: UIImage? = nil
     var images: [UIImage?] = []
+    var onSelectedImageAction: (UIImage?) -> Void = { (image) in }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,7 @@ class PlayerLogoCollectionViewController: UICollectionViewController {
         // Register cell classes
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kPlayerLogoCollectionViewIdentifier)
 
-        self.images = [UIImage(named: "first"), UIImage(named: "second")]
+        self.images = [#imageLiteral(resourceName: "harry-pottar"), #imageLiteral(resourceName: "dark-vadir"), #imageLiteral(resourceName: "amalie-poulain"), #imageLiteral(resourceName: "lara-craft")]
     }
 
     // MARK: UICollectionViewDataSource
@@ -36,44 +37,38 @@ class PlayerLogoCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kPlayerLogoCollectionViewIdentifier, for: indexPath)
-    
+
         let imageView = UIImageView(image: self.images[indexPath.row])
+        imageView.contentMode = .center
         cell.addSubview(imageView)
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
-    
+
+        if self.selectedImage == self.images[indexPath.row] {
+            cell.layer.borderWidth = 1.0
+            cell.layer.borderColor = UIColor.black.cgColor
+        }
+
         return cell
     }
 
     // MARK: UICollectionViewDelegate
 
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        self.selectedImage = self.imageForIndexPath(indexPath: indexPath)
+        self.onSelectedImageAction(self.selectedImage)
+        
+        self.dismiss(animated: true, completion: nil)
+        
         return true
     }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    func imageForIndexPath(indexPath: IndexPath) -> UIImage? {
+        let item = self.collectionView?.cellForItem(at: indexPath)
+        let imageView = item?.subviews.first(where: { (subview) -> Bool in
+            return subview is UIImageView
+        }) as? UIImageView
+        
+        return imageView?.image
     }
-    */
-
 }

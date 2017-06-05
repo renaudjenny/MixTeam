@@ -19,6 +19,11 @@
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */; };
 		4C37331A1EBFC4EF00A5785E /* EditPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */; };
+		4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE101EC0DA950079E964 /* UXUtils.swift */; };
+		4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C40AE131EC3AF0E0079E964 /* Teams.storyboard */; };
+		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
+		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
+		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +62,11 @@
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayersTableViewController.swift; sourceTree = "<group>"; };
 		4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPlayerViewController.swift; sourceTree = "<group>"; };
+		4C40AE101EC0DA950079E964 /* UXUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtils.swift; sourceTree = "<group>"; };
+		4C40AE131EC3AF0E0079E964 /* Teams.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Teams.storyboard; sourceTree = "<group>"; };
+		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
+		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
+		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +123,8 @@
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
 				4C3732E61EBF8E8100A5785E /* Main.storyboard */,
 				4C3733141EBFA37900A5785E /* Players */,
+				4C40AE121EC3AEDB0079E964 /* Teams */,
+				4C40AE101EC0DA950079E964 /* UXUtils.swift */,
 			);
 			path = MixTeam;
 			sourceTree = "<group>";
@@ -146,6 +158,17 @@
 				4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */,
 			);
 			name = Players;
+			sourceTree = "<group>";
+		};
+		4C40AE121EC3AEDB0079E964 /* Teams */ = {
+			isa = PBXGroup;
+			children = (
+				4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */,
+				4C40AE151ECCD51E0079E964 /* Team.swift */,
+				4C40AE131EC3AF0E0079E964 /* Teams.storyboard */,
+				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
+			);
+			name = Teams;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +283,7 @@
 				4C3733131EBFA35C00A5785E /* Players.storyboard in Resources */,
 				4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */,
 				4C3732E81EBF8E8100A5785E /* Main.storyboard in Resources */,
+				4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,8 +309,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */,
+				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
+				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
+				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4C37331A1EBFC4EF00A5785E /* EditPlayerViewController.swift in Sources */,
 				4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */,
+				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
 				4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,

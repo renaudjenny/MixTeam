@@ -14,6 +14,7 @@ class EditPlayerViewController: UIViewController {
     @IBOutlet weak var logoButton: UIButton!
     
     var player: Player? = nil
+    var editPlayerAction: ((Player) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ class EditPlayerViewController: UIViewController {
         
         self.titleLabel.text = player.name
         self.nameTextField.text = player.name
-        self.logoButton.imageView?.image = player.image
+        self.logoButton.setImage(player.image, for: .normal)
     }
     
     @IBAction func validateForm() {
@@ -43,10 +44,23 @@ class EditPlayerViewController: UIViewController {
         
         player.name = self.nameTextField.text ?? "ERROR"
         player.image = self.logoButton.imageView?.image
+
+        self.editPlayerAction?(player)
     }
     
     @IBAction func cancelForm() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let playerLogoCollectionViewController = segue.destination as? PlayerLogoCollectionViewController {
+            playerLogoCollectionViewController.selectedImage = self.logoButton.imageView?.image
+            playerLogoCollectionViewController.onSelectedImageAction = { (image) -> Void in
+                self.logoButton.setImage(image, for: .normal)
+            }
+        }
     }
 }
 

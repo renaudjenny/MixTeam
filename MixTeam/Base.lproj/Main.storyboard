@@ -13,11 +13,11 @@
         <scene sceneID="hHt-2x-QKx">
             <objects>
                 <viewControllerPlaceholder storyboardName="Players" id="8Qp-ki-4J4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Players" image="second" id="pQm-ra-UNY"/>
+                    <tabBarItem key="tabBarItem" title="Players" image="amalie-poulain" id="pQm-ra-UNY"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4K-1L-Cpz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="522" y="-636"/>
+            <point key="canvasLocation" x="355" y="-275"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -31,7 +31,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="8Qp-ki-4J4" kind="relationship" relationship="viewControllers" id="eJs-BD-Hbg"/>
-                        <segue destination="ljF-8h-Arj" kind="relationship" relationship="viewControllers" id="kBp-bx-arg"/>
+                        <segue destination="3bM-TX-M4y" kind="relationship" relationship="viewControllers" id="6wV-vT-63r"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -39,27 +39,18 @@
             <point key="canvasLocation" x="-386" y="-117"/>
         </scene>
         <!--Teams-->
-        <scene sceneID="X4n-TG-6T9">
+        <scene sceneID="EjP-Uw-uPb">
             <objects>
-                <viewController id="ljF-8h-Arj" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KLU-Qv-bKk"/>
-                        <viewControllerLayoutGuide type="bottom" id="C09-2D-kbY"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Pee-PD-IdK">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Teams" image="first" id="L0v-Lq-gg3"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MhY-4e-kQA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Teams" id="3bM-TX-M4y" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Teams" image="teams-30" id="V6D-Mb-gTg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c32-SI-YJA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="802" y="166"/>
+            <point key="canvasLocation" x="351" y="41"/>
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
+        <image name="amalie-poulain" width="50" height="50"/>
+        <image name="teams-30" width="30" height="30"/>
     </resources>
 </document>

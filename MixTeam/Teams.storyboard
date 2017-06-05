@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="L95-iL-uOi">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Teams-->
+        <scene sceneID="BJM-8n-wI9">
+            <objects>
+                <tableViewController id="pLt-yQ-Pt0" customClass="TeamsTableViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="2fo-lu-r0e">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="teamsTableViewCellIdentifier" textLabel="LJW-PV-Ov2" style="IBUITableViewCellStyleDefault" id="Bbc-za-56U">
+                                <rect key="frame" x="0.0" y="56" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bbc-za-56U" id="DUl-vS-cKV">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LJW-PV-Ov2">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="pLt-yQ-Pt0" id="hKB-wp-Kal"/>
+                            <outlet property="delegate" destination="pLt-yQ-Pt0" id="xeI-IM-tkV"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Teams" id="DxW-rx-dmH">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0vo-TA-U0K">
+                            <connections>
+                                <segue destination="1aT-Gg-9wr" kind="show" id="9NK-8Q-q0o"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ibi-n4-xmX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-14" y="107"/>
+        </scene>
+        <!--Add Team View Controller-->
+        <scene sceneID="ecE-ef-Wac">
+            <objects>
+                <viewController id="1aT-Gg-9wr" customClass="AddTeamViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4OD-re-ai1"/>
+                        <viewControllerLayoutGuide type="bottom" id="sXK-vU-UH0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XkE-vT-akU">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crI-EU-Zjg">
+                                <rect key="frame" x="32" y="463" width="256" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="uUJ-B0-0g3"/>
+                                </constraints>
+                                <state key="normal" title="Create Team"/>
+                                <connections>
+                                    <action selector="validateForm" destination="1aT-Gg-9wr" eventType="touchUpInside" id="g3t-MG-4Ej"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9XB-BN-UvS">
+                                <rect key="frame" x="16" y="112" width="206" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="1aT-Gg-9wr" id="CSq-FH-eUC"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iJM-0h-GVg">
+                                <rect key="frame" x="238" y="102" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="M1m-JF-Ug3"/>
+                                    <constraint firstAttribute="width" secondItem="iJM-0h-GVg" secondAttribute="height" id="q9a-Gq-VpE"/>
+                                </constraints>
+                            </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AqY-fa-XxT">
+                                <rect key="frame" x="16" y="168" width="288" height="279"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xvW-VZ-KpD">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="addTeamViewControllerCollectionViewCellIdentifier" id="H5e-Z5-xMH">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="1aT-Gg-9wr" id="Sp2-yq-WmV"/>
+                                    <outlet property="delegate" destination="1aT-Gg-9wr" id="NJi-6j-4Zd"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9XB-BN-UvS" firstAttribute="top" secondItem="4OD-re-ai1" secondAttribute="bottom" constant="48" id="1x8-MN-NfP"/>
+                            <constraint firstItem="iJM-0h-GVg" firstAttribute="centerY" secondItem="9XB-BN-UvS" secondAttribute="centerY" id="KXF-tM-60Q"/>
+                            <constraint firstItem="iJM-0h-GVg" firstAttribute="width" secondItem="iJM-0h-GVg" secondAttribute="height" id="NDX-ZD-yge"/>
+                            <constraint firstItem="iJM-0h-GVg" firstAttribute="leading" secondItem="9XB-BN-UvS" secondAttribute="trailing" constant="16" id="Q4j-ER-0LX"/>
+                            <constraint firstItem="crI-EU-Zjg" firstAttribute="leading" secondItem="XkE-vT-akU" secondAttribute="leadingMargin" constant="16" id="VJU-ci-Fc1"/>
+                            <constraint firstItem="AqY-fa-XxT" firstAttribute="top" secondItem="iJM-0h-GVg" secondAttribute="bottom" constant="16" id="hUP-2W-9xX"/>
+                            <constraint firstAttribute="trailing" secondItem="AqY-fa-XxT" secondAttribute="trailing" constant="16" id="jQc-ls-e9d"/>
+                            <constraint firstItem="crI-EU-Zjg" firstAttribute="top" secondItem="AqY-fa-XxT" secondAttribute="bottom" constant="16" id="l49-AB-T7A"/>
+                            <constraint firstItem="iJM-0h-GVg" firstAttribute="leading" secondItem="9XB-BN-UvS" secondAttribute="trailing" constant="16" id="lvg-i5-7va"/>
+                            <constraint firstItem="sXK-vU-UH0" firstAttribute="top" secondItem="crI-EU-Zjg" secondAttribute="bottom" constant="16" id="mRT-BQ-YGC"/>
+                            <constraint firstItem="AqY-fa-XxT" firstAttribute="leading" secondItem="XkE-vT-akU" secondAttribute="leading" constant="16" id="ubm-yE-s41"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="crI-EU-Zjg" secondAttribute="trailing" constant="16" id="vmy-kb-p3P"/>
+                            <constraint firstItem="9XB-BN-UvS" firstAttribute="leading" secondItem="XkE-vT-akU" secondAttribute="leading" constant="16" id="xuI-rT-ERm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iJM-0h-GVg" secondAttribute="trailing" constant="16" id="zTT-fC-iV2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="colorCollectionView" destination="AqY-fa-XxT" id="E7m-Mt-4aZ"/>
+                        <outlet property="logoButton" destination="iJM-0h-GVg" id="rTM-rA-1cG"/>
+                        <outlet property="nameTextField" destination="9XB-BN-UvS" id="sdT-wT-EyN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eSc-lg-Hat" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="781.875" y="-143.66197183098592"/>
+        </scene>
+        <!--Teams-->
+        <scene sceneID="Str-CK-Gg4">
+            <objects>
+                <navigationController id="L95-iL-uOi" userLabel="Teams" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Teams" image="teams-30" selectedImage="teams-30" id="VJw-Zx-ab7"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3bK-jx-20G">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="pLt-yQ-Pt0" kind="relationship" relationship="rootViewController" id="2Th-ta-KlF"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XF4-E1-w60" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-966" y="107"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="teams-30" width="30" height="30"/>
+    </resources>
+</document>
