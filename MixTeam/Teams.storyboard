@@ -150,7 +150,7 @@
         <scene sceneID="Str-CK-Gg4">
             <objects>
                 <navigationController id="L95-iL-uOi" userLabel="Teams" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Teams" image="teams-30" selectedImage="teams-30" id="VJw-Zx-ab7"/>
+                    <tabBarItem key="tabBarItem" title="Teams" image="teams" selectedImage="teams" id="VJw-Zx-ab7"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3bK-jx-20G">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -166,6 +166,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="teams-30" width="30" height="30"/>
+        <image name="teams" width="25" height="25"/>
     </resources>
 </document>

@@ -56,10 +56,11 @@ class PlayersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: kPlayersTableViewCellIdentifier, for: indexPath)
 
-        let player = self.teams[indexPath.section].players[indexPath.row]
+        let team = self.teams[indexPath.section]
+        let player = team.players[indexPath.row]
 
         cell.textLabel?.text = player.name
-        cell.imageView?.image = player.image
+        cell.imageView?.image = player.image?.tint(with: team.color)
 
         return cell
     }
@@ -110,17 +111,40 @@ class PlayersTableViewController: UITableViewController {
             return
         }
 
+        guard let firstTeam = self.teams.first else {
+            // TODO Throw error
+            fatalError()
+        }
+
+        // First move all players back if needed
+        for team in self.teams where team != self.teams.first {
+            for player in team.players {
+                self.move(player: player, from: team, to: firstTeam)
+            }
+        }
+
         // Dispatch players
         // To get animation effect, delay each move animation by kDispatchPlayerTime milliseconds
         var deadline: DispatchTime = .now()
 
-        // TODO: dispatch equally
+        var teamHandicaps: [Team: Int] = [:]
+        for team in teams where team != self.teams.first {
+            teamHandicaps[team] = 0
+            team.players.forEach {
+                teamHandicaps[team]? += $0.handicap
+            }
+        }
+
+        var playersTotalHandicap = 0
+        self.teams.forEach { $0.players.forEach { playersTotalHandicap += $0.handicap }}
+
         for team in self.teams {
             for player in team.players {
-                let randomTeamIndex = Int(arc4random_uniform(UInt32(self.teams.count - 1)) + 1)
-                let toTeam = self.teams[randomTeamIndex]
-                if team.id != toTeam.id {
-                    deadline = deadline + kDispatchPlayerTime
+                deadline = deadline + kDispatchPlayerTime
+                let toTeam = self.pseudoRandomTeam(teamHandicaps: teamHandicaps, playersTotalHandicap: playersTotalHandicap)
+                teamHandicaps[team]? -= player.handicap
+                teamHandicaps[toTeam]? += player.handicap
+                if team != toTeam {
                     DispatchQueue.main.asyncAfter(deadline: deadline) {
                         self.move(player: player, from: team, to: toTeam)
                     }
@@ -131,8 +155,8 @@ class PlayersTableViewController: UITableViewController {
 
     func move(player: Player, from fromTeam: Team, to toTeam: Team) {
         guard let originPlayerIndex = fromTeam.players.index(where: { $0.id == player.id }),
-            let originTeamSection = self.teams.index(where: { $0.id == fromTeam.id }),
-            let destinationTeamSection = self.teams.index(where: { $0.id == toTeam.id }) else {
+            let originTeamSection = self.teams.index(where: { $0 == fromTeam }),
+            let destinationTeamSection = self.teams.index(where: { $0 == toTeam }) else {
             return
         }
         let originIndexPath = IndexPath(row: originPlayerIndex, section: originTeamSection)
@@ -147,8 +171,18 @@ class PlayersTableViewController: UITableViewController {
         self.tableView.reloadRows(at: [destinationIndexPath], with: .automatic)
     }
 
-    func pseudoRandomTeam() -> Team {
-        let randomTeamIndex = Int(arc4random_uniform(UInt32(self.teams.count - 1)) + 1)
-        return self.teams[randomTeamIndex]
+    func pseudoRandomTeam(teamHandicaps: [Team: Int], playersTotalHandicap: Int) -> Team {
+        // First, add a player in each team if there is no one yet
+        let teamsWithoutPlayers = teamHandicaps.filter({ $0.value <= 0 })
+        if teamsWithoutPlayers.count > 0 {
+            return teamsWithoutPlayers[Int(arc4random_uniform(UInt32(teamsWithoutPlayers.count)))].key
+        }
+
+        let handicapAverage = playersTotalHandicap / (self.teams.count - 1)
+
+        // Choose only teams that total handicap is under the average
+        var unbalancedTeams = teamHandicaps.filter({ $0.value < handicapAverage })
+
+        return unbalancedTeams[Int(arc4random_uniform(UInt32(unbalancedTeams.count)))].key
     }
 }

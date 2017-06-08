@@ -13,7 +13,7 @@
         <scene sceneID="hHt-2x-QKx">
             <objects>
                 <viewControllerPlaceholder storyboardName="Players" id="8Qp-ki-4J4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Players" image="amalie-poulain" id="pQm-ra-UNY"/>
+                    <tabBarItem key="tabBarItem" title="Players" image="players" id="pQm-ra-UNY"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M4K-1L-Cpz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -42,7 +42,7 @@
         <scene sceneID="EjP-Uw-uPb">
             <objects>
                 <viewControllerPlaceholder storyboardName="Teams" id="3bM-TX-M4y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Teams" image="teams-30" id="V6D-Mb-gTg"/>
+                    <tabBarItem key="tabBarItem" title="Teams" image="teams" id="V6D-Mb-gTg"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c32-SI-YJA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -50,7 +50,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="amalie-poulain" width="50" height="50"/>
-        <image name="teams-30" width="30" height="30"/>
+        <image name="players" width="25" height="25"/>
+        <image name="teams" width="25" height="25"/>
     </resources>
 </document>

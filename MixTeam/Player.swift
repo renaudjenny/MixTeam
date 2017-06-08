@@ -12,6 +12,7 @@ class Player {
     let id = UUID()
     var name: String = ""
     var image: UIImage? = nil
+    var handicap: Int = 100
     
     // FIXME: replace by a database system
     static var players: [Player] = [
@@ -24,5 +25,11 @@ class Player {
     init(name: String, image: UIImage?) {
         self.name = name
         self.image = image
+    }
+}
+
+extension Player: Equatable {
+    static func ==(lhs: Player, rhs: Player) -> Bool {
+        return lhs.id == rhs.id
     }
 }

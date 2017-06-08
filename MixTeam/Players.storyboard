@@ -72,7 +72,7 @@
         <scene sceneID="HEZ-Et-zoD">
             <objects>
                 <navigationController id="1Nf-Hj-2M8" userLabel="Players" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Players" id="LE9-Km-npG"/>
+                    <tabBarItem key="tabBarItem" title="Players" image="players" selectedImage="players" id="LE9-Km-npG"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="yma-zN-Vzh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -285,6 +285,9 @@
             <point key="canvasLocation" x="3328" y="-1033"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="players" width="25" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="N8n-oW-z2d"/>
     </inferredMetricsTieBreakers>

@@ -73,15 +73,14 @@
       "scale" : "2x"
     },
     {
-      "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "logo-152.png",
+      "size" : "76x76",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "logo-153.png",
+      "filename" : "logo-152.png",
       "scale" : "2x"
     },
     {
