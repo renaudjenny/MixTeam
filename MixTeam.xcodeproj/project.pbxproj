@@ -24,6 +24,8 @@
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
 		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
+		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
+		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
 		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
+		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
+		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,8 +136,10 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
+				4CEB74FF1EEF372600E4DEFA /* Players */,
 				4C3732F71EBF8E8100A5785E /* MixTeamTests.swift */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
+				4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */,
 			);
 			path = MixTeamTests;
 			sourceTree = "<group>";
@@ -169,6 +175,14 @@
 				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 			);
 			name = Teams;
+			sourceTree = "<group>";
+		};
+		4CEB74FF1EEF372600E4DEFA /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */,
+			);
+			name = Players;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +339,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */,
+				4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */,
 				4C3732F81EBF8E8100A5785E /* MixTeamTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
