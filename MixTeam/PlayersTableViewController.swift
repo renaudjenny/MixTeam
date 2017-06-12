@@ -13,7 +13,6 @@ private let kDispatchPlayerTime = DispatchTimeInterval.milliseconds(200)
 
 class PlayersTableViewController: UITableViewController {
     var teams: [Team] = []
-    var forceReload = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,19 +25,6 @@ class PlayersTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if self.forceReload {
-            self.teams.removeAll()
-            self.teams.append(Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: UIColor.gray))
-            self.teams.first?.players = Player.players
-            self.teams.append(contentsOf: Team.teams)
-            self.tableView.reloadData()
-            self.forceReload = false
-        }
-    }
-    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

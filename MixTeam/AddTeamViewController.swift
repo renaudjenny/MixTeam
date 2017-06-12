@@ -48,7 +48,8 @@ class AddTeamViewController: UIViewController {
 
         self.addTeamAction?(team)
         if let playersNavigationViewController = self.tabBarController?.viewControllers?.first, let playersTableViewController = playersNavigationViewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) as? PlayersTableViewController {
-            playersTableViewController.forceReload = true
+            playersTableViewController.teams.append(team)
+            playersTableViewController.tableView.reloadData()
         }
     }
 
