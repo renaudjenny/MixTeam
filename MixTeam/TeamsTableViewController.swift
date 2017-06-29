@@ -16,7 +16,7 @@ class TeamsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.teams = Team.teams
+        self.teams = Team.loadList()
     }
 
     // MARK: - Table view data source

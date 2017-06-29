@@ -21,21 +21,84 @@ public struct UXColor {
     static func allColors() -> [UIColor] {
         return [self.yellow, self.orange, self.red, self.maroon, self.purple, self.azure, self.jade, self.lime]
     }
-}
 
-class UXUtils {
+    static func toString(color: UIColor) -> String {
+        switch color {
+        case UXColor.yellow:
+            return "yellow"
+        case UXColor.orange:
+            return "orange"
+        case UXColor.red:
+            return "red"
+        case UXColor.maroon:
+            return "maroon"
+        case UXColor.purple:
+            return "purple"
+        case UXColor.azure:
+            return "azure"
+        case UXColor.jade:
+            return "jade"
+        case UXColor.lime:
+            return "lime"
+        default:
+            return "unknown color"
+        }
+    }
 
+    static func fromString(colorString: String) -> UIColor {
+        switch colorString {
+        case "yellow":
+            return UXColor.yellow
+        case "orange":
+            return UXColor.orange
+        case "red":
+            return UXColor.red
+        case "maroon":
+            return UXColor.maroon
+        case "purple":
+            return UXColor.purple
+        case "azure":
+            return UXColor.azure
+        case "jade":
+            return UXColor.jade
+        case "lime":
+            return UXColor.lime
+        default:
+            return UIColor.gray
+        }
+    }
 }
 
 extension UIImage {
+    convenience init?(with UXImageString: String) {
+        self.init(named: UXImageString)
+    }
+
+    var UXImageString: String {
+        switch self {
+        case #imageLiteral(resourceName: "elephant"):
+            return "elephant"
+        case #imageLiteral(resourceName: "koala"):
+            return "koala"
+        default:
+            return "unknown image"
+        }
+    }
+
     func tint(with color: UIColor) -> UIImage {
         var image = self.withRenderingMode(.alwaysTemplate)
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         color.set()
-        
+
         image.draw(in: CGRect(origin: .zero, size: size))
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
+    }
+}
+
+extension UIColor {
+    var UXColorString: String {
+        return UXColor.toString(color: self)
     }
 }

@@ -26,6 +26,8 @@
 		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
 		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
+		4CEB75041EFFE8F700E4DEFA /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75031EFFE8F700E4DEFA /* players.json */; };
+		4CEB75061EFFE90800E4DEFA /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75051EFFE90800E4DEFA /* teams.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
 		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
+		4CEB75031EFFE8F700E4DEFA /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
+		4CEB75051EFFE90800E4DEFA /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = teams.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,7 @@
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
 				4C3732E61EBF8E8100A5785E /* Main.storyboard */,
 				4C3733141EBFA37900A5785E /* Players */,
+				4CEB75021EFFE8D700E4DEFA /* Resources */,
 				4C40AE121EC3AEDB0079E964 /* Teams */,
 				4C40AE101EC0DA950079E964 /* UXUtils.swift */,
 			);
@@ -183,6 +188,15 @@
 				4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */,
 			);
 			name = Players;
+			sourceTree = "<group>";
+		};
+		4CEB75021EFFE8D700E4DEFA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4CEB75031EFFE8F700E4DEFA /* players.json */,
+				4CEB75051EFFE90800E4DEFA /* teams.json */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,8 +309,10 @@
 			files = (
 				4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */,
 				4C3733131EBFA35C00A5785E /* Players.storyboard in Resources */,
+				4CEB75041EFFE8F700E4DEFA /* players.json in Resources */,
 				4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */,
 				4C3732E81EBF8E8100A5785E /* Main.storyboard in Resources */,
+				4CEB75061EFFE90800E4DEFA /* teams.json in Resources */,
 				4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
