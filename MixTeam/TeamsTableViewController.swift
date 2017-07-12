@@ -34,7 +34,7 @@ class TeamsTableViewController: UITableViewController {
 
         let team = self.teams[indexPath.row]
         cell.textLabel?.text = team.name
-        cell.imageView?.image = team.image
+        cell.imageView?.image = team.image?.tint(with: team.color)
         cell.backgroundColor = team.color.withAlphaComponent(0.10)
         cell.textLabel?.backgroundColor = UIColor.clear
 

@@ -20,7 +20,7 @@ class PlayersTableViewController: UITableViewController {
         let firstTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: UIColor.gray)
         firstTeam.players = Player.players
         self.teams.append(firstTeam)
-        self.teams.append(contentsOf: Team.teams)
+        self.teams.append(contentsOf: Team.loadList())
 
         self.tableView.reloadData()
     }
@@ -150,8 +150,6 @@ class PlayersTableViewController: UITableViewController {
 
         toTeam.players.append(player)
         fromTeam.players.remove(at: originPlayerIndex)
-
-        player.image = player.image?.tint(with: toTeam.color)
 
         self.tableView.moveRow(at: originIndexPath, to: destinationIndexPath)
         self.tableView.reloadRows(at: [destinationIndexPath], with: .automatic)

@@ -17,6 +17,7 @@ class AddTeamViewController: UIViewController {
     var colors = UXColor.allColors()
     var addTeamAction: ((Team) -> Void)?
     var selectedColor = UIColor.gray
+    var selectedImage: UIImage? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,8 @@ class AddTeamViewController: UIViewController {
 
         let randomIndex = Int(arc4random_uniform(UInt32(placeholders.count)))
         self.nameTextField.text = placeholders[randomIndex]
-        self.logoButton.setImage(images[randomIndex], for: .normal)
+        self.selectedImage = images[randomIndex]
+        self.logoButton.setImage(self.selectedImage, for: .normal)
         if let selectedColor = self.colorCollectionView.cellForItem(at: IndexPath(index: randomIndex))?.backgroundColor {
             self.selectedColor = selectedColor
         }
@@ -39,12 +41,12 @@ class AddTeamViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
 
-        guard let text = self.nameTextField.text, let selectedImage = logoButton.image(for: .normal) else {
+        guard let text = self.nameTextField.text, let selectedImage = self.selectedImage else {
             return
         }
 
         let team = Team(name: text, color: self.selectedColor, image: selectedImage)
-        Team.teams.append(team)
+        team.save()
 
         self.addTeamAction?(team)
         if let playersNavigationViewController = self.tabBarController?.viewControllers?.first, let playersTableViewController = playersNavigationViewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) as? PlayersTableViewController {
@@ -91,7 +93,8 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedColor = self.colors[indexPath.row]
-        let tintedLogoImage = self.logoButton.imageView?.image?.tint(with: self.selectedColor)
+        self.selectedImage = self.logoButton.imageView?.image
+        let tintedLogoImage = self.selectedImage?.tint(with: self.selectedColor)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
         self.logoButton.backgroundColor = self.selectedColor.withAlphaComponent(0.10)
     }

@@ -11,4 +11,15 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        self.saveDefaultTeamsIfNeeded()
+    }
+
+    func saveDefaultTeamsIfNeeded() {
+        if UserDefaults.standard.string(forKey: Team.teamsJSONStringKey) == nil {
+            let teams = Team.loadListFromResource()
+            Team.save(teams: teams)
+        }
+    }
 }
