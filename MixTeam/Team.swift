@@ -100,6 +100,13 @@ class Team {
 
         return Team.initList(teamsJSON: json)
     }
+
+    func delete() {
+        var teams = Team.loadList()
+        teams = teams.filter { $0 != self }
+
+        Team.save(teams: teams)
+    }
 }
 
 extension Team: Hashable {

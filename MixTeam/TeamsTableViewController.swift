@@ -41,6 +41,16 @@ class TeamsTableViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // FIXME be sure that all player are not in team before deleting it!
+
+            let team = self.teams.remove(at: indexPath.row)
+            team.delete()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -29,6 +29,7 @@
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
 		4CEB75041EFFE8F700E4DEFA /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75031EFFE8F700E4DEFA /* players.json */; };
 		4CEB75061EFFE90800E4DEFA /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75051EFFE90800E4DEFA /* teams.json */; };
+		4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
 		4CEB75031EFFE8F700E4DEFA /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		4CEB75051EFFE90800E4DEFA /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = teams.json; sourceTree = "<group>"; };
+		4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsPersistenceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */,
+				4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */,
 			);
 			name = Teams;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 			files = (
 				4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */,
 				4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */,
+				4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */,
 				4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */,
 				4C3732F81EBF8E8100A5785E /* MixTeamTests.swift in Sources */,
 			);
