@@ -24,6 +24,8 @@
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
 		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
+		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
+		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
 		4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */; };
 		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
@@ -73,6 +75,8 @@
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
 		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
+		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
+		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
 		4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
 		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
@@ -180,7 +184,9 @@
 			isa = PBXGroup;
 			children = (
 				4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */,
+				4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
+				4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */,
 				4C40AE131EC3AF0E0079E964 /* Teams.storyboard */,
 				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 			);
@@ -359,7 +365,9 @@
 				4C37331A1EBFC4EF00A5785E /* EditPlayerViewController.swift in Sources */,
 				4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
+				4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
+				4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */,
 				4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
