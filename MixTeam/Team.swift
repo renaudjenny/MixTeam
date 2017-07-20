@@ -107,6 +107,18 @@ class Team {
 
         Team.save(teams: teams)
     }
+
+    func update() {
+        var teams = Team.loadList()
+        guard let index = teams.index(where: { $0 == self }) else {
+            // Team not exist yet, save it instead
+            self.save()
+            return
+        }
+
+        teams[index] = self
+        Team.save(teams: teams)
+    }
 }
 
 extension Team: Hashable {

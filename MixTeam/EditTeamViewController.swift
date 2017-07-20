@@ -16,7 +16,6 @@ class EditTeamViewController: UIViewController {
 
     var team: Team? = nil
     var colors = UXColor.allColors()
-    var addTeamAction: ((Team) -> Void)?
     var selectedColor = UIColor.gray
     var selectedImage: UIImage? = nil
     var editTeamAction: ((Team) -> Void)?
@@ -49,8 +48,7 @@ class EditTeamViewController: UIViewController {
         team.image = self.selectedImage
         team.color = self.selectedColor
 
-        // TODO: Update Team itself
-        //team.update()
+        team.update()
 
         self.editTeamAction?(team)
     }
@@ -81,7 +79,6 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
         return 1
     }
 
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.colors.count
     }
@@ -105,7 +102,6 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedColor = self.colors[indexPath.row]
-        self.selectedImage = self.logoButton.imageView?.image
         let tintedLogoImage = self.selectedImage?.tint(with: self.selectedColor)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
         self.logoButton.backgroundColor = self.selectedColor.withAlphaComponent(0.10)
