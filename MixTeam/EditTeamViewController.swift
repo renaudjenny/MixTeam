@@ -51,6 +51,16 @@ class EditTeamViewController: UIViewController {
         team.update()
 
         self.editTeamAction?(team)
+
+        if let playersTableViewController = self.playersTableViewController {
+            guard let index = playersTableViewController.teams.index(where: { $0 == team }) else {
+                return
+            }
+
+            team.players = playersTableViewController.teams[index].players
+            playersTableViewController.teams[index] = team
+            playersTableViewController.tableView.reloadData()
+        }
     }
 
     @IBAction func cancelForm() {

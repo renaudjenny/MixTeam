@@ -170,3 +170,30 @@ class PlayersTableViewController: UITableViewController {
         return unbalancedTeams[Int(arc4random_uniform(UInt32(unbalancedTeams.count)))].key
     }
 }
+
+extension UIViewController {
+    var playersTableViewController: PlayersTableViewController? {
+        // Usefull filter to retrieve where is the PlayersTableViewController in the tab bar navigation
+        let playerViewControllerFilter: (UIViewController) -> Bool = { (viewController) in
+            return viewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) is PlayersTableViewController
+        }
+
+        var navigationViewController: UIViewController? = nil
+        if let playersNavigationViewController = self.tabBarController?.viewControllers?.first(where: playerViewControllerFilter) {
+            // If self is presented in a navigation view controller
+            navigationViewController = playersNavigationViewController
+        }
+        else if let tabBarController = self.presentingViewController as? UITabBarController,
+            let playersNavigationViewController = tabBarController.viewControllers?.first(where: playerViewControllerFilter) {
+            // If self is presented in a modal
+            navigationViewController = playersNavigationViewController
+        }
+
+        guard let playersNavigationViewController = navigationViewController,
+            let playersTableViewController = playersNavigationViewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) as? PlayersTableViewController else {
+            return nil
+        }
+
+        return playersTableViewController
+    }
+}
