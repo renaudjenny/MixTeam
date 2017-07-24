@@ -1,7 +1,7 @@
 {
     "teams":[{
         "id": "12C2C72E-ABBA-4B3E-B748-7393342D35EE",
-         "name": "Purple elephants",
+         "name": "Purple Elephants",
          "color": "purple",
          "image": "elephant",
          "playerIds": [
@@ -9,7 +9,7 @@
          ]
      },{
          "id": "CF6B3B2F-2ECD-41DF-9561-04197F1A5405",
-         "name": "Red koalas",
+         "name": "Red Koalas",
          "color": "red",
          "image": "koala",
          "playerIds": [

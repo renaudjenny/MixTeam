@@ -22,8 +22,8 @@ class AddTeamViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let placeholders = ["Yellow Elephants", "Orange Koalas"]
-        let images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala")]
+        let placeholders = ["Yellow Elephants", "Orange Koalas", "Red Pandas"]
+        let images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda")]
 
         let randomIndex = Int(arc4random_uniform(UInt32(placeholders.count)))
         self.nameTextField.text = placeholders[randomIndex]
