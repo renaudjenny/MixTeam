@@ -43,9 +43,15 @@ class TeamsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // FIXME be sure that all player are not in team before deleting it!
+            let team = self.teams[indexPath.row]
 
-            let team = self.teams.remove(at: indexPath.row)
+            guard let playersTableViewController = self.playersTableViewController else {
+                // TODO: error
+                return
+            }
+            playersTableViewController.remove(team: team)
+
+            self.teams.remove(at: indexPath.row)
             team.delete()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

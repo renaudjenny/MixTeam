@@ -169,6 +169,22 @@ class PlayersTableViewController: UITableViewController {
 
         return unbalancedTeams[Int(arc4random_uniform(UInt32(unbalancedTeams.count)))].key
     }
+
+    func remove(team: Team) {
+        guard let firstTeam = self.teams.first,
+            let teamToDeleteIndex = self.teams.index(where: { $0 == team }) else {
+            fatalError("Cannot retrieve first team or team to delete index")
+        }
+
+        let teamToDelete = self.teams[teamToDeleteIndex]
+
+        teamToDelete.players.forEach { (player) in
+            self.move(player: player, from: teamToDelete, to: firstTeam)
+        }
+
+        self.teams.remove(at: teamToDeleteIndex)
+        self.tableView.reloadData()
+    }
 }
 
 extension UIViewController {
