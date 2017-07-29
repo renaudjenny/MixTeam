@@ -80,6 +80,8 @@ extension UIImage {
             return "elephant"
         case #imageLiteral(resourceName: "koala"):
             return "koala"
+        case #imageLiteral(resourceName: "panda"):
+            return "panda"
         default:
             return "unknown image"
         }

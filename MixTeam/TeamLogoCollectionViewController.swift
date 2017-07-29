@@ -21,7 +21,7 @@ class TeamLogoCollectionViewController: UICollectionViewController {
         // Register cell classes
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kTeamLogoCollectionViewIdentifier)
 
-        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala")]
+        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda")]
     }
 
     // MARK: UICollectionViewDataSource
