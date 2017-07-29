@@ -53,18 +53,8 @@ class PlayersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            switch indexPath.section {
-            case 0:
-                // If the player was not in a team, remove it definitively
-                self.teams[indexPath.section].players.remove(at: indexPath.row)
-                Player.players.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            default:
-                let player = self.teams[indexPath.section].players[indexPath.row]
-                // Move this player to player whitout teams
-                self.teams.first?.players.append(player)
-                self.teams[indexPath.section].players.remove(at: indexPath.row)
-            }
+            self.teams[indexPath.section].players.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 
