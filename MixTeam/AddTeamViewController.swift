@@ -14,28 +14,40 @@ class AddTeamViewController: UIViewController {
     @IBOutlet weak var logoButton: UIButton!
     @IBOutlet weak var colorCollectionView: UICollectionView!
 
-    var colors = UXColor.allColors()
     var addTeamAction: ((Team) -> Void)?
     var selectedColor = UIColor.gray
     var selectedImage: UIImage? = nil
+    var team = AddTeamViewController.randomTeam()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let placeholders = ["Yellow Elephants", "Orange Koalas", "Red Pandas"]
-        let images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda")]
-
-        let randomIndex = Int(arc4random_uniform(UInt32(placeholders.count)))
-        self.nameTextField.text = placeholders[randomIndex]
-        self.selectedImage = images[randomIndex]
-        self.logoButton.setImage(self.selectedImage, for: .normal)
-        if let selectedColor = self.colorCollectionView.cellForItem(at: IndexPath(index: randomIndex))?.backgroundColor {
-            self.selectedColor = selectedColor
-        }
+        self.nameTextField.text = self.team.name
+        self.logoButton.setImage(self.team.image?.tint(with: self.team.color), for: .normal)
+        self.selectedColor = self.team.color
+        self.selectedImage = self.team.image
+        self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
 
         self.logoButton.layer.cornerRadius = 5.0
     }
-    
+
+    class func randomTeam() -> Team {
+        let titlesForImages = [("Elephants", #imageLiteral(resourceName: "elephant")), ("Koalas", #imageLiteral(resourceName: "koala")), ("Pandas", #imageLiteral(resourceName: "panda"))]
+        let titlesForColors = UXColor.allColors().map { (color) -> (String, UIColor) in
+            return (UXColor.toString(color: color).capitalized, color)
+        }
+
+        let randomIndexForImage = Int(arc4random_uniform(UInt32(titlesForImages.count)))
+        let randomIndexForColor = Int(arc4random_uniform(UInt32(titlesForColors.count)))
+
+        let (imageTitle, image) = titlesForImages[randomIndexForImage]
+        let (colorTitle, color) = titlesForColors[randomIndexForColor]
+
+        let teamTitle = colorTitle + " " + imageTitle
+
+        return Team(name: teamTitle, color: color, image: image)
+    }
+
     @IBAction func validateForm() {
         defer {
             self.navigationController?.popViewController(animated: true)
@@ -71,7 +83,7 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
 
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.colors.count
+        return UXColor.allColors().count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -79,7 +91,7 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
 
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        colorView.backgroundColor = colors[indexPath.row]
+        colorView.backgroundColor = UXColor.allColors()[indexPath.row]
         colorView.layer.cornerRadius = 5.0
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -92,7 +104,7 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedColor = self.colors[indexPath.row]
+        self.selectedColor = UXColor.allColors()[indexPath.row]
         self.selectedImage = self.logoButton.imageView?.image
         let tintedLogoImage = self.selectedImage?.tint(with: self.selectedColor)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
