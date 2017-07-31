@@ -15,8 +15,6 @@ class AddTeamViewController: UIViewController {
     @IBOutlet weak var colorCollectionView: UICollectionView!
 
     var addTeamAction: ((Team) -> Void)?
-    var selectedColor = UIColor.gray
-    var selectedImage: UIImage? = nil
     var team = AddTeamViewController.randomTeam()
 
     override func viewDidLoad() {
@@ -24,8 +22,6 @@ class AddTeamViewController: UIViewController {
 
         self.nameTextField.text = self.team.name
         self.logoButton.setImage(self.team.image?.tint(with: self.team.color), for: .normal)
-        self.selectedColor = self.team.color
-        self.selectedImage = self.team.image
         self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
 
         self.logoButton.layer.cornerRadius = 5.0
@@ -49,18 +45,22 @@ class AddTeamViewController: UIViewController {
     }
 
     @IBAction func validateForm() {
+        guard let name = self.nameTextField.text, !name.isEmpty else {
+            let alertController = UIAlertController(title: "Hhmm!", message: "A team is much better with a name!", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(alertController, animated: true)
+            return
+        }
+
         defer {
             self.navigationController?.popViewController(animated: true)
         }
 
-        guard let text = self.nameTextField.text, let selectedImage = self.selectedImage else {
-            return
-        }
+        self.team.name = name
+        self.team.save()
 
-        let team = Team(name: text, color: self.selectedColor, image: selectedImage)
-        team.save()
+        self.addTeamAction?(self.team)
 
-        self.addTeamAction?(team)
         if let playersTableViewController = self.playersTableViewController {
             playersTableViewController.teams.append(team)
             playersTableViewController.tableView.reloadData()
@@ -70,7 +70,13 @@ class AddTeamViewController: UIViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // TODO
+        if let teamLogoCollectionViewController = segue.destination as? TeamLogoCollectionViewController {
+            teamLogoCollectionViewController.selectedImage = self.team.image
+            teamLogoCollectionViewController.onSelectedImageAction = { (image) in
+                self.team.image = image
+                self.logoButton.setImage(image?.tint(with: self.team.color), for: .normal)
+            }
+        }
     }
 }
 
@@ -80,7 +86,6 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return UXColor.allColors().count
@@ -104,11 +109,10 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedColor = UXColor.allColors()[indexPath.row]
-        self.selectedImage = self.logoButton.imageView?.image
-        let tintedLogoImage = self.selectedImage?.tint(with: self.selectedColor)
+        self.team.color = UXColor.allColors()[indexPath.row]
+        let tintedLogoImage = self.team.image?.tint(with: self.team.color)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
-        self.logoButton.backgroundColor = self.selectedColor.withAlphaComponent(0.10)
+        self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
     }
 }
 
