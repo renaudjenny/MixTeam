@@ -19,7 +19,7 @@ class EditPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let player = player else {
+        guard let player = self.player else {
             return
         }
         
@@ -33,17 +33,14 @@ class EditPlayerViewController: UIViewController {
             self.dismiss(animated: true, completion: nil)
         }
         
-        let optionalPlayer = Player.players.first { (player) -> Bool in
-            player.name == self.player?.name
-        }
-        
-        guard let player = optionalPlayer else {
+        guard let player = self.player else {
             // TODO: error message
             return
         }
         
         player.name = self.nameTextField.text ?? "ERROR"
         player.image = self.logoButton.imageView?.image
+        player.update()
 
         self.editPlayerAction?(player)
     }

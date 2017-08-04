@@ -82,6 +82,14 @@ extension UIImage {
             return "koala"
         case #imageLiteral(resourceName: "panda"):
             return "panda"
+        case #imageLiteral(resourceName: "harry-pottar"):
+            return "harry-pottar"
+        case #imageLiteral(resourceName: "amalie-poulain"):
+            return "amalie-poulain"
+        case #imageLiteral(resourceName: "dark-vadir"):
+            return "dark-vadir"
+        case #imageLiteral(resourceName: "lara-craft"):
+            return "lara-craft"
         default:
             return "unknown image"
         }

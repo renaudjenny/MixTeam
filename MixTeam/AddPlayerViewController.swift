@@ -35,11 +35,10 @@ class AddPlayerViewController: UIViewController {
         var playerName = ""
         
         // TODO: check if player name is valid:
-        // * player name not already exist
         // * not empty string
         playerName = nameTextField.text ?? "ERROR"
         let player = Player(name: playerName, image: self.logoButton.imageView?.image)
-        Player.players.append(player)
+        player.save()
         
         self.navigationController?.popViewController(animated: true)
         self.addPlayerAction?(player)

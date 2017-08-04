@@ -18,7 +18,7 @@ class PlayersTableViewController: UITableViewController {
         super.viewDidLoad()
 
         let firstTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: UIColor.gray)
-        firstTeam.players = Player.players
+        firstTeam.players = Player.loadList()
         self.teams.append(firstTeam)
         self.teams.append(contentsOf: Team.loadList())
 
@@ -53,6 +53,8 @@ class PlayersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            let playerToDelete = self.teams[indexPath.section].players[indexPath.row]
+            playerToDelete.delete()
             self.teams[indexPath.section].players.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

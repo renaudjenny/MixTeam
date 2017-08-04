@@ -27,6 +27,7 @@
 		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
 		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
 		4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */; };
+		4CD9A2EE1F3510AC0080AE46 /* PlayerPersistanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */; };
 		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
 		4CEB75041EFFE8F700E4DEFA /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75031EFFE8F700E4DEFA /* players.json */; };
@@ -78,6 +79,7 @@
 		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
 		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
 		4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
+		4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerPersistanceTests.swift; sourceTree = "<group>"; };
 		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
 		4CEB75031EFFE8F700E4DEFA /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */,
+				4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */,
 			);
 			name = Players;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 			files = (
 				4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */,
 				4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */,
+				4CD9A2EE1F3510AC0080AE46 /* PlayerPersistanceTests.swift in Sources */,
 				4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */,
 				4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */,
 				4C3732F81EBF8E8100A5785E /* MixTeamTests.swift in Sources */,

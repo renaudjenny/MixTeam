@@ -21,6 +21,11 @@ class Team {
         self.image = image
     }
 
+    //MARK: - Persistance
+
+    static let teamsResourcePath = "teams"
+    static let teamsJSONStringKey = "teamsJSONString"
+
     init?(dictionary: [String: Any]) {
         guard let idString = dictionary["id"] as? String, let id = UUID(uuidString: idString),
             let name = dictionary["name"] as? String,
@@ -55,9 +60,6 @@ class Team {
         }
         return teams
     }
-
-    static let teamsResourcePath = "teams"
-    static let teamsJSONStringKey = "teamsJSONString"
 
     func save() {
         var teams = Team.loadList()

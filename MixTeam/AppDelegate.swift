@@ -14,12 +14,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
         self.saveDefaultTeamsIfNeeded()
+        self.saveDefaultPlayersIfNeeded()
     }
 
     func saveDefaultTeamsIfNeeded() {
         if UserDefaults.standard.string(forKey: Team.teamsJSONStringKey) == nil {
             let teams = Team.loadListFromResource()
             Team.save(teams: teams)
+        }
+    }
+
+    func saveDefaultPlayersIfNeeded() {
+        if UserDefaults.standard.string(forKey: Player.playersJSONStringKey) == nil {
+            let players = Player.loadListFromResource()
+            Player.save(players: players)
         }
     }
 }
