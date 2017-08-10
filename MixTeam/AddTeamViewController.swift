@@ -70,12 +70,16 @@ class AddTeamViewController: UIViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let teamLogoCollectionViewController = segue.destination as? TeamLogoCollectionViewController {
-            teamLogoCollectionViewController.selectedImage = self.team.image
-            teamLogoCollectionViewController.onSelectedImageAction = { (image) in
+        super.prepare(for: segue, sender: sender)
+
+        switch segue.destination {
+        case let viewController as TeamLogoCollectionViewController:
+            viewController.selectedImage = self.team.image
+            viewController.onSelectedImageAction = { (image) in
                 self.team.image = image
                 self.logoButton.setImage(image?.tint(with: self.team.color), for: .normal)
             }
+        default: break
         }
     }
 }

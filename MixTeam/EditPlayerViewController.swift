@@ -52,11 +52,15 @@ class EditPlayerViewController: UIViewController {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let playerLogoCollectionViewController = segue.destination as? PlayerLogoCollectionViewController {
-            playerLogoCollectionViewController.selectedImage = self.logoButton.imageView?.image
-            playerLogoCollectionViewController.onSelectedImageAction = { (image) -> Void in
+        super.prepare(for: segue, sender: sender)
+
+        switch segue.destination {
+        case let viewController as PlayerLogoCollectionViewController:
+            viewController.selectedImage = self.logoButton.imageView?.image
+            viewController.onSelectedImageAction = { (image) -> Void in
                 self.logoButton.setImage(image, for: .normal)
             }
+        default: break
         }
     }
 }

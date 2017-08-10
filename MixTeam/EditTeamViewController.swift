@@ -70,14 +70,18 @@ class EditTeamViewController: UIViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let teamLogoCollectionViewController = segue.destination as? TeamLogoCollectionViewController {
-            teamLogoCollectionViewController.selectedImage = self.selectedImage
-            teamLogoCollectionViewController.onSelectedImageAction = { (image) -> Void in
+        super.prepare(for: segue, sender: sender)
+
+        switch segue.destination {
+        case let viewController as TeamLogoCollectionViewController:
+            viewController.selectedImage = self.selectedImage
+            viewController.onSelectedImageAction = { (image) -> Void in
                 self.selectedImage = image
                 let tintedImage = image?.tint(with: self.selectedColor)
 
                 self.logoButton.setImage(tintedImage, for: .normal)
             }
+        default: break
         }
     }
 }

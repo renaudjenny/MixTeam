@@ -63,22 +63,25 @@ class PlayersTableViewController: UITableViewController {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let editPlayerViewController = segue.destination as? EditPlayerViewController, let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
-            editPlayerViewController.player = self.teams[playerTableCellIndexPath.section].players[playerTableCellIndexPath.row]
+        super.prepare(for: segue, sender: sender)
 
-            editPlayerViewController.editPlayerAction = { (player: Player) in
-                self.tableView.reloadData()
+        switch segue.destination {
+        case let viewController as EditPlayerViewController:
+            if let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+                viewController.player = self.teams[playerTableCellIndexPath.section].players[playerTableCellIndexPath.row]
+                viewController.editPlayerAction = { (player) in
+                    self.tableView.reloadData()
+                }
             }
-        }
-
-        if let addPlayerViewController = segue.destination as? AddPlayerViewController {
-            addPlayerViewController.addPlayerAction = { (player: Player) in
+        case let viewController as AddPlayerViewController:
+            viewController.addPlayerAction = { (player: Player) in
                 guard let firstTeam = self.teams.first else {
                     return
                 }
                 firstTeam.players.append(player)
                 self.tableView.reloadData()
             }
+        default: break
         }
     }
 

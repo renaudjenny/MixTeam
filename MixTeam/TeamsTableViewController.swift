@@ -59,20 +59,23 @@ class TeamsTableViewController: UITableViewController {
 
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let editTeamViewController = segue.destination as? EditTeamViewController, let selectedCell = sender as? UITableViewCell, let teamTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
-            editTeamViewController.team = self.teams[teamTableCellIndexPath.row]
-            editTeamViewController.editTeamAction = { (team: Team) in
-                self.tableView.reloadData()
-            }
-        }
+        super.prepare(for: segue, sender: sender)
 
-        if let addTeamViewController = segue.destination as? AddTeamViewController {
-            addTeamViewController.addTeamAction = { (team: Team) in
+        switch segue.destination {
+        case let viewController as EditTeamViewController:
+            if let selectedCell = sender as? UITableViewCell, let teamTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+                viewController.team = self.teams[teamTableCellIndexPath.row]
+                viewController.editTeamAction = { (team: Team) in
+                    self.tableView.reloadData()
+                }
+            }
+        case let viewController as AddTeamViewController:
+            viewController.addTeamAction = { (team: Team) in
                 self.teams.append(team)
                 self.tableView.reloadData()
             }
+        default: break
         }
     }
 

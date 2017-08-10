@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -119,7 +119,7 @@
                                 <rect key="frame" x="16" y="112" width="222" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
                                     <action selector="nameTextFieldDone" destination="LnN-J0-5Id" eventType="editingDidEnd" id="YRw-LK-bRj"/>
                                     <outlet property="delegate" destination="LnN-J0-5Id" id="On5-xj-N6j"/>
@@ -174,7 +174,7 @@
                                 <rect key="frame" x="16" y="104.5" width="222" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
                                     <action selector="nameTextFieldDone" destination="LnN-J0-5Id" eventType="editingDidEnd" id="uWi-Nh-lib"/>
                                     <outlet property="delegate" destination="5cc-Lg-hPp" id="JNt-ZB-I0s"/>
@@ -289,6 +289,6 @@
         <image name="players" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PS8-T0-8vn"/>
+        <segue reference="N8n-oW-z2d"/>
     </inferredMetricsTieBreakers>
 </document>
