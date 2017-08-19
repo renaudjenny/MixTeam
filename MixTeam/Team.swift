@@ -37,18 +37,21 @@ class Team {
         self.name = name
         self.color = UXColor.fromString(colorString: colorString)
 
-        if let imageString = dictionary["image"] as? String, let image = UIImage(with: imageString) {
+        if let imageString = dictionary["image"] as? String, let image = UIImage(named: imageString) {
             self.image = image
         }
     }
 
     func toDictionary() -> [String: Any] {
-        return [
+        var dictionary: [String: Any] = [
             "id": self.id.uuidString,
             "name": self.name,
-            "color": self.color.UXColorString,
-            "image": self.image?.UXImageString ?? "unknown image"
+            "color": self.color.UXColorString
         ]
+
+        dictionary["image"] = self.image?.appImage.rawValue
+
+        return dictionary
     }
 
     class func initList(teamsJSON: [[String: Any]]) -> [Team] {

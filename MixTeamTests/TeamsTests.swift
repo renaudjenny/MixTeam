@@ -28,7 +28,7 @@ class TeamsTests: XCTestCase {
         XCTAssertEqual(team.id, UUID(uuidString: "C0CA70AD-0619-43F4-AEED-ECD094BADEDB"))
         XCTAssertEqual(team.name, "Test")
         XCTAssertEqual(team.color, UXColor.red)
-        XCTAssertEqual(team.image?.UXImageString, "elephant")
+        XCTAssertEqual(team.image?.appImage.rawValue, "elephant")
     }
 
     func testInitNilWithDictionary() {

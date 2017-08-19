@@ -69,29 +69,43 @@ public struct UXColor {
     }
 }
 
-extension UIImage {
-    convenience init?(with UXImageString: String) {
-        self.init(named: UXImageString)
-    }
+enum AppImage: String {
+    case unknown = "unknown image"
+    case elephant = "elephant"
+    case koala = "koala"
+    case panda = "panda"
+    case harryPottar = "harry-pottar"
+    case amaliePoulain = "amalie-poulain"
+    case darkVadir = "dark-vadir"
+    case laraCraft = "lara-craft"
 
-    var UXImageString: String {
+    var image: UIImage {
+        guard let image = UIImage(named: self.rawValue) else {
+            return #imageLiteral(resourceName: "unknown")
+        }
+        return image
+    }
+}
+
+extension UIImage {
+    var appImage: AppImage {
         switch self {
         case #imageLiteral(resourceName: "elephant"):
-            return "elephant"
+            return .elephant
         case #imageLiteral(resourceName: "koala"):
-            return "koala"
+            return .koala
         case #imageLiteral(resourceName: "panda"):
-            return "panda"
+            return .panda
         case #imageLiteral(resourceName: "harry-pottar"):
-            return "harry-pottar"
+            return .harryPottar
         case #imageLiteral(resourceName: "amalie-poulain"):
-            return "amalie-poulain"
+            return .amaliePoulain
         case #imageLiteral(resourceName: "dark-vadir"):
-            return "dark-vadir"
+            return .darkVadir
         case #imageLiteral(resourceName: "lara-craft"):
-            return "lara-craft"
+            return .laraCraft
         default:
-            return "unknown image"
+            return .unknown
         }
     }
 

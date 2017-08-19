@@ -36,18 +36,21 @@ class Player {
         self.name = name
         self.handicap = handicap
 
-        if let imageString = dictionary["image"] as? String, let image = UIImage(with: imageString) {
+        if let imageString = dictionary["image"] as? String, let image = UIImage(named: imageString) {
             self.image = image
         }
     }
 
     func toDictionary() -> [String: Any] {
-        return [
+        var dictionary: [String: Any] = [
             "id": self.id.uuidString,
             "name": self.name,
-            "image": self.image?.UXImageString ?? "unknown image",
             "handicap": self.handicap
         ]
+
+        dictionary["image"] = self.image?.appImage.rawValue
+
+        return dictionary
     }
 
     class func initList(playersJSON: [[String: Any]]) -> [Player] {
