@@ -22,6 +22,7 @@ class AddTeamViewController: UIViewController {
 
         self.nameTextField.text = self.team.name
         self.logoButton.setImage(self.team.image?.tint(with: self.team.color), for: .normal)
+        self.logoButton.accessibilityIdentifier = self.team.image?.appImage.rawValue
         self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
 
         self.logoButton.layer.cornerRadius = 5.0
@@ -78,6 +79,7 @@ class AddTeamViewController: UIViewController {
             viewController.onSelectedImageAction = { (image) in
                 self.team.image = image
                 self.logoButton.setImage(image?.tint(with: self.team.color), for: .normal)
+                self.logoButton.accessibilityIdentifier = image?.appImage.rawValue
             }
         default: break
         }
@@ -100,7 +102,8 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
 
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        colorView.backgroundColor = UXColor.allColors()[indexPath.row]
+        let color = UXColor.allColors()[indexPath.row]
+        colorView.backgroundColor = color
         colorView.layer.cornerRadius = 5.0
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -108,6 +111,9 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
         
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
+
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = color.UXColorString
 
         return cell
     }

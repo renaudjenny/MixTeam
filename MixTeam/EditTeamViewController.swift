@@ -32,6 +32,7 @@ class EditTeamViewController: UIViewController {
         self.selectedImage = team.image
         self.selectedColor = team.color
         self.logoButton.setImage(team.image?.tint(with: team.color), for: .normal)
+        self.logoButton.accessibilityIdentifier = team.image?.appImage.rawValue
         self.logoButton.backgroundColor = team.color.withAlphaComponent(0.10)
     }
 
@@ -80,6 +81,7 @@ class EditTeamViewController: UIViewController {
                 let tintedImage = image?.tint(with: self.selectedColor)
 
                 self.logoButton.setImage(tintedImage, for: .normal)
+                self.logoButton.accessibilityIdentifier = image?.appImage.rawValue
             }
         default: break
         }
@@ -102,7 +104,8 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
 
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        colorView.backgroundColor = colors[indexPath.row]
+        let color = colors[indexPath.row]
+        colorView.backgroundColor = color
         colorView.layer.cornerRadius = 5.0
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -110,6 +113,9 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
 
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
+
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = color.UXColorString
 
         return cell
     }

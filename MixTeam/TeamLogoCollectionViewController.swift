@@ -38,7 +38,8 @@ class TeamLogoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kTeamLogoCollectionViewIdentifier, for: indexPath)
 
-        let imageView = UIImageView(image: self.images[indexPath.row])
+        let image = self.images[indexPath.row]
+        let imageView = UIImageView(image: image)
         imageView.contentMode = .center
         cell.addSubview(imageView)
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
@@ -48,6 +49,9 @@ class TeamLogoCollectionViewController: UICollectionViewController {
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.black.cgColor
         }
+
+        cell.isAccessibilityElement = true
+        cell.accessibilityLabel = image?.appImage.rawValue
 
         return cell
     }

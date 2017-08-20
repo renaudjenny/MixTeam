@@ -14,7 +14,7 @@
         <!--Teams-->
         <scene sceneID="BJM-8n-wI9">
             <objects>
-                <tableViewController id="pLt-yQ-Pt0" customClass="TeamsTableViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Teams" id="pLt-yQ-Pt0" customClass="TeamsTableViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="2fo-lu-r0e">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,10 +58,10 @@
             </objects>
             <point key="canvasLocation" x="-14" y="107"/>
         </scene>
-        <!--Add Team View Controller-->
+        <!--Add Team-->
         <scene sceneID="ecE-ef-Wac">
             <objects>
-                <viewController id="1aT-Gg-9wr" customClass="AddTeamViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Add Team" id="1aT-Gg-9wr" customClass="AddTeamViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4OD-re-ai1"/>
                         <viewControllerLayoutGuide type="bottom" id="sXK-vU-UH0"/>
@@ -80,8 +80,9 @@
                                     <action selector="validateForm" destination="1aT-Gg-9wr" eventType="touchUpInside" id="g3t-MG-4Ej"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9XB-BN-UvS">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your team name" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9XB-BN-UvS">
                                 <rect key="frame" x="16" y="112" width="206" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Team Name Text Field"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -91,6 +92,7 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iJM-0h-GVg">
                                 <rect key="frame" x="238" y="102" width="50" height="50"/>
+                                <accessibility key="accessibilityConfiguration" label="Open Team Logo Selection Button"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="M1m-JF-Ug3"/>
                                     <constraint firstAttribute="width" secondItem="iJM-0h-GVg" secondAttribute="height" id="q9a-Gq-VpE"/>
@@ -152,11 +154,11 @@
             </objects>
             <point key="canvasLocation" x="781.875" y="-143.66197183098592"/>
         </scene>
-        <!--Team Logo Collection View Controller-->
+        <!--Team Logo Selection-->
         <scene sceneID="ZwE-yP-XXi">
             <objects>
-                <collectionViewController id="d8H-N5-cX8" customClass="TeamLogoCollectionViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="VGG-hA-X89">
+                <collectionViewController title="Team Logo Selection" id="d8H-N5-cX8" customClass="TeamLogoCollectionViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="VGG-hA-X89">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -204,10 +206,10 @@
             </objects>
             <point key="canvasLocation" x="-966" y="107"/>
         </scene>
-        <!--Edit Team View Controller-->
+        <!--Edit Team-->
         <scene sceneID="Yjp-Vn-Wy3">
             <objects>
-                <viewController id="ylh-Us-8sP" customClass="EditTeamViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Edit Team" id="ylh-Us-8sP" customClass="EditTeamViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="H95-kc-odn"/>
                         <viewControllerLayoutGuide type="bottom" id="Nd0-Ww-nyQ"/>
@@ -216,8 +218,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O3Y-go-MHm">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your team name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O3Y-go-MHm">
                                 <rect key="frame" x="16" y="114.5" width="206" height="30"/>
+                                <accessibility key="accessibilityConfiguration" label="Team Name Text Field"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
