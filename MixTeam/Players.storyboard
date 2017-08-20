@@ -15,12 +15,12 @@
         <scene sceneID="dyP-Jh-HYY">
             <objects>
                 <tableViewController id="EnS-7l-DNJ" customClass="PlayersTableViewController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="59" sectionHeaderHeight="18" sectionFooterHeight="18" id="ddu-Zi-NrB">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="50" sectionHeaderHeight="18" sectionFooterHeight="18" id="ddu-Zi-NrB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7UD-Yf-exm">
-                            <rect key="frame" x="0.0" y="132.5" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="123.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Mix Team!"/>
                             <connections>
@@ -28,15 +28,15 @@
                             </connections>
                         </button>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="playersTableViewCellIdentifier" textLabel="jKD-NJ-xNm" rowHeight="59" style="IBUITableViewCellStyleDefault" id="WeU-W3-ad8">
-                                <rect key="frame" x="0.0" y="56" width="320" height="59"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PlayersTableViewControllerPlayerTableViewCellIdentifier" textLabel="jKD-NJ-xNm" style="IBUITableViewCellStyleDefault" id="WeU-W3-ad8">
+                                <rect key="frame" x="0.0" y="56" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WeU-W3-ad8" id="H7B-iZ-QYe">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="58.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jKD-NJ-xNm">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="58.5"/>
+                                            <rect key="frame" x="15" y="0.0" width="270" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -66,7 +66,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SGQ-bh-Kc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1374" y="-1033"/>
+            <point key="canvasLocation" x="1372.5" y="-1033.0985915492959"/>
         </scene>
         <!--Players-->
         <scene sceneID="HEZ-Et-zoD">

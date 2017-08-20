@@ -8,10 +8,11 @@
 
 import UIKit
 
-private let kPlayersTableViewCellIdentifier = "playersTableViewCellIdentifier"
-private let kDispatchPlayerTime = DispatchTimeInterval.milliseconds(200)
-
 class PlayersTableViewController: UITableViewController {
+    static let playerTableViewCellIdentifier = "PlayersTableViewControllerPlayerTableViewCellIdentifier"
+    static let teamHeaderViewIdentifier = "PlayersTableViewControllerTeamHeaderViewIdentifier"
+    static let dispatchPlayerTime = DispatchTimeInterval.milliseconds(200)
+
     var teams: [Team] = []
 
     override func viewDidLoad() {
@@ -21,6 +22,9 @@ class PlayersTableViewController: UITableViewController {
         firstTeam.players = Player.loadList()
         self.teams.append(firstTeam)
         self.teams.append(contentsOf: Team.loadList())
+
+        let nib = UINib(nibName: "TeamHeaderView", bundle: nil)
+        self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: PlayersTableViewController.teamHeaderViewIdentifier)
 
         self.tableView.reloadData()
     }
@@ -40,13 +44,15 @@ class PlayersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: kPlayersTableViewCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: PlayersTableViewController.playerTableViewCellIdentifier, for: indexPath)
 
         let team = self.teams[indexPath.section]
         let player = team.players[indexPath.row]
 
         cell.textLabel?.text = player.name
         cell.imageView?.image = player.image?.tint(with: team.color)
+        cell.backgroundColor = team.color.withAlphaComponent(0.10)
+        cell.textLabel?.backgroundColor = UIColor.clear
 
         return cell
     }
@@ -57,6 +63,30 @@ class PlayersTableViewController: UITableViewController {
             playerToDelete.delete()
             self.teams[indexPath.section].players.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section > 0 else {
+            // No need to customize "No team" section header
+            return nil
+        }
+
+        let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlayersTableViewController.teamHeaderViewIdentifier) as? TeamHeaderView
+
+        headerCell?.titleLabel.text = self.teams[section].name
+        headerCell?.logoImageView.image = self.teams[section].image
+        headerCell?.view.backgroundColor = self.teams[section].color.withAlphaComponent(0.20)
+
+        return headerCell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0:
+            return tableView.rowHeight
+        default:
+            return 50.0
         }
     }
 
@@ -121,7 +151,7 @@ class PlayersTableViewController: UITableViewController {
 
         for team in self.teams {
             for player in team.players {
-                deadline = deadline + kDispatchPlayerTime
+                deadline = deadline + PlayersTableViewController.dispatchPlayerTime
                 let toTeam = self.pseudoRandomTeam(teamHandicaps: teamHandicaps, playersTotalHandicap: playersTotalHandicap)
                 teamHandicaps[team]? -= player.handicap
                 teamHandicaps[toTeam]? += player.handicap
