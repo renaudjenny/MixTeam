@@ -40,13 +40,28 @@ class Team {
         if let imageString = dictionary["image"] as? String, let image = UIImage(named: imageString) {
             self.image = image
         }
+
+        if let playersIds = dictionary["playerIds"] as? [String] {
+            let savedPlayers = Player.loadList()
+
+            for playerId in playersIds {
+                if let player = savedPlayers.first(where: { $0.id.uuidString == playerId }) {
+                    self.players.append(player)
+                }
+            }
+        }
     }
 
     func toDictionary() -> [String: Any] {
+        let playerIds: [String] = self.players.map { (player) -> String in
+            player.id.uuidString
+        }
+
         var dictionary: [String: Any] = [
             "id": self.id.uuidString,
             "name": self.name,
-            "color": self.color.UXColorString
+            "color": self.color.UXColorString,
+            "playerIds": playerIds
         ]
 
         dictionary["image"] = self.image?.appImage.rawValue

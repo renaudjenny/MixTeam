@@ -13,13 +13,13 @@ class PlayersTableViewController: UITableViewController {
     static let teamHeaderViewIdentifier = "PlayersTableViewControllerTeamHeaderViewIdentifier"
     static let dispatchPlayerTime = DispatchTimeInterval.milliseconds(200)
 
+    var autoSaveTimer: DispatchSourceTimer?
     var teams: [Team] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let firstTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: UIColor.gray)
-        firstTeam.players = Player.loadList()
         self.teams.append(firstTeam)
         self.teams.append(contentsOf: Team.loadList())
 
@@ -178,6 +178,8 @@ class PlayersTableViewController: UITableViewController {
 
         self.tableView.moveRow(at: originIndexPath, to: destinationIndexPath)
         self.tableView.reloadRows(at: [destinationIndexPath], with: .automatic)
+
+        self.deferAutoSave()
     }
 
     func pseudoRandomTeam(teamHandicaps: [Team: Int], playersTotalHandicap: Int) -> Team {
@@ -209,6 +211,29 @@ class PlayersTableViewController: UITableViewController {
 
         self.teams.remove(at: teamToDeleteIndex)
         self.tableView.reloadData()
+    }
+}
+
+//NARK: - Auto Save
+
+extension PlayersTableViewController {
+    static let autoSaveDeferDelay = DispatchTimeInterval.seconds(2)
+
+    func initAutoSaveTimer() {
+        self.autoSaveTimer?.cancel()
+        self.autoSaveTimer = DispatchSource.makeTimerSource()
+        self.autoSaveTimer?.setEventHandler {
+            let teamsToSave = Array(self.teams[1 ..< self.teams.count])
+            Team.save(teams: teamsToSave)
+        }
+    }
+
+    func deferAutoSave() {
+        self.initAutoSaveTimer()
+
+        let deadline: DispatchTime = .now() + PlayersTableViewController.autoSaveDeferDelay
+        self.autoSaveTimer?.scheduleOneshot(deadline: deadline)
+        self.autoSaveTimer?.resume()
     }
 }
 
