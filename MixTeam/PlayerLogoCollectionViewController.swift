@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let kPlayerLogoCollectionViewIdentifier = "playerLogoCollectionViewIdentifier"
-
 class PlayerLogoCollectionViewController: UICollectionViewController {
     var selectedImage: UIImage? = nil
     var images: [UIImage?] = []
@@ -18,11 +16,14 @@ class PlayerLogoCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Register cell classes
-        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kPlayerLogoCollectionViewIdentifier)
-
         self.images = [#imageLiteral(resourceName: "harry-pottar"), #imageLiteral(resourceName: "dark-vadir"), #imageLiteral(resourceName: "amalie-poulain"), #imageLiteral(resourceName: "lara-craft")]
     }
+}
+
+// MARK: - Collection View
+
+extension PlayerLogoCollectionViewController {
+    static let cellIdentifier = "PlayerLogoCollectionViewControllerCellIdentifier"
 
     // MARK: UICollectionViewDataSource
 
@@ -36,13 +37,11 @@ class PlayerLogoCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kPlayerLogoCollectionViewIdentifier, for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayerLogoCollectionViewController.cellIdentifier, for: indexPath) as? LogoCollectionViewCell else {
+            fatalError("Cannot continue without cell as LogoCollectionViewCell")
+        }
 
-        let imageView = UIImageView(image: self.images[indexPath.row])
-        imageView.contentMode = .center
-        cell.addSubview(imageView)
-        cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
-        cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
+        cell.logoImageView.image = self.images[indexPath.row]
 
         if self.selectedImage == self.images[indexPath.row] {
             cell.layer.borderWidth = 1.0
@@ -57,18 +56,14 @@ class PlayerLogoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         self.selectedImage = self.imageForIndexPath(indexPath: indexPath)
         self.onSelectedImageAction(self.selectedImage)
-        
+
         self.dismiss(animated: true, completion: nil)
-        
+
         return true
     }
-    
+
     func imageForIndexPath(indexPath: IndexPath) -> UIImage? {
-        let item = self.collectionView?.cellForItem(at: indexPath)
-        let imageView = item?.subviews.first(where: { (subview) -> Bool in
-            return subview is UIImageView
-        }) as? UIImageView
-        
-        return imageView?.image
+        let item = self.collectionView?.cellForItem(at: indexPath) as? LogoCollectionViewCell
+        return item?.logoImageView.image
     }
 }

@@ -8,8 +8,6 @@
 
 import UIKit
 
-private let kTeamLogoCollectionViewIdentifier = "teamLogoCollectionViewIdentifier"
-
 class TeamLogoCollectionViewController: UICollectionViewController {
     var selectedImage: UIImage? = nil
     var images: [UIImage?] = []
@@ -17,12 +15,15 @@ class TeamLogoCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Register cell classes
-        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: kTeamLogoCollectionViewIdentifier)
-
-        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda")]
+        
+        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda"), #imageLiteral(resourceName: "poulpe")]
     }
+}
+
+// MARK: - Collection View
+
+extension TeamLogoCollectionViewController {
+    static let cellIdentifier = "TeamLogoCollectionViewControllerCellIdentifier"
 
     // MARK: UICollectionViewDataSource
 
@@ -30,20 +31,17 @@ class TeamLogoCollectionViewController: UICollectionViewController {
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kTeamLogoCollectionViewIdentifier, for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TeamLogoCollectionViewController.cellIdentifier, for: indexPath) as? LogoCollectionViewCell else {
+            fatalError("Cannot retrieve cell as LogoCollectionViewCell")
+        }
 
         let image = self.images[indexPath.row]
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .center
-        cell.addSubview(imageView)
-        cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
-        cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]|", options: [], metrics: nil, views: ["imageView": imageView]))
+        cell.logoImageView.image = image
 
         if self.selectedImage == self.images[indexPath.row] {
             cell.layer.borderWidth = 1.0
@@ -68,11 +66,7 @@ class TeamLogoCollectionViewController: UICollectionViewController {
     }
 
     func imageForIndexPath(indexPath: IndexPath) -> UIImage? {
-        let item = self.collectionView?.cellForItem(at: indexPath)
-        let imageView = item?.subviews.first(where: { (subview) -> Bool in
-            return subview is UIImageView
-        }) as? UIImageView
-        
-        return imageView?.image
+        let item = self.collectionView?.cellForItem(at: indexPath) as? LogoCollectionViewCell
+        return item?.logoImageView.image
     }
 }

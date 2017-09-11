@@ -23,28 +23,29 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xaq-Ld-qlD">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Team Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ch-QN-03u">
-                            <rect key="frame" x="8" y="0.0" width="138.5" height="50"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknown" translatesAutoresizingMaskIntoConstraints="NO" id="XvY-LK-wVa">
-                            <rect key="frame" x="162.5" y="0.0" width="50" height="50"/>
+                            <rect key="frame" x="16" y="4" width="42" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="XvY-LK-wVa" secondAttribute="height" multiplier="1:1" id="DAW-Dq-pnl"/>
                             </constraints>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Team Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ch-QN-03u">
+                            <rect key="frame" x="66" y="0.0" width="293" height="50"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="XvY-LK-wVa" firstAttribute="top" secondItem="Xaq-Ld-qlD" secondAttribute="top" id="29c-e9-Tg4"/>
-                        <constraint firstAttribute="bottom" secondItem="XvY-LK-wVa" secondAttribute="bottom" id="6wN-dN-emg"/>
+                        <constraint firstItem="XvY-LK-wVa" firstAttribute="top" secondItem="Xaq-Ld-qlD" secondAttribute="top" constant="4" id="29c-e9-Tg4"/>
+                        <constraint firstAttribute="bottom" secondItem="XvY-LK-wVa" secondAttribute="bottom" constant="4" id="6wN-dN-emg"/>
                         <constraint firstAttribute="bottom" secondItem="8ch-QN-03u" secondAttribute="bottom" id="7fe-eY-vZN"/>
-                        <constraint firstItem="8ch-QN-03u" firstAttribute="leading" secondItem="Xaq-Ld-qlD" secondAttribute="leading" constant="8" id="JIM-6k-Hqt"/>
-                        <constraint firstItem="XvY-LK-wVa" firstAttribute="leading" secondItem="8ch-QN-03u" secondAttribute="trailing" constant="16" id="UFe-MR-Nk8"/>
+                        <constraint firstItem="XvY-LK-wVa" firstAttribute="leading" secondItem="Xaq-Ld-qlD" secondAttribute="leading" constant="16" id="MJq-6j-vcG"/>
                         <constraint firstItem="8ch-QN-03u" firstAttribute="top" secondItem="Xaq-Ld-qlD" secondAttribute="top" id="YVX-29-FA1"/>
-                        <constraint firstItem="XvY-LK-wVa" firstAttribute="centerX" secondItem="Xaq-Ld-qlD" secondAttribute="centerX" id="q3R-0S-jYa"/>
+                        <constraint firstAttribute="trailing" secondItem="8ch-QN-03u" secondAttribute="trailing" constant="16" id="bmO-FT-3nO"/>
+                        <constraint firstItem="XvY-LK-wVa" firstAttribute="centerY" secondItem="Xaq-Ld-qlD" secondAttribute="centerY" id="lWV-Oj-xcS"/>
+                        <constraint firstItem="8ch-QN-03u" firstAttribute="leading" secondItem="XvY-LK-wVa" secondAttribute="trailing" constant="8" id="tTW-33-X8C"/>
                     </constraints>
                 </view>
             </subviews>

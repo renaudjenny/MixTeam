@@ -44,13 +44,15 @@ class PlayersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PlayersTableViewController.playerTableViewCellIdentifier, for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PlayersTableViewController.playerTableViewCellIdentifier, for: indexPath) as? PlayerTableViewCell else {
+            fatalError("Cannot continue without valid PlayerTableViewCell")
+        }
 
         let team = self.teams[indexPath.section]
         let player = team.players[indexPath.row]
 
-        cell.textLabel?.text = player.name
-        cell.imageView?.image = player.image?.tint(with: team.color)
+        cell.nameLabel.text = player.name
+        cell.logoImageView.image = player.image?.tint(with: team.color)
         cell.backgroundColor = team.color.withAlphaComponent(0.10)
         cell.textLabel?.backgroundColor = UIColor.clear
 
