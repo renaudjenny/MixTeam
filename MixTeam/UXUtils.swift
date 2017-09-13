@@ -74,6 +74,7 @@ enum AppImage: String {
     case elephant = "elephant"
     case koala = "koala"
     case panda = "panda"
+    case octopus = "octopus"
     case harryPottar = "harry-pottar"
     case amaliePoulain = "amalie-poulain"
     case darkVadir = "dark-vadir"
@@ -96,6 +97,8 @@ extension UIImage {
             return .koala
         case #imageLiteral(resourceName: "panda"):
             return .panda
+        case #imageLiteral(resourceName: "octopus"):
+            return .octopus
         case #imageLiteral(resourceName: "harry-pottar"):
             return .harryPottar
         case #imageLiteral(resourceName: "amalie-poulain"):
