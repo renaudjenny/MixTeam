@@ -45,11 +45,7 @@ class TeamsTableViewController: UITableViewController {
         if editingStyle == .delete {
             let team = self.teams[indexPath.row]
 
-            guard let playersTableViewController = self.playersTableViewController else {
-                // TODO: error
-                return
-            }
-            playersTableViewController.remove(team: team)
+            // TODO: Remove team from players table view
 
             self.teams.remove(at: indexPath.row)
             team.delete()
@@ -62,21 +58,9 @@ class TeamsTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as EditTeamViewController:
-            if let selectedCell = sender as? UITableViewCell, let teamTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
-                viewController.team = self.teams[teamTableCellIndexPath.row]
-                viewController.editTeamAction = { (team: Team) in
-                    self.tableView.reloadData()
-                }
-            }
-        case let viewController as AddTeamViewController:
-            viewController.addTeamAction = { (team: Team) in
-                self.teams.append(team)
-                self.tableView.reloadData()
-            }
-        default: break
+        if let editTeamViewController = segue.destination as? EditTeamViewController,
+            let selectedCell = sender as? UITableViewCell, let teamTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+            editTeamViewController.team = self.teams[teamTableCellIndexPath.row]
         }
     }
-
 }

@@ -9,29 +9,31 @@
 import UIKit
 
 class Player {
-
     var id = UUID()
     var name: String = ""
     var image: UIImage? = nil
     var handicap: Int = 100
     
-    init(name: String, image: UIImage?) {
+    init(name: String = "", image: UIImage? = nil) {
         self.name = name
         self.image = image
     }
+}
 
-    //MARK: - Persistance
+// MARK: - Persistance
 
+extension Player {
     static let playersResourcePath = "players"
     static let playersJSONStringKey = "playersJSONString"
 
-    init?(dictionary: [String: Any]) {
+    convenience init?(dictionary: [String: Any]) {
         guard let idString = dictionary["id"] as? String, let id = UUID(uuidString: idString),
             let name = dictionary["name"] as? String,
             let handicap = dictionary["handicap"] as? Int else {
                 return nil
         }
 
+        self.init()
         self.id = id
         self.name = name
         self.handicap = handicap
@@ -119,7 +121,7 @@ class Player {
             self.save()
             return
         }
-
+        
         players[index] = self
         Player.save(players: players)
     }

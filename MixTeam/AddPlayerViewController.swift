@@ -15,7 +15,7 @@ class AddPlayerViewController: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var logoButton: UIButton!
 
-    var addPlayerAction: ((Player) -> Void)?
+    var player: Player? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,30 +40,38 @@ class AddPlayerViewController: UIViewController {
     }
     
     @IBAction func validateForm() {
-        var playerName = ""
+        guard let name = self.nameTextField.text, !name.isEmpty else {
+            let alertController = UIAlertController(title: "Give a name", message: "Please, give a name to the player", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(alertController, animated: true)
+            return
+        }
+
+        self.player = Player(name: name, image: self.logoButton.imageView?.image)
+        self.player?.save()
         
-        // TODO: check if player name is valid:
-        // * not empty string
-        playerName = nameTextField.text ?? "ERROR"
-        let player = Player(name: playerName, image: self.logoButton.imageView?.image)
-        player.save()
-        
-        self.navigationController?.popViewController(animated: true)
-        self.addPlayerAction?(player)
+        self.performSegue(withIdentifier: PlayersTableViewController.fromAddPlayerUnwindSegueIdentifier, sender: nil)
     }
-    
-    // MARK: - Navigation
-    
+}
+
+// MARK: Navigation
+
+extension AddPlayerViewController {
+    static let fromLogoCollectionUnwindSegueIdentifier = "AddPlayerViewControllerFromLogoCollectionUnwindSegueIdentifier"
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as PlayerLogoCollectionViewController:
-            viewController.selectedImage = self.logoButton.imageView?.image
-            viewController.onSelectedImageAction = { (image) in
-                self.logoButton.setImage(image, for: .normal)
-            }
-        default: break
+        if let playerLogoViewController = segue.destination as? PlayerLogoCollectionViewController {
+            playerLogoViewController.selectedImage = self.logoButton.imageView?.image
+            playerLogoViewController.mode = .add
+        }
+    }
+
+    @IBAction func playerLogoUnwind(segue: UIStoryboardSegue) {
+        if let playerLogoCollectionViewController = segue.source as? PlayerLogoCollectionViewController {
+            self.player?.image = playerLogoCollectionViewController.selectedImage
+            self.logoButton.setImage(playerLogoCollectionViewController.selectedImage, for: .normal)
         }
     }
 }

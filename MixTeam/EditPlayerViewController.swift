@@ -15,7 +15,6 @@ class EditPlayerViewController: UIViewController {
     @IBOutlet weak var logoButton: UIButton!
     
     var player: Player? = nil
-    var editPlayerAction: ((Player) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,39 +35,43 @@ class EditPlayerViewController: UIViewController {
     }
 
     @IBAction func validateForm() {
-        defer {
-            self.dismiss(animated: true, completion: nil)
-        }
-        
-        guard let player = self.player else {
-            // TODO: error message
+        guard let name = self.nameTextField.text, !name.isEmpty else {
+            let alertController = UIAlertController(title: "Give a name", message: "Please, give a name to the player", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(alertController, animated: true)
             return
         }
-        
-        player.name = self.nameTextField.text ?? "ERROR"
-        player.image = self.logoButton.imageView?.image
-        player.update()
 
-        self.editPlayerAction?(player)
+        self.player?.name = name
+        self.player?.update()
+
+        self.performSegue(withIdentifier: PlayersTableViewController.fromEditPlayerUnwindSegueIdentifier, sender: nil)
     }
     
     @IBAction func cancelForm() {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    // MARK: - Navigation
-    
+}
+
+// MARK: - Navigation
+
+extension EditPlayerViewController {
+    static let fromLogoCollectionUnwindSegueIdentifier = "EditPlayerViewControllerFromLogoCollectionUnwindSegueIdentifier"
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as PlayerLogoCollectionViewController:
+        if let playerLogoViewController = segue.destination as? PlayerLogoCollectionViewController {
             self.nameTextField.resignFirstResponder()
-            viewController.selectedImage = self.logoButton.imageView?.image
-            viewController.onSelectedImageAction = { (image) -> Void in
-                self.logoButton.setImage(image, for: .normal)
-            }
-        default: break
+            playerLogoViewController.selectedImage = self.logoButton.imageView?.image
+            playerLogoViewController.mode = .edit
+        }
+    }
+
+    @IBAction func playerLogoUnwind(segue: UIStoryboardSegue) {
+        if let playerLogoCollectionViewController = segue.source as? PlayerLogoCollectionViewController {
+            self.player?.image = playerLogoCollectionViewController.selectedImage
+            self.logoButton.setImage(playerLogoCollectionViewController.selectedImage, for: .normal)
         }
     }
 }
@@ -79,6 +82,10 @@ extension EditPlayerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.nameTextField.resignFirstResponder()
         return true
+    }
+
+    @IBAction func nameTextFieldEditingChanged() {
+        self.titleLabel.text = self.nameTextField.text
     }
 }
 

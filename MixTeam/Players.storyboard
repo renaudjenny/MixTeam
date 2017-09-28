@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,10 +29,10 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PlayersTableViewControllerPlayerTableViewCellIdentifier" id="WeU-W3-ad8" customClass="PlayerTableViewCell" customModule="MixTeam" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WeU-W3-ad8" id="H7B-iZ-QYe">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y0h-t0-fsU">
@@ -90,7 +90,7 @@
                     <tabBarItem key="tabBarItem" title="Players" image="players" selectedImage="players" id="LE9-Km-npG"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="yma-zN-Vzh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -149,7 +149,6 @@
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 <connections>
                                                     <action selector="nameTextFieldEditingChanged" destination="LnN-J0-5Id" eventType="editingChanged" id="zi2-mP-ARE"/>
-                                                    <action selector="validateForm" destination="LnN-J0-5Id" eventType="editingDidEnd" id="41F-7c-CBe"/>
                                                     <outlet property="delegate" destination="LnN-J0-5Id" id="On5-xj-N6j"/>
                                                 </connections>
                                             </textField>
@@ -204,9 +203,11 @@
                         <outlet property="scrollView" destination="XP8-zC-1xM" id="SDe-88-JP6"/>
                         <outlet property="titleLabel" destination="dwc-xG-R52" id="MWt-Xi-jvc"/>
                         <outlet property="validateButton" destination="nZq-As-Yfy" id="SL3-94-994"/>
+                        <segue destination="oDD-4u-emh" kind="unwind" identifier="PlayersTableViewControllerFromAddPlayerUnwindSegueIdentifier" unwindAction="addPlayerUnwindWithSegue:" id="WJp-CU-KlH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ep3-7s-ROs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="oDD-4u-emh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2212.5" y="-1401.7605633802816"/>
         </scene>
@@ -256,7 +257,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 <connections>
-                                                    <action selector="nameTextFieldDone" destination="LnN-J0-5Id" eventType="editingDidEnd" id="uWi-Nh-lib"/>
+                                                    <action selector="nameTextFieldEditingChanged" destination="5cc-Lg-hPp" eventType="editingChanged" id="Sxg-xc-ONX"/>
                                                     <outlet property="delegate" destination="5cc-Lg-hPp" id="JNt-ZB-I0s"/>
                                                 </connections>
                                             </textField>
@@ -280,7 +281,6 @@
                                                         </constraints>
                                                         <state key="normal" title="Edit Player"/>
                                                         <connections>
-                                                            <action selector="validateForm" destination="LnN-J0-5Id" eventType="touchUpInside" id="7Ae-FF-b17"/>
                                                             <action selector="validateForm" destination="5cc-Lg-hPp" eventType="touchUpInside" id="i0q-m5-Xbz"/>
                                                         </connections>
                                                     </button>
@@ -326,9 +326,11 @@
                         <outlet property="nameTextField" destination="0N9-Cr-mlA" id="8NS-7T-oXb"/>
                         <outlet property="scrollView" destination="k34-t5-mJN" id="G2T-Q0-wP0"/>
                         <outlet property="titleLabel" destination="E7C-Av-UoL" id="neL-5S-duo"/>
+                        <segue destination="6mC-bu-ewU" kind="unwind" identifier="PlayersTableViewControllerFromEditPlayerUnwindSegueIdentifier" unwindAction="editPlayerUnwindWithSegue:" id="Q8c-9L-cic"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rO9-bU-Fhg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="6mC-bu-ewU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2210.625" y="-664.43661971830988"/>
         </scene>
@@ -357,6 +359,7 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknown" translatesAutoresizingMaskIntoConstraints="NO" id="qce-aK-son">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <gestureRecognizers/>
                                         </imageView>
                                     </subviews>
                                 </view>
@@ -376,8 +379,13 @@
                             <outlet property="delegate" destination="Pyz-Pf-R6D" id="CSX-X0-mi3"/>
                         </connections>
                     </collectionView>
+                    <connections>
+                        <segue destination="glb-Xk-xQU" kind="unwind" identifier="AddPlayerViewControllerFromLogoCollectionUnwindSegueIdentifier" unwindAction="playerLogoUnwindWithSegue:" id="p1K-V2-7KP"/>
+                        <segue destination="glb-Xk-xQU" kind="unwind" identifier="EditPlayerViewControllerFromLogoCollectionUnwindSegueIdentifier" unwindAction="playerLogoUnwindWithSegue:" id="BOt-oX-4pt"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SRt-P7-yqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="glb-Xk-xQU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3326.25" y="-1033.0985915492959"/>
         </scene>
@@ -387,6 +395,6 @@
         <image name="unknown" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N8n-oW-z2d"/>
+        <segue reference="PS8-T0-8vn"/>
     </inferredMetricsTieBreakers>
 </document>

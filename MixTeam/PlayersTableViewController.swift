@@ -97,23 +97,8 @@ class PlayersTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as EditPlayerViewController:
-            if let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
-                viewController.player = self.teams[playerTableCellIndexPath.section].players[playerTableCellIndexPath.row]
-                viewController.editPlayerAction = { (player) in
-                    self.tableView.reloadData()
-                }
-            }
-        case let viewController as AddPlayerViewController:
-            viewController.addPlayerAction = { (player: Player) in
-                guard let firstTeam = self.teams.first else {
-                    return
-                }
-                firstTeam.players.append(player)
-                self.tableView.reloadData()
-            }
-        default: break
+        if let editPlayerViewController = segue.destination as? EditPlayerViewController, let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+            editPlayerViewController.player = self.teams[playerTableCellIndexPath.section].players[playerTableCellIndexPath.row]
         }
     }
 
@@ -216,7 +201,26 @@ class PlayersTableViewController: UITableViewController {
     }
 }
 
-//NARK: - Auto Save
+// MARK: - Unwind
+
+extension PlayersTableViewController {
+    static let fromAddPlayerUnwindSegueIdentifier = "PlayersTableViewControllerFromAddPlayerUnwindSegueIdentifier"
+    static let fromEditPlayerUnwindSegueIdentifier = "PlayersTableViewControllerFromEditPlayerUnwindSegueIdentifier"
+
+    @IBAction func addPlayerUnwind(segue: UIStoryboardSegue) {
+        if let addPlayerViewController = segue.source as? AddPlayerViewController,
+            let player = addPlayerViewController.player {
+            self.teams.first?.players.append(player)
+            self.tableView.reloadData()
+        }
+    }
+
+    @IBAction func editPlayerUnwind(segue: UIStoryboardSegue) {
+        self.tableView.reloadData()
+    }
+}
+
+// MARK: - Auto Save
 
 extension PlayersTableViewController {
     static let autoSaveDeferDelay = DispatchTimeInterval.seconds(2)
@@ -236,32 +240,5 @@ extension PlayersTableViewController {
         let deadline: DispatchTime = .now() + PlayersTableViewController.autoSaveDeferDelay
         self.autoSaveTimer?.scheduleOneshot(deadline: deadline)
         self.autoSaveTimer?.resume()
-    }
-}
-
-extension UIViewController {
-    var playersTableViewController: PlayersTableViewController? {
-        // Usefull filter to retrieve where is the PlayersTableViewController in the tab bar navigation
-        let playerViewControllerFilter: (UIViewController) -> Bool = { (viewController) in
-            return viewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) is PlayersTableViewController
-        }
-
-        var navigationViewController: UIViewController? = nil
-        if let playersNavigationViewController = self.tabBarController?.viewControllers?.first(where: playerViewControllerFilter) {
-            // If self is presented in a navigation view controller
-            navigationViewController = playersNavigationViewController
-        }
-        else if let tabBarController = self.presentingViewController as? UITabBarController,
-            let playersNavigationViewController = tabBarController.viewControllers?.first(where: playerViewControllerFilter) {
-            // If self is presented in a modal
-            navigationViewController = playersNavigationViewController
-        }
-
-        guard let playersNavigationViewController = navigationViewController,
-            let playersTableViewController = playersNavigationViewController.childViewControllers.first(where: { $0 is PlayersTableViewController }) as? PlayersTableViewController else {
-            return nil
-        }
-
-        return playersTableViewController
     }
 }

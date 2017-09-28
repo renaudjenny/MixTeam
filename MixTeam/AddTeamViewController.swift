@@ -14,7 +14,6 @@ class AddTeamViewController: UIViewController {
     @IBOutlet weak var logoButton: UIButton!
     @IBOutlet weak var colorCollectionView: UICollectionView!
 
-    var addTeamAction: ((Team) -> Void)?
     var team = AddTeamViewController.randomTeam()
 
     override func viewDidLoad() {
@@ -60,12 +59,7 @@ class AddTeamViewController: UIViewController {
         self.team.name = name
         self.team.save()
 
-        self.addTeamAction?(self.team)
-
-        if let playersTableViewController = self.playersTableViewController {
-            playersTableViewController.teams.append(team)
-            playersTableViewController.tableView.reloadData()
-        }
+        // TODO: perform unwind segue
     }
 
     // MARK: - Navigation
