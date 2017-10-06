@@ -52,30 +52,31 @@ class AddTeamViewController: UIViewController {
             return
         }
 
-        defer {
-            self.navigationController?.popViewController(animated: true)
-        }
-
         self.team.name = name
         self.team.save()
 
-        // TODO: perform unwind segue
+        self.performSegue(withIdentifier: TeamsTableViewController.fromAddTeamUnwindSegueIdentifier, sender: nil)
     }
+}
 
-    // MARK: - Navigation
+// MARK: - Navigation
 
+extension AddTeamViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as TeamLogoCollectionViewController:
-            viewController.selectedImage = self.team.image
-            viewController.onSelectedImageAction = { (image) in
-                self.team.image = image
-                self.logoButton.setImage(image?.tint(with: self.team.color), for: .normal)
-                self.logoButton.accessibilityIdentifier = image?.appImage.rawValue
-            }
-        default: break
+        if let teamLogoViewController = segue.destination as? TeamLogoCollectionViewController {
+            teamLogoViewController.selectedImage = self.team.image
+        }
+    }
+
+    @IBAction func teamLogoUnwind(segue: UIStoryboardSegue) {
+        if let teamLogoCollectionViewController = segue.source as? TeamLogoCollectionViewController {
+            self.team.image = teamLogoCollectionViewController.selectedImage
+            let tintedImage = self.team.image?.tint(with: self.team.color)
+
+            self.logoButton.setImage(tintedImage, for: .normal)
+            self.logoButton.accessibilityIdentifier = self.team.image?.appImage.rawValue
         }
     }
 }

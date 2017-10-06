@@ -14,11 +14,21 @@ class Team {
     var color: UIColor = UIColor.gray
     var image: UIImage? = nil
     var players: [Player] = []
+    var handicap: Int {
+        var handicapSum = 0
+        self.players.forEach { handicapSum += $0.handicap }
+        return handicapSum
+    }
 
     init(name: String, color: UIColor, image: UIImage? = nil) {
         self.name = name
         self.color = color
         self.image = image
+    }
+
+    convenience init(copyOf team: Team) {
+        self.init(name: team.name, color: team.color, image: team.image)
+        self.players = team.players
     }
 
     //MARK: - Persistance
@@ -83,6 +93,7 @@ class Team {
         var teams = Team.loadList()
         teams.append(self)
         Team.save(teams: teams)
+        NotificationCenter.default.post(name: NSNotification.Name.TeamDidAdded, object: self)
     }
 
     class func save(teams: [Team]) {
@@ -126,6 +137,7 @@ class Team {
         teams = teams.filter { $0 != self }
 
         Team.save(teams: teams)
+        NotificationCenter.default.post(name: NSNotification.Name.TeamDidDeleted, object: self)
     }
 
     func update() {
@@ -138,6 +150,7 @@ class Team {
 
         teams[index] = self
         Team.save(teams: teams)
+        NotificationCenter.default.post(name: NSNotification.Name.TeamDidUpdated, object: self)
     }
 }
 
@@ -149,4 +162,10 @@ extension Team: Hashable {
     static func ==(lhs: Team, rhs: Team) -> Bool {
         return lhs.id == rhs.id
     }
+}
+
+extension Notification.Name {
+    static let TeamDidAdded = Notification.Name("TeamDidAdded")
+    static let TeamDidDeleted = Notification.Name("TeamDidDeleted")
+    static let TeamDidUpdated = Notification.Name("TeamDidUpdated")
 }

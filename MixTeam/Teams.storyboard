@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="L95-iL-uOi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="L95-iL-uOi">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,14 +21,14 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="teamsTableViewCellIdentifier" textLabel="LJW-PV-Ov2" style="IBUITableViewCellStyleDefault" id="Bbc-za-56U">
-                                <rect key="frame" x="0.0" y="56" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bbc-za-56U" id="DUl-vS-cKV">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LJW-PV-Ov2">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="43.5"/>
+                                            <rect key="frame" x="16" y="0.0" width="269" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -148,9 +148,11 @@
                         <outlet property="colorCollectionView" destination="AqY-fa-XxT" id="E7m-Mt-4aZ"/>
                         <outlet property="logoButton" destination="iJM-0h-GVg" id="rTM-rA-1cG"/>
                         <outlet property="nameTextField" destination="9XB-BN-UvS" id="sdT-wT-EyN"/>
+                        <segue destination="7ig-mZ-rDb" kind="unwind" identifier="TeamsTableViewControllerFromAddTeamUnwindSegueIdentifier" unwindAction="addTeamUnwindWithSegue:" id="q4T-f8-g0D"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eSc-lg-Hat" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="7ig-mZ-rDb" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="781.875" y="-143.66197183098592"/>
         </scene>
@@ -197,8 +199,12 @@
                             <outlet property="delegate" destination="d8H-N5-cX8" id="Yqr-IY-Lz7"/>
                         </connections>
                     </collectionView>
+                    <connections>
+                        <segue destination="kr0-iF-caa" kind="unwind" identifier="EditTeamViewControllerFromLogoColletionSegueIdentifier" unwindAction="teamLogoUnwindWithSegue:" id="1Uq-5Y-7zr"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mtF-S8-9VC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="kr0-iF-caa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1687.5" y="167.95774647887325"/>
         </scene>
@@ -209,7 +215,7 @@
                     <tabBarItem key="tabBarItem" title="Teams" image="teams" selectedImage="teams" id="VJw-Zx-ab7"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="3bK-jx-20G">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -239,6 +245,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
+                                    <action selector="nameTextFieldEditingChanged" destination="ylh-Us-8sP" eventType="editingChanged" id="IrK-lA-5tN"/>
                                     <outlet property="delegate" destination="ylh-Us-8sP" id="JY8-Q2-1CM"/>
                                 </connections>
                             </textField>
@@ -262,7 +269,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="editTeamViewControllerCollectionViewCellIdentifier" id="Rqd-df-K6E">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="EditTeamViewControllerColorColoctionCellIdentifier" id="Rqd-df-K6E">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -334,9 +341,11 @@
                         <outlet property="logoButton" destination="NuE-zH-Iev" id="X2b-xT-NZc"/>
                         <outlet property="nameTextField" destination="O3Y-go-MHm" id="g5g-aB-Dhu"/>
                         <outlet property="titleLabel" destination="ids-QU-vHU" id="VhP-bc-zDb"/>
+                        <segue destination="Wm4-mq-DKR" kind="unwind" identifier="TeamsTableViewControllerFromEditTeamUnwindSegueIdentifier" unwindAction="editTeamUnwindWithSegue:" id="wrl-Wr-Ugt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qOv-gd-YmT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Wm4-mq-DKR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="781.875" y="600"/>
         </scene>
@@ -345,6 +354,6 @@
         <image name="teams" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J8U-3x-guh"/>
+        <segue reference="xbh-q6-htd"/>
     </inferredMetricsTieBreakers>
 </document>

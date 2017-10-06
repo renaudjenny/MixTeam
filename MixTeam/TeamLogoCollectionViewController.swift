@@ -11,7 +11,6 @@ import UIKit
 class TeamLogoCollectionViewController: UICollectionViewController {
     var selectedImage: UIImage? = nil
     var images: [UIImage?] = []
-    var onSelectedImageAction: (UIImage?) -> Void = { (image) in }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,9 +57,8 @@ extension TeamLogoCollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         self.selectedImage = self.imageForIndexPath(indexPath: indexPath)
-        self.onSelectedImageAction(self.selectedImage)
 
-        self.dismiss(animated: true, completion: nil)
+        self.performSegue(withIdentifier: EditTeamViewController.fromLogoColletionSegueIdentifier, sender: nil)
 
         return true
     }

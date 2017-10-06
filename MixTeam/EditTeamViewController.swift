@@ -16,8 +16,6 @@ class EditTeamViewController: UIViewController {
 
     var team: Team? = nil
     var colors = UXColor.allColors()
-    var selectedColor = UIColor.gray
-    var selectedImage: UIImage? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,58 +26,57 @@ class EditTeamViewController: UIViewController {
 
         self.titleLabel.text = team.name
         self.nameTextField.text = team.name
-        self.selectedImage = team.image
-        self.selectedColor = team.color
         self.logoButton.setImage(team.image?.tint(with: team.color), for: .normal)
         self.logoButton.accessibilityIdentifier = team.image?.appImage.rawValue
         self.logoButton.backgroundColor = team.color.withAlphaComponent(0.10)
     }
 
     @IBAction func validateForm() {
-        defer {
-            self.dismiss(animated: true, completion: nil)
-        }
-
-        guard let team = self.team else {
+        guard let name = self.nameTextField.text, !name.isEmpty else {
+            let alertController = UIAlertController(title: "Give a name", message: "Please, give a name to the team", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+            self.present(alertController, animated: true)
             return
         }
 
-        team.name = self.nameTextField.text ?? "ERROR"
-        team.image = self.selectedImage
-        team.color = self.selectedColor
+        self.team?.name = name
+        self.team?.update()
 
-        team.update()
-
-        // TODO: perform unwind segue
+        self.performSegue(withIdentifier: TeamsTableViewController.fromEditTeamUnwindSegueIdentifier, sender: nil)
     }
 
     @IBAction func cancelForm() {
         self.dismiss(animated: true, completion: nil)
     }
+}
 
-    // MARK: - Navigation
+// MARK: - Navigation
+
+extension EditTeamViewController {
+    static let fromLogoColletionSegueIdentifier = "EditTeamViewControllerFromLogoColletionSegueIdentifier"
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        switch segue.destination {
-        case let viewController as TeamLogoCollectionViewController:
-            viewController.selectedImage = self.selectedImage
-            viewController.onSelectedImageAction = { (image) -> Void in
-                self.selectedImage = image
-                let tintedImage = image?.tint(with: self.selectedColor)
+        if let teamLogoViewController = segue.destination as? TeamLogoCollectionViewController {
+            teamLogoViewController.selectedImage = self.team?.image
+        }
+    }
 
-                self.logoButton.setImage(tintedImage, for: .normal)
-                self.logoButton.accessibilityIdentifier = image?.appImage.rawValue
-            }
-        default: break
+    @IBAction func teamLogoUnwind(segue: UIStoryboardSegue) {
+        if let teamLogoCollectionViewController = segue.source as? TeamLogoCollectionViewController {
+            self.team?.image = teamLogoCollectionViewController.selectedImage
+            let tintedImage = self.team?.image?.tint(with: self.team?.color ?? .gray)
+
+            self.logoButton.setImage(tintedImage, for: .normal)
+            self.logoButton.accessibilityIdentifier = self.team?.image?.appImage.rawValue
         }
     }
 }
 
-private let kEditTeamViewControllerCollectionViewCellIdentifier: String = "editTeamViewControllerCollectionViewCellIdentifier"
-
 extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    static let colorColoctionCellIdentifier = "EditTeamViewControllerColorColoctionCellIdentifier"
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -89,7 +86,7 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kEditTeamViewControllerCollectionViewCellIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditTeamViewController.colorColoctionCellIdentifier, for: indexPath)
 
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
@@ -110,10 +107,10 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.selectedColor = self.colors[indexPath.row]
-        let tintedLogoImage = self.selectedImage?.tint(with: self.selectedColor)
+        self.team?.color = self.colors[indexPath.row]
+        let tintedLogoImage = self.team?.image?.tint(with: self.team?.color ?? .gray)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
-        self.logoButton.backgroundColor = self.selectedColor.withAlphaComponent(0.10)
+        self.logoButton.backgroundColor = self.team?.color.withAlphaComponent(0.10)
     }
 }
 
@@ -121,5 +118,9 @@ extension EditTeamViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.nameTextField.resignFirstResponder()
         return true
+    }
+
+    @IBAction func nameTextFieldEditingChanged() {
+        self.titleLabel.text = self.nameTextField.text
     }
 }

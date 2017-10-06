@@ -52,8 +52,13 @@ class TeamsTableViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+}
 
-    // MARK: - Navigation
+// MARK: - Navigation
+
+extension TeamsTableViewController {
+    static let fromEditTeamUnwindSegueIdentifier = "TeamsTableViewControllerFromEditTeamUnwindSegueIdentifier"
+    static let fromAddTeamUnwindSegueIdentifier = "TeamsTableViewControllerFromAddTeamUnwindSegueIdentifier"
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -62,5 +67,16 @@ class TeamsTableViewController: UITableViewController {
             let selectedCell = sender as? UITableViewCell, let teamTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
             editTeamViewController.team = self.teams[teamTableCellIndexPath.row]
         }
+    }
+
+    @IBAction func addTeamUnwind(segue: UIStoryboardSegue) {
+        if let addTeamViewController = segue.source as? AddTeamViewController {
+            self.teams.append(addTeamViewController.team)
+            self.tableView.reloadData()
+        }
+    }
+
+    @IBAction func editTeamUnwind(segue: UIStoryboardSegue) {
+        self.tableView.reloadData()
     }
 }

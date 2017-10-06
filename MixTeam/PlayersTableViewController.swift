@@ -26,7 +26,13 @@ class PlayersTableViewController: UITableViewController {
         let nib = UINib(nibName: "TeamHeaderView", bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: PlayersTableViewController.teamHeaderViewIdentifier)
 
+        self.addTeamObservers()
+
         self.tableView.reloadData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Table view data source
@@ -125,23 +131,19 @@ class PlayersTableViewController: UITableViewController {
         // To get animation effect, delay each move animation by kDispatchPlayerTime milliseconds
         var deadline: DispatchTime = .now()
 
-        var teamHandicaps: [Team: Int] = [:]
-        for team in teams where team != self.teams.first {
-            teamHandicaps[team] = 0
-            team.players.forEach {
-                teamHandicaps[team]? += $0.handicap
-            }
-        }
-
+        var teamsHandicap: [Team: Int] = [:]
         var playersTotalHandicap = 0
-        self.teams.forEach { $0.players.forEach { playersTotalHandicap += $0.handicap }}
+        self.teams.forEach {
+            teamsHandicap[$0] = $0.handicap
+            playersTotalHandicap += $0.handicap
+        }
 
         for team in self.teams {
             for player in team.players {
                 deadline = deadline + PlayersTableViewController.dispatchPlayerTime
-                let toTeam = self.pseudoRandomTeam(teamHandicaps: teamHandicaps, playersTotalHandicap: playersTotalHandicap)
-                teamHandicaps[team]? -= player.handicap
-                teamHandicaps[toTeam]? += player.handicap
+                let toTeam = self.pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap)
+                teamsHandicap[team]! -= player.handicap
+                teamsHandicap[toTeam]! += player.handicap
                 if team != toTeam {
                     DispatchQueue.main.asyncAfter(deadline: deadline) {
                         self.move(player: player, from: team, to: toTeam)
@@ -169,19 +171,26 @@ class PlayersTableViewController: UITableViewController {
         self.deferAutoSave()
     }
 
-    func pseudoRandomTeam(teamHandicaps: [Team: Int], playersTotalHandicap: Int) -> Team {
+    func pseudoRandomTeam(teamsHandicap: [Team: Int], playersTotalHandicap: Int) -> Team {
         // First, add a player in each team if there is no one yet
-        let teamsWithoutPlayers = teamHandicaps.filter({ $0.value <= 0 })
+        let teamsWithoutPlayers = self.teams
+            .filter { $0 != self.teams.first }
+            .filter { teamsHandicap[$0]! <= 0 }
+
         if teamsWithoutPlayers.count > 0 {
-            return teamsWithoutPlayers[Int(arc4random_uniform(UInt32(teamsWithoutPlayers.count)))].key
+            let randomIndex = Int(arc4random_uniform(UInt32(teamsWithoutPlayers.count)))
+            return teamsWithoutPlayers[randomIndex]
         }
 
         let handicapAverage = playersTotalHandicap / (self.teams.count - 1)
 
         // Choose only teams that total handicap is under the average
-        var unbalancedTeams = teamHandicaps.filter({ $0.value < handicapAverage })
+        let unbalancedTeams = self.teams
+            .filter { $0 != self.teams.first }
+            .filter { teamsHandicap[$0]! < handicapAverage }
 
-        return unbalancedTeams[Int(arc4random_uniform(UInt32(unbalancedTeams.count)))].key
+        let randomIndex = Int(arc4random_uniform(UInt32(unbalancedTeams.count)))
+        return unbalancedTeams[randomIndex]
     }
 
     func remove(team: Team) {
@@ -238,7 +247,47 @@ extension PlayersTableViewController {
         self.initAutoSaveTimer()
 
         let deadline: DispatchTime = .now() + PlayersTableViewController.autoSaveDeferDelay
-        self.autoSaveTimer?.scheduleOneshot(deadline: deadline)
+        self.autoSaveTimer?.schedule(deadline: deadline)
         self.autoSaveTimer?.resume()
+    }
+}
+
+// MARK: - Team Observers
+
+extension PlayersTableViewController {
+    func addTeamObservers() {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.TeamDidAdded, object: nil, queue: .main) { [weak self] (notification: Notification) in
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let team = notification.object as? Team else {
+                return
+            }
+            
+            strongSelf.teams.append(team)
+            strongSelf.tableView.reloadData()
+        }
+
+        NotificationCenter.default.addObserver(forName: Notification.Name.TeamDidDeleted, object: nil, queue: .main) { [weak self] (notification: Notification) in
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.index(of: team) else {
+                return
+            }
+
+            for player in team.players {
+                strongSelf.teams.first?.players.append(player)
+            }
+
+            strongSelf.teams.remove(at: teamIndex)
+            strongSelf.tableView.reloadData()
+        }
+
+        NotificationCenter.default.addObserver(forName: Notification.Name.TeamDidUpdated, object: nil, queue: .main) { [weak self] (notification: Notification) in
+            self?.tableView.reloadData()
+        }
     }
 }

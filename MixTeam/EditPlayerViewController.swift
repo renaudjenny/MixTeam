@@ -97,11 +97,11 @@ extension EditPlayerViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
 
-    func keyboardWillShow(notification: Notification) {
+    @objc func keyboardWillShow(notification: Notification) {
         self.adjustInsetForKeyboard(isShown: true, notification: notification)
     }
 
-    func keyboardWillHide(notification: Notification) {
+    @objc func keyboardWillHide(notification: Notification) {
         self.adjustInsetForKeyboard(isShown: false, notification: notification)
     }
 
