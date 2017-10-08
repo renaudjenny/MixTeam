@@ -287,7 +287,17 @@ extension PlayersTableViewController {
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name.TeamDidUpdated, object: nil, queue: .main) { [weak self] (notification: Notification) in
-            self?.tableView.reloadData()
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.index(of: team) else {
+                return
+            }
+
+            strongSelf.teams[teamIndex] = team
+
+            strongSelf.tableView.reloadData()
         }
     }
 }
