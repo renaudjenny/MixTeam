@@ -26,7 +26,7 @@ class PlayerPersistanceTests: XCTestCase {
     }
 
     func testSave() {
-        let player = Player(name: "Test", image: #imageLiteral(resourceName: "harry-pottar"))
+        let player = Player(name: "Test", image: #imageLiteral(resourceName: "harry-pottar").appImage)
 
         player.save()
 

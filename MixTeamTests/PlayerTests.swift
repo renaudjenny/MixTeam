@@ -12,7 +12,7 @@ import XCTest
 class PlayerTests: XCTestCase {
 
     func testInit() {
-        let player = Player(name: "Test", image: #imageLiteral(resourceName: "harry-pottar"))
+        let player = Player(name: "Test", image: #imageLiteral(resourceName: "harry-pottar").appImage)
         XCTAssertEqual(player.name, "Test")
     }
 

@@ -69,61 +69,6 @@ public struct UXColor {
     }
 }
 
-enum AppImage: String {
-    case unknown = "unknown image"
-    case elephant = "elephant"
-    case koala = "koala"
-    case panda = "panda"
-    case octopus = "octopus"
-    case harryPottar = "harry-pottar"
-    case amaliePoulain = "amalie-poulain"
-    case darkVadir = "dark-vadir"
-    case laraCraft = "lara-craft"
-
-    var image: UIImage {
-        guard let image = UIImage(named: self.rawValue) else {
-            return #imageLiteral(resourceName: "unknown")
-        }
-        return image
-    }
-}
-
-extension UIImage {
-    var appImage: AppImage {
-        switch self {
-        case #imageLiteral(resourceName: "elephant"):
-            return .elephant
-        case #imageLiteral(resourceName: "koala"):
-            return .koala
-        case #imageLiteral(resourceName: "panda"):
-            return .panda
-        case #imageLiteral(resourceName: "octopus"):
-            return .octopus
-        case #imageLiteral(resourceName: "harry-pottar"):
-            return .harryPottar
-        case #imageLiteral(resourceName: "amalie-poulain"):
-            return .amaliePoulain
-        case #imageLiteral(resourceName: "dark-vadir"):
-            return .darkVadir
-        case #imageLiteral(resourceName: "lara-craft"):
-            return .laraCraft
-        default:
-            return .unknown
-        }
-    }
-
-    func tint(with color: UIColor) -> UIImage {
-        var image = self.withRenderingMode(.alwaysTemplate)
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        color.set()
-
-        image.draw(in: CGRect(origin: .zero, size: size))
-        image = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return image
-    }
-}
-
 extension UIColor {
     var UXColorString: String {
         return UXColor.toString(color: self)

@@ -25,12 +25,7 @@ class Team {
         self.color = color
         self.image = image
     }
-
-    convenience init(copyOf team: Team) {
-        self.init(name: team.name, color: team.color, image: team.image)
-        self.players = team.players
-    }
-
+    
     //MARK: - Persistance
 
     static let teamsResourcePath = "teams"

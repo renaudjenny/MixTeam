@@ -36,6 +36,7 @@
 		4CEB75041EFFE8F700E4DEFA /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75031EFFE8F700E4DEFA /* players.json */; };
 		4CEB75061EFFE90800E4DEFA /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75051EFFE90800E4DEFA /* teams.json */; };
 		4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */; };
+		4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEF9D481F8A999100E34083 /* JSONUtils.swift */; };
 		4CF9D2FB1F6436D7009879E4 /* LogoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF9D2FA1F6436D7009879E4 /* LogoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		4CEB75031EFFE8F700E4DEFA /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		4CEB75051EFFE90800E4DEFA /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = teams.json; sourceTree = "<group>"; };
 		4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsPersistenceTests.swift; sourceTree = "<group>"; };
+		4CEF9D481F8A999100E34083 /* JSONUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUtils.swift; sourceTree = "<group>"; };
 		4CF9D2FA1F6436D7009879E4 /* LogoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,7 +164,7 @@
 				4C3733141EBFA37900A5785E /* Players */,
 				4CEB75021EFFE8D700E4DEFA /* Resources */,
 				4C40AE121EC3AEDB0079E964 /* Teams */,
-				4C40AE101EC0DA950079E964 /* UXUtils.swift */,
+				4CEF9D471F8A972B00E34083 /* Utils */,
 			);
 			path = MixTeam;
 			sourceTree = "<group>";
@@ -240,6 +242,15 @@
 				4CEB75051EFFE90800E4DEFA /* teams.json */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		4CEF9D471F8A972B00E34083 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4CEF9D481F8A999100E34083 /* JSONUtils.swift */,
+				4C40AE101EC0DA950079E964 /* UXUtils.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -390,6 +401,7 @@
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
+				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
 				4C37331A1EBFC4EF00A5785E /* EditPlayerViewController.swift in Sources */,
 				4C2A88D51F4A24E8003E6DBC /* TeamHeaderView.swift in Sources */,
 				4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */,

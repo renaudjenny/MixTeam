@@ -47,7 +47,7 @@ class AddPlayerViewController: UIViewController {
             return
         }
 
-        self.player = Player(name: name, image: self.logoButton.imageView?.image)
+        self.player = Player(name: name, image: self.logoButton.imageView?.image?.appImage)
         self.player?.save()
         
         self.performSegue(withIdentifier: PlayersTableViewController.fromAddPlayerUnwindSegueIdentifier, sender: nil)
@@ -70,7 +70,7 @@ extension AddPlayerViewController {
 
     @IBAction func playerLogoUnwind(segue: UIStoryboardSegue) {
         if let playerLogoCollectionViewController = segue.source as? PlayerLogoCollectionViewController {
-            self.player?.image = playerLogoCollectionViewController.selectedImage
+            self.player?.appImage = playerLogoCollectionViewController.selectedImage?.appImage
             self.logoButton.setImage(playerLogoCollectionViewController.selectedImage, for: .normal)
         }
     }

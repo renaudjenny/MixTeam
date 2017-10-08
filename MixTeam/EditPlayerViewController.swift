@@ -25,7 +25,7 @@ class EditPlayerViewController: UIViewController {
         
         self.titleLabel.text = player.name
         self.nameTextField.text = player.name
-        self.logoButton.setImage(player.image, for: .normal)
+        self.logoButton.setImage(player.appImage?.image, for: .normal)
 
         self.addKeyboardObservers()
     }
@@ -70,7 +70,7 @@ extension EditPlayerViewController {
 
     @IBAction func playerLogoUnwind(segue: UIStoryboardSegue) {
         if let playerLogoCollectionViewController = segue.source as? PlayerLogoCollectionViewController {
-            self.player?.image = playerLogoCollectionViewController.selectedImage
+            self.player?.appImage = playerLogoCollectionViewController.selectedImage?.appImage
             self.logoButton.setImage(playerLogoCollectionViewController.selectedImage, for: .normal)
         }
     }

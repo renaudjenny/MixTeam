@@ -8,16 +8,20 @@
 
 import UIKit
 
-class Player {
+class Player: Codable {
     var id = UUID()
     var name: String = ""
-    var image: UIImage? = nil
+    var appImage: AppImage? = nil
     var handicap: Int = 100
-    
-    init(name: String = "", image: UIImage? = nil) {
+
+    init(name: String = "", image: AppImage? = nil) {
         self.name = name
-        self.image = image
+        self.appImage = image
     }
+}
+
+struct Players: Codable {
+    let players: [Player]
 }
 
 // MARK: - Persistance
@@ -26,45 +30,6 @@ extension Player {
     static let playersResourcePath = "players"
     static let playersJSONStringKey = "playersJSONString"
 
-    convenience init?(dictionary: [String: Any]) {
-        guard let idString = dictionary["id"] as? String, let id = UUID(uuidString: idString),
-            let name = dictionary["name"] as? String,
-            let handicap = dictionary["handicap"] as? Int else {
-                return nil
-        }
-
-        self.init()
-        self.id = id
-        self.name = name
-        self.handicap = handicap
-
-        if let imageString = dictionary["image"] as? String, let image = UIImage(named: imageString) {
-            self.image = image
-        }
-    }
-
-    func toDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [
-            "id": self.id.uuidString,
-            "name": self.name,
-            "handicap": self.handicap
-        ]
-
-        dictionary["image"] = self.image?.appImage.rawValue
-
-        return dictionary
-    }
-
-    class func initList(playersJSON: [[String: Any]]) -> [Player] {
-        var players: [Player] = []
-        for playerDictionary in playersJSON {
-            if let player = Player(dictionary: playerDictionary) {
-                players.append(player)
-            }
-        }
-        return players
-    }
-
     func save() {
         var players = Player.loadList()
         players.append(self)
@@ -72,13 +37,8 @@ extension Player {
     }
 
     class func save(players: [Player]) {
-        var arrayOfPlayers: [[String: Any]] = []
-        for player in players {
-            arrayOfPlayers.append(player.toDictionary())
-        }
-
-        guard let json = try? JSONSerialization.data(withJSONObject: ["players": arrayOfPlayers], options: .prettyPrinted),
-            let jsonString = String(data: json, encoding: .utf8) else {
+        guard let data = try? JSONEncoder().encode(Players(players: players)),
+            let jsonString = String(data: data, encoding: .utf8) else {
                 fatalError("Cannot save Players JSON")
         }
 
@@ -87,24 +47,22 @@ extension Player {
 
     class func loadList() -> [Player] {
         guard let playersJSONString = UserDefaults.standard.string(forKey: Player.playersJSONStringKey),
-            let data = playersJSONString.data(using: .utf8),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let json = jsonObject?["players"] as? [[String: Any]] else {
-                return []
+            let jsonData = playersJSONString.data(using: .utf8),
+            let playersContainer = try? JSONDecoder().decode(Players.self, from: jsonData) else {
+            return []
         }
 
-        return Player.initList(playersJSON: json)
+        return playersContainer.players
     }
 
     class func loadListFromResource() -> [Player] {
         guard let path = Bundle.main.path(forResource: Player.playersResourcePath, ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let json = jsonObject?["players"] as? [[String: Any]] else {
+            let playersContainer = try? JSONDecoder().decode(Players.self, from: data) else {
                 return []
         }
 
-        return Player.initList(playersJSON: json)
+        return playersContainer.players
     }
 
     func delete() {
