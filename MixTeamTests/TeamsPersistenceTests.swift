@@ -22,11 +22,11 @@ class TeamsPersistenceTests: XCTestCase {
     func testDefaultTeams() {
         let teams = Team.loadList()
 
-        XCTAssertEqual(teams.first?.name, "Purple Elephants")
+        XCTAssertEqual(teams.first?.name, "_")
     }
 
     func testSave() {
-        let team = Team(name: "Test", color: UXColor.jade, image: #imageLiteral(resourceName: "elephant"))
+        let team = Team(name: "Test", color: UXColor.jade, image: #imageLiteral(resourceName: "elephant").appImage)
 
         team.save()
 
@@ -40,13 +40,13 @@ class TeamsPersistenceTests: XCTestCase {
         let teams = Team.loadList()
 
         let firstTeam = teams.first
-        XCTAssertEqual(firstTeam?.name, "Purple Elephants")
+        XCTAssertEqual(firstTeam?.name, "_")
 
         firstTeam?.delete()
 
         let newTeams = Team.loadList()
 
         let newFirstTeam = newTeams.first
-        XCTAssertEqual(newFirstTeam?.name, "Red Koalas")
+        XCTAssertEqual(newFirstTeam?.name, "Purple Elephants")
     }
 }

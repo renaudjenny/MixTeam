@@ -12,7 +12,7 @@ import XCTest
 class UXUtilsTests: XCTestCase {
     
     func testUXColorsAllColors() {
-        let colors = UXColor.allColors()
+        let colors = UXColor.allColors
         XCTAssertTrue(colors.contains(UXColor.yellow))
     }
 
@@ -50,34 +50,5 @@ class UXUtilsTests: XCTestCase {
         XCTAssertEqual(#imageLiteral(resourceName: "lara-craft").appImage, AppImage.laraCraft)
 
         XCTAssertEqual(#imageLiteral(resourceName: "teams").appImage, AppImage.unknown)
-    }
-
-    func testUXColorsConversions() {
-        XCTAssertEqual(UXColor.yellow, UXColor.fromString(colorString: "yellow"))
-        XCTAssertEqual(UXColor.yellow.UXColorString, "yellow")
-
-        XCTAssertEqual(UXColor.orange, UXColor.fromString(colorString: "orange"))
-        XCTAssertEqual(UXColor.orange.UXColorString, "orange")
-
-        XCTAssertEqual(UXColor.red, UXColor.fromString(colorString: "red"))
-        XCTAssertEqual(UXColor.red.UXColorString, "red")
-
-        XCTAssertEqual(UXColor.maroon, UXColor.fromString(colorString: "maroon"))
-        XCTAssertEqual(UXColor.maroon.UXColorString, "maroon")
-
-        XCTAssertEqual(UXColor.purple, UXColor.fromString(colorString: "purple"))
-        XCTAssertEqual(UXColor.purple.UXColorString, "purple")
-
-        XCTAssertEqual(UXColor.azure, UXColor.fromString(colorString: "azure"))
-        XCTAssertEqual(UXColor.azure.UXColorString, "azure")
-
-        XCTAssertEqual(UXColor.jade, UXColor.fromString(colorString: "jade"))
-        XCTAssertEqual(UXColor.jade.UXColorString, "jade")
-
-        XCTAssertEqual(UXColor.lime, UXColor.fromString(colorString: "lime"))
-        XCTAssertEqual(UXColor.lime.UXColorString, "lime")
-
-        XCTAssertEqual(UIColor.gray, UXColor.fromString(colorString: "test"))
-        XCTAssertEqual(UIColor.black.UXColorString, "unknown color")
     }
 }
