@@ -15,7 +15,7 @@ class EditTeamViewController: UIViewController {
     @IBOutlet weak var colorCollectionView: UICollectionView!
 
     var team: Team? = nil
-    var colors = UXColor.allColors()
+    var colors = UXColor.allColors
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,9 +26,9 @@ class EditTeamViewController: UIViewController {
 
         self.titleLabel.text = team.name
         self.nameTextField.text = team.name
-        self.logoButton.setImage(team.image?.tint(with: team.color), for: .normal)
-        self.logoButton.accessibilityIdentifier = team.image?.appImage.rawValue
-        self.logoButton.backgroundColor = team.color.withAlphaComponent(0.10)
+        self.logoButton.setImage(team.image?.image.tint(with: team.color.color), for: .normal)
+        self.logoButton.accessibilityIdentifier = team.image?.rawValue
+        self.logoButton.backgroundColor = team.color.color.withAlphaComponent(0.10)
     }
 
     @IBAction func validateForm() {
@@ -59,17 +59,17 @@ extension EditTeamViewController {
         super.prepare(for: segue, sender: sender)
 
         if let teamLogoViewController = segue.destination as? TeamLogoCollectionViewController {
-            teamLogoViewController.selectedImage = self.team?.image
+            teamLogoViewController.selectedImage = self.team?.image?.image
         }
     }
 
     @IBAction func teamLogoUnwind(segue: UIStoryboardSegue) {
         if let teamLogoCollectionViewController = segue.source as? TeamLogoCollectionViewController {
-            self.team?.image = teamLogoCollectionViewController.selectedImage
-            let tintedImage = self.team?.image?.tint(with: self.team?.color ?? .gray)
+            self.team?.image = teamLogoCollectionViewController.selectedImage?.appImage
+            let tintedImage = self.team?.image?.image.tint(with: self.team?.color.color ?? .gray)
 
             self.logoButton.setImage(tintedImage, for: .normal)
-            self.logoButton.accessibilityIdentifier = self.team?.image?.appImage.rawValue
+            self.logoButton.accessibilityIdentifier = self.team?.image?.rawValue
         }
     }
 }
@@ -91,7 +91,7 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
         let color = colors[indexPath.row]
-        colorView.backgroundColor = color
+        colorView.backgroundColor = color.color
         colorView.layer.cornerRadius = 5.0
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -101,16 +101,16 @@ extension EditTeamViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
 
         cell.isAccessibilityElement = true
-        cell.accessibilityLabel = color.UXColorString
+        cell.accessibilityLabel = color.rawValue
 
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.team?.color = self.colors[indexPath.row]
-        let tintedLogoImage = self.team?.image?.tint(with: self.team?.color ?? .gray)
+        let tintedLogoImage = self.team?.image?.image.tint(with: self.team?.color.color ?? .gray)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
-        self.logoButton.backgroundColor = self.team?.color.withAlphaComponent(0.10)
+        self.logoButton.backgroundColor = self.team?.color.color.withAlphaComponent(0.10)
     }
 }
 

@@ -17,6 +17,7 @@ class TeamsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.teams = Team.loadList()
+        self.teams.removeFirst()
     }
 
     // MARK: - Table view data source
@@ -34,8 +35,8 @@ class TeamsTableViewController: UITableViewController {
 
         let team = self.teams[indexPath.row]
         cell.textLabel?.text = team.name
-        cell.imageView?.image = team.image?.tint(with: team.color)
-        cell.backgroundColor = team.color.withAlphaComponent(0.10)
+        cell.imageView?.image = team.image?.image.tint(with: team.color.color)
+        cell.backgroundColor = team.color.color.withAlphaComponent(0.10)
         cell.textLabel?.backgroundColor = UIColor.clear
 
         return cell

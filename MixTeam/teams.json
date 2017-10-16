@@ -1,19 +1,42 @@
 {
-    "teams":[{
-        "id": "12C2C72E-ABBA-4B3E-B748-7393342D35EE",
-         "name": "Purple Elephants",
-         "color": "purple",
-         "image": "elephant",
-         "playerIds": [
-
-         ]
-     },{
-         "id": "CF6B3B2F-2ECD-41DF-9561-04197F1A5405",
-         "name": "Red Koalas",
-         "color": "red",
-         "image": "koala",
-         "playerIds": [
-
-         ]
-     }]
+    "teams": [{
+              "id": "9843CCEA-5B72-49A4-AE97-04DBE0985C0D",
+              "name": "_",
+              "color": "gray",
+              "players": []
+              }, {
+              "id": "12C2C72E-ABBA-4B3E-B748-7393342D35EE",
+              "name": "Purple Elephants",
+              "color": "purple",
+              "image": "elephant",
+              "players": [{
+                          "id": "ECA43701-3458-4196-855F-7ED1FC776635",
+                          "name": "Harry",
+                          "image": "harry-pottar",
+                          "handicap": 100
+                          }, {
+                          "id": "08F16A1F-92C0-431D-A45F-50C3D31172F0",
+                          "name": "Amélie",
+                          "image": "amalie-poulain",
+                          "handicap": 100
+                          }, {
+                          "id": "B9303573-F5FE-4F5E-8E61-59318016B61A",
+                          "name": "Dark Lord",
+                          "image": "dark-vadir",
+                          "handicap": 100
+                          }]
+              },
+              {
+              "id": "CF6B3B2F-2ECD-41DF-9561-04197F1A5405",
+              "name": "Red Koalas",
+              "color": "red",
+              "image": "koala",
+              "players": [{
+                          "id": "DF381A7C-5DC9-4060-B0B2-14B50EC7EC35",
+                          "name": "Lara",
+                          "image": "lara-craft",
+                          "handicap": 100
+                          }]
+              }
+              ]
 }

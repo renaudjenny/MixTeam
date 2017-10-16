@@ -20,17 +20,17 @@ class AddTeamViewController: UIViewController {
         super.viewDidLoad()
 
         self.nameTextField.text = self.team.name
-        self.logoButton.setImage(self.team.image?.tint(with: self.team.color), for: .normal)
-        self.logoButton.accessibilityIdentifier = self.team.image?.appImage.rawValue
-        self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
+        self.logoButton.setImage(self.team.image?.image.tint(with: self.team.color.color), for: .normal)
+        self.logoButton.accessibilityIdentifier = self.team.image?.rawValue
+        self.logoButton.backgroundColor = self.team.color.color.withAlphaComponent(0.10)
 
         self.logoButton.layer.cornerRadius = 5.0
     }
 
     class func randomTeam() -> Team {
         let titlesForImages = [("Elephants", #imageLiteral(resourceName: "elephant")), ("Koalas", #imageLiteral(resourceName: "koala")), ("Pandas", #imageLiteral(resourceName: "panda")), ("Octopus", #imageLiteral(resourceName: "octopus"))]
-        let titlesForColors = UXColor.allColors().map { (color) -> (String, UIColor) in
-            return (UXColor.toString(color: color).capitalized, color)
+        let titlesForColors = UXColor.allColors.map { (color) -> (String, UIColor) in
+            return (color.rawValue.capitalized, color.color)
         }
 
         let randomIndexForImage = Int(arc4random_uniform(UInt32(titlesForImages.count)))
@@ -41,7 +41,7 @@ class AddTeamViewController: UIViewController {
 
         let teamTitle = colorTitle + " " + imageTitle
 
-        return Team(name: teamTitle, color: color, image: image)
+        return Team(name: teamTitle, color: color.uxColor, image: image.appImage)
     }
 
     @IBAction func validateForm() {
@@ -66,17 +66,17 @@ extension AddTeamViewController {
         super.prepare(for: segue, sender: sender)
 
         if let teamLogoViewController = segue.destination as? TeamLogoCollectionViewController {
-            teamLogoViewController.selectedImage = self.team.image
+            teamLogoViewController.selectedImage = self.team.image?.image
         }
     }
 
     @IBAction func teamLogoUnwind(segue: UIStoryboardSegue) {
         if let teamLogoCollectionViewController = segue.source as? TeamLogoCollectionViewController {
-            self.team.image = teamLogoCollectionViewController.selectedImage
-            let tintedImage = self.team.image?.tint(with: self.team.color)
+            self.team.image = teamLogoCollectionViewController.selectedImage?.appImage
+            let tintedImage = self.team.image?.image.tint(with: self.team.color.color)
 
             self.logoButton.setImage(tintedImage, for: .normal)
-            self.logoButton.accessibilityIdentifier = self.team.image?.appImage.rawValue
+            self.logoButton.accessibilityIdentifier = self.team.image?.rawValue
         }
     }
 }
@@ -89,7 +89,7 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return UXColor.allColors().count
+        return UXColor.allColors.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -97,8 +97,8 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
 
         let colorView = UIView()
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        let color = UXColor.allColors()[indexPath.row]
-        colorView.backgroundColor = color
+        let color = UXColor.allColors[indexPath.row]
+        colorView.backgroundColor = color.color
         colorView.layer.cornerRadius = 5.0
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -108,16 +108,16 @@ extension AddTeamViewController: UICollectionViewDataSource, UICollectionViewDel
         cell.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[colorView]|", options: [], metrics: nil, views: ["colorView": colorView]))
 
         cell.isAccessibilityElement = true
-        cell.accessibilityLabel = color.UXColorString
+        cell.accessibilityLabel = color.rawValue
 
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.team.color = UXColor.allColors()[indexPath.row]
-        let tintedLogoImage = self.team.image?.tint(with: self.team.color)
+        self.team.color = UXColor.allColors[indexPath.row]
+        let tintedLogoImage = self.team.image?.image.tint(with: self.team.color.color)
         self.logoButton.setImage(tintedLogoImage, for: .normal)
-        self.logoButton.backgroundColor = self.team.color.withAlphaComponent(0.10)
+        self.logoButton.backgroundColor = self.team.color.color.withAlphaComponent(0.10)
     }
 }
 

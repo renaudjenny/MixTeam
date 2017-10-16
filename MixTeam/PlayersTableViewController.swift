@@ -19,9 +19,9 @@ class PlayersTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let firstTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: UIColor.gray)
-        self.teams.append(firstTeam)
         self.teams.append(contentsOf: Team.loadList())
+        self.teams.first?.name = NSLocalizedString("Players standing for a team", comment: "")
+        self.teams.first?.color = .gray
 
         let nib = UINib(nibName: "TeamHeaderView", bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: PlayersTableViewController.teamHeaderViewIdentifier)
@@ -58,8 +58,8 @@ class PlayersTableViewController: UITableViewController {
         let player = team.players[indexPath.row]
 
         cell.nameLabel.text = player.name
-        cell.logoImageView.image = player.appImage?.image.tint(with: team.color)
-        cell.backgroundColor = team.color.withAlphaComponent(0.10)
+        cell.logoImageView.image = player.appImage?.image.tint(with: team.color.color)
+        cell.backgroundColor = team.color.color.withAlphaComponent(0.10)
         cell.textLabel?.backgroundColor = UIColor.clear
 
         return cell
@@ -83,8 +83,8 @@ class PlayersTableViewController: UITableViewController {
         let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: PlayersTableViewController.teamHeaderViewIdentifier) as? TeamHeaderView
 
         headerCell?.titleLabel.text = self.teams[section].name
-        headerCell?.logoImageView.image = self.teams[section].image
-        headerCell?.view.backgroundColor = self.teams[section].color.withAlphaComponent(0.20)
+        headerCell?.logoImageView.image = self.teams[section].image?.image
+        headerCell?.view.backgroundColor = self.teams[section].color.color.withAlphaComponent(0.20)
 
         return headerCell
     }
@@ -221,11 +221,13 @@ extension PlayersTableViewController {
             let player = addPlayerViewController.player {
             self.teams.first?.players.append(player)
             self.tableView.reloadData()
+            self.deferAutoSave()
         }
     }
 
     @IBAction func editPlayerUnwind(segue: UIStoryboardSegue) {
         self.tableView.reloadData()
+        self.deferAutoSave()
     }
 }
 
@@ -238,8 +240,7 @@ extension PlayersTableViewController {
         self.autoSaveTimer?.cancel()
         self.autoSaveTimer = DispatchSource.makeTimerSource()
         self.autoSaveTimer?.setEventHandler {
-            let teamsToSave = Array(self.teams[1 ..< self.teams.count])
-            Team.save(teams: teamsToSave)
+            Team.save(teams: self.teams)
         }
     }
 

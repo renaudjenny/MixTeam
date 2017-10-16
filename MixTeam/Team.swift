@@ -8,11 +8,11 @@
 
 import UIKit
 
-class Team {
+class Team: Codable {
     var id = UUID()
     var name: String = ""
-    var color: UIColor = UIColor.gray
-    var image: UIImage? = nil
+    var color: UXColor = .gray
+    var image: AppImage? = nil
     var players: [Player] = []
     var handicap: Int {
         var handicapSum = 0
@@ -20,70 +20,23 @@ class Team {
         return handicapSum
     }
 
-    init(name: String, color: UIColor, image: UIImage? = nil) {
+    init(name: String, color: UXColor, image: AppImage? = nil) {
         self.name = name
         self.color = color
         self.image = image
     }
-    
-    //MARK: - Persistance
+}
 
+struct Teams: Codable {
+    var teams: [Team]
+}
+
+// MARK: - Persistance
+
+extension Team {
     static let teamsResourcePath = "teams"
     static let teamsJSONStringKey = "teamsJSONString"
-
-    init?(dictionary: [String: Any]) {
-        guard let idString = dictionary["id"] as? String, let id = UUID(uuidString: idString),
-            let name = dictionary["name"] as? String,
-            let colorString = dictionary["color"] as? String else {
-                return nil
-        }
-
-        self.id = id
-        self.name = name
-        self.color = UXColor.fromString(colorString: colorString)
-
-        if let imageString = dictionary["image"] as? String, let image = UIImage(named: imageString) {
-            self.image = image
-        }
-
-        if let playersIds = dictionary["playerIds"] as? [String] {
-            let savedPlayers = Player.loadList()
-
-            for playerId in playersIds {
-                if let player = savedPlayers.first(where: { $0.id.uuidString == playerId }) {
-                    self.players.append(player)
-                }
-            }
-        }
-    }
-
-    func toDictionary() -> [String: Any] {
-        let playerIds: [String] = self.players.map { (player) -> String in
-            player.id.uuidString
-        }
-
-        var dictionary: [String: Any] = [
-            "id": self.id.uuidString,
-            "name": self.name,
-            "color": self.color.UXColorString,
-            "playerIds": playerIds
-        ]
-
-        dictionary["image"] = self.image?.appImage.rawValue
-
-        return dictionary
-    }
-
-    class func initList(teamsJSON: [[String: Any]]) -> [Team] {
-        var teams: [Team] = []
-        for teamDictionary in teamsJSON {
-            if let team = Team(dictionary: teamDictionary) {
-                teams.append(team)
-            }
-        }
-        return teams
-    }
-
+    
     func save() {
         var teams = Team.loadList()
         teams.append(self)
@@ -92,13 +45,8 @@ class Team {
     }
 
     class func save(teams: [Team]) {
-        var arrayOfTeams: [[String: Any]] = []
-        for team in teams {
-            arrayOfTeams.append(team.toDictionary())
-        }
-
-        guard let json = try? JSONSerialization.data(withJSONObject: ["teams": arrayOfTeams], options: .prettyPrinted),
-            let jsonString = String(data: json, encoding: .utf8) else {
+        guard let data = try? JSONEncoder().encode(Teams(teams: teams)),
+            let jsonString = String(data: data, encoding: .utf8) else {
                 fatalError("Cannot save Teams JSON")
         }
 
@@ -107,24 +55,22 @@ class Team {
 
     class func loadList() -> [Team] {
         guard let teamsJSONString = UserDefaults.standard.string(forKey: Team.teamsJSONStringKey),
-            let data = teamsJSONString.data(using: .utf8),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let json = jsonObject?["teams"] as? [[String: Any]] else {
-            return []
+            let jsonData = teamsJSONString.data(using: .utf8),
+            let teamsContainer = try? JSONDecoder().decode(Teams.self, from: jsonData) else {
+                return []
         }
 
-        return Team.initList(teamsJSON: json)
+        return teamsContainer.teams
     }
 
     class func loadListFromResource() -> [Team] {
         guard let path = Bundle.main.path(forResource: Team.teamsResourcePath, ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let json = jsonObject?["teams"] as? [[String: Any]] else {
+            let teamsContainer = try? JSONDecoder().decode(Teams.self, from: data) else {
                 return []
         }
 
-        return Team.initList(teamsJSON: json)
+        return teamsContainer.teams
     }
 
     func delete() {
