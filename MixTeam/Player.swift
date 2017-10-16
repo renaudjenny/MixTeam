@@ -85,7 +85,11 @@ extension Player {
     }
 }
 
-extension Player: Equatable {
+extension Player: Hashable, Equatable {
+    var hashValue: Int {
+        return self.id.hashValue
+    }
+
     static func ==(lhs: Player, rhs: Player) -> Bool {
         return lhs.id == rhs.id
     }
