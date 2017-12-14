@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,20 +19,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7UD-Yf-exm">
+                        <view key="tableFooterView" contentMode="scaleToFill" id="65p-Wk-YHy">
                             <rect key="frame" x="0.0" y="123.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Mix Team!"/>
-                            <connections>
-                                <action selector="mixTeam" destination="EnS-7l-DNJ" eventType="touchUpInside" id="Mcv-vR-fpd"/>
-                            </connections>
-                        </button>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7UD-Yf-exm" customClass="MixTeamButton" customModule="MixTeam" customModuleProvider="target">
+                                    <rect key="frame" x="16" y="0.0" width="288" height="44"/>
+                                    <state key="normal" title="Mix Team!"/>
+                                    <connections>
+                                        <action selector="mixTeam" destination="EnS-7l-DNJ" eventType="touchUpInside" id="Mcv-vR-fpd"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="7UD-Yf-exm" secondAttribute="bottom" id="19b-kh-zmp"/>
+                                <constraint firstAttribute="trailing" secondItem="7UD-Yf-exm" secondAttribute="trailing" constant="16" id="7Wm-Lo-qrQ"/>
+                                <constraint firstItem="7UD-Yf-exm" firstAttribute="top" secondItem="65p-Wk-YHy" secondAttribute="top" id="Gjs-xD-tzn"/>
+                                <constraint firstItem="7UD-Yf-exm" firstAttribute="leading" secondItem="65p-Wk-YHy" secondAttribute="leading" constant="16" id="y1c-J9-VDp"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PlayersTableViewControllerPlayerTableViewCellIdentifier" id="WeU-W3-ad8" customClass="PlayerTableViewCell" customModule="MixTeam" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WeU-W3-ad8" id="H7B-iZ-QYe">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="286" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y0h-t0-fsU">
@@ -42,7 +53,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x98-Mt-gy2">
-                                            <rect key="frame" x="121.5" y="14.5" width="141.5" height="21"/>
+                                            <rect key="frame" x="121.5" y="14.5" width="140.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

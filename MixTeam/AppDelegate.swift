@@ -18,14 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func saveDefaultTeamsIfNeeded() {
-        if UserDefaults.standard.string(forKey: Team.teamsJSONStringKey) == nil {
+        if UserDefaults.standard.string(forKey: Team.teamsJSONStringKey) == nil
+            || Team.loadList().count <= 0 {
             let teams = Team.loadListFromResource()
             Team.save(teams: teams)
         }
     }
 
     func saveDefaultPlayersIfNeeded() {
-        if UserDefaults.standard.string(forKey: Player.playersJSONStringKey) == nil {
+        if UserDefaults.standard.string(forKey: Player.playersJSONStringKey) == nil
+            || Player.loadList().count <= 0 {
             let players = Player.loadListFromResource()
             Player.save(players: players)
         }
