@@ -15,7 +15,7 @@ class TeamLogoCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda"), #imageLiteral(resourceName: "octopus")]
+        self.images = [#imageLiteral(resourceName: "elephant"), #imageLiteral(resourceName: "koala"), #imageLiteral(resourceName: "panda"), #imageLiteral(resourceName: "octopus"), #imageLiteral(resourceName: "lion")]
     }
 }
 

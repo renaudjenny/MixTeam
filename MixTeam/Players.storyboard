@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Nf-Hj-2M8">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -83,9 +83,7 @@
                     <navigationItem key="navigationItem" title="Players" id="m2O-rf-b6P">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="T7s-TV-yUh">
                             <connections>
-                                <segue destination="LnN-J0-5Id" kind="show" id="toN-KN-TOm">
-                                    <nil key="action"/>
-                                </segue>
+                                <segue destination="LnN-J0-5Id" kind="show" id="toN-KN-TOm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -131,8 +129,15 @@
                                     <navigationItem title="Title" id="R44-vP-oHl"/>
                                 </items>
                             </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NdY-Cv-cNc">
+                                <rect key="frame" x="16" y="473" width="288" height="30"/>
+                                <state key="normal" title="Create Many Players"/>
+                                <connections>
+                                    <segue destination="yAT-CC-mqV" kind="show" id="7Dl-ht-ChJ"/>
+                                </connections>
+                            </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XP8-zC-1xM">
-                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="393"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iPV-En-2Tp" userLabel="Container View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="395"/>
@@ -202,9 +207,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="iPV-En-2Tp" firstAttribute="width" secondItem="5H5-hK-O4Z" secondAttribute="width" id="3cd-Ph-XzC"/>
-                            <constraint firstItem="S6F-1a-Tn0" firstAttribute="top" secondItem="XP8-zC-1xM" secondAttribute="bottom" id="BvY-n2-R59"/>
+                            <constraint firstAttribute="trailing" secondItem="NdY-Cv-cNc" secondAttribute="trailing" constant="16" id="Hb2-sX-Axq"/>
                             <constraint firstAttribute="trailing" secondItem="XP8-zC-1xM" secondAttribute="trailing" id="VwV-r5-WaH"/>
+                            <constraint firstItem="S6F-1a-Tn0" firstAttribute="top" secondItem="NdY-Cv-cNc" secondAttribute="bottom" constant="16" id="YUN-u2-kHQ"/>
+                            <constraint firstItem="NdY-Cv-cNc" firstAttribute="leading" secondItem="5H5-hK-O4Z" secondAttribute="leading" constant="16" id="Zmp-0u-FLc"/>
                             <constraint firstItem="XP8-zC-1xM" firstAttribute="leading" secondItem="5H5-hK-O4Z" secondAttribute="leading" id="dDF-cE-hgU"/>
+                            <constraint firstItem="NdY-Cv-cNc" firstAttribute="top" secondItem="XP8-zC-1xM" secondAttribute="bottom" constant="16" id="jgJ-bH-Rhw"/>
                             <constraint firstItem="XP8-zC-1xM" firstAttribute="top" secondItem="5a8-IJ-3gg" secondAttribute="bottom" id="xvx-NG-mNg"/>
                         </constraints>
                     </view>
@@ -221,6 +229,24 @@
                 <exit id="oDD-4u-emh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2212.5" y="-1401.7605633802816"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="uXQ-ck-66x">
+            <objects>
+                <viewController id="yAT-CC-mqV" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="l01-Iz-oIQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="slC-kP-0NL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wOr-L0-t1f">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k8q-GY-btD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3326" y="-1820"/>
         </scene>
         <!--Edit Player View Controller-->
         <scene sceneID="ew3-VZ-usz">
@@ -406,6 +432,6 @@
         <image name="unknown" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PS8-T0-8vn"/>
+        <segue reference="N8n-oW-z2d"/>
     </inferredMetricsTieBreakers>
 </document>

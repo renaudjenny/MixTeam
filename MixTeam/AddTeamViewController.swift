@@ -28,7 +28,13 @@ class AddTeamViewController: UIViewController {
     }
 
     class func randomTeam() -> Team {
-        let titlesForImages = [("Elephants", #imageLiteral(resourceName: "elephant")), ("Koalas", #imageLiteral(resourceName: "koala")), ("Pandas", #imageLiteral(resourceName: "panda")), ("Octopus", #imageLiteral(resourceName: "octopus"))]
+        let titlesForImages = [
+            ("Elephants", #imageLiteral(resourceName: "elephant")),
+            ("Koalas", #imageLiteral(resourceName: "koala")),
+            ("Pandas", #imageLiteral(resourceName: "panda")),
+            ("Octopus", #imageLiteral(resourceName: "octopus")),
+            ("Lions", #imageLiteral(resourceName: "lion")),
+        ]
         let titlesForColors = UXColor.allColors.map { (color) -> (String, UIColor) in
             return (color.rawValue.capitalized, color.color)
         }

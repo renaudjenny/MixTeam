@@ -14,10 +14,14 @@ enum AppImage: String, Codable {
     case koala = "koala"
     case panda = "panda"
     case octopus = "octopus"
+    case lion = "lion"
+
     case harryPottar = "harry-pottar"
     case amaliePoulain = "amalie-poulain"
     case darkVadir = "dark-vadir"
     case laraCraft = "lara-craft"
+    case theBotman = "the-botman"
+    case wanderWoman = "wander-woman"
 
     var image: UIImage {
         guard let image = UIImage(named: self.rawValue) else {
@@ -38,6 +42,8 @@ extension UIImage {
             return .panda
         case #imageLiteral(resourceName: "octopus"):
             return .octopus
+        case #imageLiteral(resourceName: "lion"):
+            return .lion
         case #imageLiteral(resourceName: "harry-pottar"):
             return .harryPottar
         case #imageLiteral(resourceName: "amalie-poulain"):
@@ -46,6 +52,10 @@ extension UIImage {
             return .darkVadir
         case #imageLiteral(resourceName: "lara-craft"):
             return .laraCraft
+        case #imageLiteral(resourceName: "the-botman"):
+            return .theBotman
+        case #imageLiteral(resourceName: "wander-woman"):
+            return .wanderWoman
         default:
             return .unknown
         }
