@@ -20,8 +20,8 @@ class AddPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var placeholders = ["John", "Mathilde", "Renaud"]
-        var images = [#imageLiteral(resourceName: "harry-pottar"), #imageLiteral(resourceName: "dark-vadir"), #imageLiteral(resourceName: "amalie-poulain"), #imageLiteral(resourceName: "lara-craft"), #imageLiteral(resourceName: "the-botman"), #imageLiteral(resourceName: "wander-woman")]
+        let placeholders = ["John", "Mathilde", "Renaud"]
+        let images = [#imageLiteral(resourceName: "harry-pottar"), #imageLiteral(resourceName: "dark-vadir"), #imageLiteral(resourceName: "amalie-poulain"), #imageLiteral(resourceName: "lara-craft"), #imageLiteral(resourceName: "the-botman"), #imageLiteral(resourceName: "wander-woman")]
         
         let randomIndexForName = Int(arc4random_uniform(UInt32(placeholders.count)))
         let randomName = placeholders[randomIndexForName]

@@ -95,13 +95,13 @@ extension Team {
     }
 }
 
-extension Team: Hashable {
-    var hashValue: Int {
-        return self.id.hashValue
+extension Team: Identifiable, Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 
-    static func ==(lhs: Team, rhs: Team) -> Bool {
-        return lhs.id == rhs.id
+    static func == (lhs: Team, rhs: Team) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
