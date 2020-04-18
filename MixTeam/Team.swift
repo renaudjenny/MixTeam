@@ -83,7 +83,7 @@ extension Team {
 
     func update() {
         var teams = Team.loadList()
-        guard let index = teams.index(where: { $0 == self }) else {
+        guard let index = teams.firstIndex(where: { $0 == self }) else {
             // Team not exist yet, save it instead
             self.save()
             return

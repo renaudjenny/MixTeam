@@ -74,7 +74,7 @@ extension Player {
 
     func update() {
         var players = Player.loadList()
-        guard let index = players.index(where: { $0 == self }) else {
+        guard let index = players.firstIndex(where: { $0 == self }) else {
             // Player not exist yet, save it instead
             self.save()
             return

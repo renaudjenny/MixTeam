@@ -65,7 +65,7 @@ class PlayersTableViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let playerToDelete = self.teams[indexPath.section].players[indexPath.row]
             playerToDelete.delete()
@@ -154,9 +154,9 @@ class PlayersTableViewController: UITableViewController {
     }
 
     func move(player: Player, from fromTeam: Team, to toTeam: Team) {
-        guard let originPlayerIndex = fromTeam.players.index(where: { $0.id == player.id }),
-            let originTeamSection = self.teams.index(where: { $0 == fromTeam }),
-            let destinationTeamSection = self.teams.index(where: { $0 == toTeam }) else {
+        guard let originPlayerIndex = fromTeam.players.firstIndex(where: { $0.id == player.id }),
+            let originTeamSection = self.teams.firstIndex(where: { $0 == fromTeam }),
+            let destinationTeamSection = self.teams.firstIndex(where: { $0 == toTeam }) else {
             return
         }
         let originIndexPath = IndexPath(row: originPlayerIndex, section: originTeamSection)
@@ -195,7 +195,7 @@ class PlayersTableViewController: UITableViewController {
 
     func remove(team: Team) {
         guard let firstTeam = self.teams.first,
-            let teamToDeleteIndex = self.teams.index(where: { $0 == team }) else {
+            let teamToDeleteIndex = self.teams.firstIndex(where: { $0 == team }) else {
             fatalError("Cannot retrieve first team or team to delete index")
         }
 
@@ -275,7 +275,7 @@ extension PlayersTableViewController {
                 return
             }
 
-            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.index(of: team) else {
+            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.firstIndex(of: team) else {
                 return
             }
 
@@ -292,7 +292,7 @@ extension PlayersTableViewController {
                 return
             }
 
-            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.index(of: team) else {
+            guard let team = notification.object as? Team, let teamIndex = strongSelf.teams.firstIndex(of: team) else {
                 return
             }
 

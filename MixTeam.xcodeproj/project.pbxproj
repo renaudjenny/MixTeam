@@ -325,18 +325,18 @@
 					4C3732DC1EBF8E8100A5785E = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = MBQ98GC8JT;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 					4C3732F21EBF8E8100A5785E = {
 						CreatedOnToolsVersion = 8.3.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 4C3732DC1EBF8E8100A5785E;
 					};
 					4C3732FD1EBF8E8100A5785E = {
 						CreatedOnToolsVersion = 8.3.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 4C3732DC1EBF8E8100A5785E;
 					};
@@ -347,6 +347,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -592,7 +593,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -606,7 +607,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -620,7 +621,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixTeam.app/MixTeam";
 			};
 			name = Debug;
@@ -635,7 +636,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixTeam.app/MixTeam";
 			};
 			name = Release;
@@ -649,7 +650,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = MixTeam;
 			};
 			name = Debug;
@@ -663,7 +664,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = MixTeam;
 			};
 			name = Release;

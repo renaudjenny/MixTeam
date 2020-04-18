@@ -93,8 +93,8 @@ extension EditPlayerViewController: UITextFieldDelegate {
 
 extension EditPlayerViewController {
     func addKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc func keyboardWillShow(notification: Notification) {
@@ -107,7 +107,7 @@ extension EditPlayerViewController {
 
     func adjustInsetForKeyboard(isShown: Bool, notification: Notification) {
         let userInfo = notification.userInfo ?? [:]
-        let keyboardFrameInfo = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue
+        let keyboardFrameInfo = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue
         let keyboardFrame = keyboardFrameInfo?.cgRectValue ?? CGRect()
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let adjustmentHeight = (keyboardFrame.height + statusBarHeight) * (isShown ? 1 : -1)
