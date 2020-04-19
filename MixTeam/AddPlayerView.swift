@@ -8,16 +8,21 @@ struct AddPlayerView: View {
     @State private var playerName: String = "Player name"
     @State private var image: Image = .init(uiImage: #imageLiteral(resourceName: "unknown"))
     @State private var keyboardHeight: CGFloat = 0
+    @State private var isPlayerImagesPresented = false
 
     var body: some View {
-        VStack {
-            title
-            resizedImage
-            playerNameField
-            createPlayerButton
-        }
-        .animation(.default)
-        .onAppear(perform: randomlyChangePlaceholder)
+        ScrollView {
+            VStack {
+                title
+                playerImage.frame(width: 200, height: 200)
+                playerNameField
+                createPlayerButton
+            }
+            .onAppear(perform: randomlyChangePlaceholder)
+            .sheet(isPresented: $isPlayerImagesPresented) {
+                PlayerImagesView(selectedImage: self.$image)
+            }
+        }.keyboardAdaptive()
     }
 
     private func randomlyChangePlaceholder() {
@@ -31,11 +36,12 @@ struct AddPlayerView: View {
             .padding()
     }
 
-    private var resizedImage: some View {
-        image
-            .resizable()
-            .frame(maxWidth: 200, maxHeight: 200)
-            .scaledToFit()
+    private var playerImage: some View {
+        Button(action: { self.isPlayerImagesPresented = true }) {
+            image
+                .resizable()
+                .scaledToFit()
+        }.buttonStyle(PlainButtonStyle())
     }
 
     private var playerNameField: some View {
@@ -49,8 +55,6 @@ struct AddPlayerView: View {
             Text("Create Player")
         }
         .padding()
-        .padding(.bottom, keyboardHeight)
-        .onReceive(Publishers.keyboardHeight) { self.keyboardHeight = $0 }
     }
 
     private func createPlayer() {
