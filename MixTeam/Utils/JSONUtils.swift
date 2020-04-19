@@ -1,14 +1,6 @@
-//
-//  JSONUtils.swift
-//  MixTeam
-//
-//  Created by Renaud JENNY on 08/10/2017.
-//  Copyright © 2017 Renaud JENNY. All rights reserved.
-//
-
 import UIKit
 
-enum AppImage: String, Codable {
+enum AppImage: String, Codable, Identifiable {
     case unknown = "unknown image"
     case elephant = "elephant"
     case koala = "koala"
@@ -28,6 +20,10 @@ enum AppImage: String, Codable {
             return #imageLiteral(resourceName: "unknown")
         }
         return image
+    }
+
+    var id: String {
+        self.rawValue
     }
 }
 

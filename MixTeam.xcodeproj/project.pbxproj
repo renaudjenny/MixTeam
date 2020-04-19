@@ -27,6 +27,9 @@
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
 		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
+		4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */; };
+		4C457717244C791C00A6DDF2 /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */; };
+		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */; };
 		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
 		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
@@ -85,6 +88,9 @@
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
 		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
+		4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerView.swift; sourceTree = "<group>"; };
+		4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Keyboard.swift"; sourceTree = "<group>"; };
+		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButton.swift; sourceTree = "<group>"; };
 		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
 		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C457715244C78ED00A6DDF2 /* Extensions */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4C3732EE1EBF8E8100A5785E /* Info.plist */,
@@ -195,14 +202,16 @@
 		4C3733141EBFA37900A5785E /* Players */ = {
 			isa = PBXGroup;
 			children = (
+				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
 				4C3733101EBF968900A5785E /* AddPlayerViewController.swift */,
 				4C2A88D11F4A1D94003E6DBC /* Custom Cells */,
 				4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */,
+				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
+				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
 				4C0DD03E1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift */,
 				4C3733121EBFA35C00A5785E /* Players.storyboard */,
 				4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */,
-				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
 			);
 			name = Players;
 			sourceTree = "<group>";
@@ -218,6 +227,14 @@
 				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 			);
 			name = Teams;
+			sourceTree = "<group>";
+		};
+		4C457715244C78ED00A6DDF2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4C9CBD3F1F16BAF8004A48E5 /* Teams */ = {
@@ -403,6 +420,7 @@
 				4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */,
 				4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */,
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
+				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
@@ -412,7 +430,9 @@
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
+				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,
 				4CF9D2FB1F6436D7009879E4 /* LogoCollectionViewCell.swift in Sources */,
+				4C457717244C791C00A6DDF2 /* Publishers+Keyboard.swift in Sources */,
 				4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */,
 				4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
