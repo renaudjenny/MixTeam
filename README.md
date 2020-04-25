@@ -7,9 +7,6 @@
 
 ## TODO
 
-* Clean up to Xcode remanded settings
-* Add this project to GitHub (previously on GitLab)
-* Migration to Swift 5
 * Set minimum version to iOS 13.4
 * Add Linter rules
 * Migrate views to SwiftUI

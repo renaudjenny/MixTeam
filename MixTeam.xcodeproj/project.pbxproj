@@ -17,7 +17,6 @@
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
 		4C3732F81EBF8E8100A5785E /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732F71EBF8E8100A5785E /* MixTeamTests.swift */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
-		4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733101EBF968900A5785E /* AddPlayerViewController.swift */; };
 		4C3733131EBFA35C00A5785E /* Players.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3733121EBFA35C00A5785E /* Players.storyboard */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */; };
@@ -27,9 +26,13 @@
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
 		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
+		4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */; };
+		4C457717244C791C00A6DDF2 /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */; };
+		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */; };
 		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
 		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
+		4C8B5A15244CB28B00C8781B /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* KeyboardAdaptive.swift */; };
 		4C8BF66F1F952D4200DA4B18 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C8BF66E1F952D4200DA4B18 /* players.json */; };
 		4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */; };
 		4CD9A2EE1F3510AC0080AE46 /* PlayerPersistanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */; };
@@ -75,7 +78,6 @@
 		4C3732FE1EBF8E8100A5785E /* MixTeamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamUITests.swift; sourceTree = "<group>"; };
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C3733101EBF968900A5785E /* AddPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlayerViewController.swift; sourceTree = "<group>"; };
 		4C3733121EBFA35C00A5785E /* Players.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Players.storyboard; sourceTree = "<group>"; };
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayersTableViewController.swift; sourceTree = "<group>"; };
@@ -85,9 +87,13 @@
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
 		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
+		4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerView.swift; sourceTree = "<group>"; };
+		4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Keyboard.swift"; sourceTree = "<group>"; };
+		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButton.swift; sourceTree = "<group>"; };
 		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
 		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
+		4C8B5A14244CB28B00C8781B /* KeyboardAdaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptive.swift; sourceTree = "<group>"; };
 		4C8BF66E1F952D4200DA4B18 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
 		4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerPersistanceTests.swift; sourceTree = "<group>"; };
@@ -158,6 +164,8 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C8B5A13244CB27100C8781B /* ViewModifiers */,
+				4C457715244C78ED00A6DDF2 /* Extensions */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4C3732EE1EBF8E8100A5785E /* Info.plist */,
@@ -195,14 +203,15 @@
 		4C3733141EBFA37900A5785E /* Players */ = {
 			isa = PBXGroup;
 			children = (
-				4C3733101EBF968900A5785E /* AddPlayerViewController.swift */,
+				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
 				4C2A88D11F4A1D94003E6DBC /* Custom Cells */,
 				4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */,
+				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
+				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
 				4C0DD03E1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift */,
 				4C3733121EBFA35C00A5785E /* Players.storyboard */,
 				4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */,
-				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
 			);
 			name = Players;
 			sourceTree = "<group>";
@@ -218,6 +227,22 @@
 				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 			);
 			name = Teams;
+			sourceTree = "<group>";
+		};
+		4C457715244C78ED00A6DDF2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4C8B5A13244CB27100C8781B /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				4C8B5A14244CB28B00C8781B /* KeyboardAdaptive.swift */,
+			);
+			path = ViewModifiers;
 			sourceTree = "<group>";
 		};
 		4C9CBD3F1F16BAF8004A48E5 /* Teams */ = {
@@ -401,8 +426,8 @@
 			files = (
 				4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */,
 				4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */,
-				4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */,
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
+				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
@@ -412,7 +437,10 @@
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
+				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,
 				4CF9D2FB1F6436D7009879E4 /* LogoCollectionViewCell.swift in Sources */,
+				4C457717244C791C00A6DDF2 /* Publishers+Keyboard.swift in Sources */,
+				4C8B5A15244CB28B00C8781B /* KeyboardAdaptive.swift in Sources */,
 				4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */,
 				4C0DD03F1EC06B020017EF12 /* PlayerLogoCollectionViewController.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
@@ -525,7 +553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -579,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
