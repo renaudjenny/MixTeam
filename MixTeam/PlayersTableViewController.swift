@@ -217,14 +217,6 @@ extension PlayersTableViewController {
     static let fromEditPlayerUnwindSegueIdentifier = "PlayersTableViewControllerFromEditPlayerUnwindSegueIdentifier"
 
     @IBAction func addPlayerUnwind(segue: UIStoryboardSegue) {
-        // TODO: deprecated, remove addPlayerViewController
-        if let addPlayerViewController = segue.source as? AddPlayerViewController,
-            let player = addPlayerViewController.player {
-            self.teams.first?.players.append(player)
-            self.tableView.reloadData()
-            self.deferAutoSave()
-        }
-
         if let controller = segue.source as? AddPlayerHostingController, let player = controller.player {
             self.teams.first?.players.append(player)
             self.tableView.reloadData()

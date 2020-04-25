@@ -64,7 +64,6 @@ extension EditPlayerViewController {
         if let playerLogoViewController = segue.destination as? PlayerLogoCollectionViewController {
             self.nameTextField.resignFirstResponder()
             playerLogoViewController.selectedImage = self.logoButton.imageView?.image
-            playerLogoViewController.mode = .edit
         }
     }
 

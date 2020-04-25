@@ -17,7 +17,6 @@
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
 		4C3732F81EBF8E8100A5785E /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732F71EBF8E8100A5785E /* MixTeamTests.swift */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
-		4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733101EBF968900A5785E /* AddPlayerViewController.swift */; };
 		4C3733131EBFA35C00A5785E /* Players.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3733121EBFA35C00A5785E /* Players.storyboard */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3733181EBFAC3A00A5785E /* PlayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */; };
@@ -79,7 +78,6 @@
 		4C3732FE1EBF8E8100A5785E /* MixTeamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamUITests.swift; sourceTree = "<group>"; };
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C3733101EBF968900A5785E /* AddPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPlayerViewController.swift; sourceTree = "<group>"; };
 		4C3733121EBFA35C00A5785E /* Players.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Players.storyboard; sourceTree = "<group>"; };
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3733171EBFAC3A00A5785E /* PlayersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayersTableViewController.swift; sourceTree = "<group>"; };
@@ -206,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
-				4C3733101EBF968900A5785E /* AddPlayerViewController.swift */,
 				4C2A88D11F4A1D94003E6DBC /* Custom Cells */,
 				4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */,
 				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
@@ -429,7 +426,6 @@
 			files = (
 				4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */,
 				4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */,
-				4C3733111EBF968900A5785E /* AddPlayerViewController.swift in Sources */,
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,

@@ -9,15 +9,8 @@
 import UIKit
 
 class PlayerLogoCollectionViewController: UICollectionViewController {
-    enum Mode {
-        case add
-        case edit
-    }
-
     var selectedImage: UIImage? = nil
     var images: [UIImage?] = []
-
-    var mode = Mode.add
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,12 +55,7 @@ extension PlayerLogoCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         self.selectedImage = self.imageForIndexPath(indexPath: indexPath)
 
-        switch self.mode {
-        case .add:
-            self.performSegue(withIdentifier: AddPlayerViewController.fromLogoCollectionUnwindSegueIdentifier, sender: nil)
-        case .edit:
-            self.performSegue(withIdentifier: EditPlayerViewController.fromLogoCollectionUnwindSegueIdentifier, sender: nil)
-        }
+        self.performSegue(withIdentifier: EditPlayerViewController.fromLogoCollectionUnwindSegueIdentifier, sender: nil)
 
         return true
     }
