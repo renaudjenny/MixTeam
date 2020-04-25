@@ -236,8 +236,12 @@
             <objects>
                 <hostingController id="B9v-WI-33U" customClass="AddPlayerHostingController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="QHe-WR-17B"/>
+                    <connections>
+                        <segue destination="cu1-do-23O" kind="unwind" identifier="PlayersTableViewControllerFromAddPlayerUnwindSegueIdentifier" unwindAction="addPlayerUnwindWithSegue:" id="sru-mY-Wly"/>
+                    </connections>
                 </hostingController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x0g-E9-1To" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="cu1-do-23O" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2208" y="-2169"/>
         </scene>

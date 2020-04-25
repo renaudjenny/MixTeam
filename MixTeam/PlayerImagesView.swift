@@ -1,28 +1,25 @@
 import SwiftUI
 
+// TODO: This appImage approach is a mess. Thing about something different with tuple from scratch for instance
 struct PlayerImagesView: View {
-    static let images: [Image] = [#imageLiteral(resourceName: "harry-pottar"), #imageLiteral(resourceName: "dark-vadir"), #imageLiteral(resourceName: "amalie-poulain"), #imageLiteral(resourceName: "lara-craft"), #imageLiteral(resourceName: "the-botman"), #imageLiteral(resourceName: "wander-woman")].map(Image.init(uiImage:))
+    static let imageIdentifiers: [ImageIdentifier] = ImageIdentifier.players
     @Environment(\.presentationMode) var presentation
-    @Binding var selectedImage: Image
+    @Binding var selectedImageIdentifier: ImageIdentifier
 
     var body: some View {
         ScrollView {
-            ForEach(images, id: \.index) { image, _ in
+            ForEach(Self.imageIdentifiers) { imageIdentifier in
                 PlayerImageCell(
-                    image: image,
-                    isSelected:  image == self.selectedImage,
-                    select: { self.selectImage(image) }
+                    image: imageIdentifier.image,
+                    isSelected: imageIdentifier == self.selectedImageIdentifier,
+                    select: { self.select(imageIdentifier: imageIdentifier) }
                 )
             }
         }
     }
 
-    private var images: [(image: Image, index: Int)] {
-        Self.images.enumerated().map { ($1, $0) }
-    }
-
-    private func selectImage(_ image: Image) {
-        selectedImage = image
+    private func select(imageIdentifier: ImageIdentifier) {
+        selectedImageIdentifier = imageIdentifier
         presentation.wrappedValue.dismiss()
     }
 }
@@ -54,7 +51,7 @@ struct PlayerImageCell: View {
 struct PlayerImagesView_Previews: PreviewProvider {
     static var previews: some View {
         PlayerImagesView(
-            selectedImage: .constant(PlayerImagesView.images.first ?? Image("unknown"))
+            selectedImageIdentifier: .constant(.amaliePoulain)
         )
     }
 }

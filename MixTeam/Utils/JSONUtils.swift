@@ -1,5 +1,7 @@
 import UIKit
+import SwiftUI
 
+/// Deprecated. Use ImageIdentifier instead
 enum AppImage: String, Codable, Identifiable {
     case unknown = "unknown image"
     case elephant = "elephant"
@@ -66,5 +68,34 @@ extension UIImage {
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
+    }
+}
+
+enum ImageIdentifier: String, Identifiable {
+    case elephant = "elephant"
+    case koala = "koala"
+    case panda = "panda"
+    case octopus = "octopus"
+    case lion = "lion"
+
+    case harryPottar = "harry-pottar"
+    case amaliePoulain = "amalie-poulain"
+    case darkVadir = "dark-vadir"
+    case laraCraft = "lara-craft"
+    case theBotman = "the-botman"
+    case wanderWoman = "wander-woman"
+
+    var image: Image { Image(rawValue) }
+
+    var id: String { rawValue }
+
+    static var players: [Self] {
+        [.harryPottar, .amaliePoulain, .darkVadir,
+         .laraCraft, .theBotman, .wanderWoman]
+    }
+
+    // TODO: temporary, remove that ASAP
+    var appImage: AppImage {
+        AppImage(rawValue: self.rawValue) ?? .unknown
     }
 }
