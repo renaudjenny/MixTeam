@@ -7,7 +7,6 @@
 
 ## TODO
 
-* Set minimum version to iOS 13.4
 * Add Linter rules
 * Migrate views to SwiftUI
 * Add Unit Tests with Snapshots for views
