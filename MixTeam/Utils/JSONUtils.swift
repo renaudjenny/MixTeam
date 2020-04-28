@@ -99,3 +99,10 @@ enum ImageIdentifier: String, Identifiable {
         AppImage(rawValue: self.rawValue) ?? .unknown
     }
 }
+
+// TODO: temporary, remove that ASAP
+extension AppImage {
+    var imageIdentifier: ImageIdentifier {
+        ImageIdentifier(rawValue: self.rawValue) ?? .theBotman
+    }
+}

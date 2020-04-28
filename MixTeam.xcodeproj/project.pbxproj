@@ -30,6 +30,7 @@
 		4C457717244C791C00A6DDF2 /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */; };
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */; };
+		4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */; };
 		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
 		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
 		4C8B5A15244CB28B00C8781B /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* KeyboardAdaptive.swift */; };
@@ -91,6 +92,7 @@
 		4C457716244C791C00A6DDF2 /* Publishers+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Keyboard.swift"; sourceTree = "<group>"; };
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButton.swift; sourceTree = "<group>"; };
+		4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
 		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
 		4C8B5A14244CB28B00C8781B /* KeyboardAdaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptive.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 			children = (
 				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
 				4C2A88D11F4A1D94003E6DBC /* Custom Cells */,
+				4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */,
 				4C3733191EBFC4EF00A5785E /* EditPlayerViewController.swift */,
 				4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
@@ -425,6 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */,
+				4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */,
 				4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */,
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
