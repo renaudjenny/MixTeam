@@ -5,6 +5,8 @@ import UIKit
 struct EditPlayerView: View {
     static let imageIdentifiers: [ImageIdentifier] = PlayerImagesView.imageIdentifiers
     var editPlayer: ((String, ImageIdentifier) -> Void)? = nil
+    // TODO: remove cancelFromHosting when we will get rid of Hosting Controller
+    var cancelFromHosting: (() -> Void)? = nil
     @Environment(\.presentationMode) var presentation
     @Binding var playerName: String
     @Binding var imageIdentifier: ImageIdentifier
@@ -19,15 +21,18 @@ struct EditPlayerView: View {
                 playerImage.frame(width: 200, height: 200)
                 playerNameField
                 HStack {
+                    Spacer()
+                    Button(action: cancel, label: { Text("Cancel") })
+                    Spacer()
                     editPlayerButton
-                    Button(action: cancel, label: { Text("Cancel")})
+                    Spacer()
                 }
             }
             .sheet(isPresented: $isPlayerImagesPresented) {
                 PlayerImagesView(selectedImageIdentifier: self.$imageIdentifier)
             }
             .alert(isPresented: $isAlertPresented) { self.noNameAlert }
-        }.keyboardAdaptive()
+        }.keyboardAdaptive(extraPadding: 100)
     }
 
     private var title: some View {
@@ -72,6 +77,7 @@ struct EditPlayerView: View {
 
     private func cancel() {
         presentation.wrappedValue.dismiss()
+        cancelFromHosting?()
     }
 }
 
@@ -85,29 +91,33 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
     var player: Player? = nil
     var playerName: Binding<String> { .init(
         get: { self.player?.name ?? "Error" },
-        set: { _ in }
+        set: { self.player?.name = $0 }
     )}
     var imageIdentifier: Binding<ImageIdentifier> { .init(
         get: { self.player?.appImage?.imageIdentifier ?? .theBotman },
-        set: { _ in }
+        set: { self.player?.appImage = UIImage(imageLiteralResourceName: $0.rawValue).appImage }
     )}
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder, rootView: EditPlayerView(playerName: .constant("Error"), imageIdentifier: .constant(.theBotman)))
         rootView = EditPlayerView(
             editPlayer: editPlayer(name:imageIdentifier:),
+            cancelFromHosting: dismissFromHosting,
             playerName: playerName,
             imageIdentifier: imageIdentifier
         )
-        rootView.editPlayer = editPlayer(name:imageIdentifier:)
     }
 
     func editPlayer(name: String, imageIdentifier: ImageIdentifier) {
         let player = Player(name: name, image: UIImage(imageLiteralResourceName: imageIdentifier.rawValue).appImage)
-        player.save()
+        player.update()
         self.player = player
 
         // TODO: add the segue to the storyboard
-        self.performSegue(withIdentifier: PlayersTableViewController.fromAddPlayerUnwindSegueIdentifier, sender: nil)
+        self.performSegue(withIdentifier: PlayersTableViewController.fromEditPlayerUnwindSegueIdentifier, sender: nil)
+    }
+
+    func dismissFromHosting() {
+        dismiss(animated: true)
     }
 }

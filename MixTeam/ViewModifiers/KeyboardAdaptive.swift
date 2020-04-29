@@ -5,6 +5,7 @@ import Combine
 
 struct KeyboardAdaptive: ViewModifier {
     @State private var bottomPadding: CGFloat = 0
+    var extraPadding: CGFloat = 0
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
@@ -21,13 +22,13 @@ struct KeyboardAdaptive: ViewModifier {
         let focusedTextInputBottom = UIResponder.currentFirstResponder?.globalFrame?.maxY ?? 0
         // TODO: hardcoded value, it's really not ideal... let's see if we will keep tabBar at the end anyway
         let tabBarSize: CGFloat = 49.0
-        return max(0, focusedTextInputBottom - keyboardTop - geometry.safeAreaInsets.bottom + tabBarSize)
+        return max(0, extraPadding + focusedTextInputBottom - keyboardTop - geometry.safeAreaInsets.bottom + tabBarSize)
     }
 }
 
 extension View {
-    func keyboardAdaptive() -> some View {
-        ModifiedContent(content: self, modifier: KeyboardAdaptive())
+    func keyboardAdaptive(extraPadding: CGFloat = 0) -> some View {
+        ModifiedContent(content: self, modifier: KeyboardAdaptive(extraPadding: extraPadding))
     }
 }
 

@@ -66,7 +66,7 @@
                                 <connections>
                                     <outlet property="logoImageView" destination="Y0h-t0-fsU" id="2FB-Rr-fL4"/>
                                     <outlet property="nameLabel" destination="x98-Mt-gy2" id="2MS-BG-IVl"/>
-                                    <segue destination="5cc-Lg-hPp" kind="presentation" id="O1i-cC-M3d"/>
+                                    <segue destination="iF1-Oi-jE9" kind="presentation" id="e0w-VU-rD2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -128,11 +128,11 @@
                         <viewControllerLayoutGuide type="bottom" id="XAK-Vv-xgu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cUc-0D-o3c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k34-t5-mJN">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yee-q8-iB6" userLabel="Container View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="443"/>
@@ -295,6 +295,19 @@
                 <exit id="glb-Xk-xQU" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3326.25" y="-1033.0985915492959"/>
+        </scene>
+        <!--Edit Player Hosting Controller-->
+        <scene sceneID="e90-H2-Vg3">
+            <objects>
+                <hostingController id="iF1-Oi-jE9" customClass="EditPlayerHostingController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="8Pl-A8-AAC" kind="unwind" identifier="PlayersTableViewControllerFromEditPlayerUnwindSegueIdentifier" unwindAction="editPlayerUnwindWithSegue:" id="HKN-45-Mk4"/>
+                    </connections>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nbe-Ar-aFF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="8Pl-A8-AAC" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2211" y="73"/>
         </scene>
     </scenes>
     <resources>

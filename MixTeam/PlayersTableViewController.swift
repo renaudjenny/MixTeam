@@ -103,7 +103,9 @@ class PlayersTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let editPlayerViewController = segue.destination as? EditPlayerViewController, let selectedCell = sender as? UITableViewCell, let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
+        if let editPlayerViewController = segue.destination as? EditPlayerHostingController,
+            let selectedCell = sender as? UITableViewCell,
+            let playerTableCellIndexPath = self.tableView.indexPath(for: selectedCell) {
             editPlayerViewController.player = self.teams[playerTableCellIndexPath.section].players[playerTableCellIndexPath.row]
         }
     }
