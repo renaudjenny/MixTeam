@@ -100,6 +100,10 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder, rootView: EditPlayerView(playerName: .constant("Error"), imageIdentifier: .constant(.theBotman)))
+        setupRootView()
+    }
+
+    private func setupRootView() {
         rootView = EditPlayerView(
             editPlayer: editPlayer(name:imageIdentifier:),
             cancelFromHosting: dismissFromHosting,
@@ -108,7 +112,7 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
         )
     }
 
-    func editPlayer(name: String, imageIdentifier: ImageIdentifier) {
+    private func editPlayer(name: String, imageIdentifier: ImageIdentifier) {
         let player = Player(name: name, image: UIImage(imageLiteralResourceName: imageIdentifier.rawValue).appImage)
         player.update()
         self.player = player
@@ -117,7 +121,7 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
         self.performSegue(withIdentifier: PlayersTableViewController.fromEditPlayerUnwindSegueIdentifier, sender: nil)
     }
 
-    func dismissFromHosting() {
+    private func dismissFromHosting() {
         dismiss(animated: true)
     }
 }
