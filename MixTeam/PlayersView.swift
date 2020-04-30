@@ -6,12 +6,12 @@ struct PlayersView: View {
     var body: some View {
         List {
             ForEach(viewModel.teams, content: teamRow)
-        }
+        }.listStyle(GroupedListStyle())
     }
 
     private func teamRow(_ team: Team) -> some View {
         Section(header: sectionHeader(team: team)) {
-            ForEach(team.players, content: playerRow)
+            ForEach(team.players, content: { self.playerRow($0, team: team) })
         }
     }
 
@@ -19,14 +19,36 @@ struct PlayersView: View {
         HStack {
             team.image?.imageIdentifier.image
                 .resizable()
-                .frame(width: 40, height: 40)
-                .padding()
+                .frame(width: 50, height: 50)
+                .padding([.leading, .top, .bottom])
             Text(team.name)
+                .font(.headline)
+                .padding()
+            Spacer()
         }
+        .frame(maxWidth: .infinity, minHeight: 50)
+        .listRowInsets(EdgeInsets())
+        .background(
+            Color(team.color.color.withAlphaComponent(0.20))
+        )
     }
 
-    private func playerRow(_ player: Player) -> some View {
-        Text(player.name)
+    private func playerRow(_ player: Player, team: Team) -> some View {
+        HStack {
+            player.appImage?.imageIdentifier.image
+                .resizable()
+                .frame(width: 40, height: 40)
+                .padding(.leading, 40)
+                .padding(.trailing)
+            Text(player.name)
+            Spacer()
+        }
+        .padding([.top, .bottom], 10)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .listRowInsets(EdgeInsets())
+        .background(
+            Color(team.color.color.withAlphaComponent(0.10))
+        )
     }
 }
 
@@ -41,5 +63,7 @@ final class PlayersViewModel: ObservableObject {
 
     init() {
         teams = Team.loadList()
+        teams.first?.name = NSLocalizedString("Players standing for a team", comment: "")
+        teams.first?.color = .gray
     }
 }
