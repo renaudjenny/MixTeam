@@ -25,7 +25,7 @@ struct AddPlayerView: View {
                 PlayerImagesView(selectedImageIdentifier: self.$imageIdentifier)
             }
             .alert(isPresented: $isAlertPresented) { self.noNameAlert }
-        }.keyboardAdaptive()
+        }.modifier(AdaptsToSoftwareKeyboard())
     }
 
     private func randomlyChangePlaceholder() {

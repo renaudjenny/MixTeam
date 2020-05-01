@@ -32,7 +32,7 @@ struct EditPlayerView: View {
                 PlayerImagesView(selectedImageIdentifier: self.$imageIdentifier)
             }
             .alert(isPresented: $isAlertPresented) { self.noNameAlert }
-        }.keyboardAdaptive(extraPadding: 100)
+        }.modifier(AdaptsToSoftwareKeyboard())
     }
 
     private var title: some View {
