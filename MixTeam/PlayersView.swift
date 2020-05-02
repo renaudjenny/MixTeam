@@ -57,3 +57,9 @@ struct PlayersView_Previews: PreviewProvider {
         PlayersView()
     }
 }
+
+class PlayersHostingController: UIHostingController<PlayersView> {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder, rootView: PlayersView())
+    }
+}
