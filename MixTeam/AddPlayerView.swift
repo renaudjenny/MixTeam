@@ -93,7 +93,6 @@ class AddPlayerHostingController: UIHostingController<AddPlayerView> {
         player.save()
         self.player = player
 
-        // TODO: add the segue to the storyboard
         self.performSegue(withIdentifier: PlayersTableViewController.fromAddPlayerUnwindSegueIdentifier, sender: nil)
     }
 }

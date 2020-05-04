@@ -117,7 +117,6 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
         player.update()
         self.player = player
 
-        // TODO: add the segue to the storyboard
         self.performSegue(withIdentifier: PlayersTableViewController.fromEditPlayerUnwindSegueIdentifier, sender: nil)
     }
 
