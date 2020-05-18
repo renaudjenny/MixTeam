@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct PlayersView: View {
-    @ObservedObject var viewModel = PlayersViewModel()
+    let teams: [Team]
 
     var body: some View {
         List {
-            ForEach(viewModel.teams, content: teamRow)
+            ForEach(teams, content: teamRow)
         }.listStyle(GroupedListStyle())
     }
 
@@ -54,12 +54,30 @@ struct PlayersView: View {
 
 struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayersView()
+        PlayersView(teams: teams)
     }
+
+    private static let teams: [Team] = {
+        let playersStandingTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: .gray)
+        playersStandingTeam.players = [
+            Player(name: "Lara", image: .laraCraft),
+            Player(name: "Harry", image: .harryPottar)
+        ]
+        let koalaTeam = Team(name: "Red Koala", color: .red, image: .koala)
+        koalaTeam.players = [Player(name: "Vador", image: .darkVadir)]
+        return [
+            playersStandingTeam,
+            koalaTeam,
+            Team(name: "Purple Elephant", color: .purple, image: .elephant)
+        ]
+    }()
 }
 
 class PlayersHostingController: UIHostingController<PlayersView> {
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder, rootView: PlayersView())
+        let teams = Team.loadList()
+        teams.first?.name = NSLocalizedString("Players standing for a team", comment: "")
+        teams.first?.color = .gray
+        super.init(coder: aDecoder, rootView: PlayersView(teams: teams))
     }
 }
