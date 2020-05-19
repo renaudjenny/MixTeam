@@ -4,9 +4,17 @@ struct PlayersView: View {
     let teams: [Team]
 
     var body: some View {
-        List {
-            ForEach(teams, content: teamRow)
-        }.listStyle(GroupedListStyle())
+        VStack(spacing: 0) {
+            List {
+                ForEach(teams, content: teamRow)
+            }.listStyle(GroupedListStyle())
+            Button(action: mixTeam) {
+                Text("Mix Team")
+            }
+            .buttonStyle(MixTeamButtonStyle())
+            .frame(height: 50)
+            .shadow(radius: 10)
+        }
     }
 
     private func teamRow(_ team: Team) -> some View {
@@ -49,6 +57,10 @@ struct PlayersView: View {
         .background(
             Color(team.color.color.withAlphaComponent(0.10))
         )
+    }
+
+    private func mixTeam() {
+        print("TODO: mix team!")
     }
 }
 
