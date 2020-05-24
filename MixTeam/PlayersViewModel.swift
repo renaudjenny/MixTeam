@@ -82,18 +82,15 @@ extension PlayersViewModel {
 
     private func remove(team: Team) {
         guard let firstTeam = teams.first,
-            let teamToDeleteIndex = teams.firstIndex(where: { $0 == team }) else {
+            let teamToDelete = teams.first(where: { $0 == team }) else {
                 fatalError("Cannot retrieve first team or team to delete index")
         }
-
-        let teamToDelete = teams[teamToDeleteIndex]
 
         teamToDelete.players.forEach { (player) in
             self.move(player: player, from: teamToDelete, to: firstTeam)
         }
 
-        // TODO: Teams need to be a binding/state
-        // teams.remove(at: teamToDeleteIndex)
+        teams.removeAll(where: { $0 == team })
     }
 
     private func debug() {
