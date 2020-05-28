@@ -33,10 +33,22 @@ extension PlayersViewModel {
 
         let playersTotalHandicap = teamsHandicap.values.reduce(0, +)
 
+        // Move all players in the standing team
+        guard let standingPlayersTeam = teams.first else { return }
+        teams
+            .filter({ $0 != standingPlayersTeam })
+            .forEach({ team in
+                team.players.forEach { player in
+                    move(player: player, from: team, to: standingPlayersTeam)
+                }
+            })
+
         debug()
         for team in teams {
             for player in team.players {
-                let toTeam = pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap)
+                guard let toTeam = pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap) else {
+                    continue
+                }
                 teamsHandicap[team]! -= player.handicap
                 teamsHandicap[toTeam]! += player.handicap
                 if team != toTeam {
@@ -58,14 +70,14 @@ extension PlayersViewModel {
         // deferAutoSave()
     }
 
-    private func pseudoRandomTeam(teamsHandicap: [Team: Int], playersTotalHandicap: Int) -> Team {
+    private func pseudoRandomTeam(teamsHandicap: [Team: Int], playersTotalHandicap: Int) -> Team? {
         // First, add a player in each team if there is no one yet
         let teamsWithoutPlayers = teams
             .filter { $0 != teams.first }
-            .filter { teamsHandicap[$0]! <= 0 }
+            .filter { $0.players.count == 0 }
 
         if teamsWithoutPlayers.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(teamsWithoutPlayers.count)))
+            let randomIndex = Int.random(in: 0..<teamsWithoutPlayers.count)
             return teamsWithoutPlayers[randomIndex]
         }
 
@@ -75,6 +87,8 @@ extension PlayersViewModel {
         let unbalancedTeams = teams
             .filter { $0 != teams.first }
             .filter { teamsHandicap[$0]! < handicapAverage }
+
+        guard unbalancedTeams.count > 0 else { return nil }
 
         let randomIndex = Int.random(in: 0..<unbalancedTeams.count)
         return unbalancedTeams[randomIndex]
