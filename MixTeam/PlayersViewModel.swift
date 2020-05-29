@@ -34,6 +34,7 @@ extension PlayersViewModel {
         }
         teams.first?.players = []
         objectWillChange.send()
+        Team.save(teams: teams)
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
