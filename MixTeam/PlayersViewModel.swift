@@ -43,7 +43,6 @@ extension PlayersViewModel {
                 }
             })
 
-        debug()
         for team in teams {
             for player in team.players {
                 guard let toTeam = pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap) else {
@@ -56,7 +55,7 @@ extension PlayersViewModel {
                 }
             }
         }
-        debug()
+        objectWillChange.send()
     }
 
     private func move(player: Player, from fromTeam: Team, to toTeam: Team) {
