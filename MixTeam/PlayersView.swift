@@ -21,6 +21,7 @@ struct PlayersView: View {
     private func teamRow(_ team: Team) -> some View {
         Section(header: sectionHeader(team: team)) {
             ForEach(team.players, content: { self.playerRow($0, team: team) })
+                .onDelete(perform: { self.viewModel.deletePlayer(in: team, at: $0) })
         }
     }
 

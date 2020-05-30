@@ -18,6 +18,16 @@ final class PlayersViewModel: ObservableObject {
 
         randomizeTeam()
     }
+
+    func deletePlayer(in team: Team, at offsets: IndexSet) {
+        teams.first(where: { team == $0 })?.players.remove(atOffsets: offsets)
+        updateTeams()
+    }
+
+    func updateTeams() {
+        objectWillChange.send()
+        Team.save(teams: teams)
+    }
 }
 
 extension PlayersViewModel {
@@ -33,8 +43,7 @@ extension PlayersViewModel {
             availableTeams.sorted(by: hasLessPlayer).first?.players.append($0)
         }
         teams.first?.players = []
-        objectWillChange.send()
-        Team.save(teams: teams)
+        updateTeams()
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
