@@ -24,6 +24,13 @@ final class PlayersViewModel: ObservableObject {
         updateTeams()
     }
 
+    func color(for player: Player) -> Color {
+        guard let team = teams.first(where: { $0.players.contains(player) }) else {
+            return .gray
+        }
+        return Color(team.color.color)
+    }
+
     func updateTeams() {
         objectWillChange.send()
         Team.save(teams: teams)

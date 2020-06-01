@@ -20,7 +20,7 @@ struct PlayersView: View {
 
     private func teamRow(_ team: Team) -> some View {
         Section(header: sectionHeader(team: team)) {
-            ForEach(team.players, content: { self.playerRow($0, team: team) })
+            ForEach(team.players, content: self.playerRow)
                 .onDelete(perform: { self.viewModel.deletePlayer(in: team, at: $0) })
         }
     }
@@ -43,7 +43,7 @@ struct PlayersView: View {
         )
     }
 
-    private func playerRow(_ player: Player, team: Team) -> some View {
+    private func playerRow(_ player: Player) -> some View {
         HStack {
             player.appImage?.imageIdentifier.image
                 .resizable()
@@ -57,7 +57,7 @@ struct PlayersView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .listRowInsets(EdgeInsets())
         .background(
-            Color(team.color.color.withAlphaComponent(0.10))
+            viewModel.color(for: player).opacity(0.10)
         )
     }
 }

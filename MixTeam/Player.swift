@@ -9,7 +9,7 @@
 import UIKit
 
 class Player: Codable {
-    var id = UUID()
+    let id = UUID()
     var name: String = ""
     var appImage: AppImage? = nil
     var handicap: Int = 100
