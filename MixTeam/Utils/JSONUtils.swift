@@ -103,6 +103,7 @@ enum ImageIdentifier: String, Identifiable {
 // TODO: temporary, remove that ASAP
 extension AppImage {
     var imageIdentifier: ImageIdentifier {
-        ImageIdentifier(rawValue: self.rawValue) ?? .theBotman
+        get { ImageIdentifier(rawValue: self.rawValue) ?? .theBotman }
+        set { self = newValue.appImage }
     }
 }

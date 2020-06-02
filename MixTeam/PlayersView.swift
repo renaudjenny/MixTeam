@@ -5,10 +5,12 @@ struct PlayersView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            List {
-                ForEach(viewModel.teams, content: teamRow)
+            NavigationView {
+                List {
+                    ForEach(viewModel.teams, content: teamRow)
+                }
+                .listStyle(GroupedListStyle())
             }
-            .listStyle(GroupedListStyle())
             Button(action: viewModel.mixTeam) {
                 Text("Mix Team")
             }
@@ -44,14 +46,16 @@ struct PlayersView: View {
     }
 
     private func playerRow(_ player: Player) -> some View {
-        HStack {
-            player.appImage?.imageIdentifier.image
-                .resizable()
-                .frame(width: 40, height: 40)
-                .padding(.leading, 40)
-                .padding(.trailing)
-            Text(player.name)
-            Spacer()
+        NavigationLink(destination: edit(player: player)) {
+            HStack {
+                player.appImage.imageIdentifier.image
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .padding(.leading, 40)
+                    .padding(.trailing)
+                Text(player.name)
+                Spacer()
+            }
         }
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -59,6 +63,14 @@ struct PlayersView: View {
         .background(
             viewModel.color(for: player).opacity(0.10)
         )
+    }
+
+    private func edit(player: Player) -> some View {
+        guard let player = viewModel.playerBinding(for: player) else {
+            return EmptyView().eraseToAnyView()
+        }
+        return EditPlayerView(playerName: player.name, imageIdentifier: player.appImage.imageIdentifier)
+            .eraseToAnyView()
     }
 }
 
@@ -99,4 +111,9 @@ class PlayersHostingController: UIHostingController<PlayersView> {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder, rootView: PlayersView())
     }
+}
+
+// TODO: put this extension to its own file
+extension View {
+    func eraseToAnyView() -> AnyView { AnyView(self) }
 }

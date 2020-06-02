@@ -11,12 +11,12 @@ import UIKit
 class Player: Codable {
     let id = UUID()
     var name: String = ""
-    var appImage: AppImage? = nil
+    var appImage: AppImage
     var handicap: Int = 100
 
     init(name: String = "", image: AppImage? = nil) {
         self.name = name
-        self.appImage = image
+        self.appImage = image ?? AppImage.unknown
     }
 }
 

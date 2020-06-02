@@ -35,6 +35,17 @@ final class PlayersViewModel: ObservableObject {
         objectWillChange.send()
         Team.save(teams: teams)
     }
+
+    func playerBinding(for player: Player) -> Binding<Player>? {
+        guard let teamIndex = teams.firstIndex(where: { $0.players.contains(player) }),
+            let playerIndex = teams[teamIndex].players.firstIndex(of: player) else {
+            return nil
+        }
+        return Binding<Player>(
+            get: { self.teams[teamIndex].players[playerIndex] },
+            set: { self.teams[teamIndex].players[playerIndex] = $0 }
+        )
+    }
 }
 
 extension PlayersViewModel {

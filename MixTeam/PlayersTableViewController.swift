@@ -58,7 +58,7 @@ class PlayersTableViewController: UITableViewController {
         let player = team.players[indexPath.row]
 
         cell.nameLabel.text = player.name
-        cell.logoImageView.image = player.appImage?.image.tint(with: team.color.color)
+        cell.logoImageView.image = player.appImage.image.tint(with: team.color.color)
         cell.backgroundColor = team.color.color.withAlphaComponent(0.10)
         cell.textLabel?.backgroundColor = UIColor.clear
 

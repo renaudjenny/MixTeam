@@ -94,7 +94,7 @@ class EditPlayerHostingController: UIHostingController<EditPlayerView> {
         set: { self.player?.name = $0 }
     )}
     var imageIdentifier: Binding<ImageIdentifier> { .init(
-        get: { self.player?.appImage?.imageIdentifier ?? .theBotman },
+        get: { self.player?.appImage.imageIdentifier ?? .theBotman },
         set: { self.player?.appImage = UIImage(imageLiteralResourceName: $0.rawValue).appImage }
     )}
 
