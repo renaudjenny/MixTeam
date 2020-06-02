@@ -65,6 +65,7 @@ struct EditPlayerView: View {
 
     private func editPlayerAction() {
         editPlayer?(playerName, imageIdentifier)
+        presentation.wrappedValue.dismiss()
     }
 
     private var noNameAlert: Alert {

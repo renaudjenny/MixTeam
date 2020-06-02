@@ -2,22 +2,23 @@ import SwiftUI
 
 struct PlayersView: View {
     @ObservedObject var viewModel = PlayersViewModel()
+    @State private var editedPlayer: Player? = nil
 
     var body: some View {
         VStack(spacing: 0) {
-            NavigationView {
-                List {
-                    ForEach(viewModel.teams, content: teamRow)
-                }
-                .listStyle(GroupedListStyle())
+            List {
+                ForEach(viewModel.teams, content: teamRow)
             }
+            .listStyle(GroupedListStyle())
             Button(action: viewModel.mixTeam) {
                 Text("Mix Team")
             }
             .buttonStyle(MixTeamButtonStyle())
             .frame(height: 50)
             .shadow(radius: 10)
-        }.alert(item: $viewModel.presentedAlert, content: alert(for:))
+        }
+        .alert(item: $viewModel.presentedAlert, content: alert(for:))
+        .sheet(item: $editedPlayer, content: edit(player:))
     }
 
     private func teamRow(_ team: Team) -> some View {
@@ -46,7 +47,7 @@ struct PlayersView: View {
     }
 
     private func playerRow(_ player: Player) -> some View {
-        NavigationLink(destination: edit(player: player)) {
+        Button(action: { self.editedPlayer = player }) {
             HStack {
                 player.appImage.imageIdentifier.image
                     .resizable()
@@ -55,8 +56,9 @@ struct PlayersView: View {
                     .padding(.trailing)
                 Text(player.name)
                 Spacer()
-            }
+            }.foregroundColor(viewModel.color(for: player))
         }
+        .buttonStyle(DefaultButtonStyle())
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .listRowInsets(EdgeInsets())
