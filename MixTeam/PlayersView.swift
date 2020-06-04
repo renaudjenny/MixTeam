@@ -114,8 +114,3 @@ class PlayersHostingController: UIHostingController<PlayersView> {
         super.init(coder: aDecoder, rootView: PlayersView())
     }
 }
-
-// TODO: put this extension to its own file
-extension View {
-    func eraseToAnyView() -> AnyView { AnyView(self) }
-}

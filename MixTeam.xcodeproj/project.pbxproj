@@ -29,6 +29,7 @@
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5D9CB91FA4553700169D18 /* MixTeamButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
+		4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */; };
 		4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */; };
 		4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* PlayersView.swift */; };
 		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
@@ -91,6 +92,7 @@
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5D9CB81FA4553700169D18 /* MixTeamButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
+		4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EraseToAnyView.swift"; sourceTree = "<group>"; };
 		4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
 		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C7F55592489A35C0089F26C /* Extensions */,
 				4C8B5A13244CB27100C8781B /* ViewModifiers */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
@@ -230,6 +233,14 @@
 				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 			);
 			name = Teams;
+			sourceTree = "<group>";
+		};
+		4C7F55592489A35C0089F26C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		4C8B5A13244CB27100C8781B /* ViewModifiers */ = {
@@ -425,6 +436,7 @@
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
+				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
 				4C2A88D51F4A24E8003E6DBC /* TeamHeaderView.swift in Sources */,
