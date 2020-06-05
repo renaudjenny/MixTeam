@@ -11,7 +11,10 @@ struct PlayersView: View {
             }
             .listStyle(GroupedListStyle())
             Button(action: viewModel.mixTeam) {
-                Text("Mix Team")
+                HStack {
+                    Image(systemName: "shuffle")
+                    Text("Mix Team")
+                }
             }
             .buttonStyle(MixTeamButtonStyle())
             .frame(height: 50)
