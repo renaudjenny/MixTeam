@@ -20,8 +20,10 @@ class PlayersTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.teams.append(contentsOf: Team.loadList())
-        self.teams.first?.name = NSLocalizedString("Players standing for a team", comment: "")
-        self.teams.first?.color = .gray
+        teams[0] = Team(
+            name: NSLocalizedString("Players standing for a team", comment: ""),
+            color: .gray
+        )
 
         let nib = UINib(nibName: "TeamHeaderView", bundle: nil)
         self.tableView.register(nib, forHeaderFooterViewReuseIdentifier: PlayersTableViewController.teamHeaderViewIdentifier)
@@ -117,15 +119,15 @@ class PlayersTableViewController: UITableViewController {
             return
         }
 
-        guard let firstTeam = self.teams.first else {
+        guard var firstTeam = self.teams.first else {
             // TODO Throw error
             fatalError()
         }
 
         // First move all players back if needed
-        for team in self.teams where team != self.teams.first {
+        for var team in self.teams where team != self.teams.first {
             for player in team.players {
-                self.move(player: player, from: team, to: firstTeam)
+                self.move(player: player, from: &team, to: &firstTeam)
             }
         }
 
@@ -140,22 +142,22 @@ class PlayersTableViewController: UITableViewController {
             playersTotalHandicap += $0.handicap
         }
 
-        for team in self.teams {
+        for var team in self.teams {
             for player in team.players {
                 deadline = deadline + PlayersTableViewController.dispatchPlayerTime
-                let toTeam = self.pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap)
+                var toTeam = self.pseudoRandomTeam(teamsHandicap: teamsHandicap, playersTotalHandicap: playersTotalHandicap)
                 teamsHandicap[team]! -= player.handicap
                 teamsHandicap[toTeam]! += player.handicap
                 if team != toTeam {
                     DispatchQueue.main.asyncAfter(deadline: deadline) {
-                        self.move(player: player, from: team, to: toTeam)
+                        self.move(player: player, from: &team, to: &toTeam)
                     }
                 }
             }
         }
     }
 
-    func move(player: Player, from fromTeam: Team, to toTeam: Team) {
+    func move(player: Player, from fromTeam: inout Team, to toTeam: inout Team) {
         guard let originPlayerIndex = fromTeam.players.firstIndex(where: { $0.id == player.id }),
             let originTeamSection = self.teams.firstIndex(where: { $0 == fromTeam }),
             let destinationTeamSection = self.teams.firstIndex(where: { $0 == toTeam }) else {
@@ -196,15 +198,15 @@ class PlayersTableViewController: UITableViewController {
     }
 
     func remove(team: Team) {
-        guard let firstTeam = self.teams.first,
+        guard var firstTeam = self.teams.first,
             let teamToDeleteIndex = self.teams.firstIndex(where: { $0 == team }) else {
             fatalError("Cannot retrieve first team or team to delete index")
         }
 
-        let teamToDelete = self.teams[teamToDeleteIndex]
+        var teamToDelete = self.teams[teamToDeleteIndex]
 
         teamToDelete.players.forEach { (player) in
-            self.move(player: player, from: teamToDelete, to: firstTeam)
+            self.move(player: player, from: &teamToDelete, to: &firstTeam)
         }
 
         self.teams.remove(at: teamToDeleteIndex)
@@ -220,7 +222,7 @@ extension PlayersTableViewController {
 
     @IBAction func addPlayerUnwind(segue: UIStoryboardSegue) {
         if let controller = segue.source as? AddPlayerHostingController, let player = controller.player {
-            self.teams.first?.players.append(player)
+//            self.teams.first?.players.append(player)
             self.tableView.reloadData()
             self.deferAutoSave()
         }
@@ -281,7 +283,7 @@ extension PlayersTableViewController {
             }
 
             for player in team.players {
-                strongSelf.teams.first?.players.append(player)
+//                strongSelf.teams.first?.players.append(player)
             }
 
             strongSelf.teams.remove(at: teamIndex)

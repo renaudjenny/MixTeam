@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Team: Codable {
+struct Team: Codable {
     var id = UUID()
     var name: String = ""
     var color: UXColor = .gray
@@ -44,7 +44,7 @@ extension Team {
         NotificationCenter.default.post(name: NSNotification.Name.TeamDidAdded, object: self)
     }
 
-    class func save(teams: [Team]) {
+    static func save(teams: [Team]) {
         guard let data = try? JSONEncoder().encode(Teams(teams: teams)),
             let jsonString = String(data: data, encoding: .utf8) else {
                 fatalError("Cannot save Teams JSON")
@@ -53,7 +53,7 @@ extension Team {
         UserDefaults.standard.set(jsonString, forKey: Team.teamsJSONStringKey)
     }
 
-    class func loadList() -> [Team] {
+    static func loadList() -> [Team] {
         guard let teamsJSONString = UserDefaults.standard.string(forKey: Team.teamsJSONStringKey),
             let jsonData = teamsJSONString.data(using: .utf8),
             let teamsContainer = try? JSONDecoder().decode(Teams.self, from: jsonData) else {
@@ -63,7 +63,7 @@ extension Team {
         return teamsContainer.teams
     }
 
-    class func loadListFromResource() -> [Team] {
+    static func loadListFromResource() -> [Team] {
         guard let path = Bundle.main.path(forResource: Team.teamsResourcePath, ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
             let teamsContainer = try? JSONDecoder().decode(Teams.self, from: data) else {

@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidFinishLaunching(_ application: UIApplication) {
         self.saveDefaultTeamsIfNeeded()
         self.saveDefaultPlayersIfNeeded()
+        #if DEBUG
+        hardReset()
+        #endif
     }
 
     func saveDefaultTeamsIfNeeded() {
@@ -32,4 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Player.save(players: players)
         }
     }
+
+    #if DEBUG
+    private func hardReset() {
+        let teams = Team.loadListFromResource()
+        Team.save(teams: teams)
+        let players = Player.loadListFromResource()
+        Player.save(players: players)
+    }
+    #endif
 }

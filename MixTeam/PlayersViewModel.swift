@@ -6,8 +6,9 @@ final class PlayersViewModel: ObservableObject {
 
     init() {
         teams = Team.loadList()
-        teams.first?.name = NSLocalizedString("Players standing for a team", comment: "")
-        teams.first?.color = .gray
+        guard teams.count > 0 else { return }
+        teams[0].name = NSLocalizedString("Players standing for a team", comment: "")
+        teams[0].color = .gray
     }
 
     func mixTeam() {
@@ -20,7 +21,8 @@ final class PlayersViewModel: ObservableObject {
     }
 
     func deletePlayer(in team: Team, at offsets: IndexSet) {
-        teams.first(where: { team == $0 })?.players.remove(atOffsets: offsets)
+        guard let index = teams.firstIndex(of: team) else { return }
+        teams[index].players.remove(atOffsets: offsets)
         updateTeams()
     }
 
@@ -32,8 +34,8 @@ final class PlayersViewModel: ObservableObject {
     }
 
     func updateTeams() {
-        objectWillChange.send()
         Team.save(teams: teams)
+        objectWillChange.send()
     }
 
     func playerBinding(for player: Player) -> Binding<Player>? {
@@ -52,15 +54,22 @@ extension PlayersViewModel {
     private func randomizeTeam() {
         let players = teams.flatMap(\.players)
         guard players.count > 0 else { return }
-        let availableTeams = teams.filter { $0 != teams.first }
-        guard availableTeams.count > 1 else { return }
+        guard teams.filter({ $0 != teams.first }).count > 1 else { return }
 
-        teams.forEach { $0.players = [] }
+        teams = teams.map({
+            var newTeam = $0
+            newTeam.players = []
+            return newTeam
+        })
 
-        players.shuffled().forEach {
-            availableTeams.sorted(by: hasLessPlayer).first?.players.append($0)
+        teams = players.shuffled().reduce(teams) { teams, player in
+            var teams = teams
+            let availableTeams = teams.filter { $0 != teams.first }
+            guard let lessPlayerTeam = availableTeams.sorted(by: hasLessPlayer).first,
+                let teamIndex = teams.firstIndex(of: lessPlayerTeam) else { return teams }
+            teams[teamIndex].players += [player]
+            return teams
         }
-        teams.first?.players = []
         updateTeams()
     }
 
