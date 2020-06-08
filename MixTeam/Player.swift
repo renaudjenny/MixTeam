@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Player: Codable {
+struct Player: Codable {
     let id = UUID()
     var name: String = ""
     var appImage: AppImage
@@ -36,7 +36,7 @@ extension Player {
         Player.save(players: players)
     }
 
-    class func save(players: [Player]) {
+    static func save(players: [Player]) {
         guard let data = try? JSONEncoder().encode(Players(players: players)),
             let jsonString = String(data: data, encoding: .utf8) else {
                 fatalError("Cannot save Players JSON")
@@ -45,7 +45,7 @@ extension Player {
         UserDefaults.standard.set(jsonString, forKey: Player.playersJSONStringKey)
     }
 
-    class func loadList() -> [Player] {
+    static func loadList() -> [Player] {
         guard let playersJSONString = UserDefaults.standard.string(forKey: Player.playersJSONStringKey),
             let jsonData = playersJSONString.data(using: .utf8),
             let playersContainer = try? JSONDecoder().decode(Players.self, from: jsonData) else {
@@ -55,7 +55,7 @@ extension Player {
         return playersContainer.players
     }
 
-    class func loadListFromResource() -> [Player] {
+    static func loadListFromResource() -> [Player] {
         guard let path = Bundle.main.path(forResource: Player.playersResourcePath, ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
             let playersContainer = try? JSONDecoder().decode(Players.self, from: data) else {
