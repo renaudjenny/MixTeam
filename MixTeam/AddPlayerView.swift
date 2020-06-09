@@ -81,20 +81,3 @@ struct AppPlayerView_Previews: PreviewProvider {
         AddPlayerView()
     }
 }
-
-class AddPlayerHostingController: UIHostingController<AddPlayerView> {
-    var player: Player? = nil
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder, rootView: AddPlayerView())
-        rootView.createPlayer = createPlayer(name:imageIdentifier:)
-    }
-
-    func createPlayer(name: String, imageIdentifier: ImageIdentifier) {
-        let player = Player(name: name, image: UIImage(imageLiteralResourceName: imageIdentifier.rawValue).appImage)
-        player.save()
-        self.player = player
-
-        self.performSegue(withIdentifier: PlayersTableViewController.fromAddPlayerUnwindSegueIdentifier, sender: nil)
-    }
-}

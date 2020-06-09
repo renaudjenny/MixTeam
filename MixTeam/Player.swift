@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwiftUI
 
-struct Player: Codable {
+struct Player: Codable, Identifiable, Hashable {
     let id = UUID()
     var name: String = ""
     var appImage: AppImage
@@ -17,6 +18,10 @@ struct Player: Codable {
     init(name: String = "", image: AppImage? = nil) {
         self.name = name
         self.appImage = image ?? AppImage.unknown
+    }
+
+    func identifier(for color: Color) -> Int {
+        id.hashValue ^ color.hashValue
     }
 }
 
@@ -82,15 +87,5 @@ extension Player {
         
         players[index] = self
         Player.save(players: players)
-    }
-}
-
-extension Player: Identifiable, Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-
-    static func == (lhs: Player, rhs: Player) -> Bool {
-        lhs.id == rhs.id
     }
 }

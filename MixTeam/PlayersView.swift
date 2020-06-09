@@ -34,8 +34,9 @@ struct PlayersView: View {
 
     private func teamRow(_ team: Team) -> some View {
         Section(header: sectionHeader(team: team)) {
-            ForEach(team.players, content: self.playerRow)
+            ForEach(team.players, content: playerRow)
                 .onDelete(perform: { self.viewModel.deletePlayer(in: team, at: $0) })
+                .background(Color(team.color.color).opacity(0.10))
         }
     }
 
@@ -73,9 +74,6 @@ struct PlayersView: View {
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .listRowInsets(EdgeInsets())
-        .background(
-            viewModel.color(for: player).opacity(0.10)
-        )
     }
 
     private func edit(player: Player) -> some View {
