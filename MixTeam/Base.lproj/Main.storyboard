@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -46,11 +46,12 @@
             </objects>
             <point key="canvasLocation" x="351" y="41"/>
         </scene>
-        <!--Item-->
+        <!--Players-->
         <scene sceneID="5xw-l4-60M">
             <objects>
                 <hostingController id="xY1-W2-uT2" customClass="PlayersHostingController" customModule="MixTeam" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="eLZ-os-26m"/>
+                    <tabBarItem key="tabBarItem" title="Players" image="players" id="nhN-pY-msD"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </hostingController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iDG-hU-7kd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

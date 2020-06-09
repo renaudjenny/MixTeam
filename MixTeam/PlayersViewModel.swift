@@ -48,6 +48,12 @@ final class PlayersViewModel: ObservableObject {
             set: { self.teams[teamIndex].players[playerIndex] = $0 }
         )
     }
+
+    func createPlayer(name: String, image: ImageIdentifier) {
+        guard var playersStandingForATeam = teams.first else { return }
+        playersStandingForATeam.players.append(Player(name: name, image: image.appImage))
+        teams[0] = playersStandingForATeam
+    }
 }
 
 extension PlayersViewModel {

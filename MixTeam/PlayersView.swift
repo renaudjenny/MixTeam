@@ -5,6 +5,12 @@ struct PlayersView: View {
     @State private var editedPlayer: Player? = nil
 
     var body: some View {
+        NavigationView {
+            playersView
+        }
+    }
+
+    private var playersView: some View {
         VStack(spacing: 0) {
             List {
                 ForEach(viewModel.teams, content: teamRow)
@@ -22,6 +28,8 @@ struct PlayersView: View {
         }
         .alert(item: $viewModel.presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
+        .navigationBarTitle("Players")
+        .navigationBarItems(trailing: addPlayerButton)
     }
 
     private func teamRow(_ team: Team) -> some View {
@@ -76,6 +84,10 @@ struct PlayersView: View {
         }
         return EditPlayerView(playerName: player.name, imageIdentifier: player.appImage.imageIdentifier)
             .eraseToAnyView()
+    }
+
+    private var addPlayerButton: some View {
+        NavigationLink(destination: AddPlayerView(createPlayer: viewModel.createPlayer), label: { Image(systemName: "plus") })
     }
 }
 

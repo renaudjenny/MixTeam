@@ -3,6 +3,7 @@ import Combine
 import UIKit
 
 struct AddPlayerView: View {
+    @Environment(\.presentationMode) var presentation
     static let placeholders = ["John", "Mathilde", "Renaud"]
     static let imageIdentifiers: [ImageIdentifier] = PlayerImagesView.imageIdentifiers
     var createPlayer: ((String, ImageIdentifier) -> Void)? = nil
@@ -63,6 +64,7 @@ struct AddPlayerView: View {
 
     private func createPlayerAction() {
         createPlayer?(playerName, imageIdentifier)
+        presentation.wrappedValue.dismiss()
     }
 
     private var noNameAlert: Alert {
