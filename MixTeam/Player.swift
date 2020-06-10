@@ -20,8 +20,9 @@ struct Player: Codable, Identifiable, Hashable {
         self.appImage = image ?? AppImage.unknown
     }
 
-    func identifier(for color: Color) -> Int {
-        id.hashValue ^ color.hashValue
+    init(_ player: Player) {
+        name = player.name
+        appImage = player.appImage
     }
 }
 

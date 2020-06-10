@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveDefaultTeamsIfNeeded()
         self.saveDefaultPlayersIfNeeded()
         #if DEBUG
-        hardReset()
+//        hardReset()
         #endif
     }
 

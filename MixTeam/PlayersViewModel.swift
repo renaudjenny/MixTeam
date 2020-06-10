@@ -23,7 +23,7 @@ final class PlayersViewModel: ObservableObject {
     func deletePlayer(in team: Team, at offsets: IndexSet) {
         guard let index = teams.firstIndex(of: team) else { return }
         teams[index].players.remove(atOffsets: offsets)
-        updateTeams()
+        Team.save(teams: teams)
     }
 
     func color(for player: Player) -> Color {
@@ -31,11 +31,6 @@ final class PlayersViewModel: ObservableObject {
             return .gray
         }
         return Color(team.color.color)
-    }
-
-    func updateTeams() {
-        Team.save(teams: teams)
-        objectWillChange.send()
     }
 
     func playerBinding(for player: Player) -> Binding<Player>? {
@@ -57,6 +52,8 @@ final class PlayersViewModel: ObservableObject {
 }
 
 extension PlayersViewModel {
+    static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
+
     private func randomizeTeam() {
         let players = teams.flatMap(\.players)
         guard players.count > 0 else { return }
@@ -76,10 +73,24 @@ extension PlayersViewModel {
             teams[teamIndex].players += [player]
             return teams
         }
-        updateTeams()
+        Team.save(teams: teams)
+        delayPlayersColorReset()
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
         return a.players.count < b.players.count
+    }
+
+    private func delayPlayersColorReset() {
+        // We need to delay the Player Id reset. Otherwise there will no row animations
+        // on the table. And if we don't reset players id, color won't change.
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.playersColorResetDelay) { [weak self] in
+            guard let self = self else { return }
+            self.teams = self.teams.map({
+                var team = $0
+                team.players = $0.players.map { Player($0) }
+                return team
+            })
+        }
     }
 }
