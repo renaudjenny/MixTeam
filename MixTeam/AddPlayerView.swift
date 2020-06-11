@@ -6,7 +6,7 @@ struct AddPlayerView: View {
     @Environment(\.presentationMode) var presentation
     static let placeholders = ["John", "Mathilde", "Renaud"]
     static let imageIdentifiers: [ImageIdentifier] = PlayerImagesView.imageIdentifiers
-    var createPlayer: ((String, ImageIdentifier) -> Void)? = nil
+    var createPlayer: (String, ImageIdentifier) -> Void
     @State private var playerName: String = "Player name"
     @State private var imageIdentifier: ImageIdentifier = .amaliePoulain
     @State private var keyboardHeight: CGFloat = 0
@@ -63,7 +63,7 @@ struct AddPlayerView: View {
     }
 
     private func createPlayerAction() {
-        createPlayer?(playerName, imageIdentifier)
+        createPlayer(playerName, imageIdentifier)
         presentation.wrappedValue.dismiss()
     }
 
@@ -78,6 +78,6 @@ struct AddPlayerView: View {
 
 struct AppPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        AddPlayerView()
+        AddPlayerView(createPlayer: { _, _ in })
     }
 }

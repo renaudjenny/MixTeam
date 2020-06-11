@@ -8,7 +8,8 @@
 
 import UIKit
 
-enum UXColor: String, Codable {
+// TODO: remove UX color and use ColorIdentifier instead
+enum UXColor: String, Codable, Identifiable {
     case yellow
     case orange
     case red
@@ -47,6 +48,8 @@ enum UXColor: String, Codable {
         .maroon, .purple, .azure,
         .jade, .lime
     ]
+
+    var id: Int { hashValue }
 }
 
 extension UIColor {
