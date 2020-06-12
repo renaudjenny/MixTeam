@@ -15,6 +15,7 @@ struct TeamsView: View {
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitle("Players")
+        .navigationBarItems(trailing: addTeamButton)
     }
 
     private func teamRow(team: Team) -> some View {
@@ -34,6 +35,10 @@ struct TeamsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .listRowInsets(EdgeInsets())
         .background(Color(team.color.color).opacity(0.10))
+    }
+
+    private var addTeamButton: some View {
+        NavigationLink(destination: AddTeamView(createTeam: viewModel.createTeam), label: { Image(systemName: "plus") })
     }
 }
 

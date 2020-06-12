@@ -51,6 +51,7 @@ extension Team {
         }
 
         UserDefaults.standard.set(jsonString, forKey: Team.teamsJSONStringKey)
+        NotificationCenter.default.post(name: .TeamsUpdated, object: teams)
     }
 
     static func loadList() -> [Team] {
@@ -109,4 +110,5 @@ extension Notification.Name {
     static let TeamDidAdded = Notification.Name("TeamDidAdded")
     static let TeamDidDeleted = Notification.Name("TeamDidDeleted")
     static let TeamDidUpdated = Notification.Name("TeamDidUpdated")
+    static let TeamsUpdated = Notification.Name("TeamsUpdated")
 }

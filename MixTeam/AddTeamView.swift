@@ -23,7 +23,7 @@ struct AddTeamView: View {
             List(ColorIdentifier.allCases, rowContent: colorRow)
             Button(action: createTeamAction) {
                 Text("Create Team")
-            }
+            }.padding()
         }
         .onAppear(perform: randomlyChangePlaceholder)
         .navigationBarTitle("Add Team")
