@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddTeamView: View {
     @Environment(\.presentationMode) var presentation
-    var createTeam: (String, ImageIdentifier, Color) -> Void
+    var createTeam: (String, ImageIdentifier, ColorIdentifier) -> Void
     @State private var name = "Team Name"
     @State private var imageIdentifier: ImageIdentifier = .koala
     @State private var colorIdentifier: ColorIdentifier = .red
@@ -11,12 +11,18 @@ struct AddTeamView: View {
         VStack {
             HStack {
                 TextField("Name", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 teamImage
             }
-            List {
-                ForEach(UXColor.allColors) {
-                    Color($0.color).frame(width: 50, height: 50)
-                }
+            .padding()
+            .background(
+                colorIdentifier.color
+                    .opacity(0.10)
+                    .clipShape(RoundedRectangle(cornerRadius: 8)))
+            .padding()
+            List(ColorIdentifier.allCases, rowContent: colorRow)
+            Button(action: createTeamAction) {
+                Text("Create Team")
             }
         }
         .onAppear(perform: randomlyChangePlaceholder)
@@ -38,10 +44,23 @@ struct AddTeamView: View {
         colorIdentifier = color
         name = "\(color.name) \(image.name)".localizedCapitalized
     }
+
+    private func createTeamAction() {
+        createTeam(name, imageIdentifier, colorIdentifier)
+        presentation.wrappedValue.dismiss()
+    }
+
+    private func colorRow(_ colorIdentifier: ColorIdentifier) -> some View {
+        Button(action: { self.colorIdentifier = colorIdentifier }) {
+            colorIdentifier.color.frame(width: 50, height: 50)
+        }
+    }
 }
 
 struct AddTeamView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTeamView(createTeam: { _, _, _ in })
+        NavigationView {
+            AddTeamView(createTeam: { _, _, _ in })
+        }
     }
 }
