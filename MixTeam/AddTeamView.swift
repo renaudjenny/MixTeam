@@ -6,6 +6,7 @@ struct AddTeamView: View {
     @State private var name = "Team Name"
     @State private var imageIdentifier: ImageIdentifier = .koala
     @State private var colorIdentifier: ColorIdentifier = .red
+    @State private var isTeamImagesPresented = false
 
     var body: some View {
         VStack {
@@ -26,11 +27,14 @@ struct AddTeamView: View {
             }.padding()
         }
         .onAppear(perform: randomlyChangePlaceholder)
+        .sheet(isPresented: $isTeamImagesPresented) {
+            TeamImagesView(selectedImageIdentifier: self.$imageIdentifier)
+        }
         .navigationBarTitle("Add Team")
     }
 
     private var teamImage: some View {
-        Button(action: { }) {
+        Button(action: { self.isTeamImagesPresented = true }) {
             imageIdentifier.image
                 .resizable()
                 .frame(width: 50, height: 50)

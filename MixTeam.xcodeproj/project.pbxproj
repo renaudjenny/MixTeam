@@ -20,6 +20,7 @@
 		4C38973624914CC600D6D182 /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973524914CC600D6D182 /* TeamsView.swift */; };
 		4C38973824914D1300D6D182 /* TeamsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973724914D1300D6D182 /* TeamsViewModel.swift */; };
 		4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3897392492BDC800D6D182 /* AddTeamView.swift */; };
+		4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */; };
 		4C40059E245D4B3300ADF398 /* PlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40059D245D4B3300ADF398 /* PlayersViewModel.swift */; };
 		4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE101EC0DA950079E964 /* UXUtils.swift */; };
 		4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C40AE131EC3AF0E0079E964 /* Teams.storyboard */; };
@@ -83,6 +84,7 @@
 		4C38973524914CC600D6D182 /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		4C38973724914D1300D6D182 /* TeamsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsViewModel.swift; sourceTree = "<group>"; };
 		4C3897392492BDC800D6D182 /* AddTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamView.swift; sourceTree = "<group>"; };
+		4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImagesView.swift; sourceTree = "<group>"; };
 		4C40059D245D4B3300ADF398 /* PlayersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewModel.swift; sourceTree = "<group>"; };
 		4C40AE101EC0DA950079E964 /* UXUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtils.swift; sourceTree = "<group>"; };
 		4C40AE131EC3AF0E0079E964 /* Teams.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Teams.storyboard; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				4C38973524914CC600D6D182 /* TeamsView.swift */,
 				4C38973724914D1300D6D182 /* TeamsViewModel.swift */,
 				4C3897392492BDC800D6D182 /* AddTeamView.swift */,
+				4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */,
 			);
 			name = Teams;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
+				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,

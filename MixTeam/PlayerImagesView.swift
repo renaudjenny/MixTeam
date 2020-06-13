@@ -24,6 +24,7 @@ struct PlayerImagesView: View {
     }
 }
 
+// TODO: refactor rename this Cell because it's use in TeamImagesView as well. And obviously extract it from here!
 struct PlayerImageCell: View {
     let image: Image
     let isSelected: Bool
