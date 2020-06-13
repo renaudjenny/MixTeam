@@ -11,11 +11,11 @@ struct TeamsView: View {
 
     private var teamsView: some View {
         List {
-            ForEach(viewModel.teams, content: teamRow)
+            ForEach(viewModel.teams.dropFirst(), content: teamRow)
                 .onDelete(perform: viewModel.deleteTeam)
         }
         .listStyle(GroupedListStyle())
-        .navigationBarTitle("Players")
+        .navigationBarTitle("Teams")
         .navigationBarItems(trailing: addTeamButton)
     }
 

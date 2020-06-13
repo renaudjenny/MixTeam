@@ -7,7 +7,7 @@ final class TeamsViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        teams = Array(Team.loadList().dropFirst())
+        teams = Team.loadList()
         NotificationCenter.default.publisher(for: .TeamsUpdated)
             .compactMap({ $0.object as? [Team] })
             .assign(to: \.teams, on: self)
@@ -23,7 +23,13 @@ final class TeamsViewModel: ObservableObject {
         team.save()
     }
 
-    func deleteTeam(at index: IndexSet) {
-        index.forEach({ teams[$0].delete() })
+    func deleteTeam(atOffsets offsets: IndexSet) {
+        // As the real first team is not displayed. The real index is offset + 1
+        let index = (offsets.first ?? 0) + 1
+        let playersInDeletedTeam = teams[index].players
+        teams[0].players.append(contentsOf: playersInDeletedTeam)
+        teams[0].update()
+
+        teams[index].delete()
     }
 }

@@ -1,14 +1,24 @@
 import SwiftUI
+import Combine
 
 final class PlayersViewModel: ObservableObject {
     @Published var teams: [Team] = []
     @Published var presentedAlert: PlayersView.PresentedAlert? = nil
 
+    private var cancellables = Set<AnyCancellable>()
+
     init() {
         teams = Team.loadList()
-        guard teams.count > 0 else { return }
-        teams[0].name = NSLocalizedString("Players standing for a team", comment: "")
-        teams[0].color = .gray
+        let firstTeam = Team(name: "Players standing for a team", color: .gray)
+        if teams.count <= 0 {
+            teams.append(firstTeam)
+        }
+        teams[0] = firstTeam
+        Team.save(teams: teams)
+        NotificationCenter.default.publisher(for: .TeamsUpdated)
+            .compactMap({ $0.object as? [Team] })
+            .assign(to: \.teams, on: self)
+            .store(in: &cancellables)
     }
 
     func mixTeam() {
@@ -48,6 +58,7 @@ final class PlayersViewModel: ObservableObject {
         guard var playersStandingForATeam = teams.first else { return }
         playersStandingForATeam.players.append(Player(name: name, image: image.appImage))
         teams[0] = playersStandingForATeam
+        Team.save(teams: teams)
     }
 }
 
