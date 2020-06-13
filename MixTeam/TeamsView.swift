@@ -12,6 +12,7 @@ struct TeamsView: View {
     private var teamsView: some View {
         List {
             ForEach(viewModel.teams, content: teamRow)
+                .onDelete(perform: viewModel.deleteTeam)
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitle("Players")

@@ -22,4 +22,8 @@ final class TeamsViewModel: ObservableObject {
         )
         team.save()
     }
+
+    func deleteTeam(at index: IndexSet) {
+        index.forEach({ teams[$0].delete() })
+    }
 }
