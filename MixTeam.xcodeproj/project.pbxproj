@@ -31,6 +31,8 @@
 		4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */; };
 		4C8BF66F1F952D4200DA4B18 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C8BF66E1F952D4200DA4B18 /* players.json */; };
 		4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */; };
+		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
+		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
 		4CD9A2EE1F3510AC0080AE46 /* PlayerPersistanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */; };
 		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
@@ -87,6 +89,8 @@
 		4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptsToSoftwareKeyboard.swift; sourceTree = "<group>"; };
 		4C8BF66E1F952D4200DA4B18 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
+		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
+		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
 		4CD9A2ED1F3510AC0080AE46 /* PlayerPersistanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerPersistanceTests.swift; sourceTree = "<group>"; };
 		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
@@ -254,6 +258,8 @@
 			children = (
 				4CEF9D481F8A999100E34083 /* JSONUtils.swift */,
 				4C40AE101EC0DA950079E964 /* UXUtils.swift */,
+				4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */,
+				4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -406,6 +412,7 @@
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
+				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
@@ -415,6 +422,7 @@
 				4C38973624914CC600D6D182 /* TeamsView.swift in Sources */,
 				4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersViewModel.swift in Sources */,
+				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
