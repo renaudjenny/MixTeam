@@ -31,13 +31,13 @@ struct TeamsView: View {
                     .padding(.trailing)
                 Text(team.name)
                 Spacer()
-            }.foregroundColor(Color(team.color.color))
+            }.foregroundColor(team.colorIdentifier.color)
         }
         .buttonStyle(DefaultButtonStyle())
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .listRowInsets(EdgeInsets())
-        .background(Color(team.color.color).opacity(0.10))
+        .background(team.colorIdentifier.color.opacity(0.10))
     }
 
     private var addTeamButton: some View {

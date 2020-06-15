@@ -9,7 +9,7 @@ final class PlayersViewModel: ObservableObject {
 
     init() {
         teams = Team.loadList()
-        let firstTeam = Team(name: "Players standing for a team", color: .gray)
+        let firstTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
         if teams.count <= 0 {
             teams.append(firstTeam)
         }
@@ -40,7 +40,7 @@ final class PlayersViewModel: ObservableObject {
         guard let team = teams.first(where: { $0.players.contains(player) }) else {
             return .gray
         }
-        return Color(team.color.color)
+        return team.colorIdentifier.color
     }
 
     func playerBinding(for player: Player) -> Binding<Player>? {

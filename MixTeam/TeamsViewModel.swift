@@ -15,11 +15,7 @@ final class TeamsViewModel: ObservableObject {
     }
 
     func createTeam(name: String, image: ImageIdentifier, color: ColorIdentifier) {
-        let team = Team(
-            name: name,
-            color: UXColor(rawValue: color.rawValue) ?? .red,
-            image: image.appImage
-        )
+        let team = Team(name: name, colorIdentifier: color, imageIdentifier: image)
         team.save()
     }
 

@@ -36,7 +36,7 @@ struct PlayersView: View {
         Section(header: sectionHeader(team: team)) {
             ForEach(team.players, content: playerRow)
                 .onDelete(perform: { self.viewModel.deletePlayer(in: team, at: $0) })
-                .background(Color(team.color.color).opacity(0.10))
+                .background(team.colorIdentifier.color.opacity(0.10))
         }
     }
 
@@ -53,9 +53,7 @@ struct PlayersView: View {
         }
         .frame(maxWidth: .infinity, minHeight: 50)
         .listRowInsets(EdgeInsets())
-        .background(
-            Color(team.color.color.withAlphaComponent(0.20))
-        )
+        .background(team.colorIdentifier.color.opacity(0.20))
     }
 
     private func playerRow(_ player: Player) -> some View {
@@ -107,17 +105,17 @@ struct PlayersView_Previews: PreviewProvider {
     }
 
     private static let teams: [Team] = {
-        var playersStandingTeam = Team(name: NSLocalizedString("Players standing for a team", comment: ""), color: .gray)
+        var playersStandingTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
         playersStandingTeam.players = [
             Player(name: "Lara", image: .laraCraft),
             Player(name: "Harry", image: .harryPottar)
         ]
-        var koalaTeam = Team(name: "Red Koala", color: .red, image: .koala)
+        var koalaTeam = Team(name: "Red Koala", colorIdentifier: .red, imageIdentifier: .koala)
         koalaTeam.players = [Player(name: "Vador", image: .darkVadir)]
         return [
             playersStandingTeam,
             koalaTeam,
-            Team(name: "Purple Elephant", color: .purple, image: .elephant)
+            Team(name: "Purple Elephant", colorIdentifier: .purple, imageIdentifier: .elephant)
         ]
     }()
 }

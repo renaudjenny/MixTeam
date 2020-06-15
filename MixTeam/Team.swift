@@ -11,7 +11,7 @@ import UIKit
 struct Team: Codable {
     var id = UUID()
     var name: String = ""
-    var color: UXColor = .gray
+    var colorIdentifier: ColorIdentifier = .gray
     var image: AppImage? = nil
     var players: [Player] = []
     var handicap: Int {
@@ -20,28 +20,15 @@ struct Team: Codable {
         return handicapSum
     }
 
-    // TODO: remove this init when UXColor and AppImage will be removed
-    init(name: String, color: UXColor, image: AppImage? = nil) {
-        self.name = name
-        self.color = color
-        self.image = image
-    }
-
     init(name: String, colorIdentifier: ColorIdentifier, imageIdentifier: ImageIdentifier) {
         self.name = name
         self.colorIdentifier = colorIdentifier
         self.imageIdentifier = imageIdentifier
     }
 
-    // TODO: replace color: UXColor directly by ColorIdentifier when UXColor won't be used anywhere
-    var colorIdentifier: ColorIdentifier {
-        get { ColorIdentifier(rawValue: color.rawValue) ?? .gray }
-        set { color = UXColor(rawValue: newValue.rawValue) ?? .gray }
-    }
-
     // TODO: replace image: AppImage directly by ImageIdentifier when AppImage won't be used anywhere
     var imageIdentifier: ImageIdentifier {
-        get { ImageIdentifier(rawValue: image?.rawValue ?? "") ?? .theBotman }
+        get { ImageIdentifier(rawValue: image?.rawValue ?? "") ?? .unknown }
         set { image = AppImage(rawValue: newValue.rawValue) }
     }
 }
@@ -77,16 +64,6 @@ extension Team {
         guard let teamsJSONString = UserDefaults.standard.string(forKey: Team.teamsJSONStringKey),
             let jsonData = teamsJSONString.data(using: .utf8),
             let teamsContainer = try? JSONDecoder().decode(Teams.self, from: jsonData) else {
-                return []
-        }
-
-        return teamsContainer.teams
-    }
-
-    static func loadListFromResource() -> [Team] {
-        guard let path = Bundle.main.path(forResource: Team.teamsResourcePath, ofType: "json"),
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
-            let teamsContainer = try? JSONDecoder().decode(Teams.self, from: data) else {
                 return []
         }
 

@@ -14,7 +14,14 @@ enum ImageIdentifier: String, Identifiable {
     case theBotman = "the-botman"
     case wanderWoman = "wander-woman"
 
-    var image: Image { Image(rawValue) }
+    case unknown = ""
+
+    var image: Image {
+        switch self {
+        case .unknown: return Image(systemName: "questionmark")
+        default: return Image(rawValue)
+        }
+    }
 
     var id: String { rawValue }
 
