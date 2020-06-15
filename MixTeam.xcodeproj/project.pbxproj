@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C0D8FA824901ABB00FDD78A /* TeamHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C0D8FA624901ABA00FDD78A /* TeamHeaderView.xib */; };
-		4C0D8FA924901ABB00FDD78A /* TeamHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0D8FA724901ABB00FDD78A /* TeamHeaderView.swift */; };
-		4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2A88D81F599744003E6DBC /* PlayerTableViewCell.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732E81EBF8E8100A5785E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E61EBF8E8100A5785E /* Main.storyboard */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
@@ -24,18 +21,13 @@
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
 		4C40059E245D4B3300ADF398 /* PlayersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40059D245D4B3300ADF398 /* PlayersViewModel.swift */; };
 		4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE101EC0DA950079E964 /* UXUtils.swift */; };
-		4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C40AE131EC3AF0E0079E964 /* Teams.storyboard */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
-		4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */; };
-		4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */; };
 		4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */; };
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */; };
 		4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */; };
 		4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* PlayersView.swift */; };
-		4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */; };
-		4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */; };
 		4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */; };
 		4C8BF66F1F952D4200DA4B18 /* players.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C8BF66E1F952D4200DA4B18 /* players.json */; };
 		4C9CBD411F16BB24004A48E5 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */; };
@@ -45,7 +37,6 @@
 		4CEB75061EFFE90800E4DEFA /* teams.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CEB75051EFFE90800E4DEFA /* teams.json */; };
 		4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */; };
 		4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEF9D481F8A999100E34083 /* JSONUtils.swift */; };
-		4CF9D2FB1F6436D7009879E4 /* LogoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF9D2FA1F6436D7009879E4 /* LogoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,9 +57,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4C0D8FA624901ABA00FDD78A /* TeamHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TeamHeaderView.xib; sourceTree = "<group>"; };
-		4C0D8FA724901ABB00FDD78A /* TeamHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamHeaderView.swift; sourceTree = "<group>"; };
-		4C2A88D81F599744003E6DBC /* PlayerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTableViewCell.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E71EBF8E8100A5785E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -89,18 +77,13 @@
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
 		4C40059D245D4B3300ADF398 /* PlayersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersViewModel.swift; sourceTree = "<group>"; };
 		4C40AE101EC0DA950079E964 /* UXUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtils.swift; sourceTree = "<group>"; };
-		4C40AE131EC3AF0E0079E964 /* Teams.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Teams.storyboard; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTeamViewController.swift; sourceTree = "<group>"; };
-		4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTableViewController.swift; sourceTree = "<group>"; };
 		4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerView.swift; sourceTree = "<group>"; };
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EraseToAnyView.swift"; sourceTree = "<group>"; };
 		4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
-		4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLogoCollectionViewController.swift; sourceTree = "<group>"; };
-		4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTeamViewController.swift; sourceTree = "<group>"; };
 		4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptsToSoftwareKeyboard.swift; sourceTree = "<group>"; };
 		4C8BF66E1F952D4200DA4B18 /* players.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = players.json; sourceTree = "<group>"; };
 		4C9CBD401F16BB24004A48E5 /* TeamsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
@@ -110,7 +93,6 @@
 		4CEB75051EFFE90800E4DEFA /* teams.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = teams.json; sourceTree = "<group>"; };
 		4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsPersistenceTests.swift; sourceTree = "<group>"; };
 		4CEF9D481F8A999100E34083 /* JSONUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUtils.swift; sourceTree = "<group>"; };
-		4CF9D2FA1F6436D7009879E4 /* LogoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,17 +120,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C2A88D11F4A1D94003E6DBC /* Custom Cells */ = {
-			isa = PBXGroup;
-			children = (
-				4C0D8FA724901ABB00FDD78A /* TeamHeaderView.swift */,
-				4C0D8FA624901ABA00FDD78A /* TeamHeaderView.xib */,
-				4CF9D2FA1F6436D7009879E4 /* LogoCollectionViewCell.swift */,
-				4C2A88D81F599744003E6DBC /* PlayerTableViewCell.swift */,
-			);
-			name = "Custom Cells";
-			sourceTree = "<group>";
-		};
 		4C3732D41EBF8E8100A5785E = {
 			isa = PBXGroup;
 			children = (
@@ -212,7 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
-				4C2A88D11F4A1D94003E6DBC /* Custom Cells */,
 				4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
 				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
@@ -226,12 +196,7 @@
 		4C40AE121EC3AEDB0079E964 /* Teams */ = {
 			isa = PBXGroup;
 			children = (
-				4C40AE171ECCDF8E0079E964 /* AddTeamViewController.swift */,
-				4C87E51F1F1FF77200AEFA36 /* EditTeamViewController.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
-				4C87E51D1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift */,
-				4C40AE131EC3AF0E0079E964 /* Teams.storyboard */,
-				4C40AE191ED9D2080079E964 /* TeamsTableViewController.swift */,
 				4C38973524914CC600D6D182 /* TeamsView.swift */,
 				4C38973724914D1300D6D182 /* TeamsViewModel.swift */,
 				4C3897392492BDC800D6D182 /* AddTeamView.swift */,
@@ -408,9 +373,7 @@
 				4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */,
 				4C3732E81EBF8E8100A5785E /* Main.storyboard in Resources */,
 				4C8BF66F1F952D4200DA4B18 /* players.json in Resources */,
-				4C0D8FA824901ABB00FDD78A /* TeamHeaderView.xib in Resources */,
 				4CEB75061EFFE90800E4DEFA /* teams.json in Resources */,
-				4C40AE141EC3AF0E0079E964 /* Teams.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,26 +402,19 @@
 				4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */,
 				4C38973824914D1300D6D182 /* TeamsViewModel.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
-				4C2A88D91F599744003E6DBC /* PlayerTableViewCell.swift in Sources */,
-				4C40AE181ECCDF8E0079E964 /* AddTeamViewController.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
-				4C40AE1A1ED9D2080079E964 /* TeamsTableViewController.swift in Sources */,
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4C40AE111EC0DA950079E964 /* UXUtils.swift in Sources */,
 				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
-				4C87E5201F1FF77200AEFA36 /* EditTeamViewController.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
 				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
-				4CF9D2FB1F6436D7009879E4 /* LogoCollectionViewCell.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */,
 				4C38973624914CC600D6D182 /* TeamsView.swift in Sources */,
 				4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersViewModel.swift in Sources */,
-				4C87E51E1F1FF4BC00AEFA36 /* TeamLogoCollectionViewController.swift in Sources */,
-				4C0D8FA924901ABB00FDD78A /* TeamHeaderView.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

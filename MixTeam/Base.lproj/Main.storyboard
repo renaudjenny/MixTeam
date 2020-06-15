@@ -18,23 +18,12 @@
                     </tabBar>
                     <connections>
                         <segue destination="xY1-W2-uT2" kind="relationship" relationship="viewControllers" id="v28-xF-Xp6"/>
-                        <segue destination="3bM-TX-M4y" kind="relationship" relationship="viewControllers" id="6wV-vT-63r"/>
                         <segue destination="Xbu-va-v1r" kind="relationship" relationship="viewControllers" id="o7U-ir-2sy"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-386" y="-117"/>
-        </scene>
-        <!--Teams-->
-        <scene sceneID="EjP-Uw-uPb">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Teams" id="3bM-TX-M4y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Teams" image="teams" id="V6D-Mb-gTg"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="c32-SI-YJA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="309" y="-117"/>
         </scene>
         <!--Teams-->
         <scene sceneID="3Kx-p9-ori">
