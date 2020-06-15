@@ -3,14 +3,9 @@ import Combine
 import UIKit
 
 struct EditPlayerView: View {
-    static let imageIdentifiers: [ImageIdentifier] = PlayerImagesView.imageIdentifiers
-    var editPlayer: ((String, ImageIdentifier) -> Void)? = nil
-    // TODO: remove cancelFromHosting when we will get rid of Hosting Controller
-    var cancelFromHosting: (() -> Void)? = nil
     @Environment(\.presentationMode) var presentation
     @Binding var playerName: String
     @Binding var imageIdentifier: ImageIdentifier
-    @State private var keyboardHeight: CGFloat = 0
     @State private var isPlayerImagesPresented = false
     @State private var isAlertPresented = false
 
@@ -20,13 +15,7 @@ struct EditPlayerView: View {
                 title
                 playerImage.frame(width: 200, height: 200)
                 playerNameField
-                HStack {
-                    Spacer()
-                    Button(action: cancel, label: { Text("Cancel") })
-                    Spacer()
-                    editPlayerButton
-                    Spacer()
-                }
+                editPlayerButton
             }
             .sheet(isPresented: $isPlayerImagesPresented) {
                 PlayerImagesView(selectedImageIdentifier: self.$imageIdentifier)
@@ -64,7 +53,6 @@ struct EditPlayerView: View {
     }
 
     private func editPlayerAction() {
-        editPlayer?(playerName, imageIdentifier)
         presentation.wrappedValue.dismiss()
     }
 
@@ -74,11 +62,6 @@ struct EditPlayerView: View {
             message: Text("Please, give a name to the player"),
             dismissButton: .cancel()
         )
-    }
-
-    private func cancel() {
-        presentation.wrappedValue.dismiss()
-        cancelFromHosting?()
     }
 }
 

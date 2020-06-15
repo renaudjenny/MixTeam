@@ -32,4 +32,14 @@ final class TeamsViewModel: ObservableObject {
 
         teams[index].delete()
     }
+
+    func teamBinding(for team: Team) -> Binding<Team>? {
+        guard let teamIndex = teams.firstIndex(of: team) else {
+            return nil
+        }
+        return Binding<Team>(
+            get: { self.teams[teamIndex] },
+            set: { self.teams[teamIndex] = $0 }
+        )
+    }
 }

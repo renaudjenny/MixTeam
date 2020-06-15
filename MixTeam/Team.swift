@@ -20,10 +20,29 @@ struct Team: Codable {
         return handicapSum
     }
 
+    // TODO: remove this init when UXColor and AppImage will be removed
     init(name: String, color: UXColor, image: AppImage? = nil) {
         self.name = name
         self.color = color
         self.image = image
+    }
+
+    init(name: String, colorIdentifier: ColorIdentifier, imageIdentifier: ImageIdentifier) {
+        self.name = name
+        self.colorIdentifier = colorIdentifier
+        self.imageIdentifier = imageIdentifier
+    }
+
+    // TODO: replace color: UXColor directly by ColorIdentifier when UXColor won't be used anywhere
+    var colorIdentifier: ColorIdentifier {
+        get { ColorIdentifier(rawValue: color.rawValue) ?? .gray }
+        set { color = UXColor(rawValue: newValue.rawValue) ?? .gray }
+    }
+
+    // TODO: replace image: AppImage directly by ImageIdentifier when AppImage won't be used anywhere
+    var imageIdentifier: ImageIdentifier {
+        get { ImageIdentifier(rawValue: image?.rawValue ?? "") ?? .theBotman }
+        set { image = AppImage(rawValue: newValue.rawValue) }
     }
 }
 

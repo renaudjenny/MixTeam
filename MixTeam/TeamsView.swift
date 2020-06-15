@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TeamsView: View {
     @ObservedObject var viewModel = TeamsViewModel()
+    @State private var editedTeam: Team? = nil
 
     var body: some View {
         NavigationView {
@@ -15,12 +16,13 @@ struct TeamsView: View {
                 .onDelete(perform: viewModel.deleteTeam)
         }
         .listStyle(GroupedListStyle())
+        .sheet(item: $editedTeam, content: edit)
         .navigationBarTitle("Teams")
         .navigationBarItems(trailing: addTeamButton)
     }
 
     private func teamRow(team: Team) -> some View {
-        Button(action: { }) {
+        Button(action: { self.editedTeam = team }) {
             HStack {
                 team.image?.imageIdentifier.image
                     .resizable()
@@ -40,6 +42,13 @@ struct TeamsView: View {
 
     private var addTeamButton: some View {
         NavigationLink(destination: AddTeamView(createTeam: viewModel.createTeam), label: { Image(systemName: "plus") })
+    }
+
+    private func edit(team: Team) -> some View {
+        guard let teamBinding = viewModel.teamBinding(for: team) else {
+            return EmptyView().eraseToAnyView()
+        }
+        return EditTeamView(team: teamBinding).eraseToAnyView()
     }
 }
 
