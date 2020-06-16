@@ -44,6 +44,7 @@ struct PlayersView: View {
         HStack {
             team.imageIdentifier.image
                 .resizable()
+                .aspectRatio(contentMode: .fit)
                 .frame(width: 50, height: 50)
                 .padding([.leading, .top, .bottom])
             Text(team.name)
