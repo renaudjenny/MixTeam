@@ -35,7 +35,6 @@
 		4CEB74FE1EEF358B00E4DEFA /* UXUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */; };
 		4CEB75011EEF373A00E4DEFA /* PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */; };
 		4CEECE921F180D2A005C07F0 /* TeamsPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */; };
-		4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEF9D481F8A999100E34083 /* JSONUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,6 @@
 		4CEB74FD1EEF358B00E4DEFA /* UXUtilsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UXUtilsTests.swift; sourceTree = "<group>"; };
 		4CEB75001EEF373A00E4DEFA /* PlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTests.swift; sourceTree = "<group>"; };
 		4CEECE911F180D2A005C07F0 /* TeamsPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamsPersistenceTests.swift; sourceTree = "<group>"; };
-		4CEF9D481F8A999100E34083 /* JSONUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,7 +238,6 @@
 		4CEF9D471F8A972B00E34083 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				4CEF9D481F8A999100E34083 /* JSONUtils.swift */,
 				4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */,
 				4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */,
 			);
@@ -393,7 +390,6 @@
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
-				4CEF9D491F8A999100E34083 /* JSONUtils.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
 				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,

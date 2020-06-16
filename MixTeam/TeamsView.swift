@@ -24,7 +24,7 @@ struct TeamsView: View {
     private func teamRow(team: Team) -> some View {
         Button(action: { self.editedTeam = team }) {
             HStack {
-                team.image?.imageIdentifier.image
+                team.imageIdentifier.image
                     .resizable()
                     .frame(width: 40, height: 40)
                     .padding(.leading, 20)

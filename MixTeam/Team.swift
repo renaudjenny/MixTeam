@@ -12,24 +12,13 @@ struct Team: Codable {
     var id = UUID()
     var name: String = ""
     var colorIdentifier: ColorIdentifier = .gray
-    var image: AppImage? = nil
+    var imageIdentifier: ImageIdentifier = .unknown
     var players: [Player] = []
-    var handicap: Int {
-        var handicapSum = 0
-        self.players.forEach { handicapSum += $0.handicap }
-        return handicapSum
-    }
 
     init(name: String, colorIdentifier: ColorIdentifier, imageIdentifier: ImageIdentifier) {
         self.name = name
         self.colorIdentifier = colorIdentifier
         self.imageIdentifier = imageIdentifier
-    }
-
-    // TODO: replace image: AppImage directly by ImageIdentifier when AppImage won't be used anywhere
-    var imageIdentifier: ImageIdentifier {
-        get { ImageIdentifier(rawValue: image?.rawValue ?? "") ?? .unknown }
-        set { image = AppImage(rawValue: newValue.rawValue) }
     }
 }
 

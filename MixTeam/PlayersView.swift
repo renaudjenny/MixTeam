@@ -42,7 +42,7 @@ struct PlayersView: View {
 
     private func sectionHeader(team: Team) -> some View {
         HStack {
-            team.image?.imageIdentifier.image
+            team.imageIdentifier.image
                 .resizable()
                 .frame(width: 50, height: 50)
                 .padding([.leading, .top, .bottom])
@@ -59,7 +59,7 @@ struct PlayersView: View {
     private func playerRow(_ player: Player) -> some View {
         Button(action: { self.editedPlayer = player }) {
             HStack {
-                player.appImage.imageIdentifier.image
+                player.imageIdentifier.image
                     .resizable()
                     .frame(width: 40, height: 40)
                     .padding(.leading, 40)
@@ -78,7 +78,7 @@ struct PlayersView: View {
         guard let player = viewModel.playerBinding(for: player) else {
             return EmptyView().eraseToAnyView()
         }
-        return EditPlayerView(playerName: player.name, imageIdentifier: player.appImage.imageIdentifier)
+        return EditPlayerView(playerName: player.name, imageIdentifier: player.imageIdentifier)
             .eraseToAnyView()
     }
 
@@ -107,11 +107,11 @@ struct PlayersView_Previews: PreviewProvider {
     private static let teams: [Team] = {
         var playersStandingTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
         playersStandingTeam.players = [
-            Player(name: "Lara", image: .laraCraft),
-            Player(name: "Harry", image: .harryPottar)
+            Player(name: "Lara", imageIdentifier: .laraCraft),
+            Player(name: "Harry", imageIdentifier: .harryPottar)
         ]
         var koalaTeam = Team(name: "Red Koala", colorIdentifier: .red, imageIdentifier: .koala)
-        koalaTeam.players = [Player(name: "Vador", image: .darkVadir)]
+        koalaTeam.players = [Player(name: "Vador", imageIdentifier: .darkVadir)]
         return [
             playersStandingTeam,
             koalaTeam,

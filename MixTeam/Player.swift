@@ -12,18 +12,7 @@ import SwiftUI
 struct Player: Codable, Identifiable, Hashable {
     let id = UUID()
     var name: String = ""
-    var appImage: AppImage
-    var handicap: Int = 100
-
-    init(name: String = "", image: AppImage? = nil) {
-        self.name = name
-        self.appImage = image ?? AppImage.unknown
-    }
-
-    init(_ player: Player) {
-        name = player.name
-        appImage = player.appImage
-    }
+    var imageIdentifier: ImageIdentifier
 }
 
 struct Players: Codable {

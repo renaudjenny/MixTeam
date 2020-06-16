@@ -56,7 +56,7 @@ final class PlayersViewModel: ObservableObject {
 
     func createPlayer(name: String, image: ImageIdentifier) {
         guard var playersStandingForATeam = teams.first else { return }
-        playersStandingForATeam.players.append(Player(name: name, image: image.appImage))
+        playersStandingForATeam.players.append(Player(name: name, imageIdentifier: image))
         teams[0] = playersStandingForATeam
         Team.save(teams: teams)
     }
@@ -99,7 +99,7 @@ extension PlayersViewModel {
             guard let self = self else { return }
             self.teams = self.teams.map({
                 var team = $0
-                team.players = $0.players.map { Player($0) }
+                team.players = $0.players.map { Player(name: $0.name, imageIdentifier: $0.imageIdentifier) }
                 return team
             })
         }

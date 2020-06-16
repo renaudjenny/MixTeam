@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum ImageIdentifier: String, Identifiable {
+enum ImageIdentifier: String, Identifiable, Codable {
     case elephant = "elephant"
     case koala = "koala"
     case panda = "panda"
@@ -43,10 +43,5 @@ enum ImageIdentifier: String, Identifiable {
         case .lion: return "lion"
         default: return ""
         }
-    }
-
-    // TODO: temporary, remove that ASAP
-    var appImage: AppImage {
-        AppImage(rawValue: self.rawValue) ?? .unknown
     }
 }
