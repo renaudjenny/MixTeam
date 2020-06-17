@@ -1,9 +1,21 @@
-//
-//  SceneDelegate.swift
-//  MixTeam
-//
-//  Created by Renaud JENNY on 17/06/2020.
-//  Copyright © 2020 Renaud JENNY. All rights reserved.
-//
+import SwiftUI
 
-import Foundation
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+
+        let window = UIWindow(windowScene: windowScene)
+
+        window.rootViewController = UIHostingController(rootView: TabBarView())
+        self.window = window
+        window.makeKeyAndVisible()
+    }
+}
+
