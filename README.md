@@ -8,7 +8,7 @@
 ## TODO
 
 * Add Linter rules
-* Migrate views to SwiftUI
+~~* Migrate views to SwiftUI~~
 * Add Unit Tests with Snapshots for views
 * Improve UI
 * Add GitHub Actions CI
