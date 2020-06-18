@@ -1,8 +1,11 @@
 import SwiftUI
 
-struct PlayersView: View {
-    @ObservedObject var viewModel = PlayersViewModel()
+struct PlayersView: View, PlayersLogic {
+    static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
+    @EnvironmentObject var teamsStore: TeamsStore
     @State private var editedPlayer: Player? = nil
+    @State private var presentedAlert: PresentedAlert?
+    var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 
     var body: some View {
         NavigationView {
@@ -13,10 +16,10 @@ struct PlayersView: View {
     private var playersView: some View {
         VStack(spacing: 0) {
             List {
-                ForEach(viewModel.teams, content: teamRow)
+                ForEach(teams, content: teamRow)
             }
             .listStyle(GroupedListStyle())
-            Button(action: viewModel.mixTeam) {
+            Button(action: mixTeam) {
                 HStack {
                     Image(systemName: "shuffle")
                     Text("Mix Team")
@@ -26,7 +29,7 @@ struct PlayersView: View {
             .frame(height: 50)
             .shadow(radius: 10)
         }
-        .alert(item: $viewModel.presentedAlert, content: alert(for:))
+        .alert(item: $presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
         .navigationBarTitle("Players")
         .navigationBarItems(trailing: addPlayerButton)
@@ -35,7 +38,7 @@ struct PlayersView: View {
     private func teamRow(_ team: Team) -> some View {
         Section(header: sectionHeader(team: team)) {
             ForEach(team.players, content: playerRow)
-                .onDelete(perform: { self.viewModel.deletePlayer(in: team, at: $0) })
+                .onDelete(perform: { self.deletePlayer(in: team, at: $0) })
                 .background(team.colorIdentifier.color.opacity(0.10))
         }
     }
@@ -67,7 +70,7 @@ struct PlayersView: View {
                     .padding(.trailing)
                 Text(player.name)
                 Spacer()
-            }.foregroundColor(viewModel.color(for: player))
+            }.foregroundColor(color(for: player))
         }
         .buttonStyle(DefaultButtonStyle())
         .padding([.top, .bottom], 10)
@@ -76,7 +79,7 @@ struct PlayersView: View {
     }
 
     private func edit(player: Player) -> some View {
-        guard let player = viewModel.playerBinding(for: player) else {
+        guard let player = playerBinding(for: player) else {
             return EmptyView().eraseToAnyView()
         }
         return EditPlayerView(playerName: player.name, imageIdentifier: player.imageIdentifier)
@@ -84,7 +87,7 @@ struct PlayersView: View {
     }
 
     private var addPlayerButton: some View {
-        NavigationLink(destination: AddPlayerView(createPlayer: viewModel.createPlayer), label: { Image(systemName: "plus") })
+        NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: { Image(systemName: "plus") })
     }
 }
 
@@ -104,21 +107,6 @@ struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
         PlayersView()
     }
-
-    private static let teams: [Team] = {
-        var playersStandingTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
-        playersStandingTeam.players = [
-            Player(name: "Lara", imageIdentifier: .laraCraft),
-            Player(name: "Harry", imageIdentifier: .harryPottar)
-        ]
-        var koalaTeam = Team(name: "Red Koala", colorIdentifier: .red, imageIdentifier: .koala)
-        koalaTeam.players = [Player(name: "Vador", imageIdentifier: .darkVadir)]
-        return [
-            playersStandingTeam,
-            koalaTeam,
-            Team(name: "Purple Elephant", colorIdentifier: .purple, imageIdentifier: .elephant)
-        ]
-    }()
 }
 
 class PlayersHostingController: UIHostingController<PlayersView> {

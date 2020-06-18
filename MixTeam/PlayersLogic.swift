@@ -1,39 +1,29 @@
 import SwiftUI
 import Combine
 
-final class PlayersViewModel: ObservableObject {
-    @Published var teams: [Team] = []
-    @Published var presentedAlert: PlayersView.PresentedAlert? = nil
+protocol PlayersLogic {
+    var teamsStore: TeamsStore { get }
+    var teams: [Team] { get }
+    var presentedAlertBinding: Binding<PlayersView.PresentedAlert?> { get }
 
-    private var cancellables = Set<AnyCancellable>()
+    func mixTeam()
 
-    init() {
-        teams = Team.loadList()
-        let firstTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
-        if teams.count <= 0 {
-            teams.append(firstTeam)
-        }
-        teams[0] = firstTeam
-        Team.save(teams: teams)
-        NotificationCenter.default.publisher(for: .TeamsUpdated)
-            .compactMap({ $0.object as? [Team] })
-            .assign(to: \.teams, on: self)
-            .store(in: &cancellables)
-    }
+    func color(for player: Player) -> Color
+    func playerBinding(for player: Player) -> Binding<Player>?
+    func createPlayer(name: String, image: ImageIdentifier)
+    func deletePlayer(in team: Team, at offsets: IndexSet)
+}
+
+extension PlayersLogic {
+    var teams: [Team] { teamsStore.teams }
 
     func mixTeam() {
         guard teams.count > 2 else {
-            presentedAlert = .notEnoughTeams
+            presentedAlertBinding.wrappedValue = .notEnoughTeams
             return
         }
 
         randomizeTeam()
-    }
-
-    func deletePlayer(in team: Team, at offsets: IndexSet) {
-        guard let index = teams.firstIndex(of: team) else { return }
-        teams[index].players.remove(atOffsets: offsets)
-        Team.save(teams: teams)
     }
 
     func color(for player: Player) -> Color {
@@ -46,37 +36,39 @@ final class PlayersViewModel: ObservableObject {
     func playerBinding(for player: Player) -> Binding<Player>? {
         guard let teamIndex = teams.firstIndex(where: { $0.players.contains(player) }),
             let playerIndex = teams[teamIndex].players.firstIndex(of: player) else {
-            return nil
+                return nil
         }
         return Binding<Player>(
-            get: { self.teams[teamIndex].players[playerIndex] },
-            set: { self.teams[teamIndex].players[playerIndex] = $0 }
+            get: { self.teamsStore.teams[teamIndex].players[playerIndex] },
+            set: { self.teamsStore.teams[teamIndex].players[playerIndex] = $0 }
         )
     }
 
     func createPlayer(name: String, image: ImageIdentifier) {
         guard var playersStandingForATeam = teams.first else { return }
         playersStandingForATeam.players.append(Player(name: name, imageIdentifier: image))
-        teams[0] = playersStandingForATeam
-        Team.save(teams: teams)
+        teamsStore.teams[0] = playersStandingForATeam
+    }
+
+    func deletePlayer(in team: Team, at offsets: IndexSet) {
+        guard let index = teams.firstIndex(of: team) else { return }
+        teamsStore.teams[index].players.remove(atOffsets: offsets)
     }
 }
 
-extension PlayersViewModel {
-    static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
-
+extension PlayersLogic {
     private func randomizeTeam() {
         let players = teams.flatMap(\.players)
         guard players.count > 0 else { return }
         guard teams.filter({ $0 != teams.first }).count > 1 else { return }
 
-        teams = teams.map({
+        teamsStore.teams = teams.map({
             var newTeam = $0
             newTeam.players = []
             return newTeam
         })
 
-        teams = players.shuffled().reduce(teams) { teams, player in
+        teamsStore.teams = players.shuffled().reduce(teams) { teams, player in
             var teams = teams
             let availableTeams = teams.filter { $0 != teams.first }
             guard let lessPlayerTeam = availableTeams.sorted(by: hasLessPlayer).first,
@@ -84,7 +76,6 @@ extension PlayersViewModel {
             teams[teamIndex].players += [player]
             return teams
         }
-        Team.save(teams: teams)
         delayPlayersColorReset()
     }
 
@@ -95,9 +86,8 @@ extension PlayersViewModel {
     private func delayPlayersColorReset() {
         // We need to delay the Player Id reset. Otherwise there will no row animations
         // on the table. And if we don't reset players id, color won't change.
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.playersColorResetDelay) { [weak self] in
-            guard let self = self else { return }
-            self.teams = self.teams.map({
+        DispatchQueue.main.asyncAfter(deadline: .now() + PlayersView.playersColorResetDelay) {
+            self.teamsStore.teams = self.teams.map({
                 var team = $0
                 team.players = $0.players.map { Player(name: $0.name, imageIdentifier: $0.imageIdentifier) }
                 return team

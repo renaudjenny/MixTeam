@@ -13,7 +13,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        window.rootViewController = UIHostingController(rootView: TabBarView())
+        let teamsStore = TeamsStore()
+        window.rootViewController = UIHostingController(rootView: TabBarView().environmentObject(teamsStore))
         self.window = window
         window.makeKeyAndVisible()
     }

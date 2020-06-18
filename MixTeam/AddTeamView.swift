@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddTeamView: View {
     @Environment(\.presentationMode) var presentation
-    var createTeam: (String, ImageIdentifier, ColorIdentifier) -> Void
+    var createTeam: (Team) -> Void
     @State private var name = "Team Name"
     @State private var imageIdentifier: ImageIdentifier = .koala
     @State private var colorIdentifier: ColorIdentifier = .red
@@ -50,7 +50,7 @@ struct AddTeamView: View {
     }
 
     private func createTeamAction() {
-        createTeam(name, imageIdentifier, colorIdentifier)
+        createTeam(Team(name: name, colorIdentifier: colorIdentifier, imageIdentifier: imageIdentifier))
         presentation.wrappedValue.dismiss()
     }
 
@@ -64,7 +64,7 @@ struct AddTeamView: View {
 struct AddTeamView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AddTeamView(createTeam: { _, _, _ in })
+            AddTeamView(createTeam: { _ in })
         }
     }
 }

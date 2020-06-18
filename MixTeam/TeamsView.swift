@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct TeamsView: View {
-    @ObservedObject var viewModel = TeamsViewModel()
+struct TeamsView: View, TeamsLogic {
+    @EnvironmentObject var teamsStore: TeamsStore
     @State private var editedTeam: Team? = nil
 
     var body: some View {
@@ -12,8 +12,8 @@ struct TeamsView: View {
 
     private var teamsView: some View {
         List {
-            ForEach(viewModel.teams.dropFirst(), content: teamRow)
-                .onDelete(perform: viewModel.deleteTeam)
+            ForEach(teamsList, content: teamRow)
+                .onDelete(perform: deleteTeam)
         }
         .listStyle(GroupedListStyle())
         .sheet(item: $editedTeam, content: edit)
@@ -41,11 +41,11 @@ struct TeamsView: View {
     }
 
     private var addTeamButton: some View {
-        NavigationLink(destination: AddTeamView(createTeam: viewModel.createTeam), label: { Image(systemName: "plus") })
+        NavigationLink(destination: AddTeamView(createTeam: createTeam), label: { Image(systemName: "plus") })
     }
 
     private func edit(team: Team) -> some View {
-        guard let teamBinding = viewModel.teamBinding(for: team) else {
+        guard let teamBinding = teamBinding(for: team) else {
             return EmptyView().eraseToAnyView()
         }
         return EditTeamView(team: teamBinding).eraseToAnyView()
