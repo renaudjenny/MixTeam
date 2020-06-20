@@ -9,8 +9,8 @@ protocol PlayersLogic {
     func mixTeam()
 
     func color(for player: Player) -> Color
-    func playerBinding(for player: Player) -> Binding<Player>?
     func createPlayer(name: String, image: ImageIdentifier)
+    func editPlayer(_ player: Player)
     func deletePlayer(in team: Team, at offsets: IndexSet)
 }
 
@@ -33,21 +33,18 @@ extension PlayersLogic {
         return team.colorIdentifier.color
     }
 
-    func playerBinding(for player: Player) -> Binding<Player>? {
-        guard let teamIndex = teams.firstIndex(where: { $0.players.contains(player) }),
-            let playerIndex = teams[teamIndex].players.firstIndex(of: player) else {
-                return nil
-        }
-        return Binding<Player>(
-            get: { self.teamsStore.teams[teamIndex].players[playerIndex] },
-            set: { self.teamsStore.teams[teamIndex].players[playerIndex] = $0 }
-        )
-    }
-
     func createPlayer(name: String, image: ImageIdentifier) {
         guard var playersStandingForATeam = teams.first else { return }
         playersStandingForATeam.players.append(Player(name: name, imageIdentifier: image))
         teamsStore.teams[0] = playersStandingForATeam
+    }
+
+    func editPlayer(_ player: Player) {
+        guard let teamIndex = teamsStore.teams.firstIndex(where: { $0.players.contains(player) }),
+            let playerIndex = teamsStore.teams[teamIndex].players.firstIndex(of: player) else {
+                return
+        }
+        teamsStore.teams[teamIndex].players[playerIndex] = player
     }
 
     func deletePlayer(in team: Team, at offsets: IndexSet) {

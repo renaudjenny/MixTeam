@@ -10,7 +10,9 @@ import UIKit
 import SwiftUI
 
 struct Player: Codable, Identifiable, Hashable {
-    let id = UUID()
+    var id = UUID()
     var name: String = ""
     var imageIdentifier: ImageIdentifier
+
+    static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
 }

@@ -47,10 +47,7 @@ struct TeamsView: View, TeamsLogic {
     }
 
     private func edit(team: Team) -> some View {
-        guard let teamBinding = teamBinding(for: team) else {
-            return EmptyView().eraseToAnyView()
-        }
-        return EditTeamView(team: teamBinding).eraseToAnyView()
+        EditTeamView(team: team, editTeam: editTeam)
     }
 }
 

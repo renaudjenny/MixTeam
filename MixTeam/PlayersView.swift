@@ -79,11 +79,7 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private func edit(player: Player) -> some View {
-        guard let player = playerBinding(for: player) else {
-            return EmptyView().eraseToAnyView()
-        }
-        return EditPlayerView(playerName: player.name, imageIdentifier: player.imageIdentifier)
-            .eraseToAnyView()
+        EditPlayerView(player: player, editPlayer: editPlayer)
     }
 
     private var addPlayerButton: some View {

@@ -6,8 +6,8 @@ protocol TeamsLogic {
     var teamsList: ArraySlice<Team> { get }
 
     func createTeam(_ team: Team)
+    func editTeam(_ team: Team)
     func deleteTeam(atOffsets offsets: IndexSet)
-    func teamBinding(for team: Team) -> Binding<Team>?
 }
 
 extension TeamsLogic {
@@ -26,13 +26,10 @@ extension TeamsLogic {
         teamsStore.teams.remove(at: index)
     }
 
-    func teamBinding(for team: Team) -> Binding<Team>? {
+    func editTeam(_ team: Team) {
         guard let teamIndex = teamsStore.teams.firstIndex(of: team) else {
-            return nil
+            return
         }
-        return Binding<Team>(
-            get: { self.teamsStore.teams[teamIndex] },
-            set: { self.teamsStore.teams[teamIndex] = $0 }
-        )
+        teamsStore.teams[teamIndex] = team
     }
 }

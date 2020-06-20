@@ -4,10 +4,19 @@ import UIKit
 
 struct EditPlayerView: View {
     @Environment(\.presentationMode) var presentation
-    @Binding var playerName: String
-    @Binding var imageIdentifier: ImageIdentifier
+    @State private var name: String
+    @State private var imageIdentifier: ImageIdentifier
     @State private var isPlayerImagesPresented = false
     @State private var isAlertPresented = false
+    private let id: UUID
+    let editPlayer: (Player) -> Void
+
+    init(player: Player, editPlayer: @escaping (Player) -> Void) {
+        _name = State(initialValue: player.name)
+        _imageIdentifier = State(initialValue: player.imageIdentifier)
+        id = player.id
+        self.editPlayer = editPlayer
+    }
 
     var body: some View {
         ScrollView {
@@ -25,7 +34,7 @@ struct EditPlayerView: View {
     }
 
     private var title: some View {
-        Text(playerName)
+        Text(name)
             .font(.largeTitle)
             .padding()
     }
@@ -42,7 +51,7 @@ struct EditPlayerView: View {
     }
 
     private var playerNameField: some View {
-        TextField("", text: $playerName)
+        TextField("", text: $name)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .padding()
     }
@@ -55,6 +64,7 @@ struct EditPlayerView: View {
     }
 
     private func editPlayerAction() {
+        editPlayer(Player(id: id, name: name, imageIdentifier: imageIdentifier))
         presentation.wrappedValue.dismiss()
     }
 
@@ -69,6 +79,8 @@ struct EditPlayerView: View {
 
 struct EditPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditPlayerView(playerName: .constant("Harry"), imageIdentifier: .constant(.harryPottar))
+        EditPlayerView(player: Player(name: "Harry", imageIdentifier: .harryPottar)) {
+            print($0)
+        }
     }
 }

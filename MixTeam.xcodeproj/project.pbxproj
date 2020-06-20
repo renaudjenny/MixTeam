@@ -23,10 +23,10 @@
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */; };
-		4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */; };
 		4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* PlayersView.swift */; };
 		4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
+		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
 		4CCA0D25249A747F00E88F80 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D24249A747F00E88F80 /* TabBarView.swift */; };
@@ -74,10 +74,10 @@
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EraseToAnyView.swift"; sourceTree = "<group>"; };
-		4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
 		4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptsToSoftwareKeyboard.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
+		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D24249A747F00E88F80 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
-				4C7FE7842458B14C0011E8AB /* EditPlayerView.swift */,
+				4CBA6B21249E166500CA3851 /* EditPlayerView.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
 				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
 				4C7FE786245A166A0011E8AB /* PlayersView.swift */,
@@ -357,10 +357,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */,
-				4C7FE7852458B14C0011E8AB /* EditPlayerView.swift in Sources */,
 				4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
+				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4CCA0D25249A747F00E88F80 /* TabBarView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
