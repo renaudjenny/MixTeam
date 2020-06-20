@@ -10,10 +10,10 @@ struct PlayerImagesView: View {
         ScrollView {
             ForEach(Self.imageIdentifiers) { imageIdentifier in
                 PlayerImageCell(
-                    image: imageIdentifier.image,
+                    imageIdentifier: imageIdentifier,
                     isSelected: imageIdentifier == self.selectedImageIdentifier,
                     select: { self.select(imageIdentifier: imageIdentifier) }
-                )
+                ).accessibility(label: Text(imageIdentifier.name))
             }
         }
     }
@@ -26,26 +26,28 @@ struct PlayerImagesView: View {
 
 // TODO: refactor rename this Cell because it's use in TeamImagesView as well. And obviously extract it from here!
 struct PlayerImageCell: View {
-    let image: Image
+    let imageIdentifier: ImageIdentifier
     let isSelected: Bool
     let select: () -> Void
 
     var body: some View {
         Button(action: select) {
             if isSelected {
-                image
+                imageIdentifier.image
                     .resizable()
                     .scaledToFit()
                     .padding(20)
                     .background(Circle().strokeBorder())
                     .padding()
             } else {
-                image
+                imageIdentifier.image
                     .resizable()
                     .scaledToFit()
                     .padding(20)
             }
-        }.buttonStyle(PlainButtonStyle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .accessibility(label: Text(imageIdentifier.name))
     }
 }
 

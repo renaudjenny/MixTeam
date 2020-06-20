@@ -46,7 +46,9 @@ struct AddPlayerView: View {
                 .image
                 .resizable()
                 .scaledToFit()
-        }.buttonStyle(PlainButtonStyle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .accessibility(label: Text("Player Logo"))
     }
 
     private var playerNameField: some View {

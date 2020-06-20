@@ -41,7 +41,9 @@ struct TeamsView: View, TeamsLogic {
     }
 
     private var addTeamButton: some View {
-        NavigationLink(destination: AddTeamView(createTeam: createTeam), label: { Image(systemName: "plus") })
+        NavigationLink(destination: AddTeamView(createTeam: createTeam), label: {
+            Image(systemName: "plus").accessibility(label: Text("Add"))
+        })
     }
 
     private func edit(team: Team) -> some View {

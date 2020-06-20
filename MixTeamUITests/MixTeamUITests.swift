@@ -20,16 +20,15 @@ class MixTeamUITests: XCTestCase {
         app.tabBars.buttons["Teams"].tap()
         app.navigationBars["Teams"].buttons["Add"].tap()
 
-        let teamLogoButton = app.buttons["Open Team Logo Selection Button"]
+        let teamLogoButton = app.buttons["Team Logo"]
         teamLogoButton.tap()
-        
-        let collectionViewsQuery = app.collectionViews
-        collectionViewsQuery.cells["koala"].tap()
-        XCTAssertEqual(teamLogoButton.identifier, "koala")
 
-        collectionViewsQuery.cells["red"].tap()
+        app.buttons["koala"].tap()
+        XCTAssertEqual(teamLogoButton.value as? String, "koala")
 
-        let yourTeamNameTextField = app.textFields["Your team name"]
+        app.buttons["red color"].tap()
+
+        let yourTeamNameTextField = app.textFields["Name"]
         yourTeamNameTextField.tap()
         yourTeamNameTextField.typeText("Red Koalas\n")
         app.buttons["Create Team"].tap()

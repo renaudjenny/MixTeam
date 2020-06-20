@@ -87,7 +87,9 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private var addPlayerButton: some View {
-        NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: { Image(systemName: "plus") })
+        NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
+            Image(systemName: "plus").accessibility(label: Text("Add"))
+        })
     }
 }
 

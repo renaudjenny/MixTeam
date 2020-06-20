@@ -34,7 +34,10 @@ struct EditTeamView: View {
             team.imageIdentifier.image
                 .resizable()
                 .frame(width: 50, height: 50)
-        }.foregroundColor(team.colorIdentifier.color)
+        }
+        .foregroundColor(team.colorIdentifier.color)
+        .accessibility(label: Text("Team Logo"))
+        .accessibility(value: Text(team.imageIdentifier.name))
     }
 
     private func editTeamAction() {

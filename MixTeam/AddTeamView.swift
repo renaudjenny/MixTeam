@@ -38,7 +38,10 @@ struct AddTeamView: View {
             imageIdentifier.image
                 .resizable()
                 .frame(width: 50, height: 50)
-        }.foregroundColor(colorIdentifier.color)
+        }
+        .foregroundColor(colorIdentifier.color)
+        .accessibility(label: Text("Team Logo"))
+        .accessibility(value: Text(imageIdentifier.name))
     }
 
     private func randomlyChangePlaceholder() {
@@ -57,7 +60,7 @@ struct AddTeamView: View {
     private func colorRow(_ colorIdentifier: ColorIdentifier) -> some View {
         Button(action: { self.colorIdentifier = colorIdentifier }) {
             colorIdentifier.color.frame(width: 50, height: 50)
-        }
+        }.accessibility(label: Text("\(colorIdentifier.name) color"))
     }
 }
 
