@@ -77,7 +77,7 @@ extension PlayersLogic {
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
-        return a.players.count < b.players.count
+        a.players.count < b.players.count
     }
 
     private func delayPlayersColorReset() {

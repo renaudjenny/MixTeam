@@ -44,11 +44,11 @@ struct EditTeamView: View {
     }
 
     private var teamImage: some View {
-        Button(action: { self.isTeamImagesPresented = true }) {
+        Button(action: { self.isTeamImagesPresented = true }, label: {
             imageIdentifier.image
                 .resizable()
                 .frame(width: 50, height: 50)
-        }
+        })
         .foregroundColor(colorIdentifier.color)
         .accessibility(label: Text("Team Logo"))
         .accessibility(value: Text(imageIdentifier.name))
@@ -66,9 +66,9 @@ struct EditTeamView: View {
     }
 
     private func colorRow(_ colorIdentifier: ColorIdentifier) -> some View {
-        Button(action: { self.colorIdentifier = colorIdentifier }) {
+        Button(action: { self.colorIdentifier = colorIdentifier }, label: {
             colorIdentifier.color.frame(width: 50, height: 50)
-        }
+        })
     }
 }
 

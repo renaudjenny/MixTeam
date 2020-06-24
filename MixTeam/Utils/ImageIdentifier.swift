@@ -26,8 +26,10 @@ enum ImageIdentifier: String, Identifiable, Codable {
     var id: String { rawValue }
 
     static var players: [Self] {
-        [.harryPottar, .amaliePoulain, .darkVadir,
-         .laraCraft, .theBotman, .wanderWoman]
+        [
+            .harryPottar, .amaliePoulain, .darkVadir,
+            .laraCraft, .theBotman, .wanderWoman
+        ]
     }
 
     static var teams: [Self] {

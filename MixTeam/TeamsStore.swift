@@ -24,7 +24,10 @@ final class TeamsStore: ObservableObject {
 
 extension Array where Element == Team {
     static let exampleTeam: Self = {
-        var playersStandingTeam = Team(name: "Players standing for a team", colorIdentifier: .gray, imageIdentifier: .unknown)
+        var playersStandingTeam = Team(
+            name: "Players standing for a team",
+            colorIdentifier: .gray, imageIdentifier: .unknown
+        )
         playersStandingTeam.players = [
             Player(name: "Lara", imageIdentifier: .laraCraft),
             Player(name: "Harry", imageIdentifier: .harryPottar)

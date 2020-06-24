@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TeamsView: View, TeamsLogic {
     @EnvironmentObject var teamsStore: TeamsStore
-    @State private var editedTeam: Team? = nil
+    @State private var editedTeam: Team?
 
     var body: some View {
         NavigationView {
@@ -22,7 +22,7 @@ struct TeamsView: View, TeamsLogic {
     }
 
     private func teamRow(team: Team) -> some View {
-        Button(action: { self.editedTeam = team }) {
+        Button(action: { self.editedTeam = team }, label: {
             HStack {
                 team.imageIdentifier.image
                     .resizable()
@@ -32,7 +32,7 @@ struct TeamsView: View, TeamsLogic {
                 Text(team.name)
                 Spacer()
             }.foregroundColor(team.colorIdentifier.color)
-        }
+        })
         .buttonStyle(DefaultButtonStyle())
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -40,12 +40,12 @@ struct EditPlayerView: View {
     }
 
     private var playerImage: some View {
-        Button(action: { self.isPlayerImagesPresented = true }) {
+        Button(action: { self.isPlayerImagesPresented = true }, label: {
             imageIdentifier
                 .image
                 .resizable()
                 .scaledToFit()
-        }
+        })
         .buttonStyle(PlainButtonStyle())
         .accessibility(label: Text("Player Logo"))
     }

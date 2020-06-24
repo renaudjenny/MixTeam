@@ -15,5 +15,5 @@ struct Team: Codable, Identifiable, Hashable {
     var imageIdentifier: ImageIdentifier = .unknown
     var players: [Player] = []
 
-    static func ==(lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
+    static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
 }

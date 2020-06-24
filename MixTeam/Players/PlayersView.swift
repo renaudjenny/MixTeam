@@ -3,7 +3,7 @@ import SwiftUI
 struct PlayersView: View, PlayersLogic {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     @EnvironmentObject var teamsStore: TeamsStore
-    @State private var editedPlayer: Player? = nil
+    @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
     var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 
@@ -61,7 +61,7 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private func playerRow(_ player: Player) -> some View {
-        Button(action: { self.editedPlayer = player }) {
+        Button(action: { self.editedPlayer = player }, label: {
             HStack {
                 player.imageIdentifier.image
                     .resizable()
@@ -71,7 +71,7 @@ struct PlayersView: View, PlayersLogic {
                 Text(player.name)
                 Spacer()
             }.foregroundColor(color(for: player))
-        }
+        })
         .buttonStyle(DefaultButtonStyle())
         .padding([.top, .bottom], 10)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
