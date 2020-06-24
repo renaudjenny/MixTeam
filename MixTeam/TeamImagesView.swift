@@ -8,7 +8,7 @@ struct TeamImagesView: View {
     var body: some View {
         ScrollView {
             ForEach(Self.imageIdentifiers) { imageIdentifier in
-                PlayerImageCell(
+                ImageCell(
                     imageIdentifier: imageIdentifier,
                     isSelected: imageIdentifier == self.selectedImageIdentifier,
                     select: { self.select(imageIdentifier: imageIdentifier) }

@@ -32,6 +32,7 @@
 		4CCA0D25249A747F00E88F80 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D24249A747F00E88F80 /* TabBarView.swift */; };
 		4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */; };
 		4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D28249BED2200E88F80 /* TeamsStore.swift */; };
+		4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFCE6F124A340A90030114B /* ImageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		4CCA0D24249A747F00E88F80 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4CCA0D28249BED2200E88F80 /* TeamsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsStore.swift; sourceTree = "<group>"; };
+		4CFCE6F124A340A90030114B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4CFCE6F024A3407F0030114B /* Common */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4C7F55592489A35C0089F26C /* Extensions */,
@@ -217,6 +220,14 @@
 				4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		4CFCE6F024A3407F0030114B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				4CFCE6F124A340A90030114B /* ImageCell.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +380,7 @@
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
 				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
+				4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */,
 				4C38973624914CC600D6D182 /* TeamsView.swift in Sources */,
