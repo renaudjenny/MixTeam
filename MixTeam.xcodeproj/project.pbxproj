@@ -12,6 +12,7 @@
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
+		4C3763C524A3DF5E00FA040B /* PlayersLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* PlayersLogicTests.swift */; };
 		4C38973624914CC600D6D182 /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973524914CC600D6D182 /* TeamsView.swift */; };
 		4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973724914D1300D6D182 /* TeamsLogic.swift */; };
 		4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3897392492BDC800D6D182 /* AddTeamView.swift */; };
@@ -64,6 +65,7 @@
 		4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamUITests.swift; sourceTree = "<group>"; };
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		4C3763C424A3DF5E00FA040B /* PlayersLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersLogicTests.swift; sourceTree = "<group>"; };
 		4C38973524914CC600D6D182 /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		4C38973724914D1300D6D182 /* TeamsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsLogic.swift; sourceTree = "<group>"; };
 		4C3897392492BDC800D6D182 /* AddTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamView.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
+				4C3763C324A3DF3300FA040B /* Players */,
 				4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
 			);
@@ -168,6 +171,14 @@
 				4C3733041EBF8E8100A5785E /* Info.plist */,
 			);
 			path = MixTeamUITests;
+			sourceTree = "<group>";
+		};
+		4C3763C324A3DF3300FA040B /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				4C3763C424A3DF5E00FA040B /* PlayersLogicTests.swift */,
+			);
+			path = Players;
 			sourceTree = "<group>";
 		};
 		4C8B5A13244CB27100C8781B /* ViewModifiers */ = {
@@ -418,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */,
+				4C3763C524A3DF5E00FA040B /* PlayersLogicTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
