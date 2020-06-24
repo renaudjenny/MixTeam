@@ -135,19 +135,19 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
-				4CFCE6F024A3407F0030114B /* Common */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
-				4C7F55592489A35C0089F26C /* Extensions */,
+				4CFCE6F024A3407F0030114B /* Common */,
+				4CFCE6F324A341C10030114B /* Extensions */,
 				4C3732EE1EBF8E8100A5785E /* Info.plist */,
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
-				4C3733141EBFA37900A5785E /* Players */,
+				4CFCE6F424A341D40030114B /* Players */,
 				4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */,
 				4CCA0D24249A747F00E88F80 /* TabBarView.swift */,
-				4C40AE121EC3AEDB0079E964 /* Teams */,
+				4CFCE6F524A341EF0030114B /* Teams */,
+				4CCA0D28249BED2200E88F80 /* TeamsStore.swift */,
 				4CEF9D471F8A972B00E34083 /* Utils */,
 				4C8B5A13244CB27100C8781B /* ViewModifiers */,
-				4CCA0D28249BED2200E88F80 /* TeamsStore.swift */,
 			);
 			path = MixTeam;
 			sourceTree = "<group>";
@@ -168,41 +168,6 @@
 				4C3733041EBF8E8100A5785E /* Info.plist */,
 			);
 			path = MixTeamUITests;
-			sourceTree = "<group>";
-		};
-		4C3733141EBFA37900A5785E /* Players */ = {
-			isa = PBXGroup;
-			children = (
-				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
-				4CBA6B21249E166500CA3851 /* EditPlayerView.swift */,
-				4C3733151EBFAA8700A5785E /* Player.swift */,
-				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
-				4C7FE786245A166A0011E8AB /* PlayersView.swift */,
-				4C40059D245D4B3300ADF398 /* PlayersLogic.swift */,
-				4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */,
-			);
-			name = Players;
-			sourceTree = "<group>";
-		};
-		4C40AE121EC3AEDB0079E964 /* Teams */ = {
-			isa = PBXGroup;
-			children = (
-				4C40AE151ECCD51E0079E964 /* Team.swift */,
-				4C38973524914CC600D6D182 /* TeamsView.swift */,
-				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
-				4C3897392492BDC800D6D182 /* AddTeamView.swift */,
-				4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */,
-				4C38973D2495016900D6D182 /* EditTeamView.swift */,
-			);
-			name = Teams;
-			sourceTree = "<group>";
-		};
-		4C7F55592489A35C0089F26C /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */,
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 		4C8B5A13244CB27100C8781B /* ViewModifiers */ = {
@@ -228,6 +193,41 @@
 				4CFCE6F124A340A90030114B /* ImageCell.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		4CFCE6F324A341C10030114B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4CFCE6F424A341D40030114B /* Players */ = {
+			isa = PBXGroup;
+			children = (
+				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
+				4CBA6B21249E166500CA3851 /* EditPlayerView.swift */,
+				4C3733151EBFAA8700A5785E /* Player.swift */,
+				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
+				4C7FE786245A166A0011E8AB /* PlayersView.swift */,
+				4C40059D245D4B3300ADF398 /* PlayersLogic.swift */,
+				4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */,
+			);
+			path = Players;
+			sourceTree = "<group>";
+		};
+		4CFCE6F524A341EF0030114B /* Teams */ = {
+			isa = PBXGroup;
+			children = (
+				4C40AE151ECCD51E0079E964 /* Team.swift */,
+				4C38973524914CC600D6D182 /* TeamsView.swift */,
+				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
+				4C3897392492BDC800D6D182 /* AddTeamView.swift */,
+				4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */,
+				4C38973D2495016900D6D182 /* EditTeamView.swift */,
+			);
+			path = Teams;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
