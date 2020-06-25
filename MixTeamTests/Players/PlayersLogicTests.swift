@@ -41,6 +41,30 @@ class PlayersLogicTests: XCTestCase {
         playersLogic.mixTeam()
         XCTAssertEqual(presentedAlert, .notEnoughTeams)
     }
+
+    func testColorWhenPlayerIsNotAvailableInAnyTeam() {
+        let teamsStore = TeamsStore()
+        let player = Player(id: UUID(), name: "Test", imageIdentifier: .amaliePoulain)
+        teamsStore.teams = .exampleTeam
+        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore)
+        XCTAssertEqual(playersLogic.color(for: player), .gray)
+    }
+
+    func testColorWhenPlayerIsAvailableInPlayersStandingForATeam() throws {
+        let teamsStore = TeamsStore()
+        teamsStore.teams = .exampleTeam
+        let player = try XCTUnwrap(teamsStore.teams.first?.players.first)
+        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore)
+        XCTAssertEqual(playersLogic.color(for: player), .gray)
+    }
+
+    func testColorWhenPlayerIsAvailableInTheFirstRealTeam() throws {
+        let teamsStore = TeamsStore()
+        teamsStore.teams = .exampleTeam
+        let player = try XCTUnwrap(teamsStore.teams[1].players.first)
+        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore)
+        XCTAssertEqual(playersLogic.color(for: player), .red)
+    }
 }
 
 struct MockedPlayersLogic: PlayersLogic {
