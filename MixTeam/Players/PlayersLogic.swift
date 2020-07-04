@@ -8,7 +8,6 @@ protocol PlayersLogic {
 
     func mixTeam()
 
-    func color(for player: Player) -> Color
     func createPlayer(name: String, image: ImageIdentifier)
     func editPlayer(_ player: Player)
     func deletePlayer(in team: Team, at offsets: IndexSet)
@@ -24,13 +23,6 @@ extension PlayersLogic {
         }
 
         randomizeTeam()
-    }
-
-    func color(for player: Player) -> Color {
-        guard let team = teams.first(where: { $0.players.contains(player) }) else {
-            return .gray
-        }
-        return team.colorIdentifier.color
     }
 
     func createPlayer(name: String, image: ImageIdentifier) {
@@ -73,22 +65,9 @@ extension PlayersLogic {
             teams[teamIndex].players += [player]
             return teams
         }
-        delayPlayersColorReset()
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
         a.players.count < b.players.count
-    }
-
-    private func delayPlayersColorReset() {
-        // We need to delay the Player Id reset. Otherwise there will no row animations
-        // on the table. And if we don't reset players id, color won't change.
-        DispatchQueue.main.asyncAfter(deadline: .now() + PlayersView.playersColorResetDelay) {
-            self.teamsStore.teams = self.teams.map({
-                var team = $0
-                team.players = $0.players.map { Player(name: $0.name, imageIdentifier: $0.imageIdentifier) }
-                return team
-            })
-        }
     }
 }

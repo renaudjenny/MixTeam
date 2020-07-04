@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PlayersView: View, PlayersLogic {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
+    private static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
@@ -14,20 +15,10 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private var playersView: some View {
-        VStack(spacing: 0) {
-            List {
-                ForEach(teams, content: teamRow)
-            }
-            .listStyle(GroupedListStyle())
-            Button(action: mixTeam) {
-                HStack {
-                    Image(systemName: "shuffle")
-                    Text("Mix Team")
-                }
-            }
-            .buttonStyle(MixTeamButtonStyle())
-            .frame(height: 50)
-            .shadow(radius: 10)
+        ScrollView {
+            teamRow(teams.first ?? Team())
+            mixTeamButton
+            ForEach(teams.dropFirst(), content: teamRow)
         }
         .alert(item: $presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
@@ -36,28 +27,46 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private func teamRow(_ team: Team) -> some View {
-        Section(header: sectionHeader(team: team)) {
+        VStack {
+            sectionHeader(team: team)
+                .font(.callout)
+                .foregroundColor(Color.white)
+                .padding(.top)
             ForEach(team.players, content: playerRow)
                 .onDelete(perform: { self.deletePlayer(in: team, at: $0) })
-                .background(team.colorIdentifier.color.opacity(0.10))
         }
+        .background(team.colorIdentifier.color)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
+                .foregroundColor(Color.white)
+                .padding(5)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .shadow(
+            color: Self.shadowColor,
+            radius: 3, x: -2, y: 2
+        )
+        .frame(maxWidth: .infinity)
+        .padding()
     }
 
     private func sectionHeader(team: Team) -> some View {
-        HStack {
+        VStack {
+            Text(team.name).padding([.leading, .trailing])
             team.imageIdentifier.image
                 .resizable()
+                .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
+                .foregroundColor(team.colorIdentifier.color)
                 .frame(width: 50, height: 50)
-                .padding([.leading, .top, .bottom])
-            Text(team.name)
-                .font(.headline)
                 .padding()
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, minHeight: 50)
-        .listRowInsets(EdgeInsets())
-        .background(team.colorIdentifier.color.opacity(0.20))
+                .background(
+                    Color.white
+                        .clipShape(Circle())
+                )
+                .padding(.bottom)
+        }.frame(maxWidth: .infinity)
     }
 
     private func playerRow(_ player: Player) -> some View {
@@ -70,12 +79,11 @@ struct PlayersView: View, PlayersLogic {
                     .padding(.trailing)
                 Text(player.name)
                 Spacer()
-            }.foregroundColor(color(for: player))
+            }
+            .foregroundColor(Color.white)
         })
         .buttonStyle(DefaultButtonStyle())
-        .padding([.top, .bottom], 10)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .listRowInsets(EdgeInsets())
+        .padding([.bottom], 20)
     }
 
     private func edit(player: Player) -> some View {
@@ -86,6 +94,22 @@ struct PlayersView: View, PlayersLogic {
         NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
             Image(systemName: "plus").accessibility(label: Text("Add"))
         })
+    }
+
+    private var mixTeamButton: some View {
+        Button(action: mixTeam) {
+            HStack {
+                Image(systemName: "shuffle")
+                Text("Mix Team")
+            }
+        }
+        .buttonStyle(MixTeamButtonStyle())
+        .frame(height: 50)
+        .shadow(
+            color: Self.shadowColor,
+            radius: 3, x: -2, y: 2
+        )
+        .padding([.leading, .trailing])
     }
 }
 
@@ -103,12 +127,12 @@ extension PlayersView {
 
 struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayersView()
-    }
-}
-
-class PlayersHostingController: UIHostingController<PlayersView> {
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder, rootView: PlayersView())
+        Group {
+            PlayersView()
+                .environmentObject(TeamsStore())
+            PlayersView()
+                .environmentObject(TeamsStore())
+                .environment(\.colorScheme, .dark)
+        }
     }
 }
