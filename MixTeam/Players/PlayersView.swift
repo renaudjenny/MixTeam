@@ -20,6 +20,7 @@ struct PlayersView: View, PlayersLogic {
             mixTeamButton
             ForEach(teams.dropFirst(), content: teamRow)
         }
+        .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
         .navigationBarTitle("Players")
@@ -32,8 +33,13 @@ struct PlayersView: View, PlayersLogic {
                 .font(.callout)
                 .foregroundColor(Color.white)
                 .padding(.top)
-            ForEach(team.players, content: playerRow)
-                .onDelete(perform: { self.deletePlayer(in: team, at: $0) })
+            ForEach(team.players) { player in
+                PlayerRow(
+                    player: player,
+                    edit: { self.editedPlayer = player },
+                    delete: { self.deletePlayer(player) }
+                )
+            }
         }
         .background(team.colorIdentifier.color)
         .overlay(
@@ -67,23 +73,6 @@ struct PlayersView: View, PlayersLogic {
                 )
                 .padding(.bottom)
         }.frame(maxWidth: .infinity)
-    }
-
-    private func playerRow(_ player: Player) -> some View {
-        Button(action: { self.editedPlayer = player }, label: {
-            HStack {
-                player.imageIdentifier.image
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .padding(.leading, 40)
-                    .padding(.trailing)
-                Text(player.name)
-                Spacer()
-            }
-            .foregroundColor(Color.white)
-        })
-        .buttonStyle(DefaultButtonStyle())
-        .padding([.bottom], 20)
     }
 
     private func edit(player: Player) -> some View {
@@ -122,6 +111,30 @@ extension PlayersView {
 
     private func alert(for identifier: PresentedAlert) -> Alert {
         Alert(title: Text("Couldn't Mix Team with less than 2 teams. Go create some teams :)"))
+    }
+}
+
+private struct PlayerRow: View {
+    let player: Player
+    let edit: () -> Void
+    let delete: () -> Void
+
+    var body: some View {
+        Button(action: edit) {
+            HStack {
+                player.imageIdentifier.image
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .padding([.leading, .trailing])
+                Text(player.name)
+                Spacer()
+                Button(action: delete) {
+                    Image(systemName: "delete.left.fill")
+                }.padding(.trailing)
+            }
+            .foregroundColor(Color.white)
+        }
+        .padding([.bottom], 20)
     }
 }
 

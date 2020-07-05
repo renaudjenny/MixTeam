@@ -10,7 +10,7 @@ protocol PlayersLogic {
 
     func createPlayer(name: String, image: ImageIdentifier)
     func editPlayer(_ player: Player)
-    func deletePlayer(in team: Team, at offsets: IndexSet)
+    func deletePlayer(_ player: Player)
 }
 
 extension PlayersLogic {
@@ -39,9 +39,12 @@ extension PlayersLogic {
         teamsStore.teams[teamIndex].players[playerIndex] = player
     }
 
-    func deletePlayer(in team: Team, at offsets: IndexSet) {
-        guard let index = teams.firstIndex(of: team) else { return }
-        teamsStore.teams[index].players.remove(atOffsets: offsets)
+    func deletePlayer(_ player: Player) {
+        guard let teamIndex = teamsStore.teams.firstIndex(where: { $0.players.contains(player) }),
+            let playerIndex = teamsStore.teams[teamIndex].players.firstIndex(of: player) else {
+                return
+        }
+        teamsStore.teams[teamIndex].players.remove(at: playerIndex)
     }
 }
 
