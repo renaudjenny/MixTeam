@@ -36,8 +36,10 @@ struct PlayersView: View, PlayersLogic {
             ForEach(team.players) { player in
                 PlayerRow(
                     player: player,
+                    isInFirstTeam: self.teams.first == team,
                     edit: { self.editedPlayer = player },
-                    delete: { self.deletePlayer(player) }
+                    delete: { self.deletePlayer(player) },
+                    moveBack: { self.moveBack(player: player) }
                 )
             }
         }
@@ -116,8 +118,10 @@ extension PlayersView {
 
 private struct PlayerRow: View {
     let player: Player
+    let isInFirstTeam: Bool
     let edit: () -> Void
     let delete: () -> Void
+    let moveBack: () -> Void
 
     var body: some View {
         Button(action: edit) {
@@ -128,9 +132,17 @@ private struct PlayerRow: View {
                     .padding([.leading, .trailing])
                 Text(player.name)
                 Spacer()
-                Button(action: delete) {
-                    Image(systemName: "delete.left.fill")
-                }.padding(.trailing)
+                Group {
+                    if isInFirstTeam {
+                        Button(action: delete) {
+                            Image(systemName: "minus.circle.fill")
+                        }.padding(.trailing)
+                    } else {
+                        Button(action: moveBack) {
+                            Image(systemName: "gobackward")
+                        }.padding(.trailing)
+                    }
+                }
             }
             .foregroundColor(Color.white)
         }

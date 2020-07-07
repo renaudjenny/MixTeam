@@ -11,6 +11,7 @@ protocol PlayersLogic {
     func createPlayer(name: String, image: ImageIdentifier)
     func editPlayer(_ player: Player)
     func deletePlayer(_ player: Player)
+    func moveBack(player: Player)
 }
 
 extension PlayersLogic {
@@ -45,6 +46,12 @@ extension PlayersLogic {
                 return
         }
         teamsStore.teams[teamIndex].players.remove(at: playerIndex)
+    }
+
+    func moveBack(player: Player) {
+        guard teams.first != nil else { return }
+        deletePlayer(player)
+        teamsStore.teams[0].players.append(player)
     }
 }
 
