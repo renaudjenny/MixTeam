@@ -24,7 +24,6 @@ struct PlayersView: View, PlayersLogic {
         .alert(item: $presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
         .navigationBarTitle("Players")
-        .navigationBarItems(trailing: addPlayerButton)
     }
 
     private func teamRow(_ team: Team) -> some View {
@@ -41,6 +40,9 @@ struct PlayersView: View, PlayersLogic {
                     delete: { self.deletePlayer(player) },
                     moveBack: { self.moveBack(player: player) }
                 )
+            }
+            if isFirstTeam(team) {
+                addPlayerButton
             }
         }
         .background(team.colorIdentifier.color)
@@ -83,8 +85,12 @@ struct PlayersView: View, PlayersLogic {
 
     private var addPlayerButton: some View {
         NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
-            Image(systemName: "plus").accessibility(label: Text("Add"))
-        })
+            Image(systemName: "plus")
+                .frame(width: 50, height: 50)
+                .background(Color.white.clipShape(Circle()))
+                .foregroundColor(.gray)
+                .accessibility(label: Text("Add"))
+            }).padding()
     }
 
     private var mixTeamButton: some View {
@@ -102,6 +108,8 @@ struct PlayersView: View, PlayersLogic {
         )
         .padding([.leading, .trailing])
     }
+
+    private func isFirstTeam(_ team: Team) -> Bool { teams.first == team }
 }
 
 extension PlayersView {
