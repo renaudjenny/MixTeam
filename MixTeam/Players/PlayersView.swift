@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PlayersView: View, PlayersLogic {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
-    private static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
+    static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
@@ -19,6 +19,7 @@ struct PlayersView: View, PlayersLogic {
             teamRow(teams.first ?? Team())
             mixTeamButton
             ForEach(teams.dropFirst(), content: teamRow)
+            addTeamButton
         }
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
@@ -46,17 +47,7 @@ struct PlayersView: View, PlayersLogic {
             }
         }
         .background(team.colorIdentifier.color)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
-                .foregroundColor(Color.white)
-                .padding(5)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(
-            color: Self.shadowColor,
-            radius: 3, x: -2, y: 2
-        )
+        .modifier(AddDashedCardStyle())
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -89,7 +80,7 @@ struct PlayersView: View, PlayersLogic {
                 .frame(width: 50, height: 50)
                 .background(Color.white.clipShape(Circle()))
                 .foregroundColor(.gray)
-                .accessibility(label: Text("Add"))
+                .accessibility(label: Text("Add Player"))
             }).padding()
     }
 
@@ -107,6 +98,22 @@ struct PlayersView: View, PlayersLogic {
             radius: 3, x: -2, y: 2
         )
         .padding([.leading, .trailing])
+        .accessibility(label: Text("Mix Team"))
+    }
+
+    private var addTeamButton: some View {
+        NavigationLink(destination: AddTeamView(createTeam: { _ in }), label: {
+            HStack {
+                Image(systemName: "plus")
+                Text("Add a new Team")
+            }.frame(maxWidth: .infinity)
+        })
+            .foregroundColor(Color.white)
+            .frame(height: 50)
+            .background(Color.red)
+            .modifier(AddDashedCardStyle())
+            .padding()
+            .accessibility(label: Text("Add Team"))
     }
 
     private func isFirstTeam(_ team: Team) -> Bool { teams.first == team }
@@ -167,6 +174,23 @@ private struct PlayerRowButtons: View {
                 Image(systemName: "gobackward")
             }.padding(.trailing)
         }
+    }
+}
+
+struct AddDashedCardStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
+                    .foregroundColor(Color.white)
+                    .padding(5)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(
+                color: PlayersView.shadowColor,
+                radius: 3, x: -2, y: 2
+            )
     }
 }
 
