@@ -132,21 +132,33 @@ private struct PlayerRow: View {
                     .padding([.leading, .trailing])
                 Text(player.name)
                 Spacer()
-                Group {
-                    if isInFirstTeam {
-                        Button(action: delete) {
-                            Image(systemName: "minus.circle.fill")
-                        }.padding(.trailing)
-                    } else {
-                        Button(action: moveBack) {
-                            Image(systemName: "gobackward")
-                        }.padding(.trailing)
-                    }
-                }
+                PlayerRowButtons(
+                    isInFirstTeam: isInFirstTeam,
+                    delete: delete,
+                    moveBack: moveBack
+                )
             }
             .foregroundColor(Color.white)
         }
         .padding([.bottom], 20)
+    }
+}
+
+private struct PlayerRowButtons: View {
+    let isInFirstTeam: Bool
+    let delete: () -> Void
+    let moveBack: () -> Void
+
+    @ViewBuilder var body: some View {
+        if isInFirstTeam {
+            Button(action: delete) {
+                Image(systemName: "minus.circle.fill")
+            }.padding(.trailing)
+        } else {
+            Button(action: moveBack) {
+                Image(systemName: "gobackward")
+            }.padding(.trailing)
+        }
     }
 }
 
