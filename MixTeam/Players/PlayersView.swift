@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PlayersView: View, PlayersLogic {
+struct PlayersView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
@@ -70,10 +70,6 @@ struct PlayersView: View, PlayersLogic {
         }.frame(maxWidth: .infinity)
     }
 
-    private func edit(player: Player) -> some View {
-        EditPlayerView(player: player, editPlayer: editPlayer)
-    }
-
     private var addPlayerButton: some View {
         NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
             Image(systemName: "plus")
@@ -102,7 +98,7 @@ struct PlayersView: View, PlayersLogic {
     }
 
     private var addTeamButton: some View {
-        NavigationLink(destination: AddTeamView(createTeam: { _ in }), label: {
+        NavigationLink(destination: AddTeamView(createTeam: createTeam), label: {
             HStack {
                 Image(systemName: "plus")
                 Text("Add a new Team")
@@ -115,10 +111,19 @@ struct PlayersView: View, PlayersLogic {
             .padding()
             .accessibility(label: Text("Add Team"))
     }
-
-    private func isFirstTeam(_ team: Team) -> Bool { teams.first == team }
 }
 
+// MARK: Players Logic
+extension PlayersView: PlayersLogic {
+    private func edit(player: Player) -> some View {
+        EditPlayerView(player: player, editPlayer: editPlayer)
+    }
+}
+
+// MARK: Teams Logic
+extension PlayersView: TeamsLogic { }
+
+// MARK: PresentedAlert
 extension PlayersView {
     enum PresentedAlert: Identifiable {
         case notEnoughTeams
@@ -131,6 +136,7 @@ extension PlayersView {
     }
 }
 
+// TODO: extract this to its own file
 private struct PlayerRow: View {
     let player: Player
     let isInFirstTeam: Bool
@@ -177,6 +183,7 @@ private struct PlayerRowButtons: View {
     }
 }
 
+// TODO: extract this to its own file
 struct AddDashedCardStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
