@@ -6,7 +6,6 @@ struct PlayersView: View {
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
-    var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 
     var body: some View {
         NavigationView {
@@ -83,6 +82,11 @@ extension PlayersView: PlayersLogic {
     private func edit(player: Player) -> some View {
         EditPlayerView(player: player, editPlayer: editPlayer)
     }
+}
+
+// MARK: MixTeam Logic
+extension PlayersView: MixTeamLogic {
+    var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 }
 
 // MARK: Teams Logic
