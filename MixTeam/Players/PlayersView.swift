@@ -18,7 +18,7 @@ struct PlayersView: View {
             TeamRow(
                 team: teams.first ?? Team(),
                 isFirstTeam: true,
-                editPlayer: editPlayer,
+                editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: deletePlayer,
                 moveBackPlayer: moveBack,
                 createPlayer: createPlayer
@@ -37,7 +37,7 @@ struct PlayersView: View {
         TeamRow(
             team: team,
             isFirstTeam: false,
-            editPlayer: editPlayer,
+            editPlayer: { self.editedPlayer = $0 },
             deletePlayer: deletePlayer,
             moveBackPlayer: moveBack,
             createPlayer: createPlayer
