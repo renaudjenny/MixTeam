@@ -16,7 +16,14 @@ struct PlayersView: View {
 
     private var playersView: some View {
         ScrollView {
-            teamRow(teams.first ?? Team())
+            TeamRow(
+                team: teams.first ?? Team(),
+                isFirstTeam: true,
+                editPlayer: editPlayer,
+                deletePlayer: deletePlayer,
+                moveBackPlayer: moveBack,
+                createPlayer: createPlayer
+            )
             mixTeamButton
             ForEach(teams.dropFirst(), content: teamRow)
             addTeamButton
@@ -27,57 +34,15 @@ struct PlayersView: View {
         .navigationBarTitle("Players")
     }
 
-    private func teamRow(_ team: Team) -> some View {
-        VStack {
-            sectionHeader(team: team)
-                .font(.callout)
-                .foregroundColor(Color.white)
-                .padding(.top)
-            ForEach(team.players) { player in
-                PlayerRow(
-                    player: player,
-                    isInFirstTeam: self.teams.first == team,
-                    edit: { self.editedPlayer = player },
-                    delete: { self.deletePlayer(player) },
-                    moveBack: { self.moveBack(player: player) }
-                )
-            }
-            if isFirstTeam(team) {
-                addPlayerButton
-            }
-        }
-        .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle())
-        .frame(maxWidth: .infinity)
-        .padding()
-    }
-
-    private func sectionHeader(team: Team) -> some View {
-        VStack {
-            Text(team.name).padding([.leading, .trailing])
-            team.imageIdentifier.image
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(team.colorIdentifier.color)
-                .frame(width: 50, height: 50)
-                .padding()
-                .background(
-                    Color.white
-                        .clipShape(Circle())
-                )
-                .padding(.bottom)
-        }.frame(maxWidth: .infinity)
-    }
-
-    private var addPlayerButton: some View {
-        NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
-            Image(systemName: "plus")
-                .frame(width: 50, height: 50)
-                .background(Color.white.clipShape(Circle()))
-                .foregroundColor(.gray)
-                .accessibility(label: Text("Add Player"))
-            }).padding()
+    func teamRow(_ team: Team) -> some View {
+        TeamRow(
+            team: team,
+            isFirstTeam: false,
+            editPlayer: editPlayer,
+            deletePlayer: deletePlayer,
+            moveBackPlayer: moveBack,
+            createPlayer: createPlayer
+        )
     }
 
     private var mixTeamButton: some View {
