@@ -8,10 +8,10 @@ protocol PlayersLogic {
 
     func mixTeam()
 
-    func color(for player: Player) -> Color
     func createPlayer(name: String, image: ImageIdentifier)
     func editPlayer(_ player: Player)
-    func deletePlayer(in team: Team, at offsets: IndexSet)
+    func deletePlayer(_ player: Player)
+    func moveBack(player: Player)
 }
 
 extension PlayersLogic {
@@ -24,13 +24,6 @@ extension PlayersLogic {
         }
 
         randomizeTeam()
-    }
-
-    func color(for player: Player) -> Color {
-        guard let team = teams.first(where: { $0.players.contains(player) }) else {
-            return .gray
-        }
-        return team.colorIdentifier.color
     }
 
     func createPlayer(name: String, image: ImageIdentifier) {
@@ -47,9 +40,18 @@ extension PlayersLogic {
         teamsStore.teams[teamIndex].players[playerIndex] = player
     }
 
-    func deletePlayer(in team: Team, at offsets: IndexSet) {
-        guard let index = teams.firstIndex(of: team) else { return }
-        teamsStore.teams[index].players.remove(atOffsets: offsets)
+    func deletePlayer(_ player: Player) {
+        guard let teamIndex = teamsStore.teams.firstIndex(where: { $0.players.contains(player) }),
+            let playerIndex = teamsStore.teams[teamIndex].players.firstIndex(of: player) else {
+                return
+        }
+        teamsStore.teams[teamIndex].players.remove(at: playerIndex)
+    }
+
+    func moveBack(player: Player) {
+        guard teams.first != nil else { return }
+        deletePlayer(player)
+        teamsStore.teams[0].players.append(player)
     }
 }
 
@@ -73,22 +75,9 @@ extension PlayersLogic {
             teams[teamIndex].players += [player]
             return teams
         }
-        delayPlayersColorReset()
     }
 
     private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
         a.players.count < b.players.count
-    }
-
-    private func delayPlayersColorReset() {
-        // We need to delay the Player Id reset. Otherwise there will no row animations
-        // on the table. And if we don't reset players id, color won't change.
-        DispatchQueue.main.asyncAfter(deadline: .now() + PlayersView.playersColorResetDelay) {
-            self.teamsStore.teams = self.teams.map({
-                var team = $0
-                team.players = $0.players.map { Player(name: $0.name, imageIdentifier: $0.imageIdentifier) }
-                return team
-            })
-        }
     }
 }

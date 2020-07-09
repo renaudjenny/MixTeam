@@ -8,6 +8,7 @@ protocol TeamsLogic {
     func createTeam(_ team: Team)
     func editTeam(_ team: Team)
     func deleteTeam(atOffsets offsets: IndexSet)
+    func isFirstTeam(_ team: Team) -> Bool
 }
 
 extension TeamsLogic {
@@ -32,4 +33,6 @@ extension TeamsLogic {
         }
         teamsStore.teams[teamIndex] = team
     }
+
+    func isFirstTeam(_ team: Team) -> Bool { teamsStore.teams.first == team }
 }
