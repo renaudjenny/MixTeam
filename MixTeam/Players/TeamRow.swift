@@ -7,6 +7,7 @@ struct TeamRow: View {
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
     let createPlayer: (String, ImageIdentifier) -> Void
+    let deleteTeam: (Team) -> Void
 
     var body: some View {
         VStack {
@@ -29,6 +30,7 @@ struct TeamRow: View {
         }
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
+        .modifier(AddSoftRemoveButton(remove: removeTeam))
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -60,6 +62,57 @@ struct TeamRow: View {
                 .accessibility(label: Text("Add Player"))
         }).padding()
     }
+
+    private func removeTeam() {
+        deleteTeam(team)
+    }
+}
+
+// TODO: move this to its own file
+struct AddSoftRemoveButton: ViewModifier {
+    let remove: () -> Void
+    @State private var isRealRemoveButtonDisplayed = false
+
+    func body(content: Content) -> some View {
+        HStack {
+            contentAndMinusButton(content)
+            if isRealRemoveButtonDisplayed {
+                VStack(spacing: 20) {
+                    Button(action: hideRealRemoveButton) {
+                        Text("Close 🤭")
+                    }
+                    Button(action: remove) {
+                        VStack {
+                            Text("Remove!")
+                            Image(systemName: "minus.circle.fill")
+                        }
+                    }.foregroundColor(.red)
+                }
+            }
+        }.animation(.default)
+    }
+
+    private func contentAndMinusButton(_ content: Content) -> some View {
+        content
+            .overlay(
+                Button(action: displayRealRemoveButton) {
+                    if !isRealRemoveButtonDisplayed {
+                        Image(systemName: "minus.circle")
+                    }
+                }
+                .foregroundColor(.white)
+                .padding(),
+                alignment: .topTrailing
+        )
+    }
+
+    private func displayRealRemoveButton() {
+        isRealRemoveButtonDisplayed = true
+    }
+
+    private func hideRealRemoveButton() {
+        isRealRemoveButtonDisplayed = false
+    }
 }
 
 struct TeamRow_Previews: PreviewProvider {
@@ -77,7 +130,8 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in }
+                createPlayer: { _, _ in },
+                deleteTeam: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -94,7 +148,8 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in }
+                createPlayer: { _, _ in },
+                deleteTeam: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -110,7 +165,8 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in }
+                createPlayer: { _, _ in },
+                deleteTeam: { _ in }
             )
         }
     }
