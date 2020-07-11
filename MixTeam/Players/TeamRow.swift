@@ -187,3 +187,57 @@ struct TeamRow_Previews: PreviewProvider {
         }
     }
 }
+
+struct TeamRowUX_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var teams: [Team] = [Team(
+            id: UUID(),
+            name: "Team Test",
+            colorIdentifier: .red,
+            imageIdentifier: .koala,
+            players: []
+        )]
+
+        var body: some View {
+            ScrollView {
+                ForEach(teams, content: teamRow)
+                Button(action: addTeam) {
+                    Text("Add Team")
+                }
+            }.animation(.default)
+        }
+
+        private func teamRow(_ team: Team) -> some View {
+            TeamRow(
+                team: team,
+                isFirstTeam: false,
+                editPlayer: { _ in },
+                deletePlayer: { _ in },
+                moveBackPlayer: { _ in },
+                createPlayer: { _, _ in },
+                deleteTeam: deleteTeam
+            ).transition(.move(edge: .leading))
+        }
+
+        private func addTeam() {
+            teams.append(
+                Team(
+                    id: UUID(),
+                    name: "Team Test",
+                    colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
+                    imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala,
+                    players: []
+                )
+            )
+        }
+
+        private func deleteTeam(_ team: Team) {
+            guard let index = teams.firstIndex(of: team) else { return }
+            teams.remove(at: index)
+        }
+    }
+}

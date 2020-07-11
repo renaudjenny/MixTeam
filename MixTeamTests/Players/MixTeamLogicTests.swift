@@ -2,7 +2,7 @@ import XCTest
 @testable import MixTeam
 import SwiftUI
 
-class PlayersLogicTests: XCTestCase {
+class MixTeamLogicTests: XCTestCase {
     func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenNoAlertIsPresented() throws {
         let teamsStore = TeamsStore()
         teamsStore.teams = .exampleTeam
@@ -43,7 +43,7 @@ class PlayersLogicTests: XCTestCase {
     }
 }
 
-struct MockedPlayersLogic: PlayersLogic {
+struct MockedPlayersLogic: MixTeamLogic {
     var teamsStore: TeamsStore = TeamsStore()
     var mockedPresentedAlertSet: (PlayersView.PresentedAlert?) -> Void = { _ in }
 
