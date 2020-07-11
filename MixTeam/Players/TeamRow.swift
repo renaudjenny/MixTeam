@@ -30,7 +30,7 @@ struct TeamRow: View {
         }
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
-        .modifier(AddSoftRemoveButton(remove: removeTeam))
+        .modifier(AddSoftRemoveButton(remove: removeTeam, isFirstTeam: isFirstTeam))
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -71,39 +71,55 @@ struct TeamRow: View {
 // TODO: move this to its own file
 struct AddSoftRemoveButton: ViewModifier {
     let remove: () -> Void
+    let isFirstTeam: Bool
     @State private var isRealRemoveButtonDisplayed = false
 
     func body(content: Content) -> some View {
         HStack {
-            contentAndMinusButton(content)
+            contentAndMinusButton(content).overlay(filterIfNeeded)
             if isRealRemoveButtonDisplayed {
-                VStack(spacing: 20) {
-                    Button(action: hideRealRemoveButton) {
-                        Text("Close 🤭")
-                    }
-                    Button(action: remove) {
-                        VStack {
-                            Text("Remove!")
-                            Image(systemName: "minus.circle.fill")
-                        }
-                    }.foregroundColor(.red)
-                }
+                deleteButton.transition(.move(edge: .trailing))
             }
         }.animation(.default)
     }
 
     private func contentAndMinusButton(_ content: Content) -> some View {
-        content
-            .overlay(
+        content.overlay(minusButton, alignment: .topTrailing)
+    }
+
+    private var minusButton: some View {
+        VStack {
+            if !isRealRemoveButtonDisplayed && !isFirstTeam {
                 Button(action: displayRealRemoveButton) {
-                    if !isRealRemoveButtonDisplayed {
-                        Image(systemName: "minus.circle")
-                    }
+                    Image(systemName: "minus.circle")
                 }
-                .foregroundColor(.white)
-                .padding(),
-                alignment: .topTrailing
-        )
+            }
+        }
+        .foregroundColor(.white)
+        .padding()
+    }
+
+    private var deleteButton: some View {
+        VStack(spacing: 20) {
+            Button(action: remove) {
+                VStack {
+                    Text("Delete!")
+                    Image(systemName: "minus.circle.fill")
+                }
+            }
+            .foregroundColor(.white)
+            .padding()
+        }
+        .background(Color.red)
+        .modifier(AddDashedCardStyle())
+    }
+
+    @ViewBuilder private var filterIfNeeded: some View {
+        Button(action: hideRealRemoveButton) {
+            Color.black
+                .opacity(isRealRemoveButtonDisplayed ? 2/10 : 0)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+        }.allowsHitTesting(isRealRemoveButtonDisplayed)
     }
 
     private func displayRealRemoveButton() {

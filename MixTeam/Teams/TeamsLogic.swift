@@ -31,6 +31,7 @@ extension TeamsLogic {
 
     func deleteTeam(_ team: Team) {
         guard let index = teamsStore.teams.firstIndex(of: team) else { return }
+        guard index > 0 else { return }
 
         let playersInDeletedTeam = teamsStore.teams[index].players
         teamsStore.teams[0].players.append(contentsOf: playersInDeletedTeam)
