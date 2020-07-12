@@ -20,6 +20,8 @@ class MixTeamUITests: XCTestCase {
 
         app.buttons["Add Team"].tap()
 
+        app.buttons["Edit Team Purple Elephant"].tap()
+
         let teamLogoButton = app.buttons["Team Logo"]
         teamLogoButton.tap()
 
@@ -31,6 +33,6 @@ class MixTeamUITests: XCTestCase {
         let yourTeamNameTextField = app.textFields["Name"]
         yourTeamNameTextField.tap()
         yourTeamNameTextField.typeText("Red Koalas\n")
-        app.buttons["Create Team"].tap()
+        app.buttons["Edit Team"].tap()
     }
 }

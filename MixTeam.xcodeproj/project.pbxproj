@@ -35,7 +35,6 @@
 		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
-		4CCA0D25249A747F00E88F80 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D24249A747F00E88F80 /* TabBarView.swift */; };
 		4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */; };
 		4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D28249BED2200E88F80 /* TeamsStore.swift */; };
 		4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFCE6F124A340A90030114B /* ImageCell.swift */; };
@@ -93,7 +92,6 @@
 		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
-		4CCA0D24249A747F00E88F80 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4CCA0D28249BED2200E88F80 /* TeamsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsStore.swift; sourceTree = "<group>"; };
 		4CFCE6F124A340A90030114B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
 				4CFCE6F424A341D40030114B /* Players */,
 				4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */,
-				4CCA0D24249A747F00E88F80 /* TabBarView.swift */,
 				4CFCE6F524A341EF0030114B /* Teams */,
 				4CCA0D28249BED2200E88F80 /* TeamsStore.swift */,
 				4CEF9D471F8A972B00E34083 /* Utils */,
@@ -422,7 +419,6 @@
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
-				4CCA0D25249A747F00E88F80 /* TabBarView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,

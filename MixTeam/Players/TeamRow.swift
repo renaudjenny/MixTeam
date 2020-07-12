@@ -51,7 +51,9 @@ struct TeamRow: View {
                     .background(Color.white.clipShape(Circle()))
                     .padding(.bottom)
             }
-        }).disabled(isFirstTeam)
+        })
+            .disabled(isFirstTeam)
+            .accessibility(label: Text("Edit Team \(team.name)"))
     }
 
     private var addPlayerButton: some View {

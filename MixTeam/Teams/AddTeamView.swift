@@ -1,5 +1,6 @@
 import SwiftUI
 
+// TODO: remove, it's not used anymore
 struct AddTeamView: View {
     @Environment(\.presentationMode) var presentation
     var createTeam: (Team) -> Void

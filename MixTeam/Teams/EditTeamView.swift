@@ -68,7 +68,7 @@ struct EditTeamView: View {
     private func colorRow(_ colorIdentifier: ColorIdentifier) -> some View {
         Button(action: { self.colorIdentifier = colorIdentifier }, label: {
             colorIdentifier.color.frame(width: 50, height: 50)
-        })
+        }).accessibility(label: Text("\(colorIdentifier.name) color"))
     }
 }
 
