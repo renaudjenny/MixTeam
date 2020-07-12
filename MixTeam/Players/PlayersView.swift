@@ -68,12 +68,11 @@ struct PlayersView: View {
     }
 
     private var addTeamButton: some View {
-        NavigationLink(destination: AddTeamView(createTeam: createTeam), label: {
-            HStack {
-                Image(systemName: "plus")
-                Text("Add a new Team")
-            }.frame(maxWidth: .infinity)
+        Button(action: createRandomTeam, label: {
+            Image(systemName: "plus")
+            Text("Add a new Team")
         })
+            .frame(maxWidth: .infinity)
             .foregroundColor(Color.white)
             .frame(height: 50)
             .background(Color.red)

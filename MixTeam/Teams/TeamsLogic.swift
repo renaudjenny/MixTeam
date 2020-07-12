@@ -5,7 +5,9 @@ protocol TeamsLogic {
     var teamsStore: TeamsStore { get }
     var teamsList: ArraySlice<Team> { get }
 
+    // TODO: at the end remove createTeam(_:)
     func createTeam(_ team: Team)
+    func createRandomTeam()
     func editTeam(_ team: Team)
     func deleteTeam(_ team: Team)
     // TODO: at the end remove deleteTeam(atOffsets offsets:)
@@ -18,6 +20,10 @@ extension TeamsLogic {
 
     func createTeam(_ team: Team) {
         teamsStore.teams.append(team)
+    }
+
+    func createRandomTeam() {
+        teamsStore.teams.append(randomTeam)
     }
 
     func deleteTeam(atOffsets offsets: IndexSet) {
@@ -47,4 +53,12 @@ extension TeamsLogic {
     }
 
     func isFirstTeam(_ team: Team) -> Bool { teamsStore.teams.first == team }
+
+    private var randomTeam: Team {
+        let image = ImageIdentifier.teams.randomElement() ?? .koala
+        let color = ColorIdentifier.allCases.randomElement() ?? .red
+        let name = "\(color.name) \(image.name)".localizedCapitalized
+
+        return Team(name: name, colorIdentifier: color, imageIdentifier: image)
+    }
 }
