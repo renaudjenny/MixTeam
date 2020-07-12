@@ -32,8 +32,8 @@ struct PlayersView: View {
         }
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
-        .sheet(item: $editedPlayer, content: edit(player:))
-        .sheet(item: $editedTeam, content: edit(team:))
+        .background(EmptyView().sheet(item: $editedPlayer, content: edit(player:)))
+        .background(EmptyView().sheet(item: $editedTeam, content: edit(team:)))
         .navigationBarTitle("Players")
     }
 

@@ -22,6 +22,7 @@
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */; };
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
+		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */; };
 		4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* PlayersView.swift */; };
@@ -79,6 +80,7 @@
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerView.swift; sourceTree = "<group>"; };
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
+		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EraseToAnyView.swift"; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			children = (
 				4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */,
 				4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */,
+				4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -414,6 +417,7 @@
 				4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */,
 				4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
+				4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */,
 				4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
