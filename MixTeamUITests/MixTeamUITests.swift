@@ -17,8 +17,8 @@ class MixTeamUITests: XCTestCase {
 
     func testAddTeam() {
         let app = XCUIApplication()
-        app.tabBars.buttons["Teams"].tap()
-        app.navigationBars["Teams"].buttons["Add"].tap()
+
+        app.buttons["Add Team"].tap()
 
         let teamLogoButton = app.buttons["Team Logo"]
         teamLogoButton.tap()
