@@ -4,6 +4,7 @@ struct PlayersView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
+    @State private var editedTeam: Team?
     @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
 
@@ -22,6 +23,7 @@ struct PlayersView: View {
                 deletePlayer: deletePlayer,
                 moveBackPlayer: moveBack,
                 createPlayer: createPlayer,
+                editTeam: { _ in },
                 deleteTeam: deleteTeam
             )
             mixTeamButton
@@ -31,6 +33,7 @@ struct PlayersView: View {
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
         .sheet(item: $editedPlayer, content: edit(player:))
+        .sheet(item: $editedTeam, content: edit(team:))
         .navigationBarTitle("Players")
     }
 
@@ -42,6 +45,7 @@ struct PlayersView: View {
             deletePlayer: deletePlayer,
             moveBackPlayer: moveBack,
             createPlayer: createPlayer,
+            editTeam: { self.editedTeam = $0 },
             deleteTeam: deleteTeam
         )
     }
@@ -92,7 +96,11 @@ extension PlayersView: MixTeamLogic {
 }
 
 // MARK: Teams Logic
-extension PlayersView: TeamsLogic { }
+extension PlayersView: TeamsLogic {
+    private func edit(team: Team) -> some View {
+        EditTeamView(team: team, editTeam: editTeam)
+    }
+}
 
 // MARK: PresentedAlert
 extension PlayersView {

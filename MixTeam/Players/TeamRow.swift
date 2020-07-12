@@ -7,6 +7,7 @@ struct TeamRow: View {
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
     let createPlayer: (String, ImageIdentifier) -> Void
+    let editTeam: (Team) -> Void
     let deleteTeam: (Team) -> Void
 
     var body: some View {
@@ -28,6 +29,7 @@ struct TeamRow: View {
                 addPlayerButton
             }
         }
+        .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
         .modifier(AddSoftRemoveButton(remove: removeTeam, isFirstTeam: isFirstTeam))
@@ -36,21 +38,20 @@ struct TeamRow: View {
     }
 
     private func sectionHeader(team: Team) -> some View {
-        VStack {
-            Text(team.name).padding([.leading, .trailing])
-            team.imageIdentifier.image
-                .resizable()
-                .renderingMode(.template)
-                .aspectRatio(contentMode: .fit)
-                .foregroundColor(team.colorIdentifier.color)
-                .frame(width: 50, height: 50)
-                .padding()
-                .background(
-                    Color.white
-                        .clipShape(Circle())
-            )
-                .padding(.bottom)
-        }.frame(maxWidth: .infinity)
+        Button(action: { self.editTeam(team) }, label: {
+            VStack {
+                Text(team.name).padding([.leading, .trailing])
+                team.imageIdentifier.image
+                    .resizable()
+                    .renderingMode(.template)
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(team.colorIdentifier.color)
+                    .frame(width: 50, height: 50)
+                    .padding()
+                    .background(Color.white.clipShape(Circle()))
+                    .padding(.bottom)
+            }
+        }).disabled(isFirstTeam)
     }
 
     private var addPlayerButton: some View {
@@ -147,6 +148,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { _, _ in },
+                editTeam: { _ in },
                 deleteTeam: { _ in }
             )
             TeamRow(
@@ -165,6 +167,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { _, _ in },
+                editTeam: { _ in },
                 deleteTeam: { _ in }
             )
             TeamRow(
@@ -182,6 +185,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { _, _ in },
+                editTeam: { _ in },
                 deleteTeam: { _ in }
             )
         }
@@ -219,6 +223,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { _, _ in },
+                editTeam: { _ in },
                 deleteTeam: deleteTeam
             ).transition(.move(edge: .leading))
         }
