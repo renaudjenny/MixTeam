@@ -20,11 +20,11 @@ struct PlayersView: View {
                 team: teams.first ?? Team(),
                 isFirstTeam: true,
                 editPlayer: { self.editedPlayer = $0 },
-                deletePlayer: deletePlayer,
+                deletePlayer: delete(player:),
                 moveBackPlayer: moveBack,
                 createPlayer: createRandomPlayer,
                 editTeam: { _ in },
-                deleteTeam: deleteTeam
+                deleteTeam: delete(team:)
             )
             mixTeamButton
             ForEach(teams.dropFirst(), content: teamRow)
@@ -42,11 +42,11 @@ struct PlayersView: View {
             team: team,
             isFirstTeam: false,
             editPlayer: { self.editedPlayer = $0 },
-            deletePlayer: deletePlayer,
+            deletePlayer: delete(player:),
             moveBackPlayer: moveBack,
             createPlayer: createRandomPlayer,
             editTeam: { self.editedTeam = $0 },
-            deleteTeam: deleteTeam
+            deleteTeam: delete(team:)
         )
     }
 
@@ -85,7 +85,7 @@ struct PlayersView: View {
 // MARK: Players Logic
 extension PlayersView: PlayersLogic {
     private func edit(player: Player) -> some View {
-        EditPlayerView(player: player, editPlayer: editPlayer)
+        EditPlayerView(player: player, editPlayer: edit(player:))
     }
 }
 
@@ -97,7 +97,7 @@ extension PlayersView: MixTeamLogic {
 // MARK: Teams Logic
 extension PlayersView: TeamsLogic {
     private func edit(team: Team) -> some View {
-        EditTeamView(team: team, editTeam: editTeam)
+        EditTeamView(team: team, editTeam: edit(team:))
     }
 }
 

@@ -6,8 +6,8 @@ protocol TeamsLogic {
     var teamsList: ArraySlice<Team> { get }
 
     func createRandomTeam()
-    func editTeam(_ team: Team)
-    func deleteTeam(_ team: Team)
+    func edit(team: Team)
+    func delete(team: Team)
     func isFirstTeam(_ team: Team) -> Bool
 }
 
@@ -26,7 +26,7 @@ extension TeamsLogic {
         ))
     }
 
-    func deleteTeam(_ team: Team) {
+    func delete(team: Team) {
         guard let index = teamsStore.teams.firstIndex(of: team) else { return }
         guard index > 0 else { return }
 
@@ -36,7 +36,7 @@ extension TeamsLogic {
         teamsStore.teams.remove(at: index)
     }
 
-    func editTeam(_ team: Team) {
+    func edit(team: Team) {
         guard let teamIndex = teamsStore.teams.firstIndex(of: team) else {
             return
         }

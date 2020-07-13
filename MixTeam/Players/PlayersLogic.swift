@@ -6,8 +6,8 @@ protocol PlayersLogic {
     var teams: [Team] { get }
 
     func createRandomPlayer()
-    func editPlayer(_ player: Player)
-    func deletePlayer(_ player: Player)
+    func edit(player: Player)
+    func delete(player: Player)
     func moveBack(player: Player)
 }
 
@@ -22,7 +22,7 @@ extension PlayersLogic {
         teamsStore.teams[0].players.append(player)
     }
 
-    func editPlayer(_ player: Player) {
+    func edit(player: Player) {
         guard let teamIndex = teamsStore.teams.firstIndex(where: { $0.players.contains(player) }),
             let playerIndex = teamsStore.teams[teamIndex].players.firstIndex(of: player) else {
                 return
@@ -30,7 +30,7 @@ extension PlayersLogic {
         teamsStore.teams[teamIndex].players[playerIndex] = player
     }
 
-    func deletePlayer(_ player: Player) {
+    func delete(player: Player) {
         guard let teamIndex = teamsStore.teams.firstIndex(where: { $0.players.contains(player) }),
             let playerIndex = teamsStore.teams[teamIndex].players.firstIndex(of: player) else {
                 return
@@ -40,7 +40,7 @@ extension PlayersLogic {
 
     func moveBack(player: Player) {
         guard teams.first != nil else { return }
-        deletePlayer(player)
+        delete(player: player)
         teamsStore.teams[0].players.append(player)
     }
 }
