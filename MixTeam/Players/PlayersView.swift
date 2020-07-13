@@ -22,7 +22,7 @@ struct PlayersView: View {
                 editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: deletePlayer,
                 moveBackPlayer: moveBack,
-                createPlayer: createPlayer,
+                createPlayer: createRandomPlayer,
                 editTeam: { _ in },
                 deleteTeam: deleteTeam
             )
@@ -44,7 +44,7 @@ struct PlayersView: View {
             editPlayer: { self.editedPlayer = $0 },
             deletePlayer: deletePlayer,
             moveBackPlayer: moveBack,
-            createPlayer: createPlayer,
+            createPlayer: createRandomPlayer,
             editTeam: { self.editedTeam = $0 },
             deleteTeam: deleteTeam
         )

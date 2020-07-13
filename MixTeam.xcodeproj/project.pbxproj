@@ -13,14 +13,11 @@
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3763C524A3DF5E00FA040B /* MixTeamLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */; };
-		4C38973624914CC600D6D182 /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973524914CC600D6D182 /* TeamsView.swift */; };
 		4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973724914D1300D6D182 /* TeamsLogic.swift */; };
-		4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3897392492BDC800D6D182 /* AddTeamView.swift */; };
 		4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */; };
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
 		4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40059D245D4B3300ADF398 /* PlayersLogic.swift */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
-		4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */; };
 		4C457719244C831700A6DDF2 /* PlayerImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C457718244C831700A6DDF2 /* PlayerImagesView.swift */; };
 		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
@@ -70,14 +67,11 @@
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogicTests.swift; sourceTree = "<group>"; };
-		4C38973524914CC600D6D182 /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		4C38973724914D1300D6D182 /* TeamsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsLogic.swift; sourceTree = "<group>"; };
-		4C3897392492BDC800D6D182 /* AddTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamView.swift; sourceTree = "<group>"; };
 		4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImagesView.swift; sourceTree = "<group>"; };
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
 		4C40059D245D4B3300ADF398 /* PlayersLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersLogic.swift; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPlayerView.swift; sourceTree = "<group>"; };
 		4C457718244C831700A6DDF2 /* PlayerImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagesView.swift; sourceTree = "<group>"; };
 		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
@@ -226,7 +220,6 @@
 		4CFCE6F424A341D40030114B /* Players */ = {
 			isa = PBXGroup;
 			children = (
-				4C457712244C5AC900A6DDF2 /* AddPlayerView.swift */,
 				4CBA6B21249E166500CA3851 /* EditPlayerView.swift */,
 				4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */,
 				4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */,
@@ -244,9 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
-				4C38973524914CC600D6D182 /* TeamsView.swift */,
 				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
-				4C3897392492BDC800D6D182 /* AddTeamView.swift */,
 				4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */,
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 			);
@@ -411,7 +402,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C38973A2492BDC800D6D182 /* AddTeamView.swift in Sources */,
 				4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */,
@@ -423,7 +413,6 @@
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
-				4C457713244C5AC900A6DDF2 /* AddPlayerView.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
@@ -431,7 +420,6 @@
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */,
-				4C38973624914CC600D6D182 /* TeamsView.swift in Sources */,
 				4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */,
 				4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,

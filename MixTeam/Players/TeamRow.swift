@@ -6,7 +6,7 @@ struct TeamRow: View {
     let editPlayer: (Player) -> Void
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
-    let createPlayer: (String, ImageIdentifier) -> Void
+    let createPlayer: () -> Void
     let editTeam: (Team) -> Void
     let deleteTeam: (Team) -> Void
 
@@ -57,7 +57,7 @@ struct TeamRow: View {
     }
 
     private var addPlayerButton: some View {
-        NavigationLink(destination: AddPlayerView(createPlayer: createPlayer), label: {
+        Button(action: createPlayer, label: {
             Image(systemName: "plus")
                 .frame(width: 50, height: 50)
                 .background(Color.white.clipShape(Circle()))
@@ -86,7 +86,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in },
+                createPlayer: { },
                 editTeam: { _ in },
                 deleteTeam: { _ in }
             )
@@ -105,7 +105,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in },
+                createPlayer: { },
                 editTeam: { _ in },
                 deleteTeam: { _ in }
             )
@@ -123,7 +123,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in },
+                createPlayer: { },
                 editTeam: { _ in },
                 deleteTeam: { _ in }
             )
@@ -161,7 +161,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { _, _ in },
+                createPlayer: { },
                 editTeam: { _ in },
                 deleteTeam: deleteTeam
             ).transition(.move(edge: .leading))

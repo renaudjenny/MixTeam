@@ -5,7 +5,7 @@ protocol PlayersLogic {
     var teamsStore: TeamsStore { get }
     var teams: [Team] { get }
 
-    func createPlayer(name: String, image: ImageIdentifier)
+    func createRandomPlayer()
     func editPlayer(_ player: Player)
     func deletePlayer(_ player: Player)
     func moveBack(player: Player)
@@ -14,10 +14,12 @@ protocol PlayersLogic {
 extension PlayersLogic {
     var teams: [Team] { teamsStore.teams }
 
-    func createPlayer(name: String, image: ImageIdentifier) {
-        guard var playersStandingForATeam = teams.first else { return }
-        playersStandingForATeam.players.append(Player(name: name, imageIdentifier: image))
-        teamsStore.teams[0] = playersStandingForATeam
+    func createRandomPlayer() {
+        guard teams.first != nil else { return }
+        let name = Player.placeholders.randomElement() ?? ""
+        let image = ImageIdentifier.players.randomElement() ?? .unknown
+        let player = Player(name: name, imageIdentifier: image)
+        teamsStore.teams[0].players.append(player)
     }
 
     func editPlayer(_ player: Player) {
@@ -41,4 +43,9 @@ extension PlayersLogic {
         deletePlayer(player)
         teamsStore.teams[0].players.append(player)
     }
+}
+
+extension Player {
+    static let placeholders = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"]
+
 }
