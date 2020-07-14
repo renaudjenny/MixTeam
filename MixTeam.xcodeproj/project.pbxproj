@@ -30,6 +30,7 @@
 		4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
 		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
+		4CC149D624BE5E4A00FBCE0C /* PlayerImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* PlayerImagePicker.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
 		4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */; };
@@ -84,6 +85,7 @@
 		4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogic.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
 		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
+		4CC149D524BE5E4A00FBCE0C /* PlayerImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerImagePicker.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				4C457718244C831700A6DDF2 /* PlayerImagesView.swift */,
 				4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */,
 				4C40059D245D4B3300ADF398 /* PlayersLogic.swift */,
+				4CC149D524BE5E4A00FBCE0C /* PlayerImagePicker.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
+				4CC149D624BE5E4A00FBCE0C /* PlayerImagePicker.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
