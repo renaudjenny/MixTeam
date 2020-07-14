@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct PlayersView: View {
+struct MainView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
@@ -9,10 +9,6 @@ struct PlayersView: View {
     @State private var presentedAlert: PresentedAlert?
 
     var body: some View {
-        playersView
-    }
-
-    private var playersView: some View {
         ScrollView {
             TeamRow(
                 team: teams.first ?? Team(),
@@ -81,26 +77,26 @@ struct PlayersView: View {
 }
 
 // MARK: Players Logic
-extension PlayersView: PlayersLogic {
+extension MainView: PlayersLogic {
     private func edit(player: Player) -> some View {
         EditPlayerView(player: player, editPlayer: edit(player:))
     }
 }
 
 // MARK: MixTeam Logic
-extension PlayersView: MixTeamLogic {
+extension MainView: MixTeamLogic {
     var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 }
 
 // MARK: Teams Logic
-extension PlayersView: TeamsLogic {
+extension MainView: TeamsLogic {
     private func edit(team: Team) -> some View {
         EditTeamView(team: team, editTeam: edit(team:))
     }
 }
 
 // MARK: PresentedAlert
-extension PlayersView {
+extension MainView {
     enum PresentedAlert: Identifiable {
         case notEnoughTeams
 
@@ -115,9 +111,9 @@ extension PlayersView {
 struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PlayersView()
+            MainView()
                 .environmentObject(TeamsStore())
-            PlayersView()
+            MainView()
                 .environmentObject(TeamsStore())
                 .environment(\.colorScheme, .dark)
         }

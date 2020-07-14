@@ -1,7 +1,7 @@
 import SwiftUI
 
 protocol MixTeamLogic: PlayersLogic {
-    var presentedAlertBinding: Binding<PlayersView.PresentedAlert?> { get }
+    var presentedAlertBinding: Binding<MainView.PresentedAlert?> { get }
 
     func mixTeam()
 }

@@ -22,7 +22,7 @@
 		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */; };
-		4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* PlayersView.swift */; };
+		4C7FE787245A166A0011E8AB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* MainView.swift */; };
 		4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */; };
@@ -76,7 +76,7 @@
 		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C7F555A2489A3730089F26C /* View+EraseToAnyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+EraseToAnyView.swift"; sourceTree = "<group>"; };
-		4C7FE786245A166A0011E8AB /* PlayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersView.swift; sourceTree = "<group>"; };
+		4C7FE786245A166A0011E8AB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4C8B5A14244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptsToSoftwareKeyboard.swift; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDashedCardStyle.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
 				4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
-				4C7FE786245A166A0011E8AB /* PlayersView.swift */,
+				4C7FE786245A166A0011E8AB /* MainView.swift */,
 				4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */,
 				4C49458224BE22EB00A7A81A /* Styles */,
 				4CFCE6F524A341EF0030114B /* Teams */,
@@ -427,7 +427,7 @@
 				4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
-				4C7FE787245A166A0011E8AB /* PlayersView.swift in Sources */,
+				4C7FE787245A166A0011E8AB /* MainView.swift in Sources */,
 				4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */,
 				4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,
