@@ -9,9 +9,7 @@ struct PlayersView: View {
     @State private var presentedAlert: PresentedAlert?
 
     var body: some View {
-        NavigationView {
-            playersView
-        }
+        playersView
     }
 
     private var playersView: some View {
