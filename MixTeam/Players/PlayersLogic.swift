@@ -5,7 +5,6 @@ protocol PlayersLogic {
     var teamsStore: TeamsStore { get }
 
     func createRandomPlayer()
-    func edit(player: Player)
     func delete(player: Player)
     func moveBack(player: Player)
 
@@ -28,13 +27,6 @@ extension PlayersLogic {
                 return nil
         }
         return (teamIndex, playerIndex)
-    }
-
-    func edit(player: Player) {
-        guard let (teamIndex, playerIndex) = indexes(for: player) else {
-            return
-        }
-        teamsStore.teams[teamIndex].players[playerIndex] = player
     }
 
     func delete(player: Player) {
