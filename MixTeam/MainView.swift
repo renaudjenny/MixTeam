@@ -11,7 +11,7 @@ struct MainView: View {
     var body: some View {
         ScrollView {
             TeamRow(
-                team: teams.first ?? Team(),
+                team: teamsStore.teams.first ?? Team(),
                 isFirstTeam: true,
                 editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: delete(player:),
@@ -21,7 +21,7 @@ struct MainView: View {
                 deleteTeam: delete(team:)
             )
             mixTeamButton
-            ForEach(teams.dropFirst(), content: teamRow)
+            ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton
         }
         .animation(.default)
@@ -79,7 +79,7 @@ struct MainView: View {
 // MARK: Players Logic
 extension MainView: PlayersLogic {
     private func edit(player: Player) -> some View {
-        EditPlayerView(player: player, editPlayer: edit(player:))
+        EditPlayerView(player: bind(player: player), team: team(of: player))
     }
 }
 

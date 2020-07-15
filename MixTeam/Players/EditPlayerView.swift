@@ -4,83 +4,92 @@ import UIKit
 
 struct EditPlayerView: View {
     @Environment(\.presentationMode) var presentation
-    @State private var name: String
-    @State private var imageIdentifier: ImageIdentifier
-    @State private var isPlayerImagesPresented = false
-    @State private var isAlertPresented = false
-    private let id: UUID
-    let editPlayer: (Player) -> Void
-
-    init(player: Player, editPlayer: @escaping (Player) -> Void) {
-        _name = State(initialValue: player.name)
-        _imageIdentifier = State(initialValue: player.imageIdentifier)
-        id = player.id
-        self.editPlayer = editPlayer
-    }
+    @Binding var player: Player
+    let team: Team
 
     var body: some View {
         ScrollView {
             VStack {
-                title
-                playerImage.frame(width: 200, height: 200)
                 playerNameField
-                editPlayerButton
+                PlayerImagePicker(team: team, selection: $player.imageIdentifier)
             }
-            .sheet(isPresented: $isPlayerImagesPresented) {
-                PlayerImagesView(selectedImageIdentifier: self.$imageIdentifier)
-            }
-            .alert(isPresented: $isAlertPresented) { self.noNameAlert }
-        }.modifier(AdaptsToSoftwareKeyboard())
+        }
+        .background(team.colorIdentifier.color.edgesIgnoringSafeArea(.all))
     }
 
     private var title: some View {
-        Text(name)
+        Text(player.name)
             .font(.largeTitle)
             .padding()
     }
 
-    private var playerImage: some View {
-        Button(action: { self.isPlayerImagesPresented = true }, label: {
-            imageIdentifier
-                .image
-                .resizable()
-                .scaledToFit()
-        })
-        .buttonStyle(PlainButtonStyle())
-        .accessibility(label: Text("Player Logo"))
-    }
-
     private var playerNameField: some View {
-        TextField("", text: $name)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .padding()
-    }
-
-    private var editPlayerButton: some View {
-        Button(action: editPlayerAction) {
-            Text("Edit Player")
+        HStack {
+            TextField("Edit", text: $player.name)
+                .foregroundColor(Color.white)
+                .font(.largeTitle)
+                .padding()
+                .background(team.colorIdentifier.color)
+                .modifier(AddDashedCardStyle())
+                .padding([.top, .leading])
+            doneButton
         }
-        .padding()
     }
 
-    private func editPlayerAction() {
-        editPlayer(Player(id: id, name: name, imageIdentifier: imageIdentifier))
-        presentation.wrappedValue.dismiss()
-    }
+    private var doneButton: some View {
+        Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
+            Text("Done").foregroundColor(Color.white)
+        })
+            .padding()
+            .background(team.colorIdentifier.color)
+            .modifier(AddDashedCardStyle())
+            .padding()
 
-    private var noNameAlert: Alert {
-        Alert(
-            title: Text("Give a name"),
-            message: Text("Please, give a name to the player"),
-            dismissButton: .cancel()
-        )
     }
 }
 
 struct EditPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditPlayerView(player: Player(name: "Harry", imageIdentifier: .harryPottar)) {
-            print($0)
+        Preview()
+    }
+
+    struct Preview: View {
+        @State private var player = Player(name: "Harry", imageIdentifier: .harryPottar)
+        let team = Team(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
+
+        var body: some View {
+            EditPlayerView(player: $player, team: team)
+        }
+    }
+}
+
+struct EditPlayerViewInteractive_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+            .environmentObject(TeamsStore())
+    }
+
+    struct Preview: View {
+        @EnvironmentObject var teamsStore: TeamsStore
+        @State private var editedPlayer: Player?
+        var team: Team { teamsStore.teams[1] }
+
+        var body: some View {
+            TeamRow(
+                team: team,
+                isFirstTeam: false,
+                editPlayer: { self.editedPlayer = $0 },
+                deletePlayer: { _ in },
+                moveBackPlayer: { _ in },
+                createPlayer: { },
+                editTeam: { _ in },
+                deleteTeam: { _ in }
+            ).sheet(item: $editedPlayer) { player in
+                EditPlayerView(
+                    player: self.$teamsStore.teams[1].players[0],
+                    team: self.team
+                )
+            }
         }
     }
 }

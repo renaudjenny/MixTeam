@@ -8,7 +8,7 @@ protocol MixTeamLogic: PlayersLogic {
 
 extension MixTeamLogic {
     func mixTeam() {
-        guard teams.count > 2 else {
+        guard teamsStore.teams.count > 2 else {
             presentedAlertBinding.wrappedValue = .notEnoughTeams
             return
         }
@@ -17,17 +17,17 @@ extension MixTeamLogic {
     }
 
     private func randomizeTeam() {
-        let players = teams.flatMap(\.players)
+        let players = teamsStore.teams.flatMap(\.players)
         guard players.count > 0 else { return }
-        guard teams.filter({ $0 != teams.first }).count > 1 else { return }
+        guard teamsStore.teams.count > 2 else { return }
 
-        teamsStore.teams = teams.map({
+        teamsStore.teams = teamsStore.teams.map({
             var newTeam = $0
             newTeam.players = []
             return newTeam
         })
 
-        teamsStore.teams = players.shuffled().reduce(teams) { teams, player in
+        teamsStore.teams = players.shuffled().reduce(teamsStore.teams) { teams, player in
             var teams = teams
             let availableTeams = teams.filter { $0 != teams.first }
             guard let lessPlayerTeam = availableTeams.sorted(by: hasLessPlayer).first,
