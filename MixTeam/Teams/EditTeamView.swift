@@ -5,7 +5,6 @@ struct EditTeamView: View {
     @State private var name: String
     @State private var imageIdentifier: ImageIdentifier
     @State private var colorIdentifier: ColorIdentifier
-    @State private var isTeamImagesPresented = false
     private let id: UUID
     private let players: [Player]
     let editTeam: (Team) -> Void
@@ -21,37 +20,40 @@ struct EditTeamView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                TextField("Name", text: $name)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                teamImage
+            teamNameField
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(ColorIdentifier.allCases) { colorIdentifier in
+                        Button(action: { self.colorIdentifier = colorIdentifier }, label: {
+                            colorIdentifier.color
+                                .frame(width: 50, height: 50)
+
+                        }).accessibility(label: Text("\(colorIdentifier.name) color"))
+                    }
+                }
             }
             .padding()
-            .background(
-                colorIdentifier.color
-                    .opacity(0.10)
-                    .clipShape(RoundedRectangle(cornerRadius: 8)))
-                .padding()
-            List(ColorIdentifier.allCases, rowContent: colorRow)
-            Button(action: editTeamAction) {
-                Text("Edit Team")
-            }.padding()
+            .background(colorIdentifier.color.brightness(-0.2))
+            .modifier(AddDashedCardStyle())
+            .padding()
+            PlayerImagePicker(team: Team(colorIdentifier: colorIdentifier), selection: $imageIdentifier, type: .team)
+
         }
-        .sheet(isPresented: $isTeamImagesPresented) {
-            TeamImagesView(selectedImageIdentifier: self.$imageIdentifier)
-        }
-        .navigationBarTitle("Add Team")
+        .background(colorIdentifier.color.edgesIgnoringSafeArea(.all))
+        .animation(.default)
     }
 
-    private var teamImage: some View {
-        Button(action: { self.isTeamImagesPresented = true }, label: {
-            imageIdentifier.image
-                .resizable()
-                .frame(width: 50, height: 50)
-        })
-        .foregroundColor(colorIdentifier.color)
-        .accessibility(label: Text("Team Logo"))
-        .accessibility(value: Text(imageIdentifier.name))
+    private var teamNameField: some View {
+        HStack {
+            TextField("Edit", text: $name)
+                .foregroundColor(Color.white)
+                .font(.largeTitle)
+                .padding()
+                .background(colorIdentifier.color)
+                .modifier(AddDashedCardStyle())
+                .padding([.top, .leading])
+            doneButton
+        }
     }
 
     private func editTeamAction() {
@@ -65,10 +67,15 @@ struct EditTeamView: View {
         presentation.wrappedValue.dismiss()
     }
 
-    private func colorRow(_ colorIdentifier: ColorIdentifier) -> some View {
-        Button(action: { self.colorIdentifier = colorIdentifier }, label: {
-            colorIdentifier.color.frame(width: 50, height: 50)
-        }).accessibility(label: Text("\(colorIdentifier.name) color"))
+    private var doneButton: some View {
+        Button(action: editTeamAction, label: {
+            Text("Done").foregroundColor(Color.white)
+        })
+            .padding()
+            .background(colorIdentifier.color)
+            .modifier(AddDashedCardStyle())
+            .padding()
+
     }
 }
 

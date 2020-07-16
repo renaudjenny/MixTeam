@@ -22,17 +22,13 @@ class MixTeamUITests: XCTestCase {
 
         app.buttons["Edit Team Purple Elephant"].tap()
 
-        let teamLogoButton = app.buttons["Team Logo"]
-        teamLogoButton.tap()
-
         app.buttons["koala"].tap()
-        XCTAssertEqual(teamLogoButton.value as? String, "koala")
 
         app.buttons["red color"].tap()
 
-        let yourTeamNameTextField = app.textFields["Name"]
+        let yourTeamNameTextField = app.textFields["Edit"]
         yourTeamNameTextField.tap()
         yourTeamNameTextField.typeText("Red Koalas\n")
-        app.buttons["Edit Team"].tap()
+        app.buttons["Done"].tap()
     }
 }

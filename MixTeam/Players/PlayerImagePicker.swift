@@ -1,8 +1,10 @@
 import SwiftUI
 
+// TODO: rename this, as it's more generic now
 struct PlayerImagePicker: View {
     let team: Team
     @Binding var selection: ImageIdentifier
+    let type: ImagePickerType
 
     let columns = 2
     let rows = 3
@@ -34,8 +36,10 @@ struct PlayerImagePicker: View {
     }
 
     @ViewBuilder private func content(row: Int, column: Int) -> some View {
-        if row * columns + column < ImageIdentifier.players.count {
+        if type == .player && row * columns + column < ImageIdentifier.players.count {
             Cell(imageIdentifier: ImageIdentifier.players[row * columns + column], team: team, selection: $selection)
+        } else if type == .team && row * columns + column < ImageIdentifier.teams.count {
+            Cell(imageIdentifier: ImageIdentifier.teams[row * columns + column], team: team, selection: $selection)
         } else {
             EmptyView()
         }
@@ -80,6 +84,12 @@ private struct Cell: View {
     }
 }
 
+extension PlayerImagePicker {
+    enum ImagePickerType {
+        case team, player
+    }
+}
+
 struct PlayerImagePicker_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -96,7 +106,8 @@ struct PlayerImagePicker_Previews: PreviewProvider {
             VStack {
                 PlayerImagePicker(
                     team: teamsStore.teams[1],
-                    selection: selection
+                    selection: selection,
+                    type: .player
                 )
                 Spacer()
                 TeamRow(

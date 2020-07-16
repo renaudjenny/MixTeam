@@ -11,7 +11,7 @@ struct EditPlayerView: View {
         ScrollView {
             VStack {
                 playerNameField
-                PlayerImagePicker(team: team, selection: $player.imageIdentifier)
+                PlayerImagePicker(team: team, selection: $player.imageIdentifier, type: .player)
             }
         }
         .background(team.colorIdentifier.color.edgesIgnoringSafeArea(.all))
