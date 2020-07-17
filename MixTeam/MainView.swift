@@ -11,7 +11,6 @@ struct MainView: View {
         ScrollView {
             TeamRow(
                 team: teamsStore.teams.first ?? Team(),
-                isFirstTeam: true,
                 editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: delete(player:),
                 moveBackPlayer: moveBack
@@ -29,7 +28,6 @@ struct MainView: View {
     func teamRow(_ team: Team) -> some View {
         TeamRow(
             team: team,
-            isFirstTeam: false,
             editPlayer: { self.editedPlayer = $0 },
             deletePlayer: delete(player:),
             moveBackPlayer: moveBack

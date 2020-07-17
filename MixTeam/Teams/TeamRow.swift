@@ -4,7 +4,6 @@ struct TeamRow: View {
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var isEdited = false
     let team: Team
-    let isFirstTeam: Bool
     let editPlayer: (Player) -> Void
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
@@ -71,6 +70,7 @@ struct TeamRow: View {
 }
 
 extension TeamRow: TeamsLogic {
+    var isFirstTeam: Bool { isFirstTeam(team) }
     private func delete() { delete(team: team) }
     private func edit() { isEdited = true }
 
@@ -94,7 +94,6 @@ struct TeamRow_Previews: PreviewProvider {
                     imageIdentifier: .koala,
                     players: []
                 ),
-                isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in }
@@ -110,7 +109,6 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 2", imageIdentifier: .theBotman)
                     ]
                 ),
-                isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in }
@@ -125,7 +123,6 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 1", imageIdentifier: .harryPottar)
                     ]
                 ),
-                isFirstTeam: true,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in }
@@ -160,7 +157,6 @@ struct TeamRowUX_Previews: PreviewProvider {
         private func teamRow(_ team: Team) -> some View {
             TeamRow(
                 team: team,
-                isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in }
