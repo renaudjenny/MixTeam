@@ -2,17 +2,17 @@ import SwiftUI
 
 struct TeamRow: View {
     @EnvironmentObject var teamsStore: TeamsStore
+    @State private var isEdited = false
     let team: Team
     let isFirstTeam: Bool
     let editPlayer: (Player) -> Void
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
     let createPlayer: () -> Void
-    let editTeam: (Team) -> Void
 
     var body: some View {
         VStack {
-            sectionHeader(team: team)
+            sectionHeader
                 .font(.callout)
                 .foregroundColor(Color.white)
                 .padding(.top)
@@ -32,13 +32,17 @@ struct TeamRow: View {
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
-        .modifier(AddSoftRemoveButton(remove: removeTeam, isFirstTeam: isFirstTeam))
+        .modifier(AddSoftRemoveButton(remove: delete, isFirstTeam: isFirstTeam))
         .frame(maxWidth: .infinity)
         .padding()
+        .sheet(isPresented: $isEdited, content: {
+            // TODO: modify EditTeamView to accepted just a Team binding
+            EditTeamView(team: self.team, editTeam: self.edit(team:))
+        })
     }
 
-    private func sectionHeader(team: Team) -> some View {
-        Button(action: { self.editTeam(team) }, label: {
+    private var sectionHeader: some View {
+        Button(action: edit) {
             VStack {
                 Text(team.name).padding([.leading, .trailing])
                 team.imageIdentifier.image
@@ -51,9 +55,9 @@ struct TeamRow: View {
                     .background(Color.white.clipShape(Circle()))
                     .padding(.bottom)
             }
-        })
-            .disabled(isFirstTeam)
-            .accessibility(label: Text("Edit Team \(team.name)"))
+        }
+        .disabled(isFirstTeam)
+        .accessibility(label: Text("Edit Team \(team.name)"))
     }
 
     private var addPlayerButton: some View {
@@ -68,8 +72,11 @@ struct TeamRow: View {
 }
 
 extension TeamRow: TeamsLogic {
-    private func removeTeam() {
-        delete(team: team)
+    private func delete() { delete(team: team) }
+    private func edit() { isEdited = true }
+
+    private func edit(team: Team) -> some View {
+        EditTeamView(team: team, editTeam: edit(team:))
     }
 }
 
@@ -88,8 +95,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { },
-                editTeam: { _ in }
+                createPlayer: { }
             )
             TeamRow(
                 team: Team(
@@ -106,8 +112,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { },
-                editTeam: { _ in }
+                createPlayer: { }
             )
             TeamRow(
                 team: Team(
@@ -123,8 +128,7 @@ struct TeamRow_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { },
-                editTeam: { _ in }
+                createPlayer: { }
             )
         }
     }
@@ -160,8 +164,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
-                createPlayer: { },
-                editTeam: { _ in }
+                createPlayer: { }
             ).transition(.move(edge: .leading))
         }
 

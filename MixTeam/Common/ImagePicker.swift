@@ -120,8 +120,7 @@ struct PlayerImagePicker_Previews: PreviewProvider {
                     editPlayer: { _ in },
                     deletePlayer: { _ in },
                     moveBackPlayer: { _ in },
-                    createPlayer: { },
-                    editTeam: { _ in }
+                    createPlayer: { }
                 )
                 Text("Selection: \(selection.wrappedValue.rawValue)")
             }

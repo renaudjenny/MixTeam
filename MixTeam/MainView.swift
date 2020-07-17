@@ -4,7 +4,6 @@ struct MainView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
-    @State private var editedTeam: Team?
     @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
 
@@ -16,8 +15,7 @@ struct MainView: View {
                 editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: delete(player:),
                 moveBackPlayer: moveBack,
-                createPlayer: createRandomPlayer,
-                editTeam: { _ in }
+                createPlayer: createRandomPlayer
             )
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -26,7 +24,6 @@ struct MainView: View {
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
         .background(EmptyView().sheet(item: $editedPlayer, content: edit(player:)))
-        .background(EmptyView().sheet(item: $editedTeam, content: edit(team:)))
         .navigationBarTitle("Players")
     }
 
@@ -37,8 +34,7 @@ struct MainView: View {
             editPlayer: { self.editedPlayer = $0 },
             deletePlayer: delete(player:),
             moveBackPlayer: moveBack,
-            createPlayer: createRandomPlayer,
-            editTeam: { self.editedTeam = $0 }
+            createPlayer: createRandomPlayer
         )
     }
 
@@ -87,11 +83,7 @@ extension MainView: MixTeamLogic {
 }
 
 // MARK: Teams Logic
-extension MainView: TeamsLogic {
-    private func edit(team: Team) -> some View {
-        EditTeamView(team: team, editTeam: edit(team:))
-    }
-}
+extension MainView: TeamsLogic { }
 
 // MARK: PresentedAlert
 extension MainView {
