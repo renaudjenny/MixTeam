@@ -14,8 +14,7 @@ struct MainView: View {
                 isFirstTeam: true,
                 editPlayer: { self.editedPlayer = $0 },
                 deletePlayer: delete(player:),
-                moveBackPlayer: moveBack,
-                createPlayer: createRandomPlayer
+                moveBackPlayer: moveBack
             )
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -33,8 +32,7 @@ struct MainView: View {
             isFirstTeam: false,
             editPlayer: { self.editedPlayer = $0 },
             deletePlayer: delete(player:),
-            moveBackPlayer: moveBack,
-            createPlayer: createRandomPlayer
+            moveBackPlayer: moveBack
         )
     }
 

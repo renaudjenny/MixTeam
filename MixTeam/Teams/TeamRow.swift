@@ -8,7 +8,6 @@ struct TeamRow: View {
     let editPlayer: (Player) -> Void
     let deletePlayer: (Player) -> Void
     let moveBackPlayer: (Player) -> Void
-    let createPlayer: () -> Void
 
     var body: some View {
         VStack {
@@ -80,6 +79,10 @@ extension TeamRow: TeamsLogic {
     }
 }
 
+extension TeamRow: PlayersLogic {
+    private func createPlayer() { createRandomPlayer() }
+}
+
 struct TeamRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -94,8 +97,7 @@ struct TeamRow_Previews: PreviewProvider {
                 isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
-                moveBackPlayer: { _ in },
-                createPlayer: { }
+                moveBackPlayer: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -111,8 +113,7 @@ struct TeamRow_Previews: PreviewProvider {
                 isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
-                moveBackPlayer: { _ in },
-                createPlayer: { }
+                moveBackPlayer: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -127,8 +128,7 @@ struct TeamRow_Previews: PreviewProvider {
                 isFirstTeam: true,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
-                moveBackPlayer: { _ in },
-                createPlayer: { }
+                moveBackPlayer: { _ in }
             )
         }
     }
@@ -163,8 +163,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 isFirstTeam: false,
                 editPlayer: { _ in },
                 deletePlayer: { _ in },
-                moveBackPlayer: { _ in },
-                createPlayer: { }
+                moveBackPlayer: { _ in }
             ).transition(.move(edge: .leading))
         }
 
