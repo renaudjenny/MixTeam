@@ -34,8 +34,7 @@ struct TeamRow: View {
         .frame(maxWidth: .infinity)
         .padding()
         .sheet(isPresented: $isEdited, content: {
-            // TODO: modify EditTeamView to accepted just a Team binding
-            EditTeamView(team: self.team, editTeam: self.edit(team:))
+            EditTeamView(team: self.bind(team: self.team))
         })
     }
 
@@ -73,10 +72,6 @@ extension TeamRow: TeamsLogic {
     var isFirstTeam: Bool { isFirstTeam(team) }
     private func delete() { delete(team: team) }
     private func edit() { isEdited = true }
-
-    private func edit(team: Team) -> some View {
-        EditTeamView(team: team, editTeam: edit(team:))
-    }
 }
 
 extension TeamRow: PlayersLogic {

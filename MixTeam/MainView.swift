@@ -21,11 +21,11 @@ struct MainView: View {
         }
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
-        .background(EmptyView().sheet(item: $editedPlayer, content: edit(player:)))
+        .sheet(item: $editedPlayer, content: edit(player:))
         .navigationBarTitle("Players")
     }
 
-    func teamRow(_ team: Team) -> some View {
+    func teamRow(team: Team) -> some View {
         TeamRow(
             team: team,
             editPlayer: { self.editedPlayer = $0 },
@@ -52,17 +52,17 @@ struct MainView: View {
     }
 
     private var addTeamButton: some View {
-        Button(action: createRandomTeam, label: {
+        Button(action: createRandomTeam) {
             Image(systemName: "plus")
             Text("Add a new Team")
-        })
-            .frame(maxWidth: .infinity)
-            .foregroundColor(Color.white)
-            .frame(height: 50)
-            .background(Color.red)
-            .modifier(AddDashedCardStyle())
-            .padding()
-            .accessibility(label: Text("Add Team"))
+        }
+        .frame(maxWidth: .infinity)
+        .foregroundColor(Color.white)
+        .frame(height: 50)
+        .background(Color.red)
+        .modifier(AddDashedCardStyle())
+        .padding()
+        .accessibility(label: Text("Add Team"))
     }
 }
 

@@ -241,10 +241,10 @@
 		4CFCE6F524A341EF0030114B /* Teams */ = {
 			isa = PBXGroup;
 			children = (
-				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
-				4C40AE151ECCD51E0079E964 /* Team.swift */,
-				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
+				4C40AE151ECCD51E0079E964 /* Team.swift */,
+				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
+				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
