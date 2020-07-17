@@ -36,7 +36,7 @@ struct EditTeamView: View {
             .background(colorIdentifier.color.brightness(-0.2))
             .modifier(AddDashedCardStyle())
             .padding()
-            PlayerImagePicker(team: Team(colorIdentifier: colorIdentifier), selection: $imageIdentifier, type: .team)
+            ImagePicker(team: Team(colorIdentifier: colorIdentifier), selection: $imageIdentifier, type: .team)
 
         }
         .background(colorIdentifier.color.edgesIgnoringSafeArea(.all))
