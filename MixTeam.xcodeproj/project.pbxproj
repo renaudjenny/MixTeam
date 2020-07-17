@@ -14,7 +14,6 @@
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3763C524A3DF5E00FA040B /* MixTeamLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */; };
 		4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973724914D1300D6D182 /* TeamsLogic.swift */; };
-		4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */; };
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
 		4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40059D245D4B3300ADF398 /* PlayersLogic.swift */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
@@ -68,7 +67,6 @@
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogicTests.swift; sourceTree = "<group>"; };
 		4C38973724914D1300D6D182 /* TeamsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsLogic.swift; sourceTree = "<group>"; };
-		4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImagesView.swift; sourceTree = "<group>"; };
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
 		4C40059D245D4B3300ADF398 /* PlayersLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersLogic.swift; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
-				4C38973B2494E4CD00D6D182 /* TeamImagesView.swift */,
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 			);
 			path = Teams;
@@ -415,7 +412,6 @@
 				4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
-				4C38973C2494E4CE00D6D182 /* TeamImagesView.swift in Sources */,
 				4C7F555B2489A3740089F26C /* View+EraseToAnyView.swift in Sources */,
 				4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,

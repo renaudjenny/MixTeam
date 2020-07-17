@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TeamRow: View {
+    @EnvironmentObject var teamsStore: TeamsStore
     let team: Team
     let isFirstTeam: Bool
     let editPlayer: (Player) -> Void
@@ -8,7 +9,6 @@ struct TeamRow: View {
     let moveBackPlayer: (Player) -> Void
     let createPlayer: () -> Void
     let editTeam: (Team) -> Void
-    let deleteTeam: (Team) -> Void
 
     var body: some View {
         VStack {
@@ -65,9 +65,11 @@ struct TeamRow: View {
                 .accessibility(label: Text("Add Player"))
         }).padding()
     }
+}
 
+extension TeamRow: TeamsLogic {
     private func removeTeam() {
-        deleteTeam(team)
+        delete(team: team)
     }
 }
 
@@ -87,8 +89,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { },
-                editTeam: { _ in },
-                deleteTeam: { _ in }
+                editTeam: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -106,8 +107,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { },
-                editTeam: { _ in },
-                deleteTeam: { _ in }
+                editTeam: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -124,8 +124,7 @@ struct TeamRow_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { },
-                editTeam: { _ in },
-                deleteTeam: { _ in }
+                editTeam: { _ in }
             )
         }
     }
@@ -162,8 +161,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 deletePlayer: { _ in },
                 moveBackPlayer: { _ in },
                 createPlayer: { },
-                editTeam: { _ in },
-                deleteTeam: deleteTeam
+                editTeam: { _ in }
             ).transition(.move(edge: .leading))
         }
 
