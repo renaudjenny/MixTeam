@@ -33,7 +33,6 @@
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
 		4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */; };
 		4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D28249BED2200E88F80 /* TeamsStore.swift */; };
-		4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFCE6F124A340A90030114B /* ImageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +85,6 @@
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4CCA0D28249BED2200E88F80 /* TeamsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsStore.swift; sourceTree = "<group>"; };
-		4CFCE6F124A340A90030114B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */,
-				4CFCE6F124A340A90030114B /* ImageCell.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -420,7 +417,6 @@
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
-				4CFCE6F224A340A90030114B /* ImageCell.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* MainView.swift in Sources */,
