@@ -5,10 +5,11 @@ struct MainView: View {
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var presentedAlert: PresentedAlert?
+    @State private var editedTeam: Team?
 
     var body: some View {
         ScrollView {
-            TeamRow(team: teamsStore.teams.first ?? Team(), dummyCallback: dummyCallback)
+            TeamRow(team: teamsStore.teams.first ?? Team(), edit: dummyEditTeam)
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton
@@ -16,10 +17,14 @@ struct MainView: View {
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
         .navigationBarTitle("Players")
+        .sheet(item: $editedTeam) {
+            EditTeamView(team: self.bind(team: $0))
+        }
     }
 
     func teamRow(team: Team) -> some View {
-        TeamRow(team: team, dummyCallback: dummyCallback).transition(.move(edge: .leading))
+        TeamRow(team: team, edit: { self.editedTeam = team })
+            .transition(.move(edge: .leading))
     }
 
     private var mixTeamButton: some View {
@@ -53,7 +58,9 @@ struct MainView: View {
         .accessibility(label: Text("Add Team"))
     }
 
-    private func dummyCallback() { }
+    // TODO: it seems there is a bug if we don't provide a Callback while
+    // first Team is edited or something. Check if it's still the case with Xcode 12 and iOS 14
+    private func dummyEditTeam() { }
 }
 
 // MARK: Players Logic

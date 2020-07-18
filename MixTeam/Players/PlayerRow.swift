@@ -4,7 +4,6 @@ struct PlayerRow: View {
     @EnvironmentObject var teamsStore: TeamsStore
     let player: Player
     let edit: () -> Void
-    @State private var isEdited: Bool = false
 
     var body: some View {
         Button(action: edit) {
@@ -26,11 +25,7 @@ struct PlayerRow: View {
     }
 }
 
-extension PlayerRow: PlayersLogic {
-    private func edit2() { isEdited = true }
-}
-
-extension PlayerRow: TeamsLogic {
+extension PlayerRow: PlayersLogic, TeamsLogic {
     private var isInFirstTeam: Bool { isFirstTeam(team(of: player)) }
 }
 

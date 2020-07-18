@@ -75,7 +75,7 @@ struct EditPlayerViewInteractive_Previews: PreviewProvider {
         var team: Team { teamsStore.teams[1] }
 
         var body: some View {
-            TeamRow(team: team, dummyCallback: { }).sheet(item: $editedPlayer) { player in
+            TeamRow(team: team, edit: { }).sheet(item: $editedPlayer) { player in
                 EditPlayerView(
                     player: self.$teamsStore.teams[1].players[0],
                     team: self.team
