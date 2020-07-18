@@ -4,8 +4,6 @@ struct PlayerRow: View {
     let player: Player
     let isInFirstTeam: Bool
     let edit: () -> Void
-    let delete: () -> Void
-    let moveBack: () -> Void
 
     var body: some View {
         Button(action: edit) {
@@ -17,9 +15,8 @@ struct PlayerRow: View {
                 Text(player.name)
                 Spacer()
                 PlayerRowButtons(
-                    isInFirstTeam: isInFirstTeam,
-                    delete: delete,
-                    moveBack: moveBack
+                    player: player,
+                    isInFirstTeam: isInFirstTeam
                 )
             }
             .foregroundColor(Color.white)
@@ -29,9 +26,9 @@ struct PlayerRow: View {
 }
 
 private struct PlayerRowButtons: View {
+    @EnvironmentObject var teamsStore: TeamsStore
+    let player: Player
     let isInFirstTeam: Bool
-    let delete: () -> Void
-    let moveBack: () -> Void
 
     @ViewBuilder var body: some View {
         if isInFirstTeam {
@@ -46,6 +43,11 @@ private struct PlayerRowButtons: View {
     }
 }
 
+extension PlayerRowButtons: PlayersLogic {
+    private func delete() { delete(player: player) }
+    private func moveBack() { moveBack(player: player) }
+}
+
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
@@ -56,9 +58,7 @@ struct PlayerRow_Previews: PreviewProvider {
                     imageIdentifier: .harryPottar
                 ),
                 isInFirstTeam: false,
-                edit: { },
-                delete: { },
-                moveBack: { }
+                edit: { }
             )
             PlayerRow(
                 player: Player(
@@ -67,9 +67,7 @@ struct PlayerRow_Previews: PreviewProvider {
                     imageIdentifier: .harryPottar
                 ),
                 isInFirstTeam: true,
-                edit: { },
-                delete: { },
-                moveBack: { }
+                edit: { }
             )
         }.background(Color.red)
     }

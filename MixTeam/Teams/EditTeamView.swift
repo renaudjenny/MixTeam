@@ -83,9 +83,7 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
         var body: some View {
             TeamRow(
                 team: team,
-                editPlayer: { _ in },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { _ in }
             )
         }
     }

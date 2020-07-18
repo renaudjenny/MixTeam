@@ -116,9 +116,7 @@ struct PlayerImagePicker_Previews: PreviewProvider {
                 Spacer()
                 TeamRow(
                     team: teamsStore.teams[1],
-                    editPlayer: { _ in },
-                    deletePlayer: { _ in },
-                    moveBackPlayer: { _ in }
+                    editPlayer: { _ in }
                 )
                 Text("Selection: \(selection.wrappedValue.rawValue)")
             }

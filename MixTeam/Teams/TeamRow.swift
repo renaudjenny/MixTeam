@@ -5,8 +5,6 @@ struct TeamRow: View {
     @State private var isEdited = false
     let team: Team
     let editPlayer: (Player) -> Void
-    let deletePlayer: (Player) -> Void
-    let moveBackPlayer: (Player) -> Void
 
     var body: some View {
         VStack {
@@ -18,9 +16,7 @@ struct TeamRow: View {
                 PlayerRow(
                     player: player,
                     isInFirstTeam: self.isFirstTeam,
-                    edit: { self.editPlayer(player) },
-                    delete: { self.deletePlayer(player) },
-                    moveBack: { self.moveBackPlayer(player) }
+                    edit: { self.editPlayer(player) }
                 )
             }
             if isFirstTeam {
@@ -89,9 +85,7 @@ struct TeamRow_Previews: PreviewProvider {
                     imageIdentifier: .koala,
                     players: []
                 ),
-                editPlayer: { _ in },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -104,9 +98,7 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 2", imageIdentifier: .theBotman)
                     ]
                 ),
-                editPlayer: { _ in },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { _ in }
             )
             TeamRow(
                 team: Team(
@@ -118,9 +110,7 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 1", imageIdentifier: .harryPottar)
                     ]
                 ),
-                editPlayer: { _ in },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { _ in }
             )
         }
     }
@@ -152,9 +142,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         private func teamRow(_ team: Team) -> some View {
             TeamRow(
                 team: team,
-                editPlayer: { _ in },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { _ in }
             ).transition(.move(edge: .leading))
         }
 

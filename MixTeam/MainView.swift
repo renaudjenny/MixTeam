@@ -11,9 +11,7 @@ struct MainView: View {
         ScrollView {
             TeamRow(
                 team: teamsStore.teams.first ?? Team(),
-                editPlayer: { self.editedPlayer = $0 },
-                deletePlayer: delete(player:),
-                moveBackPlayer: moveBack
+                editPlayer: { self.editedPlayer = $0 }
             )
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -28,9 +26,7 @@ struct MainView: View {
     func teamRow(team: Team) -> some View {
         TeamRow(
             team: team,
-            editPlayer: { self.editedPlayer = $0 },
-            deletePlayer: delete(player:),
-            moveBackPlayer: moveBack
+            editPlayer: { self.editedPlayer = $0 }
         )
     }
 

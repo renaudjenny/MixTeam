@@ -77,9 +77,7 @@ struct EditPlayerViewInteractive_Previews: PreviewProvider {
         var body: some View {
             TeamRow(
                 team: team,
-                editPlayer: { self.editedPlayer = $0 },
-                deletePlayer: { _ in },
-                moveBackPlayer: { _ in }
+                editPlayer: { self.editedPlayer = $0 }
             ).sheet(item: $editedPlayer) { player in
                 EditPlayerView(
                     player: self.$teamsStore.teams[1].players[0],
