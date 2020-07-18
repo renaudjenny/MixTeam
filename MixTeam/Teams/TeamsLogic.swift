@@ -3,7 +3,6 @@ import Combine
 
 protocol TeamsLogic {
     var teamsStore: TeamsStore { get }
-    var teamsList: ArraySlice<Team> { get }
 
     func createRandomTeam()
     func edit(team: Team)
@@ -14,8 +13,6 @@ protocol TeamsLogic {
 }
 
 extension TeamsLogic {
-    var teamsList: ArraySlice<Team> { teamsStore.teams.dropFirst() }
-
     func createRandomTeam() {
         let image = ImageIdentifier.teams.randomElement() ?? .koala
         let color = ColorIdentifier.allCases.randomElement() ?? .red

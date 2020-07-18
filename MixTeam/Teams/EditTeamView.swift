@@ -81,10 +81,7 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
         private var team: Team { teamsStore.teams[1] }
 
         var body: some View {
-            TeamRow(
-                team: team,
-                editPlayer: { _ in }
-            )
+            TeamRow(team: team, dummyCallback: { })
         }
     }
 }

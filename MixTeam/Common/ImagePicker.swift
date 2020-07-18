@@ -114,10 +114,7 @@ struct PlayerImagePicker_Previews: PreviewProvider {
                     type: .player
                 )
                 Spacer()
-                TeamRow(
-                    team: teamsStore.teams[1],
-                    editPlayer: { _ in }
-                )
+                TeamRow(team: teamsStore.teams[1], dummyCallback: { })
                 Text("Selection: \(selection.wrappedValue.rawValue)")
             }
         }

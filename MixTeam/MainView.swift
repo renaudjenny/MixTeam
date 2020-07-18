@@ -4,30 +4,22 @@ struct MainView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
-    @State private var editedPlayer: Player?
     @State private var presentedAlert: PresentedAlert?
 
     var body: some View {
         ScrollView {
-            TeamRow(
-                team: teamsStore.teams.first ?? Team(),
-                editPlayer: { self.editedPlayer = $0 }
-            )
+            TeamRow(team: teamsStore.teams.first ?? Team(), dummyCallback: dummyCallback)
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton
         }
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
-        .sheet(item: $editedPlayer, content: edit(player:))
         .navigationBarTitle("Players")
     }
 
     func teamRow(team: Team) -> some View {
-        TeamRow(
-            team: team,
-            editPlayer: { self.editedPlayer = $0 }
-        ).transition(.move(edge: .leading))
+        TeamRow(team: team, dummyCallback: dummyCallback).transition(.move(edge: .leading))
     }
 
     private var mixTeamButton: some View {
@@ -60,6 +52,8 @@ struct MainView: View {
         .padding()
         .accessibility(label: Text("Add Team"))
     }
+
+    private func dummyCallback() { }
 }
 
 // MARK: Players Logic

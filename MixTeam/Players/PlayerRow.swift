@@ -23,17 +23,11 @@ struct PlayerRow: View {
             .foregroundColor(Color.white)
         }
         .padding(10)
-//        .sheet(isPresented: $isEdited) {
-//            EditPlayerView(
-//                player: self.bind(player: self.player),
-//                team: self.team(of: self.player)
-//            )
-//        }
     }
 }
 
 extension PlayerRow: PlayersLogic {
-//    private func edit() { isEdited = true }
+    private func edit2() { isEdited = true }
 }
 
 extension PlayerRow: TeamsLogic {

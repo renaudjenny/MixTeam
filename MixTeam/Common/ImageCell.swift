@@ -1,5 +1,7 @@
 import SwiftUI
 
+
+// TODO: remove this file
 struct ImageCell: View {
     let imageIdentifier: ImageIdentifier
     let isSelected: Bool

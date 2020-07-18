@@ -2,9 +2,13 @@ import SwiftUI
 
 struct TeamRow: View {
     @EnvironmentObject var teamsStore: TeamsStore
-    @State private var isEdited = false
     let team: Team
-    let editPlayer: (Player) -> Void
+    @State private var isEdited = false
+    // TODO: find why we can't edit player directly in the PlayerRow View...
+    @State private var editedPlayer: Player?
+    // TODO: add a dummyCallback otherwise ScrollView won't update the Players
+    // check if this bug is still present in Xcode 12 and iOS 14
+    let dummyCallback: () -> Void
 
     var body: some View {
         VStack {
@@ -13,8 +17,9 @@ struct TeamRow: View {
                 .foregroundColor(Color.white)
                 .padding(.top)
             ForEach(team.players) { player in
-                // TODO: can refactor this to be just content:
-                PlayerRow(player: player, edit: { self.editPlayer(player) })
+                PlayerRow(player: player, edit: {
+                    self.editedPlayer = player
+                })
             }
             if isFirstTeam {
                 addPlayerButton
@@ -26,7 +31,13 @@ struct TeamRow: View {
         .modifier(AddSoftRemoveButton(remove: delete, isFirstTeam: isFirstTeam))
         .frame(maxWidth: .infinity)
         .padding()
-        .sheet(isPresented: $isEdited, content: {
+        .background(Color.clear.sheet(item: $editedPlayer) {
+            EditPlayerView(
+                player: self.bind(player: $0),
+                team: self.team
+            )
+        })
+        .background(Color.clear.sheet(isPresented: $isEdited) {
             EditTeamView(team: self.bind(team: self.team))
         })
     }
@@ -82,7 +93,7 @@ struct TeamRow_Previews: PreviewProvider {
                     imageIdentifier: .koala,
                     players: []
                 ),
-                editPlayer: { _ in }
+                dummyCallback: { }
             )
             TeamRow(
                 team: Team(
@@ -95,7 +106,7 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 2", imageIdentifier: .theBotman)
                     ]
                 ),
-                editPlayer: { _ in }
+                dummyCallback: { }
             )
             TeamRow(
                 team: Team(
@@ -107,7 +118,7 @@ struct TeamRow_Previews: PreviewProvider {
                         Player(name: "Player 1", imageIdentifier: .harryPottar)
                     ]
                 ),
-                editPlayer: { _ in }
+                dummyCallback: { }
             )
         }
     }
@@ -137,10 +148,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         }
 
         private func teamRow(_ team: Team) -> some View {
-            TeamRow(
-                team: team,
-                editPlayer: { _ in }
-            ).transition(.move(edge: .leading))
+            TeamRow(team: team, dummyCallback: { }).transition(.move(edge: .leading))
         }
 
         private func addTeam() {
