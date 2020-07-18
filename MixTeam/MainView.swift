@@ -27,7 +27,7 @@ struct MainView: View {
         TeamRow(
             team: team,
             editPlayer: { self.editedPlayer = $0 }
-        )
+        ).transition(.move(edge: .leading))
     }
 
     private var mixTeamButton: some View {

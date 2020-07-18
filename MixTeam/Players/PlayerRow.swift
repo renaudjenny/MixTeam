@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct PlayerRow: View {
+    @EnvironmentObject var teamsStore: TeamsStore
     let player: Player
-    let isInFirstTeam: Bool
     let edit: () -> Void
+    @State private var isEdited: Bool = false
 
     var body: some View {
         Button(action: edit) {
@@ -22,7 +23,21 @@ struct PlayerRow: View {
             .foregroundColor(Color.white)
         }
         .padding(10)
+//        .sheet(isPresented: $isEdited) {
+//            EditPlayerView(
+//                player: self.bind(player: self.player),
+//                team: self.team(of: self.player)
+//            )
+//        }
     }
+}
+
+extension PlayerRow: PlayersLogic {
+//    private func edit() { isEdited = true }
+}
+
+extension PlayerRow: TeamsLogic {
+    private var isInFirstTeam: Bool { isFirstTeam(team(of: player)) }
 }
 
 private struct PlayerRowButtons: View {
@@ -57,7 +72,6 @@ struct PlayerRow_Previews: PreviewProvider {
                     name: "Test",
                     imageIdentifier: .harryPottar
                 ),
-                isInFirstTeam: false,
                 edit: { }
             )
             PlayerRow(
@@ -66,7 +80,6 @@ struct PlayerRow_Previews: PreviewProvider {
                     name: "Test",
                     imageIdentifier: .harryPottar
                 ),
-                isInFirstTeam: true,
                 edit: { }
             )
         }.background(Color.red)

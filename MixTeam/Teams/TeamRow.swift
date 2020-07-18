@@ -13,11 +13,8 @@ struct TeamRow: View {
                 .foregroundColor(Color.white)
                 .padding(.top)
             ForEach(team.players) { player in
-                PlayerRow(
-                    player: player,
-                    isInFirstTeam: self.isFirstTeam,
-                    edit: { self.editPlayer(player) }
-                )
+                // TODO: can refactor this to be just content:
+                PlayerRow(player: player, edit: { self.editPlayer(player) })
             }
             if isFirstTeam {
                 addPlayerButton
