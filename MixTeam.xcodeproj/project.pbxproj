@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRowPreview.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
 				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
+				4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */,
 				4C8B5A15244CB28B00C8781B /* AdaptsToSoftwareKeyboard.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,
+				4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */,
 				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
