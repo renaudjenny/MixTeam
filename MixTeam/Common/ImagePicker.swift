@@ -94,29 +94,29 @@ extension ImagePicker {
     }
 }
 
-//struct PlayerImagePicker_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Preview()
-//            .environmentObject(TeamsStore())
-//    }
-//
-//    struct Preview: View {
-//        @EnvironmentObject var teamsStore: TeamsStore
-//        var selection: Binding<ImageIdentifier> {
-//            $teamsStore.teams[1].players[0].imageIdentifier
-//        }
-//
-//        var body: some View {
-//            VStack {
-//                ImagePicker(
-//                    team: teamsStore.teams[1],
-//                    selection: selection,
-//                    type: .player
-//                )
-//                Spacer()
-//                TeamRow(team: teamsStore.teams[1])
-//                Text("Selection: \(selection.wrappedValue.rawValue)")
-//            }
-//        }
-//    }
-//}
+struct PlayerImagePicker_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+            .environmentObject(TeamsStore())
+    }
+
+    struct Preview: View, TeamRowPreview {
+        @EnvironmentObject var teamsStore: TeamsStore
+        var selection: Binding<ImageIdentifier> {
+            $teamsStore.teams[1].players[0].imageIdentifier
+        }
+
+        var body: some View {
+            VStack {
+                ImagePicker(
+                    team: teamsStore.teams[1],
+                    selection: $teamsStore.teams[1].players[0].imageIdentifier,
+                    type: .player
+                )
+                Spacer()
+                TeamRow(team: teamsStore.teams[1], isFirst: false, callbacks: debuggableCallbacks)
+                Text("Selection: \(teamsStore.teams[1].players[0].imageIdentifier.rawValue)")
+            }
+        }
+    }
+}
