@@ -7,10 +7,6 @@ protocol PlayersLogic {
     func createRandomPlayer()
     func delete(player: Player)
     func moveBack(player: Player)
-
-    // TODO: remove this, should be useless now
-    func bind(player: Player) -> Binding<Player>
-    func team(of player: Player) -> Team
 }
 
 extension PlayersLogic {
@@ -41,21 +37,6 @@ extension PlayersLogic {
         guard teamsStore.teams.first != nil else { return }
         delete(player: player)
         teamsStore.teams[0].players.append(player)
-    }
-
-    // TODO: remove this, should be useless now
-    func bind(player: Player) -> Binding<Player> {
-        guard let (teamIndex, playerIndex) = indexes(for: player) else {
-            return .constant(player)
-        }
-        return .init(
-            get: { self.teamsStore.teams[teamIndex].players[playerIndex] },
-            set: { self.teamsStore.teams[teamIndex].players[playerIndex] = $0 }
-        )
-    }
-
-    func team(of player: Player) -> Team {
-        teamsStore.teams.first(where: { $0.players.contains(player) }) ?? Team()
     }
 }
 

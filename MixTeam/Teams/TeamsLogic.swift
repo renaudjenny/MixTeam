@@ -7,10 +7,6 @@ protocol TeamsLogic {
     func createRandomTeam()
     func edit(team: Team)
     func delete(team: Team)
-
-    // TODO: remove methods below, should be useless now
-    func isFirstTeam(_ team: Team) -> Bool
-    func bind(team: Team) -> Binding<Team>
 }
 
 extension TeamsLogic {
@@ -42,18 +38,5 @@ extension TeamsLogic {
             return
         }
         teamsStore.teams[teamIndex] = team
-    }
-
-    // TODO: remove methods below, should be useless now
-    func isFirstTeam(_ team: Team) -> Bool { teamsStore.teams.first == team }
-
-    func bind(team: Team) -> Binding<Team> {
-        guard let teamIndex = teamsStore.teams.firstIndex(of: team) else {
-            return .constant(team)
-        }
-        return .init(
-            get: { self.teamsStore.teams[teamIndex] },
-            set: { self.teamsStore.teams[teamIndex] = $0 }
-        )
     }
 }

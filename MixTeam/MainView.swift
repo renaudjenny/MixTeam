@@ -72,13 +72,6 @@ struct MainView: View {
     }
 }
 
-// MARK: Players Logic
-extension MainView: PlayersLogic {
-    private func edit(player: Player) -> some View {
-        EditPlayerView(player: bind(player: player), team: team(of: player))
-    }
-}
-
 // MARK: MixTeam Logic
 extension MainView: MixTeamLogic {
     var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }

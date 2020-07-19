@@ -70,7 +70,7 @@ extension PlayerRowButtons {
 
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
-        VStack() {
+        VStack {
             PlayerRow(
                 player: Player(
                     id: UUID(),
