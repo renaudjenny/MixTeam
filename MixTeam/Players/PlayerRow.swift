@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct PlayerRow: View {
-    @EnvironmentObject var teamsStore: TeamsStore
     let player: Player
-    let edit: () -> Void
+    let isInFirstTeam: Bool
+    let callbacks: Callbacks
 
     var body: some View {
         Button(action: edit) {
@@ -16,7 +16,8 @@ struct PlayerRow: View {
                 Spacer()
                 PlayerRowButtons(
                     player: player,
-                    isInFirstTeam: isInFirstTeam
+                    isInFirstTeam: isInFirstTeam,
+                    callbacks: playerRowButtonsCallbacks
                 )
             }
             .foregroundColor(Color.white)
@@ -25,14 +26,24 @@ struct PlayerRow: View {
     }
 }
 
-extension PlayerRow: PlayersLogic, TeamsLogic {
-    private var isInFirstTeam: Bool { isFirstTeam(team(of: player)) }
+extension PlayerRow {
+    struct Callbacks {
+        let edit: (Player) -> Void
+        let delete: (Player) -> Void
+        let moveBack: (Player) -> Void
+    }
+
+    private var playerRowButtonsCallbacks: PlayerRowButtons.Callbacks {
+        .init(delete: callbacks.delete, moveBack: callbacks.moveBack)
+    }
+
+    private func edit() { callbacks.edit(player) }
 }
 
 private struct PlayerRowButtons: View {
-    @EnvironmentObject var teamsStore: TeamsStore
     let player: Player
     let isInFirstTeam: Bool
+    let callbacks: Callbacks
 
     @ViewBuilder var body: some View {
         if isInFirstTeam {
@@ -47,30 +58,33 @@ private struct PlayerRowButtons: View {
     }
 }
 
-extension PlayerRowButtons: PlayersLogic {
-    private func delete() { delete(player: player) }
-    private func moveBack() { moveBack(player: player) }
+extension PlayerRowButtons {
+    struct Callbacks {
+        let delete: (Player) -> Void
+        let moveBack: (Player) -> Void
+    }
+
+    private func delete() { callbacks.delete(player) }
+    private func moveBack() { callbacks.moveBack(player) }
 }
 
-struct PlayerRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            PlayerRow(
-                player: Player(
-                    id: UUID(),
-                    name: "Test",
-                    imageIdentifier: .harryPottar
-                ),
-                edit: { }
-            )
-            PlayerRow(
-                player: Player(
-                    id: UUID(),
-                    name: "Test",
-                    imageIdentifier: .harryPottar
-                ),
-                edit: { }
-            )
-        }.background(Color.red)
-    }
-}
+//struct PlayerRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            PlayerRow(
+//                player: Player(
+//                    id: UUID(),
+//                    name: "Test",
+//                    imageIdentifier: .harryPottar
+//                )
+//            )
+//            PlayerRow(
+//                player: Player(
+//                    id: UUID(),
+//                    name: "Test",
+//                    imageIdentifier: .harryPottar
+//                )
+//            )
+//        }.background(Color.red)
+//    }
+//}

@@ -6,10 +6,11 @@ struct MainView: View {
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var presentedAlert: PresentedAlert?
     @State private var editedTeam: Team?
+    @State private var editedPlayer: Player?
 
     var body: some View {
         ScrollView {
-            TeamRow(team: teamsStore.teams.first ?? Team(), edit: dummyEditTeam)
+            teamsStore.teams.first.map { TeamRow(team: $0, isFirst: true, callbacks: teamCallbacks) }
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton
@@ -17,13 +18,25 @@ struct MainView: View {
         .animation(.default)
         .alert(item: $presentedAlert, content: alert(for:))
         .navigationBarTitle("Players")
-        .sheet(item: $editedTeam) {
-            EditTeamView(team: self.bind(team: $0))
-        }
+        .background(Color.clear.sheet(item: $editedTeam) {
+            self.teamsStore.teams.firstIndex(of: $0).map {
+                EditTeamView(team: self.$teamsStore.teams[$0])
+            }
+        })
+        .background(Color.clear.sheet(item: $editedPlayer) { player in
+            self.teamsStore.teams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
+                self.teamsStore.teams[teamIndex].players.firstIndex(of: player).map { playerIndex in
+                    EditPlayerView(
+                        player: self.$teamsStore.teams[teamIndex].players[playerIndex],
+                        team: self.teamsStore.teams[teamIndex]
+                    )
+                }
+            }
+        })
     }
 
     func teamRow(team: Team) -> some View {
-        TeamRow(team: team, edit: { self.editedTeam = team })
+        TeamRow(team: team, isFirst: false, callbacks: teamCallbacks)
             .transition(.move(edge: .leading))
     }
 
@@ -57,10 +70,6 @@ struct MainView: View {
         .padding()
         .accessibility(label: Text("Add Team"))
     }
-
-    // TODO: it seems there is a bug if we don't provide a Callback while
-    // first Team is edited or something. Check if it's still the case with Xcode 12 and iOS 14
-    private func dummyEditTeam() { }
 }
 
 // MARK: Players Logic
@@ -76,7 +85,18 @@ extension MainView: MixTeamLogic {
 }
 
 // MARK: Teams Logic
-extension MainView: TeamsLogic { }
+extension MainView: TeamsLogic {
+    var teamCallbacks: TeamRow.Callbacks {
+        .init(
+            editTeam: { self.editedTeam = $0 },
+            deleteTeam: delete(team:),
+            createPlayer: createRandomPlayer,
+            editPlayer: { self.editedPlayer = $0 },
+            moveBackPlayer: moveBack(player:),
+            deletePlayer: delete(player:)
+        )
+    }
+}
 
 // MARK: PresentedAlert
 extension MainView {

@@ -56,32 +56,32 @@ struct EditTeamView: View {
     var color: Color { team.colorIdentifier.color }
 }
 
-struct EditTeamView_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview()
-    }
+//struct EditTeamView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Preview()
+//    }
+//
+//    struct Preview: View {
+//        @State private var team = Team(name: "Test", colorIdentifier: .red, imageIdentifier: .koala)
+//
+//        var body: some View {
+//            EditTeamView(team: $team)
+//        }
+//    }
+//}
 
-    struct Preview: View {
-        @State private var team = Team(name: "Test", colorIdentifier: .red, imageIdentifier: .koala)
-
-        var body: some View {
-            EditTeamView(team: $team)
-        }
-    }
-}
-
-struct EditTeamViewInteractive_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview()
-            .environmentObject(TeamsStore())
-    }
-
-    struct Preview: View {
-        @EnvironmentObject var teamsStore: TeamsStore
-        private var team: Team { teamsStore.teams[1] }
-
-        var body: some View {
-            TeamRow(team: team, edit: { })
-        }
-    }
-}
+//struct EditTeamViewInteractive_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Preview()
+//            .environmentObject(TeamsStore())
+//    }
+//
+//    struct Preview: View {
+//        @EnvironmentObject var teamsStore: TeamsStore
+//        private var team: Team { teamsStore.teams[1] }
+//
+//        var body: some View {
+//            TeamRow(team: team, edit: { })
+//        }
+//    }
+//}
