@@ -56,32 +56,51 @@ struct EditTeamView: View {
     var color: Color { team.colorIdentifier.color }
 }
 
-//struct EditTeamView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Preview()
-//    }
-//
-//    struct Preview: View {
-//        @State private var team = Team(name: "Test", colorIdentifier: .red, imageIdentifier: .koala)
-//
-//        var body: some View {
-//            EditTeamView(team: $team)
-//        }
-//    }
-//}
+struct EditTeamView_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
 
-//struct EditTeamViewInteractive_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Preview()
-//            .environmentObject(TeamsStore())
-//    }
-//
-//    struct Preview: View {
-//        @EnvironmentObject var teamsStore: TeamsStore
-//        private var team: Team { teamsStore.teams[1] }
-//
-//        var body: some View {
-//            TeamRow(team: team, edit: { })
-//        }
-//    }
-//}
+    struct Preview: View {
+        @State private var team = Team(
+            name: "Test",
+            colorIdentifier: .red,
+            imageIdentifier: .koala
+        )
+
+        var body: some View {
+            EditTeamView(team: $team)
+        }
+    }
+}
+
+struct EditTeamViewInteractive_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+            .environmentObject(TeamsStore())
+    }
+
+    struct Preview: View, TeamRowPreview {
+        @EnvironmentObject var teamsStore: TeamsStore
+        @State private var isEdited = false
+        private var team: Team { teamsStore.teams[1] }
+
+        var body: some View {
+            TeamRow(team: team, isFirst: false, callbacks: callbacks)
+                .sheet(isPresented: $isEdited) {
+                    EditTeamView(team: self.$teamsStore.teams[1])
+            }
+        }
+
+        private var callbacks: TeamRow.Callbacks {
+            .init(
+                editTeam: { _ in self.isEdited = true },
+                deleteTeam: debuggableCallbacks.deleteTeam,
+                createPlayer: debuggableCallbacks.createPlayer,
+                editPlayer: debuggableCallbacks.editPlayer,
+                moveBackPlayer: debuggableCallbacks.moveBackPlayer,
+                deletePlayer: debuggableCallbacks.deletePlayer
+            )
+        }
+    }
+}

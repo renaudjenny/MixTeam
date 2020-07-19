@@ -8,6 +8,7 @@ protocol PlayersLogic {
     func delete(player: Player)
     func moveBack(player: Player)
 
+    // TODO: remove this, should be useless now
     func bind(player: Player) -> Binding<Player>
     func team(of player: Player) -> Team
 }
@@ -42,6 +43,7 @@ extension PlayersLogic {
         teamsStore.teams[0].players.append(player)
     }
 
+    // TODO: remove this, should be useless now
     func bind(player: Player) -> Binding<Player> {
         guard let (teamIndex, playerIndex) = indexes(for: player) else {
             return .constant(player)

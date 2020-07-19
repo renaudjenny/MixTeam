@@ -63,24 +63,36 @@ struct EditPlayerView_Previews: PreviewProvider {
     }
 }
 
-//struct EditPlayerViewInteractive_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Preview()
-//            .environmentObject(TeamsStore())
-//    }
-//
-//    struct Preview: View {
-//        @EnvironmentObject var teamsStore: TeamsStore
-//        @State private var editedPlayer: Player?
-//        var team: Team { teamsStore.teams[1] }
-//
-//        var body: some View {
-//            TeamRow(team: team).sheet(item: $editedPlayer) { player in
-//                EditPlayerView(
-//                    player: self.$teamsStore.teams[1].players[0],
-//                    team: self.team
-//                )
-//            }
-//        }
-//    }
-//}
+struct EditPlayerViewInteractive_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+            .environmentObject(TeamsStore())
+    }
+
+    struct Preview: View, TeamRowPreview {
+        @EnvironmentObject var teamsStore: TeamsStore
+        @State private var editedPlayer: Player?
+        var team: Team { teamsStore.teams[1] }
+
+        var body: some View {
+            TeamRow(team: team, isFirst: false, callbacks: teamRowCallbacks)
+                .sheet(item: $editedPlayer) { player in
+                    EditPlayerView(
+                        player: self.$teamsStore.teams[1].players[0],
+                        team: self.team
+                    )
+            }
+        }
+
+        private var teamRowCallbacks: TeamRow.Callbacks {
+            .init(
+                editTeam: debuggableCallbacks.editTeam,
+                deleteTeam: debuggableCallbacks.deleteTeam,
+                createPlayer: debuggableCallbacks.createPlayer,
+                editPlayer: { self.editedPlayer = $0 },
+                moveBackPlayer: debuggableCallbacks.moveBackPlayer,
+                deletePlayer: debuggableCallbacks.deletePlayer
+            )
+        }
+    }
+}
