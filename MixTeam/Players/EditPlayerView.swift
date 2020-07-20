@@ -8,11 +8,9 @@ struct EditPlayerView: View {
     let team: Team
 
     var body: some View {
-        ScrollView {
-            VStack {
-                playerNameField
-                ImagePicker(team: team, selection: $player.imageIdentifier, type: .player)
-            }
+        VStack {
+            playerNameField
+            ImagePicker(team: team, selection: $player.imageIdentifier, type: .player)
         }
         .background(team.colorIdentifier.color.edgesIgnoringSafeArea(.all))
     }

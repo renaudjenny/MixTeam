@@ -16,8 +16,8 @@ struct MainView: View {
             addTeamButton
         }
         .animation(.default)
+        .frame(maxWidth: 800)
         .alert(item: $presentedAlert, content: alert(for:))
-        .navigationBarTitle("Players")
         .background(Color.clear.sheet(item: $editedTeam) {
             self.teamsStore.teams.firstIndex(of: $0).map {
                 EditTeamView(team: self.$teamsStore.teams[$0])
