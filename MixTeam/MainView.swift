@@ -2,7 +2,6 @@ import SwiftUI
 
 struct MainView: View {
     static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
-    static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var presentedAlert: PresentedAlert?
     @State private var editedTeam: Team?
@@ -49,25 +48,19 @@ struct MainView: View {
         }
         .buttonStyle(MixTeamButtonStyle())
         .frame(height: 50)
-        .shadow(
-            color: Self.shadowColor,
-            radius: 3, x: -2, y: 2
-        )
+        .modifier(Shadow())
         .padding([.leading, .trailing])
         .accessibility(label: Text("Mix Team"))
     }
 
     private var addTeamButton: some View {
         Button(action: createRandomTeam) {
-            Image(systemName: "plus")
-            Text("Add a new Team")
+            HStack {
+                Image(systemName: "plus")
+                Text("Add a new Team")
+            }.frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
-        .foregroundColor(Color.white)
-        .frame(height: 50)
-        .background(Color.red)
-        .modifier(AddDashedCardStyle())
-        .padding()
+        .buttonStyle(CommonButtonStyle(color: .red))
         .accessibility(label: Text("Add Team"))
     }
 }

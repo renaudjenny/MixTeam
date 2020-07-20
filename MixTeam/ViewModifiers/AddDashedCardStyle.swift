@@ -10,9 +10,6 @@ struct AddDashedCardStyle: ViewModifier {
                     .padding(5)
         )
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            .shadow(
-                color: MainView.shadowColor,
-                radius: 3, x: -2, y: 2
-        )
+            .modifier(Shadow())
     }
 }

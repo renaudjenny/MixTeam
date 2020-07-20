@@ -31,18 +31,13 @@ struct AddSoftRemoveButton: ViewModifier {
     }
 
     private var deleteButton: some View {
-        VStack(spacing: 20) {
-            Button(action: remove) {
-                VStack {
-                    Text("Delete!")
-                    Image(systemName: "minus.circle.fill")
-                }
+        Button(action: remove) {
+            VStack(spacing: 20) {
+                Text("Delete!")
+                Image(systemName: "minus.circle.fill")
             }
-            .foregroundColor(.white)
-            .padding()
         }
-        .background(Color.red)
-        .modifier(AddDashedCardStyle())
+        .buttonStyle(CommonButtonStyle(color: .red))
     }
 
     @ViewBuilder private var filterIfNeeded: some View {

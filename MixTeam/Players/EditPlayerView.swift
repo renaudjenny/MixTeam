@@ -37,11 +37,9 @@ struct EditPlayerView: View {
     private var doneButton: some View {
         Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
             Text("Done").foregroundColor(Color.white)
-        })
-            .padding()
-            .background(team.colorIdentifier.color)
-            .modifier(AddDashedCardStyle())
-            .padding()
+        }).buttonStyle(
+            CommonButtonStyle(color: team.colorIdentifier.color)
+        )
 
     }
 }
