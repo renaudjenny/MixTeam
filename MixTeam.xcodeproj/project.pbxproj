@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */; };
+		4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55524C75C3B005D6749 /* Shadow.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRowPreview.swift; sourceTree = "<group>"; };
+		4C1ED55524C75C3B005D6749 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */,
 				4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */,
+				4C1ED55524C75C3B005D6749 /* Shadow.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
+				4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* MainView.swift in Sources */,

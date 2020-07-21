@@ -40,7 +40,6 @@ struct EditPlayerView: View {
         }).buttonStyle(
             CommonButtonStyle(color: team.colorIdentifier.color)
         )
-
     }
 }
 

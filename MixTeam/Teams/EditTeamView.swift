@@ -45,12 +45,7 @@ struct EditTeamView: View {
     private var doneButton: some View {
         Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
             Text("Done").foregroundColor(Color.white)
-        })
-            .padding()
-            .background(color)
-            .modifier(AddDashedCardStyle())
-            .padding()
-
+        }).buttonStyle(CommonButtonStyle(color: color))
     }
 
     var color: Color { team.colorIdentifier.color }
