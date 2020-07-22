@@ -9,7 +9,7 @@ struct MainView: View {
 
     var body: some View {
         ScrollView {
-            teamsStore.teams.first.map { TeamRow(team: $0, isFirst: true, callbacks: teamCallbacks) }
+            teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: teamCallbacks) }
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton

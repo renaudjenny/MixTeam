@@ -5,6 +5,8 @@ struct FirstTeamRow: View {
     let team: Team
     let callbacks: TeamRow.Callbacks
 
+    let aboutButtonSize = CGSize(width: 50, height: 50)
+
     var body: some View {
         VStack {
             sectionHeader
@@ -22,7 +24,14 @@ struct FirstTeamRow: View {
         }
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle(notchSize: CGSize(width: 50, height: 50)))
+        .modifier(AddDashedCardStyle(notchSize: aboutButtonSize + 16))
+        .overlay(
+            Button(action: displayAbout) {
+                Image(systemName: "cube.box")
+            }
+            .buttonStyle(CommonButtonStyle(color: .gray)),
+            alignment: .topTrailing
+        )
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -30,7 +39,7 @@ struct FirstTeamRow: View {
     // TODO: fix code duplication with TeamRow
     private var sectionHeader: some View {
         VStack {
-            Text(team.name).padding(.horizontal, 50)
+            Text(team.name).padding(.horizontal, aboutButtonSize.width + 16)
             team.imageIdentifier.image
                 .resizable()
                 .renderingMode(.template)
@@ -61,6 +70,16 @@ struct FirstTeamRow: View {
             moveBack: callbacks.moveBackPlayer
         )
     }
+
+    private func displayAbout() {
+        print("Display about screen")
+    }
+}
+
+private extension CGSize {
+    static func + (lhs: Self, rhs: CGFloat) -> Self {
+        CGSize(width: lhs.width + rhs, height: lhs.height + rhs)
+    }
 }
 
 struct FirstTeamRow_Previews: PreviewProvider {
@@ -71,8 +90,20 @@ struct FirstTeamRow_Previews: PreviewProvider {
     private struct Preview: View, TeamRowPreview {
         var body: some View {
             VStack {
-                FirstTeamRow(team: Team(name: "Players standing for a team with a too long text"), callbacks: debuggableCallbacks)
-                TeamRow(team: Team(name: "Test", colorIdentifier: .red, imageIdentifier: .koala), isFirst: false, callbacks: debuggableCallbacks)
+                FirstTeamRow(
+                    team: Team(
+                        name: "Players standing for a team with a too long text"),
+                    callbacks: debuggableCallbacks
+                )
+                TeamRow(
+                    team: Team(
+                        name: "Test",
+                        colorIdentifier: .red,
+                        imageIdentifier: .koala
+                    ),
+                    isFirst: false,
+                    callbacks: debuggableCallbacks
+                )
             }
         }
     }

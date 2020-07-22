@@ -28,7 +28,7 @@ struct CommonButtonStyle: ButtonStyle {
                 )
                     .modifier(Shadow(isApplied: !configuration.isPressed))
                     .foregroundColor(Color.white)
-        ).padding()
+        )
     }
 
     func strokeStyle(isPressed: Bool) -> StrokeStyle {
