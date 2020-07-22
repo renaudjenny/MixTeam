@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */; };
 		4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55524C75C3B005D6749 /* Shadow.swift */; };
+		4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* FirstTeamRow.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
@@ -55,6 +56,7 @@
 /* Begin PBXFileReference section */
 		4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRowPreview.swift; sourceTree = "<group>"; };
 		4C1ED55524C75C3B005D6749 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
+		4C1ED55724C82196005D6749 /* FirstTeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTeamRow.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
 				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
 				4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */,
+				4C1ED55724C82196005D6749 /* FirstTeamRow.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
+				4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,

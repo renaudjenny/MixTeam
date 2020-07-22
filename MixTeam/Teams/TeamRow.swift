@@ -49,6 +49,7 @@ struct TeamRow: View {
         .accessibility(label: Text("Edit Team \(team.name)"))
     }
 
+    // TODO: will be useless when using FirstTeamRow
     private var addPlayerButton: some View {
         Button(action: callbacks.createPlayer) {
             Image(systemName: "plus")
