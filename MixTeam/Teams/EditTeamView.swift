@@ -38,7 +38,7 @@ struct EditTeamView: View {
                 .background(color)
                 .modifier(AddDashedCardStyle())
                 .padding([.top, .leading])
-            doneButton
+            doneButton.padding(.trailing)
         }
     }
 

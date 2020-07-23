@@ -49,7 +49,7 @@ struct MainView: View {
         .buttonStyle(MixTeamButtonStyle())
         .frame(height: 50)
         .modifier(Shadow())
-        .padding([.leading, .trailing])
+        .padding(.horizontal)
         .accessibility(label: Text("Mix Team"))
     }
 
@@ -61,6 +61,7 @@ struct MainView: View {
             }.frame(maxWidth: .infinity)
         }
         .buttonStyle(CommonButtonStyle(color: .red))
+        .padding()
         .accessibility(label: Text("Add Team"))
     }
 }

@@ -30,7 +30,7 @@ struct EditPlayerView: View {
                 .background(team.colorIdentifier.color)
                 .modifier(AddDashedCardStyle())
                 .padding([.top, .leading])
-            doneButton
+            doneButton.padding(.trailing)
         }
     }
 
