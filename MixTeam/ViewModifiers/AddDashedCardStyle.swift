@@ -36,10 +36,20 @@ struct NotchedRoundedRectangle: Shape {
             to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY),
             control: CGPoint(x: rect.minX, y: rect.minY)
         )
-        path.addLine(to: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - notchSize.width - cornerRadius, y: rect.minY))
         path.addQuadCurve(
-            to: CGPoint(x: rect.maxX, y: rect.minY + notchSize.height),
+            to: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY + cornerRadius),
+            control: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY)
+        )
+        path.addLine(to: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY + notchSize.height - cornerRadius))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX - notchSize.width + cornerRadius, y: rect.minY + notchSize.height),
             control: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY + notchSize.height)
+        )
+        path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + notchSize.height))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.maxX, y: rect.minY + notchSize.height + cornerRadius),
+            control: CGPoint(x: rect.maxX, y: rect.minY + notchSize.height)
         )
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
         path.addQuadCurve(

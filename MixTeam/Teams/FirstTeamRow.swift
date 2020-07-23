@@ -5,9 +5,22 @@ struct FirstTeamRow: View {
     let team: Team
     let callbacks: TeamRow.Callbacks
 
-    let aboutButtonSize = CGSize(width: 50, height: 50)
+    private let aboutButtonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
+        ZStack(alignment: .topTrailing) {
+            card
+            Button(action: displayAbout) {
+                Image(systemName: "cube.box")
+                .resizable()
+            }
+            .frame(width: aboutButtonSize.width, height: aboutButtonSize.height)
+            .buttonStyle(CommonButtonStyle(color: .gray))
+            .padding()
+        }
+    }
+
+    var card: some View {
         VStack {
             sectionHeader
                 .font(.callout)
@@ -24,14 +37,7 @@ struct FirstTeamRow: View {
         }
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle(notchSize: aboutButtonSize + 16))
-        .overlay(
-            Button(action: displayAbout) {
-                Image(systemName: "cube.box")
-            }
-            .buttonStyle(CommonButtonStyle(color: .gray)),
-            alignment: .topTrailing
-        )
+        .modifier(AddDashedCardStyle(notchSize: aboutButtonSize + 8))
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -39,7 +45,9 @@ struct FirstTeamRow: View {
     // TODO: fix code duplication with TeamRow
     private var sectionHeader: some View {
         VStack {
-            Text(team.name).padding(.horizontal, aboutButtonSize.width + 16)
+            Text(team.name)
+                .padding(.leading)
+                .padding(.trailing, aboutButtonSize.width + 16)
             team.imageIdentifier.image
                 .resizable()
                 .renderingMode(.template)
@@ -89,7 +97,7 @@ struct FirstTeamRow_Previews: PreviewProvider {
 
     private struct Preview: View, TeamRowPreview {
         var body: some View {
-            VStack {
+            ScrollView {
                 FirstTeamRow(
                     team: Team(
                         name: "Players standing for a team with a too long text"),
