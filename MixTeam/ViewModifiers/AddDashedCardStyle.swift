@@ -1,17 +1,18 @@
 import SwiftUI
 
 struct AddDashedCardStyle: ViewModifier {
+    @Environment(\.layoutDirection) var layoutDirection
     var notchSize: CGSize = .zero
 
     func body(content: Content) -> some View {
         content
             .overlay(
-                NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 16)
+                NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 16, layoutDirection: layoutDirection)
                     .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
                     .foregroundColor(Color.white)
                     .padding(5)
         )
-            .clipShape(NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 20))
+            .clipShape(NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 20, layoutDirection: layoutDirection))
             .modifier(Shadow())
     }
 }
@@ -19,6 +20,7 @@ struct AddDashedCardStyle: ViewModifier {
 struct NotchedRoundedRectangle: Shape {
     let notchSize: CGSize
     let cornerRadius: CGFloat
+    let layoutDirection: LayoutDirection
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -51,6 +53,12 @@ struct NotchedRoundedRectangle: Shape {
         )
 
         path.closeSubpath()
+
+        if layoutDirection == .rightToLeft {
+            path = path
+                .applying(.init(scaleX: -1, y: 1))
+                .applying(.init(translationX: rect.maxX, y: 0 ))
+        }
 
         return path
     }

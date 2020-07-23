@@ -95,6 +95,11 @@ struct FirstTeamRow_Previews: PreviewProvider {
                         name: "Players standing for a team with a too long text"),
                     callbacks: debuggableCallbacks
                 )
+                FirstTeamRow(
+                    team: Team(
+                        name: "With right to left"),
+                    callbacks: debuggableCallbacks
+                ).environment(\.layoutDirection, .rightToLeft)
                 TeamRow(
                     team: Team(
                         name: "Test",
