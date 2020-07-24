@@ -10,6 +10,7 @@
 		4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */; };
 		4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55524C75C3B005D6749 /* Shadow.swift */; };
 		4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* FirstTeamRow.swift */; };
+		4C1ED55F24CAB187005D6749 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55E24CAB187005D6749 /* AboutView.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3732ED1EBF8E8100A5785E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */; };
@@ -57,6 +58,7 @@
 		4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRowPreview.swift; sourceTree = "<group>"; };
 		4C1ED55524C75C3B005D6749 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		4C1ED55724C82196005D6749 /* FirstTeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTeamRow.swift; sourceTree = "<group>"; };
+		4C1ED55E24CAB187005D6749 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E01EBF8E8100A5785E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -114,6 +116,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C1ED55D24CAB16C005D6749 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				4C1ED55E24CAB187005D6749 /* AboutView.swift */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
 		4C3732D41EBF8E8100A5785E = {
 			isa = PBXGroup;
 			children = (
@@ -137,14 +147,15 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C1ED55D24CAB16C005D6749 /* About */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
 				4C3732EE1EBF8E8100A5785E /* Info.plist */,
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
+				4C7FE786245A166A0011E8AB /* MainView.swift */,
 				4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
-				4C7FE786245A166A0011E8AB /* MainView.swift */,
 				4CCA0D26249A777B00E88F80 /* SceneDelegate.swift */,
 				4C49458224BE22EB00A7A81A /* Styles */,
 				4CFCE6F524A341EF0030114B /* Teams */,
@@ -412,6 +423,7 @@
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
+				4C1ED55F24CAB187005D6749 /* AboutView.swift in Sources */,
 				4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,

@@ -6,10 +6,11 @@ struct MainView: View {
     @State private var presentedAlert: PresentedAlert?
     @State private var editedTeam: Team?
     @State private var editedPlayer: Player?
+    @State private var isAboutPresented = false
 
     var body: some View {
         ScrollView {
-            teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: teamCallbacks) }
+            teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
             mixTeamButton
             ForEach(teamsStore.teams.dropFirst(), content: teamRow)
             addTeamButton
@@ -31,6 +32,9 @@ struct MainView: View {
                     )
                 }
             }
+        })
+        .background(Color.clear.sheet(isPresented: $isAboutPresented) {
+            AboutView()
         })
     }
 
@@ -64,6 +68,8 @@ struct MainView: View {
         .padding()
         .accessibility(label: Text("Add Team"))
     }
+
+    private func presentAbout() { isAboutPresented = true }
 }
 
 // MARK: MixTeam Logic
@@ -73,6 +79,16 @@ extension MainView: MixTeamLogic {
 
 // MARK: Teams Logic
 extension MainView: TeamsLogic {
+    var firstTeamCallbacks: FirstTeamRow.Callbacks {
+        .init(
+            createPlayer: createRandomPlayer,
+            editPlayer: { self.editedPlayer = $0 },
+            deletePlayer: delete(player:),
+            moveBackPlayer: moveBack(player:),
+            displayAbout: { self.isAboutPresented = true }
+        )
+    }
+
     var teamCallbacks: TeamRow.Callbacks {
         .init(
             editTeam: { self.editedTeam = $0 },

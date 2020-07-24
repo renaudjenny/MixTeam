@@ -3,14 +3,14 @@ import SwiftUI
 // TODO: fix many code duplications with TeamRow
 struct FirstTeamRow: View {
     let team: Team
-    let callbacks: TeamRow.Callbacks
+    let callbacks: FirstTeamRow.Callbacks
 
     private let aboutButtonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             card
-            Button(action: displayAbout) {
+            Button(action: callbacks.displayAbout) {
                 Image(systemName: "cube.box")
                 .resizable()
             }
@@ -69,18 +69,23 @@ struct FirstTeamRow: View {
                 .accessibility(label: Text("Add Player"))
         }.padding()
     }
+}
 
-    // TODO: fix code duplication with TeamRow
+extension FirstTeamRow {
+    struct Callbacks {
+        let createPlayer: () -> Void
+        let editPlayer: (Player) -> Void
+        let deletePlayer: (Player) -> Void
+        let moveBackPlayer: (Player) -> Void
+        let displayAbout: () -> Void
+    }
+
     private var playerRowCallbacks: PlayerRow.Callbacks {
         .init(
             edit: callbacks.editPlayer,
             delete: callbacks.deletePlayer,
             moveBack: callbacks.moveBackPlayer
         )
-    }
-
-    private func displayAbout() {
-        print("Display about screen")
     }
 }
 
@@ -101,12 +106,12 @@ struct FirstTeamRow_Previews: PreviewProvider {
                 FirstTeamRow(
                     team: Team(
                         name: "Players standing for a team with a too long text"),
-                    callbacks: debuggableCallbacks
+                    callbacks: firstTeamDebuggableCallbacks
                 )
                 FirstTeamRow(
                     team: Team(
                         name: "With right to left"),
-                    callbacks: debuggableCallbacks
+                    callbacks: firstTeamDebuggableCallbacks
                 ).environment(\.layoutDirection, .rightToLeft)
                 TeamRow(
                     team: Team(
