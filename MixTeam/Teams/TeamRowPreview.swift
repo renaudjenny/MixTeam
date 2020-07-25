@@ -8,10 +8,8 @@ extension TeamRowPreview {
         .init(
             editTeam: editTeam,
             deleteTeam: deleteTeam,
-            createPlayer: createPlayer,
             editPlayer: editPlayer,
-            moveBackPlayer: moveBackPlayer,
-            deletePlayer: deletePlayer
+            moveBackPlayer: moveBackPlayer
         )
     }
 
@@ -20,7 +18,6 @@ extension TeamRowPreview {
             createPlayer: createPlayer,
             editPlayer: editPlayer,
             deletePlayer: deletePlayer,
-            moveBackPlayer: moveBackPlayer,
             displayAbout: displayAbout
         )
     }

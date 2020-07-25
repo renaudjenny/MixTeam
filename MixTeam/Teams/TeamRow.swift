@@ -2,7 +2,6 @@ import SwiftUI
 
 struct TeamRow: View {
     let team: Team
-    let isFirst: Bool
     let callbacks: Callbacks
 
     var body: some View {
@@ -14,18 +13,15 @@ struct TeamRow: View {
             ForEach(team.players) { player in
                 PlayerRow(
                     player: player,
-                    isInFirstTeam: self.isFirst,
+                    isInFirstTeam: false,
                     callbacks: self.playerRowCallbacks
                 )
-            }
-            if isFirst {
-                addPlayerButton
             }
         }
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
-        .modifier(AddSoftRemoveButton(remove: delete, isFirstTeam: isFirst))
+        .modifier(AddSoftRemoveButton(remove: delete))
         .frame(maxWidth: .infinity)
         .padding()
     }
@@ -45,19 +41,7 @@ struct TeamRow: View {
                     .padding(.bottom)
             }
         }
-        .disabled(isFirst)
         .accessibility(label: Text("Edit Team \(team.name)"))
-    }
-
-    // TODO: will be useless when using FirstTeamRow
-    private var addPlayerButton: some View {
-        Button(action: callbacks.createPlayer) {
-            Image(systemName: "plus")
-                .frame(width: 50, height: 50)
-                .background(Color.white.clipShape(Circle()))
-                .foregroundColor(.gray)
-                .accessibility(label: Text("Add Player"))
-        }.padding()
     }
 }
 
@@ -65,16 +49,14 @@ extension TeamRow {
     struct Callbacks {
         let editTeam: (Team) -> Void
         let deleteTeam: (Team) -> Void
-        let createPlayer: () -> Void
         let editPlayer: (Player) -> Void
         let moveBackPlayer: (Player) -> Void
-        let deletePlayer: (Player) -> Void
     }
 
     private var playerRowCallbacks: PlayerRow.Callbacks {
         .init(
             edit: callbacks.editPlayer,
-            delete: callbacks.deletePlayer,
+            delete: { _ in },
             moveBack: callbacks.moveBackPlayer
         )
     }
@@ -99,7 +81,6 @@ struct TeamRow_Previews: PreviewProvider {
                         imageIdentifier: .koala,
                         players: []
                     ),
-                    isFirst: false,
                     callbacks: debuggableCallbacks
                 )
                 TeamRow(
@@ -113,10 +94,9 @@ struct TeamRow_Previews: PreviewProvider {
                             Player(name: "Player 2", imageIdentifier: .theBotman)
                         ]
                     ),
-                    isFirst: false,
                     callbacks: debuggableCallbacks
                 )
-                TeamRow(
+                FirstTeamRow(
                     team: Team(
                         id: UUID(),
                         name: "Players standing for a Team",
@@ -126,8 +106,7 @@ struct TeamRow_Previews: PreviewProvider {
                             Player(name: "Player 1", imageIdentifier: .harryPottar)
                         ]
                     ),
-                    isFirst: true,
-                    callbacks: debuggableCallbacks
+                    callbacks: firstTeamDebuggableCallbacks
                 )
             }
         }
@@ -158,7 +137,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         }
 
         private func teamRow(_ team: Team) -> some View {
-            TeamRow(team: team, isFirst: false, callbacks: callbacks)
+            TeamRow(team: team, callbacks: callbacks)
                 .transition(.move(edge: .leading))
         }
 
@@ -178,10 +157,8 @@ struct TeamRowUX_Previews: PreviewProvider {
             .init(
                 editTeam: debuggableCallbacks.editTeam,
                 deleteTeam: deleteTeam,
-                createPlayer: debuggableCallbacks.createPlayer,
                 editPlayer: debuggableCallbacks.editPlayer,
-                moveBackPlayer: debuggableCallbacks.moveBackPlayer,
-                deletePlayer: debuggableCallbacks.deletePlayer
+                moveBackPlayer: debuggableCallbacks.moveBackPlayer
             )
         }
 

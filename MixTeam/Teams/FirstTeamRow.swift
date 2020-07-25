@@ -22,7 +22,7 @@ struct FirstTeamRow: View {
 
     var card: some View {
         VStack {
-            sectionHeader
+            header
                 .font(.callout)
                 .foregroundColor(Color.white)
                 .padding(.top)
@@ -42,8 +42,7 @@ struct FirstTeamRow: View {
         .padding()
     }
 
-    // TODO: fix code duplication with TeamRow
-    private var sectionHeader: some View {
+    private var header: some View {
         VStack {
             Text(team.name)
                 .padding(.leading)
@@ -76,7 +75,6 @@ extension FirstTeamRow {
         let createPlayer: () -> Void
         let editPlayer: (Player) -> Void
         let deletePlayer: (Player) -> Void
-        let moveBackPlayer: (Player) -> Void
         let displayAbout: () -> Void
     }
 
@@ -84,7 +82,7 @@ extension FirstTeamRow {
         .init(
             edit: callbacks.editPlayer,
             delete: callbacks.deletePlayer,
-            moveBack: callbacks.moveBackPlayer
+            moveBack: { _ in }
         )
     }
 }
@@ -119,7 +117,6 @@ struct FirstTeamRow_Previews: PreviewProvider {
                         colorIdentifier: .red,
                         imageIdentifier: .koala
                     ),
-                    isFirst: false,
                     callbacks: debuggableCallbacks
                 )
             }

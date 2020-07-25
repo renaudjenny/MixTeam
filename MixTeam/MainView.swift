@@ -39,7 +39,7 @@ struct MainView: View {
     }
 
     func teamRow(team: Team) -> some View {
-        TeamRow(team: team, isFirst: false, callbacks: teamCallbacks)
+        TeamRow(team: team, callbacks: teamCallbacks)
             .transition(.move(edge: .leading))
     }
 
@@ -84,7 +84,6 @@ extension MainView: TeamsLogic {
             createPlayer: createRandomPlayer,
             editPlayer: { self.editedPlayer = $0 },
             deletePlayer: delete(player:),
-            moveBackPlayer: moveBack(player:),
             displayAbout: { self.isAboutPresented = true }
         )
     }
@@ -93,10 +92,8 @@ extension MainView: TeamsLogic {
         .init(
             editTeam: { self.editedTeam = $0 },
             deleteTeam: delete(team:),
-            createPlayer: createRandomPlayer,
             editPlayer: { self.editedPlayer = $0 },
-            moveBackPlayer: moveBack(player:),
-            deletePlayer: delete(player:)
+            moveBackPlayer: moveBack(player:)
         )
     }
 }

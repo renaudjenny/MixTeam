@@ -2,7 +2,6 @@ import SwiftUI
 
 struct AddSoftRemoveButton: ViewModifier {
     let remove: () -> Void
-    let isFirstTeam: Bool
     @State private var isRealRemoveButtonDisplayed = false
 
     func body(content: Content) -> some View {
@@ -20,7 +19,7 @@ struct AddSoftRemoveButton: ViewModifier {
 
     private var minusButton: some View {
         VStack {
-            if !isRealRemoveButtonDisplayed && !isFirstTeam {
+            if !isRealRemoveButtonDisplayed {
                 Button(action: displayRealRemoveButton) {
                     Image(systemName: "minus.circle")
                 }

@@ -81,7 +81,7 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
         private var team: Team { teamsStore.teams[1] }
 
         var body: some View {
-            TeamRow(team: team, isFirst: false, callbacks: callbacks)
+            TeamRow(team: team, callbacks: callbacks)
                 .sheet(isPresented: $isEdited) {
                     EditTeamView(team: self.$teamsStore.teams[1])
             }
@@ -91,10 +91,8 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
             .init(
                 editTeam: { _ in self.isEdited = true },
                 deleteTeam: debuggableCallbacks.deleteTeam,
-                createPlayer: debuggableCallbacks.createPlayer,
                 editPlayer: debuggableCallbacks.editPlayer,
-                moveBackPlayer: debuggableCallbacks.moveBackPlayer,
-                deletePlayer: debuggableCallbacks.deletePlayer
+                moveBackPlayer: debuggableCallbacks.moveBackPlayer
             )
         }
     }
