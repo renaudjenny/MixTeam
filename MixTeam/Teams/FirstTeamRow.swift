@@ -1,6 +1,5 @@
 import SwiftUI
 
-// TODO: fix many code duplications with TeamRow
 struct FirstTeamRow: View {
     let team: Team
     let callbacks: FirstTeamRow.Callbacks

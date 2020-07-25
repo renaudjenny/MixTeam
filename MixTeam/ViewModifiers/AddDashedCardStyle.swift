@@ -6,14 +6,24 @@ struct AddDashedCardStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .overlay(
-                NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 16, layoutDirection: layoutDirection)
-                    .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
-                    .foregroundColor(Color.white)
-                    .padding(5)
-        )
-            .clipShape(NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: 20, layoutDirection: layoutDirection))
+            .overlay(overlay)
+            .clipShape(notchedShape(cornerRadius: 20))
             .modifier(Shadow())
+    }
+
+    private var overlay: some View {
+        notchedShape(cornerRadius: 16)
+            .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
+            .foregroundColor(Color.white)
+            .padding(5)
+    }
+
+    private func notchedShape(cornerRadius: CGFloat) -> some Shape {
+        NotchedRoundedRectangle(
+            notchSize: notchSize,
+            cornerRadius: cornerRadius,
+            layoutDirection: layoutDirection
+        )
     }
 }
 
