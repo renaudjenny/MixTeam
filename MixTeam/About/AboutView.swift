@@ -1,12 +1,23 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
-        ScrollView(.vertical) {
+        ScrollView {
             HStack { Spacer() }
-            Capsule(style: .circular)
-                .fill(Color.black.opacity(1/4))
-                .frame(width: 50, height: 5)
+            if verticalSizeClass == .regular {
+                closeCapsule
+            } else {
+                HStack {
+                    Spacer()
+                    Button(action: close) {
+                        Text("Done")
+                    }.padding()
+                }
+            }
             Image(uiImage: #imageLiteral(resourceName: "Logo"))
                 .padding()
                 .shadow(radius: 5)
@@ -53,6 +64,20 @@ struct AboutView: View {
     private var rateThisApp: some View {
         WebLink(text: "Rate this application on the App Store", url: .appStoreWriteReview)
             .multilineTextAlignment(.center)
+    }
+
+    private func close() {
+        presentationMode.wrappedValue.dismiss()
+    }
+
+    private var closeCapsule: some View {
+        Capsule(style: .circular)
+            .fill(
+                colorScheme == .light
+                    ? Color.black.opacity(1/4)
+                    : Color.white.opacity(1/4)
+            )
+            .frame(width: 50, height: 5)
     }
 }
 
