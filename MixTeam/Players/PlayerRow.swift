@@ -22,7 +22,7 @@ struct PlayerRow: View {
             }
             .foregroundColor(Color.white)
         }
-        .padding(10)
+        .padding()
     }
 }
 
