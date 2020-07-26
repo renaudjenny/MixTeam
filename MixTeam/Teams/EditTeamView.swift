@@ -7,21 +7,7 @@ struct EditTeamView: View {
     var body: some View {
         VStack {
             teamNameField
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(ColorIdentifier.allCases) { colorIdentifier in
-                        Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
-                            colorIdentifier.color
-                                .frame(width: 50, height: 50)
-
-                        }).accessibility(label: Text("\(colorIdentifier.name) color"))
-                    }
-                }
-            }
-            .padding()
-            .background(team.colorIdentifier.color.brightness(-0.2))
-            .modifier(AddDashedCardStyle())
-            .padding()
+            colorPicker
             ImagePicker(team: team, selection: $team.imageIdentifier, type: .team)
 
         }
@@ -46,6 +32,25 @@ struct EditTeamView: View {
         Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
             Text("Done").foregroundColor(Color.white)
         }).buttonStyle(CommonButtonStyle(color: color))
+    }
+
+    private var colorPicker: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(ColorIdentifier.allCases) { colorIdentifier in
+                    Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
+                        colorIdentifier.color
+                            .frame(width: 50, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                    }).accessibility(label: Text("\(colorIdentifier.name) color"))
+                }
+            }
+        }
+        .padding()
+        .background(team.colorIdentifier.color.brightness(-0.2))
+        .modifier(AddDashedCardStyle())
+        .padding()
     }
 
     var color: Color { team.colorIdentifier.color }
