@@ -46,15 +46,10 @@ struct FirstTeamRow: View {
             Text(team.name)
                 .padding(.leading)
                 .padding(.trailing, aboutButtonSize.width + 16)
-            team.imageIdentifier.image
+            Image(systemName: "person.3")
                 .resizable()
-                .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
-                .foregroundColor(team.colorIdentifier.color)
                 .frame(width: 50, height: 50)
-                .padding()
-                .background(Color.white.clipShape(Circle()))
-                .padding(.bottom)
         }
     }
 
