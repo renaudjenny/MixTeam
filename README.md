@@ -5,11 +5,18 @@
 
 ⚠️ MixTeam name will certainly change, as I don't know yet if this name is already taken by another app.
 
+MixTeam will help you organise your boardgames or team sport match.
+
+* Add Teams with different logo and colours (Red Koala 🐨, Blue Panda 🐼, etc.)
+* Add Players, you can even choose their avatar among some iconic pop culture characters
+* Tap on the 🔀 **Mix Team** button, and Players will randomly put into teams
+* Simply as that, now just enjoy your game!
+
 ## TODO
 
 * Add Linter rules
 * ~~Migrate views to SwiftUI~~
 * Add Unit Tests with Snapshots for views
-* Improve UI
+* ~~Improve UI~~
 * Add GitHub Actions CI
 * *etc.*
