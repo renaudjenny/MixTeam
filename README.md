@@ -12,6 +12,10 @@ MixTeam will help you organise your boardgames or team sport match.
 * Tap on the 🔀 **Mix Team** button, and Players will randomly put into teams
 * Simply as that, now just enjoy your game!
 
+## Screenshots
+
+![Screenshots of the application from an iPhone](docs/assets/iPhoneScreenshots.png)
+
 ## TODO
 
 * Add Linter rules
