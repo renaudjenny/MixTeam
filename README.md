@@ -18,7 +18,7 @@ MixTeam will help you organise your boardgames or team sport match.
 
 ## TODO
 
-* Add Linter rules
+* ~~Add Linter rules~~
 * ~~Migrate views to SwiftUI~~
 * Add Unit Tests with Snapshots for views
 * ~~Improve UI~~
