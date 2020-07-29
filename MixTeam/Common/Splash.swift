@@ -25,6 +25,22 @@ struct Splash: Shape {
                 y: rect.minY + rect.maxY * 47/100
             )
         )
+
+        let point3 = CGPoint(
+            x: rect.minX + rect.maxX * 21/100,
+            y: rect.minY + rect.maxY * 31/100
+        )
+        path.addCurve(
+            to: point3,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 26/100,
+                y: rect.minY + rect.maxY * 36/100
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 19/100,
+                y: rect.minY + rect.maxY * 35/100
+            )
+        )
         return path
     }
 }
