@@ -218,6 +218,62 @@ struct Splash: Shape {
             )
         )
 
+        let point17 = CGPoint(
+            x: rect.minX + rect.maxX * 810/1000,
+            y: rect.minY + rect.maxY * 345/1000
+        )
+        path.addQuadCurve(
+            to: point17,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 720/1000,
+                y: rect.minY + rect.maxY * 370/1000
+            )
+        )
+
+        let point18 = CGPoint(
+            x: rect.minX + rect.maxX * 955/1000,
+            y: rect.minY + rect.maxY * 315/1000
+        )
+        path.addQuadCurve(
+            to: point18,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 910/1000,
+                y: rect.minY + rect.maxY * 310/1000
+            )
+        )
+
+        let point19 = CGPoint(
+            x: rect.minX + rect.maxX * 940/1000,
+            y: rect.minY + rect.maxY * 265/1000
+        )
+        path.addCurve(
+            to: point19,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 995/1000,
+                y: rect.minY + rect.maxY * 310/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 995/1000,
+                y: rect.minY + rect.maxY * 250/1000
+            )
+        )
+
+        let point20 = CGPoint(
+            x: rect.minX + rect.maxX * 730/1000,
+            y: rect.minY + rect.maxY * 270/1000
+        )
+        path.addCurve(
+            to: point20,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 790/1000,
+                y: rect.minY + rect.maxY * 330/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 780/1000,
+                y: rect.minY + rect.maxY * 345/1000
+            )
+        )
+
         return path
     }
 }
