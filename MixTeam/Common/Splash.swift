@@ -1,5 +1,6 @@
 import SwiftUI
 
+// swiftlint:disable function_body_length type_body_length file_length
 struct Splash: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -460,6 +461,74 @@ struct Splash: Shape {
             control2: CGPoint(
                 x: rect.minX + rect.maxX * 230/1000,
                 y: rect.minY + rect.maxY * 340/1000
+            )
+        )
+
+        let bubble1Point1 = CGPoint(
+            x: rect.minX + rect.maxX * 280/1000,
+            y: rect.minY + rect.maxY * 715/1000
+        )
+        path.move(to: bubble1Point1)
+
+        let bubble1Point2 = CGPoint(
+            x: rect.minX + rect.maxX * 240/1000,
+            y: rect.minY + rect.maxY * 690/1000
+        )
+        path.addCurve(
+            to: bubble1Point2,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 290/1000,
+                y: rect.minY + rect.maxY * 707/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 280/1000,
+                y: rect.minY + rect.maxY * 655/1000
+            )
+        )
+
+        path.addCurve(
+            to: bubble1Point1,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 220/1000,
+                y: rect.minY + rect.maxY * 710/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 250/1000,
+                y: rect.minY + rect.maxY * 740/1000
+            )
+        )
+
+        let bubble2Point1 = CGPoint(
+            x: rect.minX + rect.maxX * 385/1000,
+            y: rect.minY + rect.maxY * 715/1000
+        )
+        path.move(to: bubble2Point1)
+
+        let bubble2Point2 = CGPoint(
+            x: rect.minX + rect.maxX * 320/1000,
+            y: rect.minY + rect.maxY * 700/1000
+        )
+        path.addCurve(
+            to: bubble2Point2,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 390/1000,
+                y: rect.minY + rect.maxY * 660/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 340/1000,
+                y: rect.minY + rect.maxY * 660/1000
+            )
+        )
+
+        path.addCurve(
+            to: bubble2Point1,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 300/1000,
+                y: rect.minY + rect.maxY * 740/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 380/1000,
+                y: rect.minY + rect.maxY * 760/1000
             )
         )
 
