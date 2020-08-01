@@ -464,18 +464,28 @@ struct Splash: Shape {
             )
         )
 
-        let bubble1Point1 = CGPoint(
+        addBubble1(path: &path, in: rect)
+        addBubble2(path: &path, in: rect)
+        addDrop1(path: &path, in: rect)
+        addDrop2(path: &path, in: rect)
+        addDrop3(path: &path, in: rect)
+
+        return path
+    }
+
+    private func addBubble1(path: inout Path, in rect: CGRect) {
+        let point1 = CGPoint(
             x: rect.minX + rect.maxX * 280/1000,
             y: rect.minY + rect.maxY * 715/1000
         )
-        path.move(to: bubble1Point1)
+        path.move(to: point1)
 
-        let bubble1Point2 = CGPoint(
+        let point2 = CGPoint(
             x: rect.minX + rect.maxX * 240/1000,
             y: rect.minY + rect.maxY * 690/1000
         )
         path.addCurve(
-            to: bubble1Point2,
+            to: point2,
             control1: CGPoint(
                 x: rect.minX + rect.maxX * 290/1000,
                 y: rect.minY + rect.maxY * 707/1000
@@ -487,7 +497,7 @@ struct Splash: Shape {
         )
 
         path.addCurve(
-            to: bubble1Point1,
+            to: point1,
             control1: CGPoint(
                 x: rect.minX + rect.maxX * 220/1000,
                 y: rect.minY + rect.maxY * 710/1000
@@ -497,19 +507,21 @@ struct Splash: Shape {
                 y: rect.minY + rect.maxY * 740/1000
             )
         )
+    }
 
-        let bubble2Point1 = CGPoint(
+    private func addBubble2(path: inout Path, in rect: CGRect) {
+        let point1 = CGPoint(
             x: rect.minX + rect.maxX * 385/1000,
             y: rect.minY + rect.maxY * 715/1000
         )
-        path.move(to: bubble2Point1)
+        path.move(to: point1)
 
-        let bubble2Point2 = CGPoint(
+        let point2 = CGPoint(
             x: rect.minX + rect.maxX * 320/1000,
             y: rect.minY + rect.maxY * 700/1000
         )
         path.addCurve(
-            to: bubble2Point2,
+            to: point2,
             control1: CGPoint(
                 x: rect.minX + rect.maxX * 390/1000,
                 y: rect.minY + rect.maxY * 660/1000
@@ -521,7 +533,7 @@ struct Splash: Shape {
         )
 
         path.addCurve(
-            to: bubble2Point1,
+            to: point1,
             control1: CGPoint(
                 x: rect.minX + rect.maxX * 300/1000,
                 y: rect.minY + rect.maxY * 740/1000
@@ -531,8 +543,76 @@ struct Splash: Shape {
                 y: rect.minY + rect.maxY * 760/1000
             )
         )
+    }
 
-        return path
+    private func addDrop1(path: inout Path, in rect: CGRect) {
+        let point = CGPoint(
+            x: rect.minX + rect.maxX * 110/1000,
+            y: rect.minY + rect.maxY * 315/1000
+        )
+        path.move(to: point)
+        path.addCurve(
+            to: point,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 20/1000,
+                y: rect.minY + rect.maxY * 200/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 10/1000,
+                y: rect.minY + rect.maxY * 370/1000
+            )
+        )
+    }
+
+    private func addDrop2(path: inout Path, in rect: CGRect) {
+        let point1 = CGPoint(
+            x: rect.minX + rect.maxX * 125/1000,
+            y: rect.minY + rect.maxY * 345/1000
+        )
+        path.move(to: point1)
+
+        let point2 = CGPoint(
+            x: rect.minX + rect.maxX * 100/1000,
+            y: rect.minY + rect.maxY * 390/1000
+        )
+        path.addCurve(
+            to: point2,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 50/1000,
+                y: rect.minY + rect.maxY * 340/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 80/1000,
+                y: rect.minY + rect.maxY * 440/1000
+            )
+        )
+
+        path.addQuadCurve(
+            to: point1,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 110/1000,
+                y: rect.minY + rect.maxY * 345/1000
+            )
+        )
+    }
+
+    private func addDrop3(path: inout Path, in rect: CGRect) {
+        let point = CGPoint(
+            x: rect.minX + rect.maxX * 740/1000,
+            y: rect.minY + rect.maxY * 615/1000
+        )
+        path.move(to: point)
+        path.addCurve(
+            to: point,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 860/1000,
+                y: rect.minY + rect.maxY * 660/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 770/1000,
+                y: rect.minY + rect.maxY * 780/1000
+            )
+        )
     }
 }
 
@@ -548,15 +628,7 @@ struct Splash_Previews: PreviewProvider {
         var body: some View {
             GeometryReader { geometry in
                 VStack {
-                    ZStack {
-                        Splash().stroke()
-                        Circle()
-                            .stroke()
-                            .scale(1/10)
-                        Image("splash")
-                        .resizable()
-                        .opacity(1/4)
-                    }
+                    Splash().stroke()
                     .frame(width: self.width, height: self.height)
                     .border(Color.red)
                     Spacer()
