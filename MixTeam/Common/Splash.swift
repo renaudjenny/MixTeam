@@ -326,6 +326,143 @@ struct Splash: Shape {
             )
         )
 
+        let point25 = CGPoint(
+            x: rect.minX + rect.maxX * 590/1000,
+            y: rect.minY + rect.maxY * 80/1000
+        )
+        path.addQuadCurve(
+            to: point25,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 570/1000,
+                y: rect.minY + rect.maxY * 140/1000
+            )
+        )
+
+        let point26 = CGPoint(
+            x: rect.minX + rect.maxX * 540/1000,
+            y: rect.minY + rect.maxY * 40/1000
+        )
+        path.addCurve(
+            to: point26,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 610/1000,
+                y: rect.minY + rect.maxY * 0/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 560/1000,
+                y: rect.minY + rect.maxY * 0/1000
+            )
+        )
+
+        let point27 = CGPoint(
+            x: rect.minX + rect.maxX * 445/1000,
+            y: rect.minY + rect.maxY * 60/1000
+        )
+        path.addQuadCurve(
+            to: point27,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 500/1000,
+                y: rect.minY + rect.maxY * 140/1000
+            )
+        )
+
+        let point28 = CGPoint(
+            x: rect.minX + rect.maxX * 390/1000,
+            y: rect.minY + rect.maxY * 70/1000
+        )
+        path.addQuadCurve(
+            to: point28,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 410/1000,
+                y: rect.minY + rect.maxY * 15/1000
+            )
+        )
+
+        let point29 = CGPoint(
+            x: rect.minX + rect.maxX * 330/1000,
+            y: rect.minY + rect.maxY * 105/1000
+        )
+        path.addQuadCurve(
+            to: point29,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 360/1000,
+                y: rect.minY + rect.maxY * 140/1000
+            )
+        )
+
+        let point30 = CGPoint(
+            x: rect.minX + rect.maxX * 312/1000,
+            y: rect.minY + rect.maxY * 110/1000
+        )
+        path.addQuadCurve(
+            to: point30,
+            control: CGPoint(
+                x: rect.minX + rect.maxX * 315/1000,
+                y: rect.minY + rect.maxY * 90/1000
+            )
+        )
+
+        let point31 = CGPoint(
+            x: rect.minX + rect.maxX * 175/1000,
+            y: rect.minY + rect.maxY * 205/1000
+        )
+        path.addCurve(
+            to: point31,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 300/1000,
+                y: rect.minY + rect.maxY * 190/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 240/1000,
+                y: rect.minY + rect.maxY * 220/1000
+            )
+        )
+
+        let point32 = CGPoint(
+            x: rect.minX + rect.maxX * 90/1000,
+            y: rect.minY + rect.maxY * 150/1000
+        )
+
+        path.addCurve(
+            to: point32,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 165/1000,
+                y: rect.minY + rect.maxY * 205/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 100/1000,
+                y: rect.minY + rect.maxY * 150/1000
+            )
+        )
+
+        let point33 = CGPoint(
+            x: rect.minX + rect.maxX * 90/1000,
+            y: rect.minY + rect.maxY * 205/1000
+        )
+        path.addCurve(
+            to: point33,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 35/1000,
+                y: rect.minY + rect.maxY * 120/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 30/1000,
+                y: rect.minY + rect.maxY * 195/1000
+            )
+        )
+
+        path.addCurve(
+            to: point1,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 290/1000,
+                y: rect.minY + rect.maxY * 215/1000
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 230/1000,
+                y: rect.minY + rect.maxY * 340/1000
+            )
+        )
+
         return path
     }
 }
