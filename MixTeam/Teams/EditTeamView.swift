@@ -41,7 +41,7 @@ struct EditTeamView: View {
                     Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
                         colorIdentifier.color
                             .frame(width: 50, height: 50)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .clipShape(Splash())
 
                     }).accessibility(label: Text("\(colorIdentifier.name) color"))
                 }
