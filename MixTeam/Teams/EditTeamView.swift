@@ -3,6 +3,8 @@ import SwiftUI
 struct EditTeamView: View {
     @Environment(\.presentationMode) var presentation
     @Binding var team: Team
+    @State private var animateSplashGrowing: Bool = false
+    @State private var animateSplashDripping: Bool = false
 
     var body: some View {
         VStack {
@@ -12,7 +14,14 @@ struct EditTeamView: View {
 
         }
         .background(color.edgesIgnoringSafeArea(.all))
-        .animation(.default)
+        .onAppear {
+            withAnimation(Animation.easeIn(duration: 0.4)) {
+                self.animateSplashGrowing = true
+            }
+            withAnimation(Animation.easeInOut(duration: 2).delay(0.4)) {
+                self.animateSplashDripping = true
+            }
+        }
     }
 
     private var teamNameField: some View {
@@ -41,8 +50,8 @@ struct EditTeamView: View {
                     Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
                         colorIdentifier.color
                             .frame(width: 50, height: 50)
-                            .clipShape(Splash())
-
+                            .clipShape(Splash(animatableData: self.animateSplashDripping ? 1 : 0))
+                            .scaleEffect(self.animateSplashGrowing ? 1 : 0.1)
                     }).accessibility(label: Text("\(colorIdentifier.name) color"))
                 }
             }
