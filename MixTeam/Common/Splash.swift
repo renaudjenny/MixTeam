@@ -2,6 +2,8 @@ import SwiftUI
 
 // swiftlint:disable function_body_length type_body_length file_length
 struct Splash: Shape {
+    var animatableData: CGFloat = 1
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
@@ -60,120 +62,19 @@ struct Splash: Shape {
         )
 
         let point6 = CGPoint(
-            x: rect.minX + rect.maxX * 450/1000,
-            y: rect.minY + rect.maxY * 730/1000
+            x: rect.minX + rect.maxX * 410/1000,
+            y: rect.minY + rect.maxY * 640/1000
         )
-        path.addCurve(
+        path.addQuadCurve(
             to: point6,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 400/1000,
-                y: rect.minY + rect.maxY * 600/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 475/1000,
-                y: rect.minY + rect.maxY * 645/1000
-            )
-        )
-
-        let point7 = CGPoint(
-            x: rect.minX + rect.maxX * 435/1000,
-            y: rect.minY + rect.maxY * 950/1000
-        )
-        path.addQuadCurve(
-            to: point7,
             control: CGPoint(
-                x: rect.minX + rect.maxX * 420/1000,
-                y: rect.minY + rect.maxY * 860/1000
-            )
-        )
-
-        let point8 = CGPoint(
-            x: rect.minX + rect.maxX * 510/1000,
-            y: rect.minY + rect.maxY * 930/1000
-        )
-        path.addCurve(
-            to: point8,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 440/1000,
-                y: rect.minY + rect.maxY * 1010/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 500/1000,
-                y: rect.minY + rect.maxY * 1000/1000
-            )
-        )
-
-        let point9 = CGPoint(
-            x: rect.minX + rect.maxX * 495/1000,
-            y: rect.minY + rect.maxY * 690/1000
-        )
-        path.addQuadCurve(
-            to: point9,
-            control: CGPoint(
-                x: rect.minX + rect.maxX * 515/1000,
-                y: rect.minY + rect.maxY * 890/1000
-            )
-        )
-
-        let point10 = CGPoint(
-            x: rect.minX + rect.maxX * 570/1000,
-            y: rect.minY + rect.maxY * 680/1000
-        )
-        path.addCurve(
-            to: point10,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 490/1000,
-                y: rect.minY + rect.maxY * 630/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 570/1000,
+                x: rect.minX + rect.maxX * 380/1000,
                 y: rect.minY + rect.maxY * 630/1000
             )
         )
 
-        let point11 = CGPoint(
-            x: rect.minX + rect.maxX * 560/1000,
-            y: rect.minY + rect.maxY * 790/1000
-        )
-        path.addQuadCurve(
-            to: point11,
-            control: CGPoint(
-                x: rect.minX + rect.maxX * 555/1000,
-                y: rect.minY + rect.maxY * 770/1000
-            )
-        )
-
-        let point12 = CGPoint(
-            x: rect.minX + rect.maxX * 625/1000,
-            y: rect.minY + rect.maxY * 780/1000
-        )
-        path.addCurve(
-            to: point12,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 570/1000,
-                y: rect.minY + rect.maxY * 840/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 625/1000,
-                y: rect.minY + rect.maxY * 840/1000
-            )
-        )
-
-        let point13 = CGPoint(
-            x: rect.minX + rect.maxX * 640/1000,
-            y: rect.minY + rect.maxY * 580/1000
-        )
-        path.addCurve(
-            to: point13,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 620/1000,
-                y: rect.minY + rect.maxY * 650/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 560/1000,
-                y: rect.minY + rect.maxY * 610/1000
-            )
-        )
+        addDripping1(path: &path, in: rect)
+        addDripping2(path: &path, in: rect)
 
         let point14 = CGPoint(
             x: rect.minX + rect.maxX * 725/1000,
@@ -473,6 +374,72 @@ struct Splash: Shape {
         return path
     }
 
+    private func addDripping1(path: inout Path, in rect: CGRect) {
+        let start = CGPoint(
+            x: rect.minX + rect.maxX * 470/1000,
+            y: rect.minY + rect.maxY * 730/1000 + rect.maxY * 260/1000 * animatableData
+        )
+        path.addCurve(
+            to: start,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 500/1000 + rect.maxX * 30/1000 * animatableData,
+                y: rect.minY + rect.maxY * 650/1000 + rect.maxY * 10/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 420/1000 - rect.maxX * 70/1000 * animatableData,
+                y: rect.minY + rect.maxY * 720/1000 + rect.maxY * 250/1000 * animatableData
+            )
+        )
+
+        let end = CGPoint(
+            x: rect.minX + rect.maxX * 530/1000,
+            y: rect.minY + rect.maxY * 640/1000
+        )
+        path.addCurve(
+            to: end,
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 500/1000 + rect.maxX * 50/1000 * animatableData,
+                y: rect.minY + rect.maxY * 720/1000 + rect.maxY * 280/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 450/1000,
+                y: rect.minY + rect.maxY * 650/1000
+            )
+        )
+    }
+
+    private func addDripping2(path: inout Path, in rect: CGRect) {
+        path.addCurve(
+            to: CGPoint(
+                x: rect.minX + rect.maxX * 580/1000 + rect.maxX * 20/1000 * animatableData,
+                y: rect.minY + rect.maxY * 660/1000 + rect.maxY * 170/1000 * animatableData
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 550/1000 + rect.maxX * 90/1000 * animatableData,
+                y: rect.minY + rect.maxY * 670/1000 - rect.maxY * 20/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 550/1000 - rect.maxX * 40/1000 * animatableData,
+                y: rect.minY + rect.maxY * 670/1000 + rect.maxY * 160/1000 * animatableData
+            )
+        )
+
+        path.addCurve(
+            to: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 + rect.maxX * 50/1000 * animatableData,
+                y: rect.minY + rect.maxY * 640/1000 - rect.maxY * 40/1000 * animatableData
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 + rect.maxX * 70/1000 * animatableData,
+                y: rect.minY + rect.maxY * 640/1000 + rect.maxY * 160/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 - rect.maxX * 70/1000 * animatableData,
+                y: rect.minY + rect.maxY * 650/1000 - rect.maxY * 30/1000 * animatableData
+            )
+        )
+    }
+
     private func addBubble1(path: inout Path, in rect: CGRect) {
         let point1 = CGPoint(
             x: rect.minX + rect.maxX * 280/1000,
@@ -624,21 +591,53 @@ struct Splash_Previews: PreviewProvider {
     private struct Preview: View {
         @State private var width: CGFloat = .zero
         @State private var height: CGFloat = .zero
+        @State private var animationStep: CGFloat = 1
+        @State private var animate: Bool = false
 
         var body: some View {
             GeometryReader { geometry in
                 VStack {
-                    Splash().stroke()
+                    ZStack {
+                        Splash(animatableData: self.animate ? 0 : self.animationStep)
+                            .animation(self.animate
+                                ? Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
+                                : .default
+                        )
+                    }
                     .frame(width: self.width, height: self.height)
                     .border(Color.red)
                     Spacer()
-                    Slider(value: self.$width, in: 0...geometry.size.width)
-                    Slider(value: self.$height, in: 0...geometry.size.height)
+                    HStack {
+                        Text("Width")
+                        Slider(value: self.$width, in: 0...geometry.size.width)
+                    }
+                    HStack {
+                        Text("Height")
+                        Slider(value: self.$height, in: 0...geometry.size.height)
+                    }
+                    Toggle(isOn: self.$animate) { Text("Animate automatically") }
+                    if (!self.animate) {
+                        Text("Animation Step")
+                        Slider(value: self.$animationStep, in: 0...1)
+                    }
                 }.onAppear {
                     self.width = geometry.size.width
                     self.height = geometry.size.height/2
                 }
             }.padding()
         }
+    }
+}
+
+extension Path {
+    mutating func addTest(to center: CGPoint) {
+        let previous = currentPoint ?? .zero
+        addEllipse(in: CGRect(
+            x: center.x - 2,
+            y: center.y - 2,
+            width: 4,
+            height: 4
+        ))
+        move(to: previous)
     }
 }
