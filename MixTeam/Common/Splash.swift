@@ -74,66 +74,7 @@ struct Splash: Shape {
         )
 
         addDripping1(path: &path, in: rect)
-
-        let point9 = CGPoint(
-            x: rect.minX + rect.maxX * 540/1000,
-            y: rect.minY + rect.maxY * 640/1000
-        )
-        path.addQuadCurve(
-            to: point9,
-            control: CGPoint(
-                x: rect.minX + rect.maxX * 540/1000,
-                y: rect.minY + rect.maxY * 640/1000
-            )
-        )
-
-        let point11 = CGPoint(
-            x: rect.minX + rect.maxX * 560/1000,
-            y: rect.minY + rect.maxY * 790/1000
-        )
-        path.addCurve(
-            to: point11,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 580/1000,
-                y: rect.minY + rect.maxY * 660/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 560/1000,
-                y: rect.minY + rect.maxY * 700/1000
-            )
-        )
-
-        let point12 = CGPoint(
-            x: rect.minX + rect.maxX * 625/1000,
-            y: rect.minY + rect.maxY * 780/1000
-        )
-        path.addCurve(
-            to: point12,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 570/1000,
-                y: rect.minY + rect.maxY * 840/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 625/1000,
-                y: rect.minY + rect.maxY * 840/1000
-            )
-        )
-
-        let point13 = CGPoint(
-            x: rect.minX + rect.maxX * 640/1000,
-            y: rect.minY + rect.maxY * 580/1000
-        )
-        path.addCurve(
-            to: point13,
-            control1: CGPoint(
-                x: rect.minX + rect.maxX * 620/1000,
-                y: rect.minY + rect.maxY * 650/1000
-            ),
-            control2: CGPoint(
-                x: rect.minX + rect.maxX * 560/1000,
-                y: rect.minY + rect.maxY * 610/1000
-            )
-        )
+        addDripping2(path: &path, in: rect)
 
         let point14 = CGPoint(
             x: rect.minX + rect.maxX * 725/1000,
@@ -467,6 +408,38 @@ struct Splash: Shape {
         )
     }
 
+    private func addDripping2(path: inout Path, in rect: CGRect) {
+        path.addCurve(
+            to: CGPoint(
+                x: rect.minX + rect.maxX * 580/1000 + rect.maxX * 20/1000 * animatableData,
+                y: rect.minY + rect.maxY * 660/1000 + rect.maxY * 170/1000 * animatableData
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 550/1000 + rect.maxX * 90/1000 * animatableData,
+                y: rect.minY + rect.maxY * 670/1000 - rect.maxY * 20/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 550/1000 - rect.maxX * 40/1000 * animatableData,
+                y: rect.minY + rect.maxY * 670/1000 + rect.maxY * 160/1000 * animatableData
+            )
+        )
+
+        path.addCurve(
+            to: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 + rect.maxX * 50/1000 * animatableData,
+                y: rect.minY + rect.maxY * 640/1000 - rect.maxY * 40/1000 * animatableData
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 + rect.maxX * 70/1000 * animatableData,
+                y: rect.minY + rect.maxY * 640/1000 + rect.maxY * 160/1000 * animatableData
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.maxX * 600/1000 - rect.maxX * 70/1000 * animatableData,
+                y: rect.minY + rect.maxY * 650/1000 - rect.maxY * 30/1000 * animatableData
+            )
+        )
+    }
+
     private func addBubble1(path: inout Path, in rect: CGRect) {
         let point1 = CGPoint(
             x: rect.minX + rect.maxX * 280/1000,
@@ -630,9 +603,6 @@ struct Splash_Previews: PreviewProvider {
                                 ? Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
                                 : .default
                         )
-//                        Image("splash")
-//                            .resizable()
-//                            .opacity(1/4)
                     }
                     .frame(width: self.width, height: self.height)
                     .border(Color.red)
