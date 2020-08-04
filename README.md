@@ -22,5 +22,5 @@ MixTeam will help you organise your boardgames or team sport match.
 * ~~Migrate views to SwiftUI~~
 * Add Unit Tests with Snapshots for views
 * ~~Improve UI~~
-* Add GitHub Actions CI
+* ~~Add GitHub Actions CI~~
 * *etc.*
