@@ -1,0 +1,29 @@
+name: Xcode Unit Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install SwiftLint
+      run: brew install swiftlint
+
+    - name: Linter
+      run: swiftlint
+
+    - name: Xcode version
+      run: /usr/bin/xcodebuild -version
+
+    - name: Create iPhone SE Simulator
+      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)" iOS13.6
+
+    - name: Xcode test on iPhone SE
+      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
