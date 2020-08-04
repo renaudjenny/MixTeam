@@ -26,4 +26,4 @@ jobs:
       run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)" iOS13.6
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
+      run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
