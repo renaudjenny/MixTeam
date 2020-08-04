@@ -1,5 +1,7 @@
 # MixTeam
 
+![Xcode Unit Test](https://github.com/renaudjenny/MixTeam/workflows/Xcode%20Unit%20Test/badge.svg)
+
 >MixTeam is an old project started in late 2017 and maintained just for my personal usage until mid 2018.
 >I want now to migrate this project to modern Swift 5 and SwiftUI, and also publish it.
 
