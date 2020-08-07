@@ -28,8 +28,7 @@ struct AboutView: View {
                 Text("Thank you for your support!")
                     .multilineTextAlignment(.center)
                     .font(.headline)
-                // TODO: change the id before showing this when available on the Store
-                // rateThisApp
+                 rateThisApp
             }.padding()
         }
     }
@@ -119,8 +118,7 @@ private extension URL {
     }
 
     static var appStoreWriteReview: Self {
-        // TODO: change the id when available on the Store
-        guard let url = Self(string: "itms-apps://itunes.apple.com/app/ID?action=write-review") else {
+        guard let url = Self(string: "itms-apps://itunes.apple.com/app/id1526493495?action=write-review") else {
             fatalError("Cannot build the AppStore URL")
         }
         return url
