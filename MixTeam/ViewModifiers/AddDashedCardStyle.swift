@@ -83,3 +83,11 @@ struct NotchedRoundedRectangle: Shape {
         return path
     }
 }
+
+struct AddDashedCardStyle_Previews: PreviewProvider {
+    static var previews: some View {
+        Rectangle().modifier(AddDashedCardStyle(
+            notchSize: CGSize(width: 20, height: 20)
+        ))
+    }
+}

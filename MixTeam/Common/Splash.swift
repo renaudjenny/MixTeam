@@ -616,7 +616,7 @@ struct Splash_Previews: PreviewProvider {
                         Slider(value: self.$height, in: 0...geometry.size.height)
                     }
                     Toggle(isOn: self.$animate) { Text("Animate automatically") }
-                    if (!self.animate) {
+                    if !self.animate {
                         Text("Animation Step")
                         Slider(value: self.$animationStep, in: 0...1)
                     }

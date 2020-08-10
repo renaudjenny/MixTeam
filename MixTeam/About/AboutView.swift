@@ -28,7 +28,7 @@ struct AboutView: View {
                 Text("Thank you for your support!")
                     .multilineTextAlignment(.center)
                     .font(.headline)
-                 rateThisApp
+                rateThisApp
             }.padding()
         }
     }
