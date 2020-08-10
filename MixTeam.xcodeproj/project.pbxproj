@@ -608,6 +608,7 @@
 				DEVELOPMENT_TEAM = MBQ98GC8JT;
 				INFOPLIST_FILE = MixTeam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -622,6 +623,7 @@
 				DEVELOPMENT_TEAM = MBQ98GC8JT;
 				INFOPLIST_FILE = MixTeam/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
