@@ -66,7 +66,7 @@ private struct Cell: View {
         .background(
             Group {
                 if selection.rawValue == imageIdentifier.rawValue {
-                    Circle()
+                    Splash2()
                 }
             }
         )

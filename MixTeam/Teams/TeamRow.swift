@@ -37,7 +37,7 @@ struct TeamRow: View {
                     .foregroundColor(team.colorIdentifier.color)
                     .frame(width: 50, height: 50)
                     .padding()
-                    .background(Color.white.clipShape(Circle()))
+                    .background(Color.white.clipShape(Splash2()))
                     .padding(.bottom)
             }
         }
