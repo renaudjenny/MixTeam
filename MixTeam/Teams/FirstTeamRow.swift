@@ -3,6 +3,7 @@ import SwiftUI
 struct FirstTeamRow: View {
     let team: Team
     let callbacks: FirstTeamRow.Callbacks
+    @State private var shape2AnimationStep: CGFloat = .zero
 
     private let aboutButtonSize = CGSize(width: 60, height: 60)
 
@@ -57,13 +58,16 @@ struct FirstTeamRow: View {
         Button(action: callbacks.createPlayer) {
             Image(systemName: "plus")
                 .frame(width: 50, height: 50)
-                .background(Color.white.clipShape(Splash2()))
+                .background(Color.white.clipShape(Splash2(animatableData: shape2AnimationStep)))
                 .foregroundColor(.gray)
                 .accessibility(label: Text("Add Player"))
+                .onAppear { self.shape2AnimationStep = 1 }
+                .animation(Animation.easeInOut(duration: 2).delay(10).repeatForever())
         }.padding()
     }
 }
 
+// MARK: Player Row Callbacks
 extension FirstTeamRow {
     struct Callbacks {
         let createPlayer: () -> Void

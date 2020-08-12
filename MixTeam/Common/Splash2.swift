@@ -2,6 +2,8 @@ import SwiftUI
 
 // swiftlint:disable function_body_length
 struct Splash2: Shape {
+    var animatableData: CGFloat = 1
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
@@ -169,6 +171,9 @@ struct Splash2: Shape {
         )
 
         return path
+            .applying(.init(translationX: -rect.midX, y: -rect.midY))
+            .applying(.init(rotationAngle: 2 * .pi * animatableData))
+            .applying(.init(translationX: rect.midX, y: rect.midY))
     }
 }
 
