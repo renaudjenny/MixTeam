@@ -172,14 +172,37 @@ struct Splash2: Shape {
 
         return path
             .applying(.init(translationX: -rect.midX, y: -rect.midY))
-            .applying(.init(rotationAngle: 2 * .pi * animatableData))
+            .applying(.init(rotationAngle: .pi/4 * animatableData))
             .applying(.init(translationX: rect.midX, y: rect.midY))
     }
 }
 
 struct Splash2_Previews: PreviewProvider {
     static var previews: some View {
-        Splash2()
-            .frame(width: 100, height: 100)
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var animationStep: CGFloat = 1
+        @State private var isAnimatedAuto = false
+
+        var body: some View {
+            VStack {
+                Spacer()
+                Splash2(animatableData: isAnimatedAuto ? 0 : animationStep)
+                    .frame(width: 100, height: 100)
+                    .animation(isAnimatedAuto
+                        ? Animation.easeInOut(duration: 2).repeatForever()
+                        : .default
+                    )
+                    .onAppear { self.isAnimatedAuto = true }
+                Spacer()
+                Slider(value: $animationStep)
+                    .disabled(isAnimatedAuto)
+                Toggle(isOn: $isAnimatedAuto) { Text("Auto") }
+                    .animation(.default)
+            }
+            .padding()
+        }
     }
 }
