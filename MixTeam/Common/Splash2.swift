@@ -2,7 +2,7 @@ import SwiftUI
 
 // swiftlint:disable function_body_length
 struct Splash2: Shape {
-    var animatableData: CGFloat = 1
+    var animatableData: CGFloat = 0
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -20,14 +20,14 @@ struct Splash2: Shape {
             ),
             control: CGPoint(
                 x: rect.minX + rect.maxX * 340/1000,
-                y: rect.minY + rect.maxY * -60/1000
+                y: rect.minY + rect.maxY * -60/1000 + rect.maxY * 60/1000 * animatableData
             )
         )
 
         path.addQuadCurve(
             to: CGPoint(
-                x: rect.minX + rect.maxX * 760/1000,
-                y: rect.minY + rect.maxY * 95/1000
+                x: rect.minX + rect.maxX * 760/1000 + rect.maxX * -30/1000 * animatableData,
+                y: rect.minY + rect.maxY * 95/1000 + rect.maxY * 10/1000 * animatableData
             ),
             control: CGPoint(
                 x: rect.minX + rect.maxX * 650/1000,
@@ -41,12 +41,12 @@ struct Splash2: Shape {
                 y: rect.minY + rect.maxY * 200/1000
             ),
             control1: CGPoint(
-                x: rect.minX + rect.maxX * 900/1000,
-                y: rect.minY + rect.maxY * 80/1000
+                x: rect.minX + rect.maxX * 900/1000 + rect.maxX * -10/1000 * animatableData,
+                y: rect.minY + rect.maxY * 80/1000 + rect.maxY * 20/1000 * animatableData
             ),
             control2: CGPoint(
                 x: rect.minX + rect.maxX * 900/1000,
-                y: rect.minY + rect.maxY * 170/1000
+                y: rect.minY + rect.maxY * 170/1000 + rect.maxY * 20/1000 * animatableData
             )
         )
 
@@ -67,7 +67,7 @@ struct Splash2: Shape {
                 y: rect.minY + rect.maxY * 600/1000
             ),
             control1: CGPoint(
-                x: rect.minX + rect.maxX * 1100/1000,
+                x: rect.minX + rect.maxX * 1100/1000 + rect.maxX * -100/1000 * animatableData,
                 y: rect.minY + rect.maxY * 480/1000
             ),
             control2: CGPoint(
@@ -87,7 +87,7 @@ struct Splash2: Shape {
             ),
             control2: CGPoint(
                 x: rect.minX + rect.maxX * 900/1000,
-                y: rect.minY + rect.maxY * 920/1000
+                y: rect.minY + rect.maxY * 920/1000 + rect.maxY * -100/1000 * animatableData
             )
         )
 
@@ -109,11 +109,11 @@ struct Splash2: Shape {
             ),
             control1: CGPoint(
                 x: rect.minX + rect.maxX * 610/1000,
-                y: rect.minY + rect.maxY * 1050/1000
+                y: rect.minY + rect.maxY * 1050/1000 + rect.maxY * -40/1000 * animatableData
             ),
             control2: CGPoint(
                 x: rect.minX + rect.maxX * 530/1000,
-                y: rect.minY + rect.maxY * 1000/1000
+                y: rect.minY + rect.maxY * 1000/1000 + rect.maxY * -40/1000 * animatableData
             )
         )
 
@@ -134,12 +134,12 @@ struct Splash2: Shape {
                 y: rect.minY + rect.maxY * 700/1000
             ),
             control1: CGPoint(
-                x: rect.minX + rect.maxX * 50/1000,
-                y: rect.minY + rect.maxY * 900/1000
+                x: rect.minX + rect.maxX * 50/1000 + rect.maxX * 50/1000 * animatableData,
+                y: rect.minY + rect.maxY * 900/1000 + rect.maxY * -90/1000 * animatableData
             ),
             control2: CGPoint(
-                x: rect.minX + rect.maxX * 140/1000,
-                y: rect.minY + rect.maxY * 750/1000
+                x: rect.minX + rect.maxX * 140/1000 + rect.maxX * 10/1000 * animatableData,
+                y: rect.minY + rect.maxY * 750/1000 + rect.maxY * -70/1000 * animatableData
             )
         )
 
@@ -153,7 +153,7 @@ struct Splash2: Shape {
                 y: rect.minY + rect.maxY * 530/1000
             ),
             control2: CGPoint(
-                x: rect.minX + rect.maxX * -170/1000,
+                x: rect.minX + rect.maxX * -170/1000 + rect.maxX * 170/1000 * animatableData,
                 y: rect.minY + rect.maxY * 490/1000
             )
         )
@@ -172,7 +172,7 @@ struct Splash2: Shape {
 
         return path
             .applying(.init(translationX: -rect.midX, y: -rect.midY))
-            .applying(.init(rotationAngle: .pi/4 * animatableData))
+            .applying(.init(rotationAngle: .pi/15 * animatableData))
             .applying(.init(translationX: rect.midX, y: rect.midY))
     }
 }
@@ -183,13 +183,13 @@ struct Splash2_Previews: PreviewProvider {
     }
 
     private struct Preview: View {
-        @State private var animationStep: CGFloat = 1
+        @State private var animationStep: CGFloat = 0
         @State private var isAnimatedAuto = false
 
         var body: some View {
             VStack {
                 Spacer()
-                Splash2(animatableData: isAnimatedAuto ? 0 : animationStep)
+                Splash2(animatableData: isAnimatedAuto ? 1 : animationStep)
                     .frame(width: 100, height: 100)
                     .animation(isAnimatedAuto
                         ? Animation.easeInOut(duration: 2).repeatForever()
