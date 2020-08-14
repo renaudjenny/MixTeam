@@ -25,21 +25,23 @@ struct EditPlayerView: View {
         HStack {
             TextField("Edit", text: $player.name)
                 .foregroundColor(Color.white)
-                .font(.largeTitle)
+                .font(.title)
                 .padding()
                 .background(team.colorIdentifier.color)
                 .modifier(AddDashedCardStyle())
-                .padding([.top, .leading])
+                .padding(.leading)
             doneButton.padding(.trailing)
-        }
+        }.padding(.top)
     }
 
     private var doneButton: some View {
         Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
-            Text("Done").foregroundColor(Color.white)
-        }).buttonStyle(
-            CommonButtonStyle(color: team.colorIdentifier.color)
-        )
+            Image(systemName: "checkmark")
+                .foregroundColor(team.colorIdentifier.color)
+                .padding()
+                .background(Splash2())
+                .foregroundColor(.white)
+        }).accessibility(label: Text("Done"))
     }
 }
 
