@@ -58,7 +58,7 @@ struct FirstTeamRow: View {
         Button(action: callbacks.createPlayer) {
             Image(systemName: "plus")
                 .frame(width: 50, height: 50)
-                .background(Color.white.clipShape(Splash2(animatableData: shape2AnimationStep)))
+                .background(Color.white.clipShape(Splash2()))
                 .foregroundColor(.gray)
                 .accessibility(label: Text("Add Player"))
                 .onAppear { self.shape2AnimationStep = 1 }
