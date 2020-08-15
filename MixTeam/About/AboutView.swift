@@ -18,18 +18,28 @@ struct AboutView: View {
                     }.padding()
                 }
             }
-            Image(uiImage: #imageLiteral(resourceName: "Logo"))
+            VStack {
+                Image(uiImage: #imageLiteral(resourceName: "Logo"))
+                    .cornerRadius(16)
+                    .padding()
+                    .padding(.top)
+                    .shadow(radius: 5)
+                VStack(spacing: 32) {
+                    developmentCredit
+                    openSourceCredit
+                    iconsAndIllustrationsCredit
+                    Text("Thank you for your support!")
+                        .multilineTextAlignment(.center)
+                        .font(.headline)
+                    rateThisApp
+                }
                 .padding()
-                .shadow(radius: 5)
-            VStack(spacing: 32) {
-                developmentCredit
-                openSourceCredit
-                iconsAndIllustrationsCredit
-                Text("Thank you for your support!")
-                    .multilineTextAlignment(.center)
-                    .font(.headline)
-                rateThisApp
-            }.padding()
+            }
+            .background(colorScheme == .light
+                ? Color.gray.opacity(1/2)
+                : Color.black.opacity(3/4)
+            )
+            .modifier(AddDashedCardStyle())
         }
     }
 
@@ -38,6 +48,7 @@ struct AboutView: View {
             Text("This application has been made by\nRenaud Jenny")
                 .multilineTextAlignment(.center)
                 .font(.body)
+                .fixedSize(horizontal: false, vertical: true)
             WebLink(text: "@Renox0", url: .renox0Twitter)
         }
     }
@@ -47,6 +58,7 @@ struct AboutView: View {
             Text("Based on open source projects you can find on my GitHub")
                 .multilineTextAlignment(.center)
                 .font(.body)
+                .fixedSize(horizontal: false, vertical: true)
             WebLink(text: "https://github.com/renaudjenny", url: .renaudjennyGithub)
         }
     }
@@ -56,6 +68,7 @@ struct AboutView: View {
             Text("Icons and illustrations by\nMathilde Seyller")
                 .multilineTextAlignment(.center)
                 .font(.body)
+                .fixedSize(horizontal: false, vertical: true)
             WebLink(text: "@MathildeSeyller", url: .myobrielInstagram)
         }
     }
@@ -127,6 +140,11 @@ private extension URL {
 
 struct AboutView_Previews: PreviewProvider {
     static var previews: some View {
-        AboutView()
+        Group {
+            AboutView().environment(\.verticalSizeClass, .regular)
+            AboutView()
+                .previewLayout(.fixed(width: 568, height: 320))
+                .environment(\.verticalSizeClass, .compact)
+        }
     }
 }

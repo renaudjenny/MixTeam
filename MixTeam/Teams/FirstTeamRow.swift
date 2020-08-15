@@ -3,7 +3,6 @@ import SwiftUI
 struct FirstTeamRow: View {
     let team: Team
     let callbacks: FirstTeamRow.Callbacks
-    @State private var shape2AnimationStep: CGFloat = .zero
 
     private let aboutButtonSize = CGSize(width: 60, height: 60)
 
@@ -61,7 +60,6 @@ struct FirstTeamRow: View {
                 .background(Color.white.clipShape(Splash2()))
                 .foregroundColor(.gray)
                 .accessibility(label: Text("Add Player"))
-                .onAppear { self.shape2AnimationStep = 1 }
                 .animation(Animation.easeInOut(duration: 2).delay(10).repeatForever())
         }.padding()
     }

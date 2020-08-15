@@ -50,9 +50,9 @@ struct MainView: View {
                 Text("Mix Team")
             }
         }
+        .modifier(Shadow())
         .buttonStyle(MixTeamButtonStyle())
         .frame(height: 50)
-        .modifier(Shadow())
         .padding(.horizontal)
         .accessibility(label: Text("Mix Team"))
     }

@@ -8,7 +8,7 @@ struct AddDashedCardStyle: ViewModifier {
         content
             .overlay(overlay)
             .clipShape(notchedShape(cornerRadius: 20))
-            .modifier(Shadow())
+            .modifier(Shadow(shape: notchedShape(cornerRadius: 20)))
     }
 
     private var overlay: some View {
@@ -18,19 +18,19 @@ struct AddDashedCardStyle: ViewModifier {
             .padding(5)
     }
 
-    private func notchedShape(cornerRadius: CGFloat) -> some Shape {
+    private func notchedShape(cornerRadius: CGFloat) -> NotchedRoundedRectangle {
         NotchedRoundedRectangle(
+            layoutDirection: _layoutDirection,
             notchSize: notchSize,
-            cornerRadius: cornerRadius,
-            layoutDirection: layoutDirection
+            cornerRadius: cornerRadius
         )
     }
 }
 
 struct NotchedRoundedRectangle: Shape {
+    @Environment(\.layoutDirection) var layoutDirection
     let notchSize: CGSize
     let cornerRadius: CGFloat
-    let layoutDirection: LayoutDirection
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
