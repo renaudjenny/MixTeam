@@ -6,7 +6,7 @@ struct ImagePicker: View {
     let type: ImagePickerType
 
     let columns = 2
-    let rows = 3
+    let rows = 4
 
     var body: some View {
         VStack {

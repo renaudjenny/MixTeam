@@ -13,6 +13,7 @@ enum ImageIdentifier: String, Identifiable, Codable {
     case laraCraft = "lara-craft"
     case theBotman = "the-botman"
     case wanderWoman = "wander-woman"
+    case jack = "jack"
 
     case unknown = ""
 
@@ -28,7 +29,7 @@ enum ImageIdentifier: String, Identifiable, Codable {
     static var players: [Self] {
         [
             .harryPottar, .amaliePoulain, .darkVadir,
-            .laraCraft, .theBotman, .wanderWoman
+            .laraCraft, .theBotman, .wanderWoman, .jack
         ]
     }
 
