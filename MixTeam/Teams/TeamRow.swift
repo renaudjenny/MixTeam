@@ -10,13 +10,15 @@ struct TeamRow: View {
                 .font(.callout)
                 .foregroundColor(Color.white)
                 .padding(.top)
-            ForEach(team.players) { player in
-                PlayerRow(
-                    player: player,
-                    isInFirstTeam: false,
-                    callbacks: self.playerRowCallbacks
-                )
-            }
+            VStack {
+                ForEach(team.players) { player in
+                    PlayerRow(
+                        player: player,
+                        isInFirstTeam: false,
+                        callbacks: self.playerRowCallbacks
+                    )
+                }
+            }.padding(.bottom)
         }
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)

@@ -10,7 +10,7 @@ struct PlayerRow: View {
             HStack {
                 player.imageIdentifier.image
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 60, height: 60)
                     .padding([.leading, .trailing])
                 Text(player.name)
                 Spacer()
@@ -22,7 +22,7 @@ struct PlayerRow: View {
             }
             .foregroundColor(Color.white)
         }
-        .padding()
+        .padding(.bottom, 4)
     }
 }
 
