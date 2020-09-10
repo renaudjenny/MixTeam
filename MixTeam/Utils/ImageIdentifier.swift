@@ -6,6 +6,7 @@ enum ImageIdentifier: String, Identifiable, Codable {
     case panda = "panda"
     case octopus = "octopus"
     case lion = "lion"
+    case hippo = "hippo"
 
     case harryPottar = "harry-pottar"
     case amaliePoulain = "amalie-poulain"
@@ -36,7 +37,10 @@ enum ImageIdentifier: String, Identifiable, Codable {
     }
 
     static var teams: [Self] {
-        [.elephant, .koala, .panda, .octopus, .lion]
+        [
+            .elephant, .koala, .panda, .octopus, .lion,
+            .hippo,
+        ]
     }
 
     var name: String {
