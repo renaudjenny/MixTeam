@@ -37,7 +37,7 @@ struct TeamRow: View {
                     .renderingMode(.template)
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(team.colorIdentifier.color)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 80, height: 80)
                     .padding()
                     .background(Color.white.clipShape(Splash2()))
                     .padding(.bottom)

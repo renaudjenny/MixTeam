@@ -59,7 +59,7 @@ private struct Cell: View {
         Button(action: select) {
             imageIdentifier.image
                 .resizable()
-                .frame(width: 80, height: 80)
+                .frame(width: 100, height: 100)
                 .padding()
                 .foregroundColor(imageForegroundColor)
         }
@@ -71,7 +71,6 @@ private struct Cell: View {
             }
         )
             .foregroundColor(Color.white)
-            .padding()
     }
 
     private func select() {
