@@ -23,7 +23,7 @@ jobs:
       run: /usr/bin/xcodebuild -version
 
     - name: Create iPhone SE Simulator
-      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)" iOS13.6
+      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)"
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
+      run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
