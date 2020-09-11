@@ -30,14 +30,14 @@ extension Array where Element == Team {
         )
         playersStandingTeam.players = [
             Player(name: "Lara", imageIdentifier: .laraCraft),
-            Player(name: "Harry", imageIdentifier: .harryPottar)
+            Player(name: "Harry", imageIdentifier: .harryPottar),
         ]
         var koalaTeam = Team(name: "Red Koala", colorIdentifier: .red, imageIdentifier: .koala)
         koalaTeam.players = [Player(name: "Vador", imageIdentifier: .darkVadir)]
         return [
             playersStandingTeam,
             koalaTeam,
-            Team(name: "Purple Elephant", colorIdentifier: .purple, imageIdentifier: .elephant)
+            Team(name: "Purple Elephant", colorIdentifier: .purple, imageIdentifier: .elephant),
         ]
     }()
 }

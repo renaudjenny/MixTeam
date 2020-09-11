@@ -93,7 +93,7 @@ struct TeamRow_Previews: PreviewProvider {
                         imageIdentifier: .octopus,
                         players: [
                             Player(name: "Player 1", imageIdentifier: .harryPottar),
-                            Player(name: "Player 2", imageIdentifier: .theBotman)
+                            Player(name: "Player 2", imageIdentifier: .theBotman),
                         ]
                     ),
                     callbacks: debuggableCallbacks
@@ -105,7 +105,7 @@ struct TeamRow_Previews: PreviewProvider {
                         colorIdentifier: .gray,
                         imageIdentifier: .unknown,
                         players: [
-                            Player(name: "Player 1", imageIdentifier: .harryPottar)
+                            Player(name: "Player 1", imageIdentifier: .harryPottar),
                         ]
                     ),
                     callbacks: firstTeamDebuggableCallbacks
@@ -121,13 +121,7 @@ struct TeamRowUX_Previews: PreviewProvider {
     }
 
     private struct Preview: View, TeamRowPreview {
-        @State private var teams: [Team] = [Team(
-            id: UUID(),
-            name: "Team Test",
-            colorIdentifier: .red,
-            imageIdentifier: .koala,
-            players: []
-        )]
+        @State private var teams: [Team] = [.test]
 
         var body: some View {
             ScrollView {

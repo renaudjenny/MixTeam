@@ -17,3 +17,17 @@ struct Team: Codable, Identifiable, Hashable {
 
     static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
 }
+
+#if DEBUG
+extension Team {
+    static var test: Self {
+        Team(
+            id: UUID(),
+            name: "Team Test",
+            colorIdentifier: .red,
+            imageIdentifier: .koala,
+            players: []
+        )
+    }
+}
+#endif
