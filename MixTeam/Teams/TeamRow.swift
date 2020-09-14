@@ -115,6 +115,7 @@ struct TeamRow_Previews: PreviewProvider {
     }
 }
 
+#if DEBUG
 struct TeamRowUX_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -164,3 +165,4 @@ struct TeamRowUX_Previews: PreviewProvider {
         }
     }
 }
+#endif
