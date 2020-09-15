@@ -16,3 +16,11 @@ struct Player: Codable, Identifiable, Hashable {
 
     static func == (lhs: Self, rhs: Self) -> Bool { lhs.id == rhs.id }
 }
+
+#if DEBUG
+extension Player {
+    static var test: Self {
+        Player(id: UUID(), name: "Test", imageIdentifier: .girl)
+    }
+}
+#endif

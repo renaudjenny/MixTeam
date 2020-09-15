@@ -68,25 +68,18 @@ extension PlayerRowButtons {
     private func moveBack() { callbacks.moveBack(player) }
 }
 
+#if DEBUG
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             PlayerRow(
-                player: Player(
-                    id: UUID(),
-                    name: "Test",
-                    imageIdentifier: .harryPottar
-                ),
+                player: .test,
                 isInFirstTeam: true,
                 callbacks: callbacks
             )
             Color.white.frame(height: 20)
             PlayerRow(
-                player: Player(
-                    id: UUID(),
-                    name: "Test",
-                    imageIdentifier: .harryPottar
-                ),
+                player: .test,
                 isInFirstTeam: false,
                 callbacks: callbacks
             )
@@ -99,3 +92,4 @@ struct PlayerRow_Previews: PreviewProvider {
         moveBack: { _ in }
     )
 }
+#endif

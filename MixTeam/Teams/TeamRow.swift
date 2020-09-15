@@ -67,6 +67,7 @@ extension TeamRow {
     private func delete() { callbacks.deleteTeam(team) }
 }
 
+#if DEBUG
 struct TeamRow_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -92,8 +93,8 @@ struct TeamRow_Previews: PreviewProvider {
                         colorIdentifier: .blue,
                         imageIdentifier: .octopus,
                         players: [
-                            Player(name: "Player 1", imageIdentifier: .harryPottar),
-                            Player(name: "Player 2", imageIdentifier: .theBotman),
+                            Player(name: "Player 1", imageIdentifier: .girl),
+                            Player(name: "Player 2", imageIdentifier: .santa),
                         ]
                     ),
                     callbacks: debuggableCallbacks
@@ -105,7 +106,7 @@ struct TeamRow_Previews: PreviewProvider {
                         colorIdentifier: .gray,
                         imageIdentifier: .unknown,
                         players: [
-                            Player(name: "Player 1", imageIdentifier: .harryPottar),
+                            Player(name: "Player 1", imageIdentifier: .girl),
                         ]
                     ),
                     callbacks: firstTeamDebuggableCallbacks
@@ -115,7 +116,6 @@ struct TeamRow_Previews: PreviewProvider {
     }
 }
 
-#if DEBUG
 struct TeamRowUX_Previews: PreviewProvider {
     static var previews: some View {
         Preview()

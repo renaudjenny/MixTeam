@@ -29,11 +29,11 @@ extension Array where Element == Team {
             colorIdentifier: .gray, imageIdentifier: .unknown
         )
         playersStandingTeam.players = [
-            Player(name: "Lara", imageIdentifier: .laraCraft),
-            Player(name: "Harry", imageIdentifier: .harryPottar),
+            Player(name: "Amelia", imageIdentifier: .girl),
+            Player(name: "José", imageIdentifier: .santa),
         ]
         var koalaTeam = Team(name: "Red Koala", colorIdentifier: .red, imageIdentifier: .koala)
-        koalaTeam.players = [Player(name: "Vador", imageIdentifier: .darkVadir)]
+        koalaTeam.players = [Player(name: "Jack", imageIdentifier: .jack)]
         return [
             playersStandingTeam,
             koalaTeam,

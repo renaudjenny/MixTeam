@@ -51,7 +51,7 @@ struct EditPlayerView_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var player = Player(name: "Harry", imageIdentifier: .harryPottar)
+        @State private var player = Player(name: "Amelia", imageIdentifier: .girl)
         let team = Team(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
 
         var body: some View {
