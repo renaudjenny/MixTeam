@@ -44,6 +44,7 @@ enum ImageIdentifier: String, Identifiable, Codable {
         case .panda: return "panda"
         case .octopus: return "octopus"
         case .lion: return "lion"
+        case .hippo: return "hippopotamus"
         default: return ""
         }
     }
