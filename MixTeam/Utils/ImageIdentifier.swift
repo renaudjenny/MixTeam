@@ -12,6 +12,8 @@ enum ImageIdentifier: String, Identifiable, Codable {
     case woman = "woman"
     case jack = "jack"
     case santa = "santa"
+    case clown = "clown"
+    case pirate = "pirate"
 
     case unknown = ""
 
@@ -27,6 +29,7 @@ enum ImageIdentifier: String, Identifiable, Codable {
     static var players: [Self] {
         [
             .girl, santa, .jack, .woman,
+            .clown, .pirate,
         ]
     }
 
