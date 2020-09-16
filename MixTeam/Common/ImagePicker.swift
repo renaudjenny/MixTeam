@@ -59,6 +59,7 @@ private struct Cell: View {
         Button(action: select) {
             imageIdentifier.image
                 .resizable()
+                .renderingMode(.template)
                 .frame(width: 100, height: 100)
                 .padding()
                 .foregroundColor(imageForegroundColor)

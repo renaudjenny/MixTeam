@@ -60,7 +60,6 @@ struct FirstTeamRow: View {
                 .background(Color.white.clipShape(Splash2()))
                 .foregroundColor(.gray)
                 .accessibility(label: Text("Add Player"))
-                .animation(Animation.easeInOut(duration: 2).delay(10).repeatForever())
         }.padding()
     }
 }
