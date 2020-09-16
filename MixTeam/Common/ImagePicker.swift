@@ -5,41 +5,19 @@ struct ImagePicker: View {
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
-    let columns = 2
-    let rows = 6
+    let columns = [GridItem(.adaptive(minimum: 100, maximum: 200))]
 
     var body: some View {
-        VStack {
-            ScrollView(showsIndicators: false) {
-                grid.animation(.default)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle())
-        .padding()
-    }
-
-    var grid: some View {
-        HStack {
-            ForEach(0..<columns) { column in
-                VStack {
-                    ForEach(0..<self.rows) { row in
-                        VStack {
-                            self.content(row: row, column: column)
-                        }
-                    }
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columns) {
+                ForEach(images) {
+                    Cell(imageIdentifier: $0, team: team, selection: $selection)
                 }
             }
         }
-    }
-
-    @ViewBuilder private func content(row: Int, column: Int) -> some View {
-        if row * columns + column < images.count {
-            Cell(imageIdentifier: images[row * columns + column], team: team, selection: $selection)
-        } else {
-            EmptyView()
-        }
+        .background(team.colorIdentifier.color)
+        .modifier(AddDashedCardStyle())
+        .padding()
     }
 
     private var images: [ImageIdentifier] {
