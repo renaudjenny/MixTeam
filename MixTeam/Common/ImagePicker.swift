@@ -5,7 +5,7 @@ struct ImagePicker: View {
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
-    let columns = [GridItem(.adaptive(minimum: 100, maximum: 200))]
+    let columns = [GridItem(.adaptive(minimum: 120))]
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -13,7 +13,7 @@ struct ImagePicker: View {
                 ForEach(images) {
                     Cell(imageIdentifier: $0, team: team, selection: $selection)
                 }
-            }
+            }.padding()
         }
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
@@ -42,14 +42,8 @@ private struct Cell: View {
                 .padding()
                 .foregroundColor(imageForegroundColor)
         }
-        .background(
-            Group {
-                if selection.rawValue == imageIdentifier.rawValue {
-                    Splash2()
-                }
-            }
-        )
-            .foregroundColor(Color.white)
+        .background(background)
+        .foregroundColor(Color.white)
     }
 
     private func select() {
@@ -63,6 +57,14 @@ private struct Cell: View {
             return .white
         }
 
+    }
+
+    private var background: some View {
+        Group {
+            if selection == imageIdentifier {
+                Splash2()
+            }
+        }
     }
 }
 
