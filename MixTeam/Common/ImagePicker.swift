@@ -72,6 +72,7 @@ extension ImagePicker {
     }
 }
 
+#if DEBUG
 struct PlayerImagePicker_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -98,3 +99,4 @@ struct PlayerImagePicker_Previews: PreviewProvider {
         }
     }
 }
+#endif
