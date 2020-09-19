@@ -24,7 +24,6 @@ struct TeamRow: View {
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
         .modifier(AddSoftRemoveButton(remove: delete))
-        .frame(maxWidth: .infinity)
         .padding()
     }
 

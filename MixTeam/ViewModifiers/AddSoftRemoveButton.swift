@@ -8,9 +8,9 @@ struct AddSoftRemoveButton: ViewModifier {
         HStack {
             contentAndMinusButton(content).overlay(filterIfNeeded)
             if isRealRemoveButtonDisplayed {
-                deleteButton.transition(.move(edge: .trailing))
+                deleteButton
             }
-        }.animation(.default)
+        }
     }
 
     private func contentAndMinusButton(_ content: Content) -> some View {
@@ -37,6 +37,8 @@ struct AddSoftRemoveButton: ViewModifier {
             }
         }
         .buttonStyle(CommonButtonStyle(color: .red))
+        .transition(.move(edge: .trailing))
+        .padding(.leading)
     }
 
     @ViewBuilder private var filterIfNeeded: some View {
@@ -48,10 +50,14 @@ struct AddSoftRemoveButton: ViewModifier {
     }
 
     private func displayRealRemoveButton() {
-        isRealRemoveButtonDisplayed = true
+        withAnimation {
+            isRealRemoveButtonDisplayed = true
+        }
     }
 
     private func hideRealRemoveButton() {
-        isRealRemoveButtonDisplayed = false
+        withAnimation {
+            isRealRemoveButtonDisplayed = false
+        }
     }
 }

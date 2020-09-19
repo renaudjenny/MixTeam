@@ -88,6 +88,7 @@ private extension CGSize {
     }
 }
 
+#if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -118,3 +119,4 @@ struct FirstTeamRow_Previews: PreviewProvider {
         }
     }
 }
+#endif
