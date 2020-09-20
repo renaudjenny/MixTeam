@@ -5,41 +5,19 @@ struct ImagePicker: View {
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
-    let columns = 2
-    let rows = 6
+    let columns = [GridItem(.adaptive(minimum: 120))]
 
     var body: some View {
-        VStack {
-            ScrollView(showsIndicators: false) {
-                grid.animation(.default)
-            }
+        ScrollView(showsIndicators: false) {
+            LazyVGrid(columns: columns) {
+                ForEach(images) {
+                    Cell(imageIdentifier: $0, team: team, selection: $selection)
+                }
+            }.padding()
         }
-        .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
         .modifier(AddDashedCardStyle())
         .padding()
-    }
-
-    var grid: some View {
-        HStack {
-            ForEach(0..<columns) { column in
-                VStack {
-                    ForEach(0..<self.rows) { row in
-                        VStack {
-                            self.content(row: row, column: column)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder private func content(row: Int, column: Int) -> some View {
-        if row * columns + column < images.count {
-            Cell(imageIdentifier: images[row * columns + column], team: team, selection: $selection)
-        } else {
-            EmptyView()
-        }
     }
 
     private var images: [ImageIdentifier] {
@@ -59,18 +37,13 @@ private struct Cell: View {
         Button(action: select) {
             imageIdentifier.image
                 .resizable()
+                .renderingMode(.template)
                 .frame(width: 100, height: 100)
                 .padding()
                 .foregroundColor(imageForegroundColor)
         }
-        .background(
-            Group {
-                if selection.rawValue == imageIdentifier.rawValue {
-                    Splash2()
-                }
-            }
-        )
-            .foregroundColor(Color.white)
+        .background(background)
+        .foregroundColor(Color.white)
     }
 
     private func select() {
@@ -85,6 +58,14 @@ private struct Cell: View {
         }
 
     }
+
+    private var background: some View {
+        Group {
+            if selection == imageIdentifier {
+                Splash2()
+            }
+        }
+    }
 }
 
 extension ImagePicker {
@@ -93,6 +74,7 @@ extension ImagePicker {
     }
 }
 
+#if DEBUG
 struct PlayerImagePicker_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -119,3 +101,4 @@ struct PlayerImagePicker_Previews: PreviewProvider {
         }
     }
 }
+#endif

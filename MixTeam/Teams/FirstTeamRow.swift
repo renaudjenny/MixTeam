@@ -60,7 +60,6 @@ struct FirstTeamRow: View {
                 .background(Color.white.clipShape(Splash2()))
                 .foregroundColor(.gray)
                 .accessibility(label: Text("Add Player"))
-                .animation(Animation.easeInOut(duration: 2).delay(10).repeatForever())
         }.padding()
     }
 }
@@ -89,6 +88,7 @@ private extension CGSize {
     }
 }
 
+#if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -119,3 +119,4 @@ struct FirstTeamRow_Previews: PreviewProvider {
         }
     }
 }
+#endif

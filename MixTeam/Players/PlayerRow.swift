@@ -10,6 +10,7 @@ struct PlayerRow: View {
             HStack {
                 player.imageIdentifier.image
                     .resizable()
+                    .renderingMode(.template)
                     .frame(width: 60, height: 60)
                     .padding([.leading, .trailing])
                 Text(player.name)

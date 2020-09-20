@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MainView: View {
-    static let playersColorResetDelay: DispatchTimeInterval = .milliseconds(400)
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var presentedAlert: PresentedAlert?
     @State private var editedTeam: Team?
