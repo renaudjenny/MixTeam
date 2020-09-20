@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EditTeamView: View {
     @Environment(\.presentationMode) var presentation
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     @Binding var team: Team
     @State private var animateSplashGrowing: Bool = false
     @State private var animateSplashDripping: Bool = false
@@ -9,9 +10,21 @@ struct EditTeamView: View {
     var body: some View {
         VStack {
             teamNameField
-            colorPicker
-            ImagePicker(team: team, selection: $team.imageIdentifier, type: .team)
-
+            if verticalSizeClass == .compact {
+                GeometryReader { geometry in
+                    HStack(spacing: 0) {
+                        ImagePicker(team: team, selection: $team.imageIdentifier, type: .team)
+                            .frame(width: geometry.size.width * 3/4)
+                        colorPicker
+                            .frame(width: geometry.size.width * 1/4)
+                    }
+                }
+            } else {
+                VStack(spacing: 0) {
+                    colorPicker
+                    ImagePicker(team: team, selection: $team.imageIdentifier, type: .team)
+                }
+            }
         }
         .background(color.edgesIgnoringSafeArea(.all))
         .onAppear {
@@ -48,15 +61,14 @@ struct EditTeamView: View {
     }
 
     private var colorPicker: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(ColorIdentifier.allCases) { colorIdentifier in
-                    Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
-                        colorIdentifier.color
-                            .frame(width: 50, height: 50)
-                            .clipShape(Splash(animatableData: self.animateSplashDripping ? 1 : 0))
-                            .scaleEffect(self.animateSplashGrowing ? 1 : 0.1)
-                    }).accessibility(label: Text("\(colorIdentifier.name) color"))
+        ScrollView(colorPickerScrollAxes, showsIndicators: false) {
+            if verticalSizeClass == .compact {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
+                    colors
+                }
+            } else {
+                HStack {
+                    colors
                 }
             }
         }
@@ -66,12 +78,30 @@ struct EditTeamView: View {
         .padding()
     }
 
-    var color: Color { team.colorIdentifier.color }
+    private var colorPickerScrollAxes: Axis.Set {
+        verticalSizeClass == .compact ? .vertical : .horizontal
+    }
+
+    private var colors: some View {
+        ForEach(ColorIdentifier.allCases) { colorIdentifier in
+            Button(action: { self.team.colorIdentifier = colorIdentifier }, label: {
+                colorIdentifier.color
+                    .frame(width: 50, height: 50)
+                    .clipShape(Splash(animatableData: self.animateSplashDripping ? 1 : 0))
+                    .scaleEffect(self.animateSplashGrowing ? 1 : 0.1)
+            }).accessibility(label: Text("\(colorIdentifier.name) color"))
+        }
+    }
+
+    private var color: Color { team.colorIdentifier.color }
 }
 
 struct EditTeamView_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        Group {
+            Preview()
+            Preview().previewLayout(.fixed(width: 800, height: 400))
+        }
     }
 
     struct Preview: View {
