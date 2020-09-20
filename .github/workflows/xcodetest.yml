@@ -19,6 +19,9 @@ jobs:
     - name: Linter
       run: swiftlint
 
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_12.app
+
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
 
