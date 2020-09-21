@@ -9,25 +9,27 @@ struct MainView: View {
 
     var body: some View {
         ScrollView {
-            teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
-            mixTeamButton
-            ForEach(teamsStore.teams.dropFirst(), content: teamRow)
-            addTeamButton
+            LazyVStack {
+                teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
+                mixTeamButton
+                ForEach(teamsStore.teams.dropFirst(), content: teamRow)
+                addTeamButton
+            }
         }
         .animation(.default)
         .frame(maxWidth: 800)
         .alert(item: $presentedAlert, content: alert(for:))
         .background(Color.clear.sheet(item: $editedTeam) {
-            self.teamsStore.teams.firstIndex(of: $0).map {
-                EditTeamView(team: self.$teamsStore.teams[$0])
+            teamsStore.teams.firstIndex(of: $0).map {
+                EditTeamView(team: $teamsStore.teams[$0])
             }
         })
         .background(Color.clear.sheet(item: $editedPlayer) { player in
-            self.teamsStore.teams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
-                self.teamsStore.teams[teamIndex].players.firstIndex(of: player).map { playerIndex in
+            teamsStore.teams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
+                teamsStore.teams[teamIndex].players.firstIndex(of: player).map { playerIndex in
                     EditPlayerView(
-                        player: self.$teamsStore.teams[teamIndex].players[playerIndex],
-                        team: self.teamsStore.teams[teamIndex]
+                        player: $teamsStore.teams[teamIndex].players[playerIndex],
+                        team: teamsStore.teams[teamIndex]
                     )
                 }
             }
@@ -81,17 +83,17 @@ extension MainView: TeamsLogic {
     var firstTeamCallbacks: FirstTeamRow.Callbacks {
         .init(
             createPlayer: createRandomPlayer,
-            editPlayer: { self.editedPlayer = $0 },
+            editPlayer: { editedPlayer = $0 },
             deletePlayer: delete(player:),
-            displayAbout: { self.isAboutPresented = true }
+            displayAbout: { isAboutPresented = true }
         )
     }
 
     var teamCallbacks: TeamRow.Callbacks {
         .init(
-            editTeam: { self.editedTeam = $0 },
+            editTeam: { editedTeam = $0 },
             deleteTeam: delete(team:),
-            editPlayer: { self.editedPlayer = $0 },
+            editPlayer: { editedPlayer = $0 },
             moveBackPlayer: moveBack(player:)
         )
     }
@@ -102,7 +104,7 @@ extension MainView {
     enum PresentedAlert: Identifiable {
         case notEnoughTeams
 
-        var id: Int { self.hashValue }
+        var id: Int { hashValue }
     }
 
     private func alert(for identifier: PresentedAlert) -> Alert {
