@@ -1,7 +1,9 @@
 import SwiftUI
+import RenaudJennyAboutView
 
 struct MainView: View {
     @EnvironmentObject var teamsStore: TeamsStore
+    @Environment(\.colorScheme) private var colorScheme
     @State private var presentedAlert: PresentedAlert?
     @State private var editedTeam: Team?
     @State private var editedPlayer: Player?
@@ -35,7 +37,21 @@ struct MainView: View {
             }
         })
         .background(Color.clear.sheet(isPresented: $isAboutPresented) {
-            AboutView()
+            RenaudJennyAboutView.AboutView(appId: "id1526493495", isInModal: true) {
+                Image(uiImage: #imageLiteral(resourceName: "Logo"))
+                    .cornerRadius(16)
+                    .padding()
+                    .padding(.top)
+                    .shadow(radius: 5)
+            } background: {
+                Group {
+                    colorScheme == .light
+                        ? Color.gray.opacity(1/2)
+                        : Color.black.opacity(3/4)
+                }
+                .modifier(AddDashedCardStyle())
+                .shadow(radius: 6)
+            }
         })
     }
 

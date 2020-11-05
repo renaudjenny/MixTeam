@@ -3,14 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */; };
 		4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55524C75C3B005D6749 /* Shadow.swift */; };
 		4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* FirstTeamRow.swift */; };
-		4C1ED55F24CAB187005D6749 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55E24CAB187005D6749 /* AboutView.swift */; };
 		4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED56024D0B6F8005D6749 /* Splash.swift */; };
 		4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C31071F24E1941D0006FDC4 /* Splash2.swift */; };
 		4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3732E01EBF8E8100A5785E /* AppDelegate.swift */; };
@@ -26,6 +25,7 @@
 		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C7FE787245A166A0011E8AB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* MainView.swift */; };
+		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
@@ -60,7 +60,6 @@
 		4C1ED55324C48CAF005D6749 /* TeamRowPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRowPreview.swift; sourceTree = "<group>"; };
 		4C1ED55524C75C3B005D6749 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		4C1ED55724C82196005D6749 /* FirstTeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTeamRow.swift; sourceTree = "<group>"; };
-		4C1ED55E24CAB187005D6749 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		4C1ED56024D0B6F8005D6749 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
 		4C31071F24E1941D0006FDC4 /* Splash2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash2.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,14 +120,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4C1ED55D24CAB16C005D6749 /* About */ = {
-			isa = PBXGroup;
-			children = (
-				4C1ED55E24CAB187005D6749 /* AboutView.swift */,
-			);
-			path = About;
-			sourceTree = "<group>";
-		};
 		4C3732D41EBF8E8100A5785E = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +143,6 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
-				4C1ED55D24CAB16C005D6749 /* About */,
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
@@ -275,6 +266,9 @@
 			dependencies = (
 			);
 			name = MixTeam;
+			packageProductDependencies = (
+				4C86575C255479C20040EA04 /* RenaudJennyAboutView */,
+			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
 			productType = "com.apple.product-type.application";
@@ -354,6 +348,9 @@
 				Base,
 			);
 			mainGroup = 4C3732D41EBF8E8100A5785E;
+			packageReferences = (
+				4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */,
+			);
 			productRefGroup = 4C3732DE1EBF8E8100A5785E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -430,7 +427,6 @@
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
-				4C1ED55F24CAB187005D6749 /* AboutView.swift in Sources */,
 				4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
@@ -597,7 +593,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -609,7 +606,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MBQ98GC8JT;
 				INFOPLIST_FILE = MixTeam/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -624,7 +624,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = MBQ98GC8JT;
 				INFOPLIST_FILE = MixTeam/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeam;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -640,7 +643,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MixTeamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -657,7 +664,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MixTeamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -671,7 +682,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = MixTeamUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -685,7 +700,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = MixTeamUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -734,6 +753,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/renaudjenny/RenaudJennyAboutView";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4C86575C255479C20040EA04 /* RenaudJennyAboutView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */;
+			productName = RenaudJennyAboutView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4C3732D51EBF8E8100A5785E /* Project object */;
 }
