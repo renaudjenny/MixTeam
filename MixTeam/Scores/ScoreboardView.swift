@@ -6,8 +6,10 @@ struct ScoreboardView: View {
     var body: some View {
         List {
             Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: $rounds)) {
-                ForEach(rounds, content: RoundView.init)
-                    .onDelete { rounds.remove(atOffsets: $0) }
+                ForEach(rounds.indices) {
+                    RoundView(round: $rounds[$0])
+                }
+                .onDelete { rounds.remove(atOffsets: $0) }
             }
         }
     }
@@ -33,16 +35,33 @@ struct HeaderView: View {
 }
 
 struct RoundView: View {
-    let round: Round
+    @Binding var round: Round
+    @State private var editedRound = Round(name: "", scores: [])
+    @State private var isEditionPresented = false
 
     var body: some View {
-        HStack {
-            Text(round.name)
-                .frame(width: 100)
-            ForEach(round.scores) {
-                Text("\($0.points)")
+        Button {
+            editedRound = round
+            isEditionPresented = true
+        } label: {
+            HStack {
+                Text(round.name)
                     .frame(width: 100)
+                ForEach(round.scores) {
+                    Text("\($0.points)")
+                        .frame(width: 100)
+                }
             }
+        }
+        .sheet(isPresented: $isEditionPresented) {
+            EditRoundView(
+                round: $editedRound,
+                save: {
+                    round = editedRound
+                    isEditionPresented = false
+                },
+                cancel: { isEditionPresented = false }
+            )
         }
     }
 }
