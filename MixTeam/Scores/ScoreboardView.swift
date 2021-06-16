@@ -5,7 +5,7 @@ struct ScoreboardView: View {
 
     var body: some View {
         List {
-            Section(header: HeaderView(rounds: rounds)) {
+            Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: rounds)) {
                 ForEach(rounds, content: RoundView.init)
             }
         }
@@ -18,23 +18,12 @@ struct HeaderView: View {
     var body: some View {
         HStack {
             Color.clear.frame(width: 100)
-            ForEach(teams) {
+            ForEach(rounds.teams) {
                 Text("\($0.name)")
                     .frame(width: 100)
                     .multilineTextAlignment(.center)
             }
         }
-    }
-
-    var teams: [Team] {
-        rounds
-            .flatMap(\.scores)
-            .map(\.team)
-            .reduce([], {
-                guard !$0.contains($1)
-                else { return $0 }
-                return $0 + [$1]
-            })
     }
 }
 
@@ -45,11 +34,9 @@ struct RoundView: View {
         HStack {
             Text(round.name)
                 .frame(width: 100)
-                .multilineTextAlignment(.trailing)
             ForEach(round.scores) {
                 Text("\($0.points)")
                     .frame(width: 100)
-                    .multilineTextAlignment(.center)
             }
         }
     }
@@ -64,6 +51,38 @@ struct Round: Identifiable {
         var team: Team
         var points: Int
         var id: Team.ID { team.id }
+    }
+}
+
+struct FooterView: View {
+    let rounds: [Round]
+
+    var body: some View {
+        HStack {
+            Text("Total")
+                .bold()
+                .frame(width: 100)
+            ForEach(rounds.teams) { team in
+                VStack {
+                    Text("\(team.name)")
+                        .font(.caption2)
+                        .multilineTextAlignment(.center)
+                    Text(total(for: team))
+                        .bold()
+                }
+                .frame(width: 100)
+            }
+        }
+    }
+
+    private func total(for team: Team) -> String {
+        String(
+            rounds
+                .flatMap(\.scores)
+                .filter { $0.id == team.id }
+                .map(\.points)
+                .reduce(0, +)
+        )
     }
 }
 
@@ -102,4 +121,14 @@ extension Array where Element == Round {
             ),
         ]
     }()
+
+    var teams: [Team] {
+        flatMap(\.scores)
+            .map(\.team)
+            .reduce([], {
+                guard !$0.contains($1)
+                else { return $0 }
+                return $0 + [$1]
+            })
+    }
 }
