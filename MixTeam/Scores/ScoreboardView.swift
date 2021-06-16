@@ -5,7 +5,7 @@ struct ScoreboardView: View {
 
     var body: some View {
         List {
-            Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: rounds)) {
+            Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: $rounds)) {
                 ForEach(rounds, content: RoundView.init)
                     .onDelete { rounds.remove(atOffsets: $0) }
             }
@@ -48,8 +48,8 @@ struct RoundView: View {
 }
 
 struct Round: Identifiable, Codable {
-    let name: String
-    let scores: [Score]
+    var name: String
+    var scores: [Score]
     var id = UUID()
 
     struct Score: Identifiable, Codable {
@@ -77,24 +77,64 @@ extension Rounds: RawRepresentable {
 }
 
 struct FooterView: View {
-    let rounds: [Round]
+    @Binding var rounds: [Round]
+    @State private var isNewRoundPresented = false
+    @State private var newRound = Round(name: "", scores: [])
 
     var body: some View {
-        HStack {
-            Text("Total")
-                .bold()
-                .frame(width: 100)
-            ForEach(rounds.teams) { team in
-                VStack {
-                    Text("\(team.name)")
-                        .font(.caption2)
-                        .multilineTextAlignment(.center)
-                    Text(total(for: team))
-                        .bold()
+        VStack {
+            HStack {
+                Button(action: addRound) {
+                    Label("Add a new round", systemImage: "plus")
                 }
-                .frame(width: 100)
+                .buttonStyle(PlainButtonStyle())
+                .padding(4)
+                .background(Color.gray.opacity(20/100))
+                .cornerRadius(5)
+                .padding(4)
+
+                Spacer()
+            }
+            Divider()
+            HStack {
+                Text("Total")
+                    .bold()
+                    .frame(width: 100)
+                ForEach(rounds.teams) { team in
+                    VStack {
+                        Text("\(team.name)")
+                            .font(.caption2)
+                            .multilineTextAlignment(.center)
+                        Text(total(for: team))
+                            .bold()
+                    }
+                    .frame(width: 100)
+                }
+                Spacer()
             }
         }
+        .sheet(isPresented: $isNewRoundPresented) {
+            EditRoundView(
+                round: $newRound,
+                save: {
+                    rounds.append(newRound)
+                    isNewRoundPresented = false
+                },
+                cancel: {
+                    isNewRoundPresented = false
+                }
+            )
+        }
+    }
+
+    private func addRound() {
+        newRound = Round(
+            name: "Round \(rounds.count + 1)",
+            scores: rounds.teams.map {
+                Round.Score(team: $0, points: 0)
+            }
+        )
+        isNewRoundPresented = true
     }
 
     private func total(for team: Team) -> String {
@@ -104,6 +144,45 @@ struct FooterView: View {
                 .filter { $0.id == team.id }
                 .map(\.points)
                 .reduce(0, +)
+        )
+    }
+}
+
+struct EditRoundView: View {
+    @Binding var round: Round
+    let save: () -> Void
+    let cancel: () -> Void
+
+    var body: some View {
+        Form {
+            TextField("Round name", text: $round.name)
+
+            ForEach(round.scores.indices) { scoreIndex in
+                Section(header: Text(round.scores[scoreIndex].team.name)) {
+                    TextField(
+                        "Score for this team",
+                        text: points(scoreIndex: scoreIndex)
+                    )
+                }
+            }
+
+            Button(action: save) {
+                Text("Save")
+            }
+
+            Button(action: cancel) {
+                Text("Cancel")
+            }
+        }
+    }
+
+    func points(scoreIndex: Int) -> Binding<String> {
+        Binding<String>(
+            get: { String(round.scores[scoreIndex].points) },
+            set: {
+                round.scores[scoreIndex].points = Int($0)
+                    ?? round.scores[scoreIndex].points
+            }
         )
     }
 }
