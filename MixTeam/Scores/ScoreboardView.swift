@@ -1,14 +1,19 @@
 import SwiftUI
 
 struct ScoreboardView: View {
-    let rounds: [Round]
+    @AppStorage("Scores.rounds") var rounds: Rounds = []
 
     var body: some View {
         List {
             Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: rounds)) {
                 ForEach(rounds, content: RoundView.init)
+                    .onDelete { rounds.remove(atOffsets: $0) }
             }
         }
+    }
+
+    private func remove(atOffsets: IndexSet) {
+        rounds.remove(atOffsets: atOffsets)
     }
 }
 
@@ -42,15 +47,32 @@ struct RoundView: View {
     }
 }
 
-struct Round: Identifiable {
+struct Round: Identifiable, Codable {
     let name: String
     let scores: [Score]
-    let id = UUID()
+    var id = UUID()
 
-    struct Score: Identifiable {
+    struct Score: Identifiable, Codable {
         var team: Team
         var points: Int
         var id: Team.ID { team.id }
+    }
+}
+
+typealias Rounds = [Round]
+extension Rounds: RawRepresentable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode(Rounds.self, from: data)
+        else { return nil }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else { return "[]" }
+        return result
     }
 }
 
