@@ -38,6 +38,7 @@ extension Array where Element == Team {
             playersStandingTeam,
             koalaTeam,
             Team(name: "Purple Elephant", colorIdentifier: .purple, imageIdentifier: .elephant),
+            Team(name: "Blue Lion", colorIdentifier: .blue, imageIdentifier: .lion),
         ]
     }()
 }

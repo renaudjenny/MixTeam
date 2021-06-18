@@ -169,6 +169,7 @@ struct FooterView: View {
 
 struct EditRoundView: View {
     @Binding var round: Round
+    @EnvironmentObject var teamsStore: TeamsStore
     let save: () -> Void
     let cancel: () -> Void
 
@@ -176,8 +177,8 @@ struct EditRoundView: View {
         Form {
             TextField("Round name", text: $round.name)
 
-            ForEach(round.scores.indices) { scoreIndex in
-                Section(header: Text(round.scores[scoreIndex].team.name)) {
+            ForEach(scores.indices) { scoreIndex in
+                Section(header: Text(scores[scoreIndex].team.name)) {
                     TextField(
                         "Score for this team",
                         text: points(scoreIndex: scoreIndex)
@@ -197,24 +198,45 @@ struct EditRoundView: View {
 
     func points(scoreIndex: Int) -> Binding<String> {
         Binding<String>(
-            get: { String(round.scores[scoreIndex].points) },
+            get: { String(scores[scoreIndex].points) },
             set: {
+                round.scores = scores
                 round.scores[scoreIndex].points = Int($0)
-                    ?? round.scores[scoreIndex].points
+                    ?? scores[scoreIndex].points
             }
         )
+    }
+
+    var scores: [Round.Score] {
+        get {
+            (round.scores + teamsStore.teams.dropFirst().map { Round.Score(team: $0, points: 0) })
+                .reduce([], { result, score -> [Round.Score] in
+                    if result.contains(where: { $0.team == score.team }) { return result }
+                    return result + [score]
+                })
+        }
+        set {
+            round.scores = newValue
+        }
     }
 }
 
 struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
         ScoreboardView(rounds: .mock)
+            .environmentObject(TeamsStore())
     }
 }
 
 extension Array where Element == Round {
     static let team1: Team = [Team].exampleTeam[1]
     static let team2: Team = [Team].exampleTeam[2]
+    static let team3 = Team(
+        name: "The team who had no name",
+        colorIdentifier: .red,
+        imageIdentifier: .hippo,
+        players: []
+    )
 
     static let mock: Self = {
         [
@@ -239,6 +261,14 @@ extension Array where Element == Round {
                     Round.Score(team: team2, points: 50),
                 ]
             ),
+            Round(
+                name: "Round 4",
+                scores: [
+                    Round.Score(team: team1, points: 10),
+                    Round.Score(team: team2, points: 50),
+                    Round.Score(team: team3, points: 15),
+                ]
+            )
         ]
     }()
 
