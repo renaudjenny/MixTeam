@@ -1,15 +1,28 @@
 import SwiftUI
 
 struct ScoreboardView: View {
-    @AppStorage("Scores.rounds") var rounds: Rounds = []
+    @State var rounds: Rounds = []
 
     var body: some View {
         List {
-            Section(header: HeaderView(rounds: rounds), footer: FooterView(rounds: $rounds)) {
-                ForEach(rounds.indices) {
-                    RoundView(round: $rounds[$0])
+            ForEach(rounds.indices) { roundIdx in
+                Section(
+                    header: HeaderView(roundName: rounds[roundIdx].name),
+                    footer: FooterView(scores: $rounds[roundIdx].scores)
+                ) {
+                    ForEach(rounds[roundIdx].scores.indices) { scoreIdx in
+                        ScoreRow(score: $rounds[roundIdx].scores[scoreIdx])
+                    }
+                    .onDelete { rounds.remove(atOffsets: $0) }
                 }
-                .onDelete { rounds.remove(atOffsets: $0) }
+            }
+            TotalView(rounds: rounds)
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: addRound) {
+                    Image(systemName: "plus")
+                }
             }
         }
     }
@@ -17,47 +30,42 @@ struct ScoreboardView: View {
     private func remove(atOffsets: IndexSet) {
         rounds.remove(atOffsets: atOffsets)
     }
-}
 
-struct HeaderView: View {
-    let rounds: [Round]
-
-    var body: some View {
-        HStack {
-            Color.clear.frame(width: 100)
-            ForEach(rounds.teams) {
-                Text("\($0.name)")
-                    .frame(width: 100)
-                    .multilineTextAlignment(.center)
-            }
-        }
+    private func addRound() {
+        rounds.append(Round(name: "Round \(rounds.count + 1)", scores: []))
     }
 }
 
-struct RoundView: View {
-    @Binding var round: Round
-    @State private var editedRound = Round(name: "", scores: [])
+struct HeaderView: View {
+    let roundName: String
+
+    var body: some View {
+        Text(roundName)
+    }
+}
+
+struct ScoreRow: View {
+    @Binding var score: Round.Score
+    @State private var editedScore = Round.Score(team: .empty, points: 0)
     @State private var isEditionPresented = false
 
     var body: some View {
         Button {
-            editedRound = round
+            editedScore = score
             isEditionPresented = true
         } label: {
             HStack {
-                Text(round.name)
+                Text(score.team.name)
                     .frame(width: 100)
-                ForEach(round.scores) {
-                    Text("\($0.points)")
-                        .frame(width: 100)
-                }
+                Text("\(score.points)")
+                    .frame(width: 100)
             }
         }
         .sheet(isPresented: $isEditionPresented) {
-            EditRoundView(
-                round: $editedRound,
+            EditScoreView(
+                score: $editedScore,
                 save: {
-                    round = editedRound
+                    score = editedScore
                     isEditionPresented = false
                 },
                 cancel: { isEditionPresented = false }
@@ -96,15 +104,16 @@ extension Rounds: RawRepresentable {
 }
 
 struct FooterView: View {
-    @Binding var rounds: [Round]
-    @State private var isNewRoundPresented = false
-    @State private var newRound = Round(name: "", scores: [])
+    @Binding var scores: [Round.Score]
+    @EnvironmentObject var teamsStore: TeamsStore
+    @State private var isNewViewPresented = false
+    @State private var newScore = Round.Score(team: .empty, points: 0)
 
     var body: some View {
-        VStack {
+        if selectableTeams.count > 0 {
             HStack {
-                Button(action: addRound) {
-                    Label("Add a new round", systemImage: "plus")
+                Button(action: { isNewViewPresented = true }) {
+                    Label("Add a new score", systemImage: "plus")
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(4)
@@ -114,46 +123,44 @@ struct FooterView: View {
 
                 Spacer()
             }
-            Divider()
-            HStack {
-                Text("Total")
-                    .bold()
-                    .frame(width: 100)
-                ForEach(rounds.teams) { team in
-                    VStack {
-                        Text("\(team.name)")
-                            .font(.caption2)
-                            .multilineTextAlignment(.center)
-                        Text(total(for: team))
-                            .bold()
-                    }
-                    .frame(width: 100)
-                }
-                Spacer()
+            .sheet(isPresented: $isNewViewPresented) {
+                NewScoreView(
+                    teams: selectableTeams,
+                    save: {
+                        scores.append($0)
+                        isNewViewPresented = false
+                    },
+                    cancel: { isNewViewPresented = false }
+                )
             }
-        }
-        .sheet(isPresented: $isNewRoundPresented) {
-            EditRoundView(
-                round: $newRound,
-                save: {
-                    rounds.append(newRound)
-                    isNewRoundPresented = false
-                },
-                cancel: {
-                    isNewRoundPresented = false
-                }
-            )
+        } else {
+            EmptyView()
         }
     }
 
-    private func addRound() {
-        newRound = Round(
-            name: "Round \(rounds.count + 1)",
-            scores: rounds.teams.map {
-                Round.Score(team: $0, points: 0)
+    var selectableTeams: [Team] {
+        teamsStore.teams.dropFirst().filter {
+            !scores.map(\.team).contains($0)
+        }
+    }
+}
+
+struct TotalView: View {
+    let rounds: [Round]
+
+    var body: some View {
+        Section(header: Text("Total")) {
+            ForEach(rounds.teams) { team in
+                HStack {
+                    Text("\(team.name)")
+                        .bold()
+                        .frame(width: 100)
+                    Text(total(for: team))
+                        .bold()
+                        .frame(width: 100)
+                }
             }
-        )
-        isNewRoundPresented = true
+        }
     }
 
     private func total(for team: Team) -> String {
@@ -167,23 +174,58 @@ struct FooterView: View {
     }
 }
 
-struct EditRoundView: View {
-    @Binding var round: Round
+struct NewScoreView: View {
+    let teams: [Team]
+    @State private var score = Round.Score(team: .empty, points: 0)
+    let save: (Round.Score) -> Void
+    let cancel: () -> Void
+
+    var body: some View {
+        Form {
+            Section(header: Text("Team")) {
+                Picker("Team Picker", selection: $score.team) {
+                    ForEach(teams) { team in
+                        Text(team.name).tag(team)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+            }
+
+            Section(header: Text(score.team.name)) {
+                TextField(
+                    "Score for this team",
+                    text: $score.points.string
+                )
+            }
+            .disabled(score.team == .empty)
+
+            Button(action: { save(score) }) {
+                Text("Save")
+            }
+            .disabled(score.team == .empty)
+
+            Button(action: cancel) {
+                Text("Cancel")
+                    .accentColor(.red)
+            }
+        }
+        .onAppear { score.team = teams.first ?? score.team }
+    }
+}
+
+struct EditScoreView: View {
+    @Binding var score: Round.Score
     @EnvironmentObject var teamsStore: TeamsStore
     let save: () -> Void
     let cancel: () -> Void
 
     var body: some View {
         Form {
-            TextField("Round name", text: $round.name)
-
-            ForEach(scores.indices) { scoreIndex in
-                Section(header: Text(scores[scoreIndex].team.name)) {
-                    TextField(
-                        "Score for this team",
-                        text: points(scoreIndex: scoreIndex)
-                    )
-                }
+            Section(header: Text(score.team.name)) {
+                TextField(
+                    "Score for this team",
+                    text: $score.points.string
+                )
             }
 
             Button(action: save) {
@@ -192,32 +234,17 @@ struct EditRoundView: View {
 
             Button(action: cancel) {
                 Text("Cancel")
+                    .accentColor(.red)
             }
         }
     }
 
-    func points(scoreIndex: Int) -> Binding<String> {
-        Binding<String>(
-            get: { String(scores[scoreIndex].points) },
-            set: {
-                round.scores = scores
-                round.scores[scoreIndex].points = Int($0)
-                    ?? scores[scoreIndex].points
-            }
-        )
-    }
-
-    var scores: [Round.Score] {
-        get {
-            (round.scores + teamsStore.teams.dropFirst().map { Round.Score(team: $0, points: 0) })
-                .reduce([], { result, score -> [Round.Score] in
-                    if result.contains(where: { $0.team == score.team }) { return result }
-                    return result + [score]
-                })
-        }
-        set {
-            round.scores = newValue
-        }
+    var teams: [Team] {
+        (teamsStore.teams.dropFirst() + [score.team])
+            .reduce([], { result, team -> [Team] in
+                if result.contains(where: { $0 == team }) { return result }
+                return result + [team]
+            })
     }
 }
 
@@ -280,5 +307,29 @@ extension Array where Element == Round {
                 else { return $0 }
                 return $0 + [$1]
             })
+    }
+}
+
+private extension Team {
+    static let empty: Team = {
+        guard let id = UUID(uuidString: "CDB7B99F-B178-484B-990C-E1B1F1A05F9E")
+        else { fatalError("Cannot generate UUID from a defined UUID String") }
+
+        return Team(
+            id: id,
+            name: "-",
+            colorIdentifier: .blue,
+            imageIdentifier: .elephant,
+            players: []
+        )
+    }()
+}
+
+private extension Binding where Value == Int {
+    var string: Binding<String> {
+        Binding<String>(
+            get: { String(wrappedValue) },
+            set: { wrappedValue = Int($0) ?? wrappedValue }
+        )
     }
 }
