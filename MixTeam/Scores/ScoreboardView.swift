@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ScoreboardView: View {
-    @State var rounds: Rounds = []
+    @AppStorage("Scores.rounds") var rounds: Rounds = []
 
     var body: some View {
         List {
@@ -112,7 +112,7 @@ struct FooterView: View {
     var body: some View {
         if selectableTeams.count > 0 {
             HStack {
-                Button(action: { isNewViewPresented = true }) {
+                Button { isNewViewPresented = true } label: {
                     Label("Add a new score", systemImage: "plus")
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -139,9 +139,11 @@ struct FooterView: View {
     }
 
     var selectableTeams: [Team] {
-        teamsStore.teams.dropFirst().filter {
-            !scores.map(\.team).contains($0)
-        }
+        teamsStore.teams
+            .dropFirst()
+            .filter {
+                !scores.map(\.team).contains($0)
+            }
     }
 }
 
@@ -199,7 +201,7 @@ struct NewScoreView: View {
             }
             .disabled(score.team == .empty)
 
-            Button(action: { save(score) }) {
+            Button { save(score) } label: {
                 Text("Save")
             }
             .disabled(score.team == .empty)
@@ -245,13 +247,6 @@ struct EditScoreView: View {
                 if result.contains(where: { $0 == team }) { return result }
                 return result + [team]
             })
-    }
-}
-
-struct ScoreboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScoreboardView(rounds: .mock)
-            .environmentObject(TeamsStore())
     }
 }
 
@@ -331,5 +326,26 @@ private extension Binding where Value == Int {
             get: { String(wrappedValue) },
             set: { wrappedValue = Int($0) ?? wrappedValue }
         )
+    }
+}
+
+struct ScoreboardView_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @AppStorage("Scores.rounds") var rounds: Rounds = []
+
+        var body: some View {
+            VStack {
+                ScoreboardView(rounds: .mock)
+                    .environmentObject(TeamsStore())
+                Button("Reset App Storage") {
+                    rounds = .mock
+                }
+                .accentColor(.red)
+            }
+        }
     }
 }
