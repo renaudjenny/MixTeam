@@ -290,7 +290,7 @@ extension Array where Element == Round {
                     Round.Score(team: team2, points: 50),
                     Round.Score(team: team3, points: 15),
                 ]
-            )
+            ),
         ]
     }()
 
