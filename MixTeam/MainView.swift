@@ -8,10 +8,12 @@ struct MainView: View {
     @State private var editedTeam: Team?
     @State private var editedPlayer: Player?
     @State private var isAboutPresented = false
+    @State private var isScoreboardPresented = false
 
     var body: some View {
         ScrollView {
             LazyVStack {
+                scoreboardButton
                 teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
                 mixTeamButton
                 ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -35,6 +37,10 @@ struct MainView: View {
                     )
                 }
             }
+        })
+        .background(Color.clear.sheet(isPresented: $isScoreboardPresented) {
+            ScoreboardView()
+                .environmentObject(teamsStore)
         })
         .background(Color.clear.sheet(isPresented: $isAboutPresented) {
             RenaudJennyAboutView.AboutView(appId: "id1526493495", isInModal: true) {
@@ -84,6 +90,18 @@ struct MainView: View {
         .buttonStyle(CommonButtonStyle(color: .red))
         .padding()
         .accessibility(label: Text("Add Team"))
+    }
+
+    private var scoreboardButton: some View {
+        Button { isScoreboardPresented = true } label: {
+            HStack {
+                Image(systemName: "list.bullet.rectangle")
+                Text("Scoreboard")
+            }.frame(maxWidth: .infinity)
+        }
+        .buttonStyle(CommonButtonStyle(color: .blue))
+        .padding()
+        .accessibility(label: Text("Display scoreboard"))
     }
 
     private func presentAbout() { isAboutPresented = true }

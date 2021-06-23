@@ -4,24 +4,26 @@ struct ScoreboardView: View {
     @AppStorage("Scores.rounds") var rounds: Rounds = []
 
     var body: some View {
-        List {
-            ForEach(rounds.indices) { roundIdx in
-                Section(
-                    header: HeaderView(roundName: rounds[roundIdx].name),
-                    footer: FooterView(scores: $rounds[roundIdx].scores)
-                ) {
-                    ForEach(rounds[roundIdx].scores.indices) { scoreIdx in
-                        ScoreRow(score: $rounds[roundIdx].scores[scoreIdx])
+        NavigationView {
+            List {
+                ForEach(rounds.indices, id: \.self) { roundIdx in
+                    Section(
+                        header: HeaderView(roundName: rounds[roundIdx].name),
+                        footer: FooterView(scores: $rounds[roundIdx].scores)
+                    ) {
+                        ForEach(rounds[roundIdx].scores.indices, id: \.self) { scoreIdx in
+                            ScoreRow(score: $rounds[roundIdx].scores[scoreIdx])
+                        }
+                        .onDelete { rounds.remove(atOffsets: $0) }
                     }
-                    .onDelete { rounds.remove(atOffsets: $0) }
                 }
+                TotalView(rounds: rounds)
             }
-            TotalView(rounds: rounds)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: addRound) {
-                    Image(systemName: "plus")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: addRound) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }
