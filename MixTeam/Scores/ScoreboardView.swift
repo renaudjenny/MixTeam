@@ -109,7 +109,6 @@ struct FooterView: View {
     @Binding var scores: [Round.Score]
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var isNewViewPresented = false
-    @State private var newScore = Round.Score(team: .empty, points: 0)
 
     var body: some View {
         if selectableTeams.count > 0 {
@@ -129,7 +128,7 @@ struct FooterView: View {
                 NewScoreView(
                     teams: selectableTeams,
                     save: {
-                        scores.append($0)
+                        scores = $0
                         isNewViewPresented = false
                     },
                     cancel: { isNewViewPresented = false }
@@ -175,45 +174,6 @@ struct TotalView: View {
                 .map(\.points)
                 .reduce(0, +)
         )
-    }
-}
-
-struct NewScoreView: View {
-    let teams: [Team]
-    @State private var score = Round.Score(team: .empty, points: 0)
-    let save: (Round.Score) -> Void
-    let cancel: () -> Void
-
-    var body: some View {
-        Form {
-            Section(header: Text("Team")) {
-                Picker("Team Picker", selection: $score.team) {
-                    ForEach(teams) { team in
-                        Text(team.name).tag(team)
-                    }
-                }
-                .pickerStyle(WheelPickerStyle())
-            }
-
-            Section(header: Text(score.team.name)) {
-                TextField(
-                    "Score for this team",
-                    text: $score.points.string
-                )
-            }
-            .disabled(score.team == .empty)
-
-            Button { save(score) } label: {
-                Text("Save")
-            }
-            .disabled(score.team == .empty)
-
-            Button(action: cancel) {
-                Text("Cancel")
-                    .accentColor(.red)
-            }
-        }
-        .onAppear { score.team = teams.first ?? score.team }
     }
 }
 
@@ -307,7 +267,7 @@ extension Array where Element == Round {
     }
 }
 
-private extension Team {
+extension Team {
     static let empty: Team = {
         guard let id = UUID(uuidString: "CDB7B99F-B178-484B-990C-E1B1F1A05F9E")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
@@ -322,7 +282,7 @@ private extension Team {
     }()
 }
 
-private extension Binding where Value == Int {
+extension Binding where Value == Int {
     var string: Binding<String> {
         Binding<String>(
             get: { String(wrappedValue) },
