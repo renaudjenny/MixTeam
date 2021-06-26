@@ -56,13 +56,18 @@ struct NewScoreView_Previews: PreviewProvider {
     }
 
     private struct Preview: View {
-        @State private var round = Round(
-            name: "Round 1",
-            scores: [
-                Round.Score(team: [Team].exampleTeam[2], points: 15)
-            ],
-            id: UUID(uuidString: "881B7BC5-1BA6-4DDB-9C60-ACCDC4D87762")!
-        )
+        @State private var round: Round = {
+            guard let id = UUID(uuidString: "881B7BC5-1BA6-4DDB-9C60-ACCDC4D87762")
+            else { fatalError("Cannot generate UUID from a defined UUID String") }
+
+            return Round(
+                name: "Round 1",
+                scores: [
+                    Round.Score(team: [Team].exampleTeam[2], points: 15),
+                ],
+                id: id
+            )
+        }()
 
         var body: some View {
             VStack {
