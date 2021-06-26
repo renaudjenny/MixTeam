@@ -2,7 +2,8 @@ import SwiftUI
 
 struct ScoreboardView: View {
     @AppStorage("Scores.rounds") var rounds: Rounds = []
-    @State private var isNewRoundPresented = false
+    @Environment(\.presentationMode) private var presentationMode
+    @State private var isNavigateToNewRoundActive = false
 
     var body: some View {
         NavigationView {
@@ -16,16 +17,24 @@ struct ScoreboardView: View {
 
                 TotalView(rounds: rounds)
             }
+            .navigationTitle(Text("Scoreboard"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: addRound) {
                         Image(systemName: "plus")
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") { presentationMode.wrappedValue.dismiss() }
+                }
             }
-            .sheet(isPresented: $isNewRoundPresented) {
-                RoundView(round: $rounds[rounds.count - 1])
-            }
+            .background(
+                NavigationLink(
+                    destination: RoundView(round: $rounds[rounds.count - 1]),
+                    isActive: $isNavigateToNewRoundActive,
+                    label: EmptyView.init
+                )
+            )
         }
     }
 
@@ -35,7 +44,7 @@ struct ScoreboardView: View {
 
     private func addRound() {
         rounds.append(Round(name: "Round \(rounds.count + 1)", scores: []))
-        isNewRoundPresented = true
+        isNavigateToNewRoundActive = true
     }
 }
 
@@ -49,21 +58,19 @@ struct HeaderView: View {
 
 struct RoundRow: View {
     @Binding var round: Round
-    @State private var isEditionPresented = false
 
     var body: some View {
-        Button { isEditionPresented = true } label: {
-            ForEach(round.scores) { score in
-                HStack {
-                    Text(score.team.name)
-                        .frame(width: 100)
-                    Text("\(score.points)")
-                        .frame(width: 100)
+        NavigationLink(destination: RoundView(round: $round)) {
+            VStack {
+                ForEach(round.scores) { score in
+                    HStack {
+                        Text(score.team.name)
+                            .frame(width: 100)
+                        Text("\(score.points)")
+                            .frame(width: 100)
+                    }
                 }
             }
-        }
-        .sheet(isPresented: $isEditionPresented) {
-            RoundView(round: $round)
         }
     }
 }

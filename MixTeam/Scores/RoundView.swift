@@ -8,6 +8,13 @@ struct RoundView: View {
 
     var body: some View {
         Form {
+            Section(header: Text("Name")) {
+                TextField(
+                    "Name for this round",
+                    text: $round.name
+                )
+            }
+
             ForEach($round.scores) { _, score in
                 Section(header: Text(score.wrappedValue.team.name)) {
                     TextField(
@@ -26,6 +33,7 @@ struct RoundView: View {
                     .accentColor(.red)
             }
         }
+        .navigationTitle(Text(round.name))
         .onAppear {
             backup = round
             round.scores = teams.map { team in
@@ -71,8 +79,11 @@ struct NewScoreView_Previews: PreviewProvider {
 
         var body: some View {
             VStack {
-                RoundView(round: $round).environmentObject(TeamsStore())
-                Section(header: Text("Result")) {
+                NavigationView {
+                    RoundView(round: $round).environmentObject(TeamsStore())
+                }
+                VStack(alignment: .leading) {
+                    Text("\(round.name)").font(.title3)
                     ForEach(round.scores) { score in
                         HStack {
                             Text("\(score.team.name)")
