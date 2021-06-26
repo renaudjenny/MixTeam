@@ -27,7 +27,8 @@
 		4C7FE787245A166A0011E8AB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* MainView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
-		4CAB7A7E268664A800C58254 /* NewScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB7A7D268664A800C58254 /* NewScoreView.swift */; };
+		4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB7A7D268664A800C58254 /* RoundView.swift */; };
+		4CAB7A81268714A800C58254 /* ForEach+Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB7A80268714A800C58254 /* ForEach+Binding.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
@@ -84,7 +85,8 @@
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
-		4CAB7A7D268664A800C58254 /* NewScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewScoreView.swift; sourceTree = "<group>"; };
+		4CAB7A7D268664A800C58254 /* RoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundView.swift; sourceTree = "<group>"; };
+		4CAB7A80268714A800C58254 /* ForEach+Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForEach+Binding.swift"; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDashedCardStyle.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				4C3732E01EBF8E8100A5785E /* AppDelegate.swift */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
+				4CAB7A7F2687146900C58254 /* Extensions */,
 				4C3732EE1EBF8E8100A5785E /* Info.plist */,
 				4C3732EB1EBF8E8100A5785E /* LaunchScreen.storyboard */,
 				4C7FE786245A166A0011E8AB /* MainView.swift */,
@@ -215,9 +218,17 @@
 			isa = PBXGroup;
 			children = (
 				4C8E60FF2679399E00010C8B /* ScoreboardView.swift */,
-				4CAB7A7D268664A800C58254 /* NewScoreView.swift */,
+				4CAB7A7D268664A800C58254 /* RoundView.swift */,
 			);
 			path = Scores;
+			sourceTree = "<group>";
+		};
+		4CAB7A7F2687146900C58254 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4CAB7A80268714A800C58254 /* ForEach+Binding.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		4CEF9D471F8A972B00E34083 /* Utils */ = {
@@ -437,7 +448,7 @@
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */,
 				4C3732E11EBF8E8100A5785E /* AppDelegate.swift in Sources */,
-				4CAB7A7E268664A800C58254 /* NewScoreView.swift in Sources */,
+				4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */,
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
@@ -447,6 +458,7 @@
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
 				4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */,
+				4CAB7A81268714A800C58254 /* ForEach+Binding.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* MainView.swift in Sources */,
 				4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,

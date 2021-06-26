@@ -2,21 +2,18 @@ import SwiftUI
 
 struct ScoreboardView: View {
     @AppStorage("Scores.rounds") var rounds: Rounds = []
+    @State private var isNewRoundPresented = false
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(rounds.indices, id: \.self) { roundIdx in
-                    Section(
-                        header: HeaderView(roundName: rounds[roundIdx].name),
-                        footer: FooterView(scores: $rounds[roundIdx].scores)
-                    ) {
-                        ForEach(rounds[roundIdx].scores.indices, id: \.self) { scoreIdx in
-                            ScoreRow(score: $rounds[roundIdx].scores[scoreIdx])
-                        }
-                        .onDelete { rounds.remove(atOffsets: $0) }
+                ForEach($rounds) { _, round in
+                    Section(header: HeaderView(roundName: round.wrappedValue.name)) {
+                        RoundRow(round: round)
                     }
                 }
+                .onDelete { rounds.remove(atOffsets: $0) }
+
                 TotalView(rounds: rounds)
             }
             .toolbar {
@@ -25,6 +22,9 @@ struct ScoreboardView: View {
                         Image(systemName: "plus")
                     }
                 }
+            }
+            .sheet(isPresented: $isNewRoundPresented) {
+                RoundView(round: $rounds[rounds.count - 1])
             }
         }
     }
@@ -35,6 +35,7 @@ struct ScoreboardView: View {
 
     private func addRound() {
         rounds.append(Round(name: "Round \(rounds.count + 1)", scores: []))
+        isNewRoundPresented = true
     }
 }
 
@@ -46,32 +47,23 @@ struct HeaderView: View {
     }
 }
 
-struct ScoreRow: View {
-    @Binding var score: Round.Score
-    @State private var editedScore = Round.Score(team: .empty, points: 0)
+struct RoundRow: View {
+    @Binding var round: Round
     @State private var isEditionPresented = false
 
     var body: some View {
-        Button {
-            editedScore = score
-            isEditionPresented = true
-        } label: {
-            HStack {
-                Text(score.team.name)
-                    .frame(width: 100)
-                Text("\(score.points)")
-                    .frame(width: 100)
+        Button { isEditionPresented = true } label: {
+            ForEach(round.scores) { score in
+                HStack {
+                    Text(score.team.name)
+                        .frame(width: 100)
+                    Text("\(score.points)")
+                        .frame(width: 100)
+                }
             }
         }
         .sheet(isPresented: $isEditionPresented) {
-            EditScoreView(
-                score: $editedScore,
-                save: {
-                    score = editedScore
-                    isEditionPresented = false
-                },
-                cancel: { isEditionPresented = false }
-            )
+            RoundView(round: $round)
         }
     }
 }
@@ -105,49 +97,6 @@ extension Rounds: RawRepresentable {
     }
 }
 
-struct FooterView: View {
-    @Binding var scores: [Round.Score]
-    @EnvironmentObject var teamsStore: TeamsStore
-    @State private var isNewViewPresented = false
-
-    var body: some View {
-        if selectableTeams.count > 0 {
-            HStack {
-                Button { isNewViewPresented = true } label: {
-                    Label("Add a new score", systemImage: "plus")
-                }
-                .buttonStyle(PlainButtonStyle())
-                .padding(4)
-                .background(Color.gray.opacity(20/100))
-                .cornerRadius(5)
-                .padding(4)
-
-                Spacer()
-            }
-            .sheet(isPresented: $isNewViewPresented) {
-                NewScoreView(
-                    teams: selectableTeams,
-                    save: {
-                        scores = $0
-                        isNewViewPresented = false
-                    },
-                    cancel: { isNewViewPresented = false }
-                )
-            }
-        } else {
-            EmptyView()
-        }
-    }
-
-    var selectableTeams: [Team] {
-        teamsStore.teams
-            .dropFirst()
-            .filter {
-                !scores.map(\.team).contains($0)
-            }
-    }
-}
-
 struct TotalView: View {
     let rounds: [Round]
 
@@ -174,41 +123,6 @@ struct TotalView: View {
                 .map(\.points)
                 .reduce(0, +)
         )
-    }
-}
-
-struct EditScoreView: View {
-    @Binding var score: Round.Score
-    @EnvironmentObject var teamsStore: TeamsStore
-    let save: () -> Void
-    let cancel: () -> Void
-
-    var body: some View {
-        Form {
-            Section(header: Text(score.team.name)) {
-                TextField(
-                    "Score for this team",
-                    text: $score.points.string
-                )
-            }
-
-            Button(action: save) {
-                Text("Save")
-            }
-
-            Button(action: cancel) {
-                Text("Cancel")
-                    .accentColor(.red)
-            }
-        }
-    }
-
-    var teams: [Team] {
-        (teamsStore.teams.dropFirst() + [score.team])
-            .reduce([], { result, team -> [Team] in
-                if result.contains(where: { $0 == team }) { return result }
-                return result + [team]
-            })
     }
 }
 
