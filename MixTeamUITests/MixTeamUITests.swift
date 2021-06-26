@@ -18,6 +18,9 @@ class MixTeamUITests: XCTestCase {
     func testAddTeam() {
         let app = XCUIApplication()
 
+        app.swipeUp()
+        app.swipeUp()
+
         app.buttons["Add Team"].tap()
 
         app.buttons["Edit Team Purple Elephant"].tap()
