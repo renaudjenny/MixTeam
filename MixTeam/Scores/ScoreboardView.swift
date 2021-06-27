@@ -10,7 +10,10 @@ struct ScoreboardView: View {
             List {
                 ForEach($rounds) { _, round in
                     Section(header: HeaderView(roundName: round.wrappedValue.name)) {
-                        RoundRow(round: round)
+                        RoundRow(
+                            round: round,
+                            accumulatedPoints: accumulatedPoints(for: round.wrappedValue)
+                        )
                     }
                 }
                 .onDelete { rounds.remove(atOffsets: $0) }
@@ -28,13 +31,7 @@ struct ScoreboardView: View {
                     Button("Done") { presentationMode.wrappedValue.dismiss() }
                 }
             }
-            .background(
-                NavigationLink(
-                    destination: RoundView(round: $rounds[rounds.count - 1]),
-                    isActive: $isNavigateToNewRoundActive,
-                    label: EmptyView.init
-                )
-            )
+            .background(navigationToNew())
         }
     }
 
@@ -45,6 +42,28 @@ struct ScoreboardView: View {
     private func addRound() {
         rounds.append(Round(name: "Round \(rounds.count + 1)", scores: []))
         isNavigateToNewRoundActive = true
+    }
+
+    private func accumulatedPoints(for round: Round) -> [Team: Int] {
+        guard let roundIndex = rounds.firstIndex(of: round)
+        else { return [:] }
+        return [Team: Int](
+            rounds[...roundIndex].flatMap(\.scores).map { score -> (Team, Int) in
+                (score.team, score.points)
+            },
+            uniquingKeysWith: { $0 + $1 }
+        )
+    }
+
+    @ViewBuilder
+    private func navigationToNew() -> some View {
+        if rounds.count > 0 {
+            NavigationLink(
+                destination: RoundView(round: $rounds[rounds.count - 1]),
+                isActive: $isNavigateToNewRoundActive,
+                label: EmptyView.init
+            )
+        }
     }
 }
 
@@ -58,16 +77,21 @@ struct HeaderView: View {
 
 struct RoundRow: View {
     @Binding var round: Round
+    let accumulatedPoints: [Team: Int]
 
     var body: some View {
         NavigationLink(destination: RoundView(round: $round)) {
             VStack {
                 ForEach(round.scores) { score in
-                    HStack {
-                        Text(score.team.name)
-                            .frame(width: 100)
-                        Text("\(score.points)")
-                            .frame(width: 100)
+                    GeometryReader { geometry in
+                        HStack {
+                            Text(score.team.name)
+                                .frame(width: geometry.size.width * 2/3, alignment: .leading)
+                            Spacer()
+                            Text("\(score.points)")
+                            Spacer()
+                            Text("\(accumulatedPoints[score.team] ?? 0)")
+                        }
                     }
                 }
             }
@@ -75,12 +99,12 @@ struct RoundRow: View {
     }
 }
 
-struct Round: Identifiable, Codable {
+struct Round: Identifiable, Codable, Hashable {
     var name: String
     var scores: [Score]
     var id = UUID()
 
-    struct Score: Identifiable, Codable {
+    struct Score: Identifiable, Codable, Hashable {
         var team: Team
         var points: Int
         var id: Team.ID { team.id }
