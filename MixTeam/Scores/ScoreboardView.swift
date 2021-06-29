@@ -75,30 +75,6 @@ struct HeaderView: View {
     }
 }
 
-struct RoundRow: View {
-    @Binding var round: Round
-    let accumulatedPoints: [Team: Int]
-
-    var body: some View {
-        NavigationLink(destination: RoundView(round: $round)) {
-            VStack {
-                ForEach(round.scores) { score in
-                    GeometryReader { geometry in
-                        HStack {
-                            Text(score.team.name)
-                                .frame(width: geometry.size.width * 2/3, alignment: .leading)
-                            Spacer()
-                            Text("\(score.points)")
-                            Spacer()
-                            Text("\(accumulatedPoints[score.team] ?? 0)")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 struct Round: Identifiable, Codable, Hashable {
     var name: String
     var scores: [Score]

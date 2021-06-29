@@ -35,6 +35,7 @@
 		4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
 		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
+		4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5934268B016A00BF23F7 /* RoundRow.swift */; };
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
@@ -93,6 +94,7 @@
 		4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogic.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
 		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
+		4CBF5934268B016A00BF23F7 /* RoundRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRow.swift; sourceTree = "<group>"; };
 		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 			children = (
 				4C8E60FF2679399E00010C8B /* ScoreboardView.swift */,
 				4CAB7A7D268664A800C58254 /* RoundView.swift */,
+				4CBF5934268B016A00BF23F7 /* RoundRow.swift */,
 			);
 			path = Scores;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				4CCA0D27249A777B00E88F80 /* SceneDelegate.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,
 				4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */,
+				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
 				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
