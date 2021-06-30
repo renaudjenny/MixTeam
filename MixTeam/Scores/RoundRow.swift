@@ -18,8 +18,10 @@ struct RoundRow: View {
                             Text("\(accumulatedPoints[score.team] ?? 0)")
                         }
                     }
+                    .padding(.vertical, 4)
                 }
             }
+            .padding()
         }
     }
 }
@@ -45,10 +47,23 @@ struct RoundRow_Previews: PreviewProvider {
         }()
 
         var body: some View {
-            RoundRow(round: $round, accumulatedPoints: [
-                [Team].exampleTeam[1]: 20,
-                [Team].exampleTeam[2]: 50,
-            ])
+            NavigationView {
+                List {
+                    RoundRow(round: $round, accumulatedPoints: [
+                        [Team].exampleTeam[1]: 20,
+                        [Team].exampleTeam[2]: 50,
+                    ])
+                    RoundRow(round: $round, accumulatedPoints: [
+                        [Team].exampleTeam[1]: 20,
+                        [Team].exampleTeam[2]: 50,
+                    ])
+                    RoundRow(round: $round, accumulatedPoints: [
+                        [Team].exampleTeam[1]: 20,
+                        [Team].exampleTeam[2]: 50,
+                    ])
+                }
+                .navigationTitle(Text("Round row preview"))
+            }
         }
     }
 }
