@@ -75,35 +75,6 @@ struct HeaderView: View {
     }
 }
 
-struct Round: Identifiable, Codable, Hashable {
-    var name: String
-    var scores: [Score]
-    var id = UUID()
-
-    struct Score: Identifiable, Codable, Hashable {
-        var team: Team
-        var points: Int
-        var id: Team.ID { team.id }
-    }
-}
-
-typealias Rounds = [Round]
-extension Rounds: RawRepresentable {
-    public init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode(Rounds.self, from: data)
-        else { return nil }
-        self = result
-    }
-
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else { return "[]" }
-        return result
-    }
-}
-
 struct TotalView: View {
     let rounds: [Round]
 
@@ -185,30 +156,6 @@ extension Array where Element == Round {
                 else { return $0 }
                 return $0 + [$1]
             })
-    }
-}
-
-extension Team {
-    static let empty: Team = {
-        guard let id = UUID(uuidString: "CDB7B99F-B178-484B-990C-E1B1F1A05F9E")
-        else { fatalError("Cannot generate UUID from a defined UUID String") }
-
-        return Team(
-            id: id,
-            name: "-",
-            colorIdentifier: .blue,
-            imageIdentifier: .elephant,
-            players: []
-        )
-    }()
-}
-
-extension Binding where Value == Int {
-    var string: Binding<String> {
-        Binding<String>(
-            get: { String(wrappedValue) },
-            set: { wrappedValue = Int($0) ?? wrappedValue }
-        )
     }
 }
 
