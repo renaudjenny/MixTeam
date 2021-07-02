@@ -38,6 +38,7 @@
 		4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5934268B016A00BF23F7 /* RoundRow.swift */; };
 		4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5936268E4ED800BF23F7 /* Binding+IntAsString.swift */; };
 		4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5938268E4F2500BF23F7 /* Round.swift */; };
+		4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF593A268E502700BF23F7 /* TotalScoresView.swift */; };
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
@@ -99,6 +100,7 @@
 		4CBF5934268B016A00BF23F7 /* RoundRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRow.swift; sourceTree = "<group>"; };
 		4CBF5936268E4ED800BF23F7 /* Binding+IntAsString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+IntAsString.swift"; sourceTree = "<group>"; };
 		4CBF5938268E4F2500BF23F7 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
+		4CBF593A268E502700BF23F7 /* TotalScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalScoresView.swift; sourceTree = "<group>"; };
 		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				4CBF5934268B016A00BF23F7 /* RoundRow.swift */,
 				4CAB7A7D268664A800C58254 /* RoundView.swift */,
 				4C8E60FF2679399E00010C8B /* ScoreboardView.swift */,
+				4CBF593A268E502700BF23F7 /* TotalScoresView.swift */,
 			);
 			path = Scores;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */,
+				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
