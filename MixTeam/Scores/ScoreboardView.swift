@@ -9,14 +9,15 @@ struct ScoreboardView: View {
         NavigationView {
             List {
                 ForEach($rounds) { _, round in
-                    Section(header: HeaderView(roundName: round.wrappedValue.name)) {
+                    Section(header: HeaderView(round: round)) {
                         RoundRow(
-                            round: round,
+                            round: round.wrappedValue,
                             accumulatedPoints: accumulatedPoints(for: round.wrappedValue)
                         )
                     }
                 }
                 .onDelete { rounds.remove(atOffsets: $0) }
+                .listRowBackground(Color.purple.opacity(20/100))
 
                 TotalScoresView(rounds: rounds)
             }
@@ -68,10 +69,12 @@ struct ScoreboardView: View {
 }
 
 struct HeaderView: View {
-    let roundName: String
+    @Binding var round: Round
 
     var body: some View {
-        Text(roundName)
+        NavigationLink(destination: RoundView(round: $round)) {
+            Text(round.name)
+        }
     }
 }
 
