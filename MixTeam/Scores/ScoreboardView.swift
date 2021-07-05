@@ -73,8 +73,22 @@ struct HeaderView: View {
 
     var body: some View {
         NavigationLink(destination: RoundView(round: $round)) {
-            Text(round.name)
+            HStack {
+                Text(round.name)
+                    .foregroundColor(.white)
+                    .font(.title3)
+                    .fontWeight(.heavy)
+                Spacer()
+                Text(Image(systemName: "highlighter"))
+                    .foregroundColor(.white)
+                    .font(.title3)
+                    .fontWeight(.heavy)
+            }
         }
+        .listRowInsets(EdgeInsets())
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .background(Color.purple.opacity(80/100))
     }
 }
 
