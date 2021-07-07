@@ -24,12 +24,10 @@ struct ScoreboardView: View {
             .navigationTitle(Text("Scoreboard"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: addRound) {
-                        Image(systemName: "plus")
-                    }
+                    addRoundButton
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") { presentationMode.wrappedValue.dismiss() }
+                    doneButton
                 }
             }
             .background(navigationToNew())
@@ -64,6 +62,38 @@ struct ScoreboardView: View {
                 isActive: $isNavigateToNewRoundActive,
                 label: EmptyView.init
             )
+        }
+    }
+
+    private var addRoundButton: some View {
+        HStack {
+            Button(action: addRound) {
+                Text(Image(systemName: "plus"))
+                    .font(.title3)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                    .padding(4)
+                    .background(Color.purple.clipShape(Circle()))
+            }
+            .buttonStyle(PlainButtonStyle())
+            .accessibility(label: Text("Add a new round"))
+            Spacer()
+        }
+    }
+
+    private var doneButton: some View {
+        HStack {
+            Button { presentationMode.wrappedValue.dismiss() } label: {
+                Text(Image(systemName: "checkmark"))
+                    .font(.title3)
+                    .fontWeight(.black)
+                    .foregroundColor(.white)
+                    .padding(4)
+                    .background(Color.blue.clipShape(Circle()))
+            }
+            .buttonStyle(PlainButtonStyle())
+            .accessibility(label: Text("Add a new round"))
+            Spacer()
         }
     }
 }
