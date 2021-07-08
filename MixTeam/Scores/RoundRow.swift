@@ -5,26 +5,33 @@ struct RoundRow: View {
     let accumulatedPoints: [Team: Int]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 1) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(round.scores, content: line)
         }
+        .listRowInsets(EdgeInsets())
     }
 
     private func line(score: Round.Score) -> some View {
-        HStack {
+        VStack(spacing: 0) {
             HStack {
-                Text(score.team.name)
-                Spacer()
+                HStack {
+                    Text(score.team.name)
+                    Spacer()
+                }
+                HStack {
+                    Spacer()
+                    Text("+\(score.points)")
+                    Spacer()
+                    Text("\(accumulatedPoints[score.team] ?? 0)")
+                        .bold()
+                }
             }
-            HStack {
-                Spacer()
-                Text("+\(score.points)")
-                Spacer()
-                Text("\(accumulatedPoints[score.team] ?? 0)")
-                    .bold()
+            .padding(12)
+
+            if round.scores.last != score {
+                Color.white.frame(height: 2)
             }
         }
-        .padding(.vertical)
     }
 }
 
@@ -53,11 +60,13 @@ struct RoundRow_Previews: PreviewProvider {
             NavigationView {
                 List {
                     ForEach(0..<3) { _ in
-                        RoundRow(round: round, accumulatedPoints: [
-                            [Team].exampleTeam[1]: 20,
-                            [Team].exampleTeam[2]: 50,
-                            [Team].exampleTeam[3]: 0,
-                        ])
+                        Section(header: HeaderView(round: .constant(round))) {
+                            RoundRow(round: round, accumulatedPoints: [
+                                [Team].exampleTeam[1]: 20,
+                                [Team].exampleTeam[2]: 50,
+                                [Team].exampleTeam[3]: 0,
+                            ])
+                        }
                     }
                     .listRowBackground(Color.purple.opacity(20/100))
                 }
