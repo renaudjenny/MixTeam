@@ -13,7 +13,6 @@ struct MainView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
-                scoreboardButton
                 teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
                 mixTeamButton
                 ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -92,19 +91,8 @@ struct MainView: View {
         .accessibility(label: Text("Add Team"))
     }
 
-    private var scoreboardButton: some View {
-        Button { isScoreboardPresented = true } label: {
-            HStack {
-                Image(systemName: "list.bullet.rectangle")
-                Text("Scoreboard")
-            }.frame(maxWidth: .infinity)
-        }
-        .buttonStyle(CommonButtonStyle(color: .blue))
-        .padding()
-        .accessibility(label: Text("Display scoreboard"))
-    }
-
     private func presentAbout() { isAboutPresented = true }
+    private func presentScoreboard() { isScoreboardPresented = true }
 }
 
 // MARK: MixTeam Logic
@@ -119,7 +107,8 @@ extension MainView: TeamsLogic {
             createPlayer: createRandomPlayer,
             editPlayer: { editedPlayer = $0 },
             deletePlayer: delete(player:),
-            displayAbout: { isAboutPresented = true }
+            displayAbout: { isAboutPresented = true },
+            displayScoreboard: { isScoreboardPresented = true }
         )
     }
 

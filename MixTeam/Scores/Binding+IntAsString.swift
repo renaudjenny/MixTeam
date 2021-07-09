@@ -8,4 +8,3 @@ extension Binding where Value == Int {
         )
     }
 }
-

@@ -18,7 +18,8 @@ extension TeamRowPreview {
             createPlayer: createPlayer,
             editPlayer: editPlayer,
             deletePlayer: deletePlayer,
-            displayAbout: displayAbout
+            displayAbout: displayAbout,
+            displayScoreboard: displayScoreboard
         )
     }
 
@@ -29,4 +30,5 @@ extension TeamRowPreview {
     private func moveBackPlayer(player: Player) { print("move player", player) }
     private func deletePlayer(player: Player) { print("delete player", player) }
     private func displayAbout() { print("display about") }
+    private func displayScoreboard() { print("display scoreboard") }
 }

@@ -4,18 +4,28 @@ struct FirstTeamRow: View {
     let team: Team
     let callbacks: FirstTeamRow.Callbacks
 
-    private let aboutButtonSize = CGSize(width: 60, height: 60)
+    private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             card
-            Button(action: callbacks.displayAbout) {
-                Image(systemName: "cube.box")
-                .resizable()
+            scoreboardButton
+            aboutButton
+        }
+    }
+
+    private var scoreboardButton: some View {
+        HStack {
+            Button(action: callbacks.displayScoreboard) {
+                Image(systemName: "list.bullet.rectangle")
+                    .resizable()
             }
-            .frame(width: aboutButtonSize.width, height: aboutButtonSize.height)
-            .buttonStyle(CommonButtonStyle(color: .gray))
+            .frame(width: buttonSize.width, height: buttonSize.height)
+            .buttonStyle(CommonButtonStyle(color: .blue))
             .padding()
+            .accessibility(label: Text("Display scoreboard"))
+
+            Spacer()
         }
     }
 
@@ -36,16 +46,26 @@ struct FirstTeamRow: View {
         }
         .frame(maxWidth: .infinity)
         .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle(notchSize: aboutButtonSize + 8))
+        .modifier(AddDashedCardStyle(notchSize: buttonSize + 8))
         .frame(maxWidth: .infinity)
         .padding()
+    }
+
+    private var aboutButton: some View {
+        Button(action: callbacks.displayAbout) {
+            Image(systemName: "cube.box")
+                .resizable()
+        }
+        .frame(width: buttonSize.width, height: buttonSize.height)
+        .buttonStyle(CommonButtonStyle(color: .gray))
+        .padding()
+        .accessibility(label: Text("About"))
     }
 
     private var header: some View {
         VStack {
             Text(team.name)
-                .padding(.leading)
-                .padding(.trailing, aboutButtonSize.width + 16)
+                .padding(.horizontal, buttonSize.width + 24)
             Image(systemName: "person.3")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -71,6 +91,7 @@ extension FirstTeamRow {
         let editPlayer: (Player) -> Void
         let deletePlayer: (Player) -> Void
         let displayAbout: () -> Void
+        let displayScoreboard: () -> Void
     }
 
     private var playerRowCallbacks: PlayerRow.Callbacks {

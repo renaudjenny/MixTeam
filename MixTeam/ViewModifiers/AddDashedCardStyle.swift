@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct AddDashedCardStyle: ViewModifier {
-    @Environment(\.layoutDirection) var layoutDirection
     var notchSize: CGSize = .zero
 
     func body(content: Content) -> some View {
@@ -19,16 +18,11 @@ struct AddDashedCardStyle: ViewModifier {
     }
 
     private func notchedShape(cornerRadius: CGFloat) -> NotchedRoundedRectangle {
-        NotchedRoundedRectangle(
-            layoutDirection: _layoutDirection,
-            notchSize: notchSize,
-            cornerRadius: cornerRadius
-        )
+        NotchedRoundedRectangle(notchSize: notchSize, cornerRadius: cornerRadius)
     }
 }
 
 struct NotchedRoundedRectangle: Shape {
-    @Environment(\.layoutDirection) var layoutDirection
     let notchSize: CGSize
     let cornerRadius: CGFloat
 
@@ -41,11 +35,7 @@ struct NotchedRoundedRectangle: Shape {
             return path
         }
 
-        path.move(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
-        path.addQuadCurve(
-            to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY),
-            control: CGPoint(x: rect.minX, y: rect.minY)
-        )
+        path.move(to: CGPoint(x: rect.minX + notchSize.width + cornerRadius, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.maxX - notchSize.width - cornerRadius, y: rect.minY))
         path.addQuadCurve(
             to: CGPoint(x: rect.maxX - notchSize.width, y: rect.minY + cornerRadius),
@@ -71,14 +61,23 @@ struct NotchedRoundedRectangle: Shape {
             to: CGPoint(x: rect.minX, y: rect.maxY - cornerRadius),
             control: CGPoint(x: rect.minX, y: rect.maxY)
         )
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + notchSize.height + cornerRadius))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + cornerRadius, y: rect.minY + notchSize.height),
+            control: CGPoint(x: rect.minX, y: rect.minY + notchSize.height)
+        )
+        path.addLine(to: CGPoint(x: rect.minX + notchSize.width - cornerRadius, y: rect.minY + notchSize.height))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + notchSize.width, y: rect.minY + notchSize.height - cornerRadius),
+            control: CGPoint(x: rect.minX + notchSize.width, y: rect.minY + notchSize.height)
+        )
+        path.addLine(to: CGPoint(x: rect.minX + notchSize.width, y: rect.minY + cornerRadius))
+        path.addQuadCurve(
+            to: CGPoint(x: rect.minX + notchSize.width + cornerRadius, y: rect.minY),
+            control: CGPoint(x: rect.minX + notchSize.width, y: rect.minY)
+        )
 
         path.closeSubpath()
-
-        if layoutDirection == .rightToLeft {
-            path = path
-                .applying(.init(scaleX: -1, y: 1))
-                .applying(.init(translationX: rect.maxX, y: 0 ))
-        }
 
         return path
     }
@@ -89,6 +88,6 @@ struct AddDashedCardStyle_Previews: PreviewProvider {
         Rectangle().modifier(AddDashedCardStyle(
             notchSize: CGSize(width: 90, height: 80)
         ))
-        .frame(width: 200, height: 300)
+        .frame(width: 300, height: 300)
     }
 }
