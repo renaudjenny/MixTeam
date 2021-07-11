@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct MixTeamButtonStyle: ButtonStyle {
+    private(set) var color: Color = .red
+
     func makeBody(configuration: Configuration) -> some View {
-        RoundedRectangle(cornerRadius: 16).fill(Color.red)
+        RoundedRectangle(cornerRadius: 16).fill(color)
             .brightness(configuration.isPressed ? -1/4 : 0)
             .overlay(configuration.label.foregroundColor(.white))
     }

@@ -9,10 +9,12 @@ struct MainView: View {
     @State private var editedPlayer: Player?
     @State private var isAboutPresented = false
     @State private var isScoreboardPresented = false
+    private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
         ScrollView {
             LazyVStack {
+                header
                 teamsStore.teams.first.map { FirstTeamRow(team: $0, callbacks: firstTeamCallbacks) }
                 mixTeamButton
                 ForEach(teamsStore.teams.dropFirst(), content: teamRow)
@@ -60,7 +62,46 @@ struct MainView: View {
         })
     }
 
-    func teamRow(team: Team) -> some View {
+    private var header: some View {
+        HStack {
+            scoreboardButton
+            Spacer()
+            Text("Mix Team")
+                .font(.largeTitle)
+                .fontWeight(.black)
+            Spacer()
+            aboutButton
+        }
+        .padding(.vertical)
+    }
+
+    private var scoreboardButton: some View {
+        Button { isScoreboardPresented = true } label: {
+            Image(systemName: "list.bullet.rectangle")
+                .resizable()
+                .padding(14)
+        }
+        .frame(width: buttonSize.width, height: buttonSize.height)
+        .modifier(Shadow())
+        .buttonStyle(MixTeamButtonStyle(color: .purple))
+        .padding(.horizontal)
+        .accessibility(label: Text("Display scoreboard"))
+    }
+
+    private var aboutButton: some View {
+        Button { isAboutPresented = true } label: {
+            Image(systemName: "cube.box")
+                .resizable()
+                .padding(12)
+        }
+        .frame(width: buttonSize.width, height: buttonSize.height)
+        .modifier(Shadow())
+        .buttonStyle(MixTeamButtonStyle(color: .gray))
+        .padding(.horizontal)
+        .accessibility(label: Text("About"))
+    }
+
+    private func teamRow(team: Team) -> some View {
         TeamRow(team: team, callbacks: teamCallbacks)
             .transition(.move(edge: .leading))
     }
@@ -90,9 +131,6 @@ struct MainView: View {
         .padding()
         .accessibility(label: Text("Add Team"))
     }
-
-    private func presentAbout() { isAboutPresented = true }
-    private func presentScoreboard() { isScoreboardPresented = true }
 }
 
 // MARK: MixTeam Logic
@@ -106,9 +144,7 @@ extension MainView: TeamsLogic {
         .init(
             createPlayer: createRandomPlayer,
             editPlayer: { editedPlayer = $0 },
-            deletePlayer: delete(player:),
-            displayAbout: { isAboutPresented = true },
-            displayScoreboard: { isScoreboardPresented = true }
+            deletePlayer: delete(player:)
         )
     }
 
