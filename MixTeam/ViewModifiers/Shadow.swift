@@ -3,11 +3,10 @@ import SwiftUI
 struct Shadow: ViewModifier {
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     var isApplied: Bool = true
-    var shape = NotchedRoundedRectangle(notchSize: .zero, cornerRadius: 20)
 
     func body(content: Content) -> some View {
         content.background(
-            Color.white.clipShape(shape).shadow(
+            Color.white.clipShape(RoundedRectangle(cornerRadius: 20)).shadow(
                 color: Self.shadowColor,
                 radius: radius, x: x, y: y
             )
