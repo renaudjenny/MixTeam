@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ScoreboardView: View {
     @AppStorage("Scores.rounds") var rounds: Rounds = []
+    @EnvironmentObject var teamsStore: TeamsStore
     @Environment(\.presentationMode) private var presentationMode
     @State private var isNavigateToNewRoundActive = false
 
@@ -39,7 +40,10 @@ struct ScoreboardView: View {
     }
 
     private func addRound() {
-        rounds.append(Round(name: "Round \(rounds.count + 1)", scores: []))
+        let scores = teamsStore.teams
+            .dropFirst()
+            .map { team in Round.Score(team: team, points: 0) }
+        rounds.append(Round(name: "Round \(rounds.count + 1)", scores: scores))
         isNavigateToNewRoundActive = true
     }
 
