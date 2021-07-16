@@ -30,7 +30,10 @@ struct TeamRow: View {
     private var sectionHeader: some View {
         Button(action: edit) {
             VStack {
-                Text(team.name).padding([.leading, .trailing])
+                Text(team.name)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .padding([.leading, .trailing])
                 team.imageIdentifier.image
                     .resizable()
                     .renderingMode(.template)

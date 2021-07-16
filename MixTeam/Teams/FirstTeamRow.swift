@@ -36,6 +36,8 @@ struct FirstTeamRow: View {
     private var header: some View {
         VStack {
             Text(team.name)
+                .font(.title2)
+                .fontWeight(.semibold)
                 .padding(.horizontal)
             Image(systemName: "person.3")
                 .resizable()
