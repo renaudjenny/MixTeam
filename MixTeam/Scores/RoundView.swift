@@ -4,7 +4,6 @@ struct RoundView: View {
     @Binding var round: Round
     @EnvironmentObject var teamsStore: TeamsStore
     @State private var backup: Round?
-    @Environment(\.presentationMode) private var presentationMode
 
     var body: some View {
         Form {
@@ -23,17 +22,15 @@ struct RoundView: View {
                     )
                 }
             }
-
-            Button(action: save) {
-                Text("Save")
-            }
-
-            Button(action: cancel) {
-                Text("Cancel")
-                    .accentColor(.red)
-            }
         }
         .navigationTitle(Text(round.name))
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button { round = backup ?? round } label: {
+                    Text("Reset")
+                }
+            }
+        }
         .onAppear {
             backup = round
             round.scores = teams.map { team in
@@ -49,12 +46,6 @@ struct RoundView: View {
                 if result.contains(where: { $0 == team }) { return result }
                 return result + [team]
             })
-    }
-
-    private func save() { presentationMode.wrappedValue.dismiss() }
-    private func cancel() {
-        round = backup ?? round
-        presentationMode.wrappedValue.dismiss()
     }
 }
 
