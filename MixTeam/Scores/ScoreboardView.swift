@@ -8,30 +8,48 @@ struct ScoreboardView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach($rounds) { _, round in
-                    Section(header: HeaderView(round: round)) {
-                        RoundRow(
-                            round: round.wrappedValue,
-                            accumulatedPoints: accumulatedPoints(for: round.wrappedValue)
-                        )
+            ZStack {
+                if rounds.count > 0 {
+                    list
+                } else {
+                    VStack {
+                        Text("Add your first round by tapping on the plus button")
+                            .foregroundColor(.gray)
+                        addRoundButton
                     }
+                    .padding()
                 }
-                .onDelete { rounds.remove(atOffsets: $0) }
-                .listRowBackground(Color.purple.opacity(20/100))
-
-                TotalScoresView(rounds: rounds)
             }
             .navigationTitle(Text("Scoreboard"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    addRoundButton
+                    HStack {
+                        addRoundButton
+                        Spacer()
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     doneButton
                 }
             }
             .background(navigationToNew())
+        }
+    }
+
+    private var list: some View {
+        List {
+            ForEach($rounds) { _, round in
+                Section(header: HeaderView(round: round)) {
+                    RoundRow(
+                        round: round.wrappedValue,
+                        accumulatedPoints: accumulatedPoints(for: round.wrappedValue)
+                    )
+                }
+            }
+            .onDelete { rounds.remove(atOffsets: $0) }
+            .listRowBackground(Color.purple.opacity(20/100))
+
+            TotalScoresView(rounds: rounds)
         }
     }
 
@@ -81,7 +99,6 @@ struct ScoreboardView: View {
             }
             .buttonStyle(PlainButtonStyle())
             .accessibility(label: Text("Add a new round"))
-            Spacer()
         }
     }
 
@@ -129,7 +146,10 @@ struct HeaderView: View {
 #if DEBUG
 struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        Group {
+            Preview()
+            ScoreboardView(rounds: [])
+        }
     }
 
     private struct Preview: View {
