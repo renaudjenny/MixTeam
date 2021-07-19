@@ -29,8 +29,18 @@ extension Rounds: RawRepresentable {
     }
 }
 
-#if DEBUG
 extension Array where Element == Round {
+    var teams: [Team] {
+        flatMap(\.scores)
+            .map(\.team)
+            .reduce([], {
+                guard !$0.contains($1)
+                else { return $0 }
+                return $0 + [$1]
+            })
+    }
+
+    #if DEBUG
     static let team1: Team = [Team].exampleTeam[1]
     static let team2: Team = [Team].exampleTeam[2]
     static let team3 = Team(
@@ -73,15 +83,5 @@ extension Array where Element == Round {
             ),
         ]
     }()
-
-    var teams: [Team] {
-        flatMap(\.scores)
-            .map(\.team)
-            .reduce([], {
-                guard !$0.contains($1)
-                else { return $0 }
-                return $0 + [$1]
-            })
-    }
+    #endif
 }
-#endif
