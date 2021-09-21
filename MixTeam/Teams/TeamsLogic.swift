@@ -15,11 +15,13 @@ extension TeamsLogic {
         let color = ColorIdentifier.allCases.randomElement() ?? .red
         let name = "\(color.name) \(image.name)".localizedCapitalized
 
-        teamsStore.teams.append(Team(
-            name: name,
-            colorIdentifier: color,
-            imageIdentifier: image
-        ))
+        withAnimation {
+            teamsStore.teams.append(Team(
+                name: name,
+                colorIdentifier: color,
+                imageIdentifier: image
+            ))
+        }
     }
 
     func delete(team: Team) {
@@ -30,7 +32,9 @@ extension TeamsLogic {
         teamsStore.teams[0].players.append(contentsOf: playersInDeletedTeam)
 
         guard teamsStore.teams.firstIndex(of: team) != nil else { return }
-        teamsStore.teams.remove(at: index)
+        withAnimation {
+            _ = teamsStore.teams.remove(at: index)
+        }
     }
 
     func edit(team: Team) {

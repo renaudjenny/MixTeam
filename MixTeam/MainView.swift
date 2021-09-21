@@ -21,7 +21,6 @@ struct MainView: View {
                 addTeamButton
             }
         }
-        .animation(.default)
         .frame(maxWidth: 800)
         .alert(item: $presentedAlert, content: alert(for:))
         .background(Color.clear.sheet(item: $editedTeam) {

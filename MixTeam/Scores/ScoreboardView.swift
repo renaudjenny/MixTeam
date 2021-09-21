@@ -51,6 +51,7 @@ struct ScoreboardView: View {
 
             TotalScoresView(rounds: rounds)
         }
+        .listStyle(.plain)
     }
 
     private func remove(atOffsets: IndexSet) {
