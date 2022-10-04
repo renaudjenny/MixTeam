@@ -598,11 +598,7 @@ struct Splash_Previews: PreviewProvider {
             GeometryReader { geometry in
                 VStack {
                     ZStack {
-                        Splash(animatableData: self.animate ? 0 : self.animationStep)
-                            .animation(self.animate
-                                ? Animation.easeInOut(duration: 4).repeatForever(autoreverses: true)
-                                : .default
-                        )
+                        Splash(animatableData: animationStep)
                     }
                     .frame(width: self.width, height: self.height)
                     .border(Color.red)
@@ -615,16 +611,32 @@ struct Splash_Previews: PreviewProvider {
                         Text("Height")
                         Slider(value: self.$height, in: 0...geometry.size.height)
                     }
-                    Toggle(isOn: self.$animate) { Text("Animate automatically") }
+                    Toggle(isOn: $animate) { Text("Animate automatically") }
                     if !self.animate {
                         Text("Animation Step")
                         Slider(value: self.$animationStep, in: 0...1)
                     }
-                }.onAppear {
+                }
+                .onAppear {
                     self.width = geometry.size.width
                     self.height = geometry.size.height/2
                 }
+                .onChange(of: animate) { isAnimating in
+                    animateAutomatically()
+                }
             }.padding()
+        }
+
+        private func animateAutomatically() {
+            var transaction = Transaction()
+            transaction.disablesAnimations = !animate
+
+            animationStep = 0
+            withTransaction(transaction) {
+                withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
+                    animationStep = 1
+                }
+            }
         }
     }
 }

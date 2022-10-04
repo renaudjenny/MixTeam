@@ -132,7 +132,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                 Button(action: addTeam) {
                     Text("Add Team")
                 }
-            }.animation(.default)
+            }
         }
 
         private func teamRow(_ team: Team) -> some View {
@@ -141,15 +141,17 @@ struct TeamRowUX_Previews: PreviewProvider {
         }
 
         private func addTeam() {
-            teams.append(
-                Team(
-                    id: UUID(),
-                    name: "Team Test",
-                    colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
-                    imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala,
-                    players: []
+            withAnimation {
+                teams.append(
+                    Team(
+                        id: UUID(),
+                        name: "Team Test",
+                        colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
+                        imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala,
+                        players: []
+                    )
                 )
-            )
+            }
         }
 
         private var callbacks: TeamRow.Callbacks {

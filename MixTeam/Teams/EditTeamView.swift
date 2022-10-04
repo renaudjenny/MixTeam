@@ -27,11 +27,11 @@ struct EditTeamView: View {
             }
         }
         .background(color.edgesIgnoringSafeArea(.all))
-        .onAppear {
-            withAnimation(Animation.easeIn(duration: 0.4)) {
+        .task {
+            withAnimation(.easeIn(duration: 0.4)) {
                 self.animateSplashGrowing = true
             }
-            withAnimation(Animation.easeInOut(duration: 2).delay(0.4)) {
+            withAnimation(.easeInOut(duration: 2).delay(0.4)) {
                 self.animateSplashDripping = true
             }
         }
