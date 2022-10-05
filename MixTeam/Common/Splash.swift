@@ -621,21 +621,18 @@ struct Splash_Previews: PreviewProvider {
                     self.width = geometry.size.width
                     self.height = geometry.size.height/2
                 }
-                .onChange(of: animate) { isAnimating in
-                    animateAutomatically()
-                }
+                .onChange(of: animate) { _ in animateAutomatically() }
             }.padding()
         }
 
         private func animateAutomatically() {
-            var transaction = Transaction()
-            transaction.disablesAnimations = !animate
-
             animationStep = 0
-            withTransaction(transaction) {
-                withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
-                    animationStep = 1
-                }
+            withAnimation(
+                animate
+                ? .easeInOut(duration: 4).repeatForever(autoreverses: true)
+                : .default
+            ) {
+                animationStep = 1
             }
         }
     }
