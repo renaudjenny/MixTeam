@@ -6,7 +6,7 @@ class MixTeamLogicTests: XCTestCase {
     func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenNoAlertIsPresented() throws {
         let teamsStore = TeamsStore()
         teamsStore.teams = .exampleTeam
-        var presentedAlert: MainView.PresentedAlert?
+        var presentedAlert: AppView.PresentedAlert?
         let playersLogic = MockedPlayersLogic(teamsStore: teamsStore) {
             presentedAlert = $0
         }
@@ -32,7 +32,7 @@ class MixTeamLogicTests: XCTestCase {
     func testMixTeamWhenThereIsLessThan2TeamsAvailableAndMixTeamThenAlertIsPresented() throws {
         let teamsStore = TeamsStore()
         teamsStore.teams = []
-        var presentedAlert: MainView.PresentedAlert?
+        var presentedAlert: AppView.PresentedAlert?
         let playersLogic = MockedPlayersLogic(teamsStore: teamsStore) {
             presentedAlert = $0
         }
@@ -45,9 +45,9 @@ class MixTeamLogicTests: XCTestCase {
 
 struct MockedPlayersLogic: MixTeamLogic {
     var teamsStore: TeamsStore = TeamsStore()
-    var mockedPresentedAlertSet: (MainView.PresentedAlert?) -> Void = { _ in }
+    var mockedPresentedAlertSet: (AppView.PresentedAlert?) -> Void = { _ in }
 
-    var presentedAlertBinding: Binding<MainView.PresentedAlert?> {
+    var presentedAlertBinding: Binding<AppView.PresentedAlert?> {
         .init(
             get: { nil },
             set: { self.mockedPresentedAlertSet($0) }

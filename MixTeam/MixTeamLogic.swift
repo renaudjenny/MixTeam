@@ -1,7 +1,7 @@
 import SwiftUI
 
 protocol MixTeamLogic: PlayersLogic {
-    var presentedAlertBinding: Binding<MainView.PresentedAlert?> { get }
+    var presentedAlertBinding: Binding<AppView.PresentedAlert?> { get }
 
     func mixTeam()
 }
@@ -32,7 +32,7 @@ extension MixTeamLogic {
             let availableTeams = teams.filter { $0 != teams.first }
             guard let lessPlayerTeam = availableTeams.sorted(by: hasLessPlayer).first,
                 let teamIndex = teams.firstIndex(of: lessPlayerTeam) else { return teams }
-            teams[teamIndex].players += [player]
+            teams[teamIndex].players.updateOrAppend(player)
             return teams
         }
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 import RenaudJennyAboutView
 
-struct MainView: View {
+struct AppView: View {
     @EnvironmentObject var teamsStore: TeamsStore
     @Environment(\.colorScheme) private var colorScheme
     @State private var presentedAlert: PresentedAlert?
@@ -32,7 +32,10 @@ struct MainView: View {
             teamsStore.teams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
                 teamsStore.teams[teamIndex].players.firstIndex(of: player).map { playerIndex in
                     EditPlayerView(
-                        player: $teamsStore.teams[teamIndex].players[playerIndex],
+                        player: .init(
+                            get: { teamsStore.teams[teamIndex].players[playerIndex] },
+                            set: { teamsStore.teams[teamIndex].players.updateOrAppend($0) }
+                        ),
                         team: teamsStore.teams[teamIndex]
                     )
                 }
@@ -133,12 +136,12 @@ struct MainView: View {
 }
 
 // MARK: MixTeam Logic
-extension MainView: MixTeamLogic {
+extension AppView: MixTeamLogic {
     var presentedAlertBinding: Binding<PresentedAlert?> { $presentedAlert }
 }
 
 // MARK: Teams Logic
-extension MainView: TeamsLogic {
+extension AppView: TeamsLogic {
     var firstTeamCallbacks: FirstTeamRow.Callbacks {
         .init(
             createPlayer: createRandomPlayer,
@@ -158,7 +161,7 @@ extension MainView: TeamsLogic {
 }
 
 // MARK: PresentedAlert
-extension MainView {
+extension AppView {
     enum PresentedAlert: Identifiable {
         case notEnoughTeams
 
@@ -173,9 +176,9 @@ extension MainView {
 struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            MainView()
+            AppView()
                 .environmentObject(TeamsStore())
-            MainView()
+            AppView()
                 .environmentObject(TeamsStore())
                 .environment(\.colorScheme, .dark)
         }

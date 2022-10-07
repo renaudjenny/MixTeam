@@ -23,7 +23,10 @@
 		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
-		4C7FE787245A166A0011E8AB /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* MainView.swift */; };
+		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
+		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
+		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
+		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
 		4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAB7A7D268664A800C58254 /* RoundView.swift */; };
@@ -83,7 +86,8 @@
 		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
-		4C7FE786245A166A0011E8AB /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		4CAB7A7D268664A800C58254 /* RoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundView.swift; sourceTree = "<group>"; };
 		4CAB7A80268714A800C58254 /* ForEach+Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForEach+Binding.swift"; sourceTree = "<group>"; };
@@ -108,6 +112,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
+				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,10 +158,10 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C75738328F0ADFF00A6E1EF /* App */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
 				4CAB7A7F2687146900C58254 /* Extensions */,
-				4C7FE786245A166A0011E8AB /* MainView.swift */,
 				4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
 				4C8E60FE2679395000010C8B /* Scores */,
@@ -202,6 +208,15 @@
 				4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		4C75738328F0ADFF00A6E1EF /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4C75738428F0AE1200A6E1EF /* App.swift */,
+				4C7FE786245A166A0011E8AB /* AppView.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		4C8B5A13244CB27100C8781B /* ViewModifiers */ = {
@@ -297,6 +312,8 @@
 			name = MixTeam;
 			packageProductDependencies = (
 				4C86575C255479C20040EA04 /* RenaudJennyAboutView */,
+				4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */,
+				4C75738128F0ADC600A6E1EF /* Dependencies */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -379,6 +396,7 @@
 			mainGroup = 4C3732D41EBF8E8100A5785E;
 			packageReferences = (
 				4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */,
+				4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 			);
 			productRefGroup = 4C3732DE1EBF8E8100A5785E /* Products */;
 			projectDirPath = "";
@@ -450,6 +468,7 @@
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */,
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
+				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */,
 				4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */,
@@ -464,7 +483,7 @@
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
 				4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */,
 				4CAB7A81268714A800C58254 /* ForEach+Binding.swift in Sources */,
-				4C7FE787245A166A0011E8AB /* MainView.swift in Sources */,
+				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
 				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,
 				4C1ED55424C48CAF005D6749 /* TeamRowPreview.swift in Sources */,
 				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
@@ -778,6 +797,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				branch = "protocol-beta";
+				kind = branch;
+			};
+		};
 		4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/renaudjenny/RenaudJennyAboutView";
@@ -789,6 +816,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+		4C75738128F0ADC600A6E1EF /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = Dependencies;
+		};
 		4C86575C255479C20040EA04 /* RenaudJennyAboutView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */;

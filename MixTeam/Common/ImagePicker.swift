@@ -84,16 +84,19 @@ struct PlayerImagePicker_Previews: PreviewProvider {
     struct Preview: View, TeamRowPreview {
         @EnvironmentObject var teamsStore: TeamsStore
         var selection: Binding<ImageIdentifier> {
-            $teamsStore.teams[1].players[0].imageIdentifier
+            .init(
+                get: { teamsStore.teams[1].players[0].imageIdentifier },
+                set: {
+                    var player = teamsStore.teams[1].players[0]
+                    player.imageIdentifier = $0
+                    teamsStore.teams[1].players.updateOrAppend(player)
+                }
+            )
         }
 
         var body: some View {
             VStack {
-                ImagePicker(
-                    team: teamsStore.teams[1],
-                    selection: $teamsStore.teams[1].players[0].imageIdentifier,
-                    type: .player
-                )
+                ImagePicker(team: teamsStore.teams[1], selection: selection, type: .player)
                 Spacer()
                 TeamRow(team: teamsStore.teams[1], callbacks: debuggableCallbacks)
                 Text("Selection: \(teamsStore.teams[1].players[0].imageIdentifier.rawValue)")

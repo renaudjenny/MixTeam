@@ -75,7 +75,10 @@ struct EditPlayerViewInteractive_Previews: PreviewProvider {
             TeamRow(team: team, callbacks: teamRowCallbacks)
                 .sheet(item: $editedPlayer) { player in
                     EditPlayerView(
-                        player: self.$teamsStore.teams[1].players[0],
+                        player: .init(
+                            get: { teamsStore.teams[1].players[0] },
+                            set: { teamsStore.teams[1].players.updateOrAppend($0) }
+                        ),
                         team: self.team
                     )
             }
