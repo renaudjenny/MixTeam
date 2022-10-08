@@ -123,25 +123,16 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
             .environmentObject(TeamsStore())
     }
 
-    struct Preview: View, TeamRowPreview {
+    struct Preview: View {
         @EnvironmentObject var teamsStore: TeamsStore
         @State private var isEdited = false
         private var team: Team { teamsStore.teams[1] }
 
         var body: some View {
-            TeamRow(team: team, callbacks: callbacks)
+            TeamRow(team: team, store: .preview)
                 .sheet(isPresented: $isEdited) {
                     EditTeamView(team: self.$teamsStore.teams[1])
             }
-        }
-
-        private var callbacks: TeamRow.Callbacks {
-            .init(
-                editTeam: { _ in self.isEdited = true },
-                deleteTeam: debuggableCallbacks.deleteTeam,
-                editPlayer: debuggableCallbacks.editPlayer,
-                moveBackPlayer: debuggableCallbacks.moveBackPlayer
-            )
         }
     }
 }

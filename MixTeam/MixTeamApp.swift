@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import SwiftUI
 
 @main
@@ -6,7 +7,13 @@ struct MixTeamApp: SwiftUI.App {
 
     var body: some Scene {
         WindowGroup {
-            AppView().environmentObject(teamsStore)
+            AppView(store: .live).environmentObject(teamsStore)
         }
+    }
+}
+
+extension StoreOf<App> {
+    static var live: StoreOf<App> {
+        Store(initialState: App.State(), reducer: App())
     }
 }

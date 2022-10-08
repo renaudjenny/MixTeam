@@ -1,8 +1,9 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct FirstTeamRow: View {
     let team: Team
-    let callbacks: FirstTeamRow.Callbacks
+    let store: StoreOf<App>
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -20,7 +21,7 @@ struct FirstTeamRow: View {
                 PlayerRow(
                     player: player,
                     isInFirstTeam: true,
-                    callbacks: self.playerRowCallbacks
+                    store: store
                 )
             }
             addPlayerButton
@@ -47,30 +48,15 @@ struct FirstTeamRow: View {
     }
 
     private var addPlayerButton: some View {
-        Button(action: callbacks.createPlayer) {
-            Image(systemName: "plus")
-                .frame(width: 50, height: 50)
-                .background(Color.white.clipShape(Splash2()))
-                .foregroundColor(.gray)
-                .accessibility(label: Text("Add Player"))
-        }.padding()
-    }
-}
-
-// MARK: Player Row Callbacks
-extension FirstTeamRow {
-    struct Callbacks {
-        let createPlayer: () -> Void
-        let editPlayer: (Player) -> Void
-        let deletePlayer: (Player) -> Void
-    }
-
-    private var playerRowCallbacks: PlayerRow.Callbacks {
-        .init(
-            edit: callbacks.editPlayer,
-            delete: callbacks.deletePlayer,
-            moveBack: { _ in }
-        )
+        WithViewStore(store.stateless) { ViewStore in
+            Button { ViewStore.send(.createPlayer) } label: {
+                Image(systemName: "plus")
+                    .frame(width: 50, height: 50)
+                    .background(Color.white.clipShape(Splash2()))
+                    .foregroundColor(.gray)
+                    .accessibility(label: Text("Add Player"))
+            }.padding()
+        }
     }
 }
 
@@ -86,18 +72,18 @@ struct FirstTeamRow_Previews: PreviewProvider {
         Preview()
     }
 
-    private struct Preview: View, TeamRowPreview {
+    private struct Preview: View {
         var body: some View {
             ScrollView {
                 FirstTeamRow(
                     team: Team(
                         name: "Players standing for a team with a too long text"),
-                    callbacks: firstTeamDebuggableCallbacks
+                    store: .preview
                 )
                 FirstTeamRow(
                     team: Team(
                         name: "With right to left"),
-                    callbacks: firstTeamDebuggableCallbacks
+                    store: .preview
                 ).environment(\.layoutDirection, .rightToLeft)
                 TeamRow(
                     team: Team(
@@ -105,7 +91,7 @@ struct FirstTeamRow_Previews: PreviewProvider {
                         colorIdentifier: .red,
                         imageIdentifier: .koala
                     ),
-                    callbacks: debuggableCallbacks
+                    store: .preview
                 )
             }
         }

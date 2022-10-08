@@ -1,15 +1,12 @@
 import SwiftUI
 
 protocol MixTeamLogic: PlayersLogic {
-    var presentedAlertBinding: Binding<AppView.PresentedAlert?> { get }
-
     func mixTeam()
 }
 
 extension MixTeamLogic {
     func mixTeam() {
         guard teamsStore.teams.count > 2 else {
-            presentedAlertBinding.wrappedValue = .notEnoughTeams
             return
         }
 

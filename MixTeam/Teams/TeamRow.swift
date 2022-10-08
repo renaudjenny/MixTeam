@@ -1,72 +1,57 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct TeamRow: View {
     let team: Team
-    let callbacks: Callbacks
+    let store: StoreOf<App>
 
     var body: some View {
-        VStack {
-            sectionHeader
-                .font(.callout)
-                .foregroundColor(Color.white)
-                .padding(.top)
+        WithViewStore(store.stateless) { viewStore in
             VStack {
-                ForEach(team.players) { player in
-                    PlayerRow(
-                        player: player,
-                        isInFirstTeam: false,
-                        callbacks: self.playerRowCallbacks
-                    )
-                }
-            }.padding(.bottom)
+                sectionHeader
+                    .font(.callout)
+                    .foregroundColor(Color.white)
+                    .padding(.top)
+                VStack {
+                    ForEach(team.players) { player in
+                        PlayerRow(
+                            player: player,
+                            isInFirstTeam: false,
+                            store: store
+                        )
+                    }
+                }.padding(.bottom)
+            }
+            .frame(maxWidth: .infinity)
+            .background(team.colorIdentifier.color)
+            .modifier(AddDashedCardStyle())
+            .modifier(AddSoftRemoveButton(remove: { viewStore.send(.deleteTeam(team)) }))
+            .padding()
         }
-        .frame(maxWidth: .infinity)
-        .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle())
-        .modifier(AddSoftRemoveButton(remove: delete))
-        .padding()
     }
 
     private var sectionHeader: some View {
-        Button(action: edit) {
-            VStack {
-                Text(team.name)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .padding([.leading, .trailing])
-                team.imageIdentifier.image
-                    .resizable()
-                    .renderingMode(.template)
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(team.colorIdentifier.color)
-                    .frame(width: 80, height: 80)
-                    .padding()
-                    .background(Color.white.clipShape(Splash2()))
-                    .padding(.bottom)
+        WithViewStore(store.stateless) { viewStore in
+            Button { viewStore.send(.editTeam(team)) } label: {
+                VStack {
+                    Text(team.name)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .padding([.leading, .trailing])
+                    team.imageIdentifier.image
+                        .resizable()
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(team.colorIdentifier.color)
+                        .frame(width: 80, height: 80)
+                        .padding()
+                        .background(Color.white.clipShape(Splash2()))
+                        .padding(.bottom)
+                }
             }
+            .accessibility(label: Text("Edit Team \(team.name)"))
         }
-        .accessibility(label: Text("Edit Team \(team.name)"))
     }
-}
-
-extension TeamRow {
-    struct Callbacks {
-        let editTeam: (Team) -> Void
-        let deleteTeam: (Team) -> Void
-        let editPlayer: (Player) -> Void
-        let moveBackPlayer: (Player) -> Void
-    }
-
-    private var playerRowCallbacks: PlayerRow.Callbacks {
-        .init(
-            edit: callbacks.editPlayer,
-            delete: { _ in },
-            moveBack: callbacks.moveBackPlayer
-        )
-    }
-
-    private func edit() { callbacks.editTeam(team) }
-    private func delete() { callbacks.deleteTeam(team) }
 }
 
 #if DEBUG
@@ -75,7 +60,7 @@ struct TeamRow_Previews: PreviewProvider {
         Preview()
     }
 
-    private struct Preview: View, TeamRowPreview {
+    private struct Preview: View {
         var body: some View {
             Group {
                 TeamRow(
@@ -86,7 +71,7 @@ struct TeamRow_Previews: PreviewProvider {
                         imageIdentifier: .koala,
                         players: []
                     ),
-                    callbacks: debuggableCallbacks
+                    store: .preview
                 )
                 TeamRow(
                     team: Team(
@@ -99,7 +84,7 @@ struct TeamRow_Previews: PreviewProvider {
                             Player(name: "Player 2", imageIdentifier: .santa),
                         ]
                     ),
-                    callbacks: debuggableCallbacks
+                    store: .preview
                 )
                 FirstTeamRow(
                     team: Team(
@@ -111,7 +96,7 @@ struct TeamRow_Previews: PreviewProvider {
                             Player(name: "Player 1", imageIdentifier: .girl),
                         ]
                     ),
-                    callbacks: firstTeamDebuggableCallbacks
+                    store: .preview
                 )
             }
         }
@@ -123,7 +108,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         Preview()
     }
 
-    private struct Preview: View, TeamRowPreview {
+    private struct Preview: View {
         @State private var teams: [Team] = [.test]
 
         var body: some View {
@@ -136,7 +121,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         }
 
         private func teamRow(_ team: Team) -> some View {
-            TeamRow(team: team, callbacks: callbacks)
+            TeamRow(team: team, store: .preview)
                 .transition(.move(edge: .leading))
         }
 
@@ -152,20 +137,6 @@ struct TeamRowUX_Previews: PreviewProvider {
                     )
                 )
             }
-        }
-
-        private var callbacks: TeamRow.Callbacks {
-            .init(
-                editTeam: debuggableCallbacks.editTeam,
-                deleteTeam: deleteTeam,
-                editPlayer: debuggableCallbacks.editPlayer,
-                moveBackPlayer: debuggableCallbacks.moveBackPlayer
-            )
-        }
-
-        private func deleteTeam(_ team: Team) {
-            guard let index = teams.firstIndex(of: team) else { return }
-            teams.remove(at: index)
         }
     }
 }
