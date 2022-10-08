@@ -2,54 +2,47 @@ import ComposableArchitecture
 import SwiftUI
 
 struct TeamRow: View {
-    let team: DprTeam
-    let store: StoreOf<App>
+    let store: StoreOf<Team>
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
+        WithViewStore(store) { viewStore in
             VStack {
                 sectionHeader
                     .font(.callout)
                     .foregroundColor(Color.white)
                     .padding(.top)
                 VStack {
-                    ForEach(team.players) { player in
-                        PlayerRow(
-                            player: player,
-                            isInFirstTeam: false,
-                            store: store
-                        )
-                    }
+                    ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
                 }.padding(.bottom)
             }
             .frame(maxWidth: .infinity)
-            .background(team.colorIdentifier.color)
+            .background(viewStore.colorIdentifier.color)
             .modifier(AddDashedCardStyle())
-            .modifier(AddSoftRemoveButton(remove: { viewStore.send(.deleteTeam(team)) }))
+            .modifier(AddSoftRemoveButton(remove: { viewStore.send(.delete) }))
             .padding()
         }
     }
 
     private var sectionHeader: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.editTeam(team)) } label: {
+        WithViewStore(store) { viewStore in
+            Button { viewStore.send(.edit) } label: {
                 VStack {
-                    Text(team.name)
+                    Text(viewStore.name)
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding([.leading, .trailing])
-                    team.imageIdentifier.image
+                    viewStore.imageIdentifier.image
                         .resizable()
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
-                        .foregroundColor(team.colorIdentifier.color)
+                        .foregroundColor(viewStore.colorIdentifier.color)
                         .frame(width: 80, height: 80)
                         .padding()
                         .background(Color.white.clipShape(Splash2()))
                         .padding(.bottom)
                 }
             }
-            .accessibility(label: Text("Edit Team \(team.name)"))
+            .accessibility(label: Text("Edit Team \(viewStore.name)"))
         }
     }
 }
@@ -63,41 +56,9 @@ struct TeamRow_Previews: PreviewProvider {
     private struct Preview: View {
         var body: some View {
             Group {
-                TeamRow(
-                    team: DprTeam(
-                        id: UUID(),
-                        name: "Team Test",
-                        colorIdentifier: .red,
-                        imageIdentifier: .koala,
-                        players: []
-                    ),
-                    store: .preview
-                )
-                TeamRow(
-                    team: DprTeam(
-                        id: UUID(),
-                        name: "Team Test with Players",
-                        colorIdentifier: .blue,
-                        imageIdentifier: .octopus,
-                        players: [
-                            Player(name: "Player 1", imageIdentifier: .girl),
-                            Player(name: "Player 2", imageIdentifier: .santa),
-                        ]
-                    ),
-                    store: .preview
-                )
-                FirstTeamRow(
-                    team: DprTeam(
-                        id: UUID(),
-                        name: "Players standing for a Team",
-                        colorIdentifier: .gray,
-                        imageIdentifier: .unknown,
-                        players: [
-                            Player(name: "Player 1", imageIdentifier: .girl),
-                        ]
-                    ),
-                    store: .preview
-                )
+                TeamRow(store: .preview)
+                TeamRow(store: .previewWithPlayers)
+                FirstTeamRow(store: .firstRowPreview)
             }
         }
     }
@@ -105,39 +66,69 @@ struct TeamRow_Previews: PreviewProvider {
 
 struct TeamRowUX_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        Preview(store: .preview)
     }
 
     private struct Preview: View {
-        @State private var teams: [DprTeam] = [.test]
+        let store: StoreOf<App>
 
         var body: some View {
-            ScrollView {
-                ForEach(teams, content: teamRow)
-                Button(action: addTeam) {
-                    Text("Add Team")
+            WithViewStore(store) { viewStore in
+                ScrollView {
+                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: teamRow)
+                    Button { viewStore.send(.addTeam) } label: {
+                        Text("Add Team")
+                    }
                 }
             }
         }
 
-        private func teamRow(_ team: DprTeam) -> some View {
-            TeamRow(team: team, store: .preview)
+        private func teamRow(_ team: StoreOf<Team>) -> some View {
+            TeamRow(store: team)
                 .transition(.move(edge: .leading))
         }
+    }
+}
 
-        private func addTeam() {
-            withAnimation {
-                teams.append(
-                    DprTeam(
-                        id: UUID(),
-                        name: "Team Test",
-                        colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
-                        imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala,
-                        players: []
-                    )
-                )
-            }
-        }
+extension StoreOf<Team> {
+    static var firstRowPreview: StoreOf<Team> {
+        Store(
+            initialState: Team.State(
+                id: UUID(),
+                name: "Players standing for a Team",
+                players: [Player.State(id: UUID(), name: "Player 1", image: .girl)]
+            ),
+            reducer: Team()
+        )
+    }
+    static var preview: StoreOf<Team> {
+        Store(initialState: .preview, reducer: Team())
+    }
+    static var previewWithPlayers: StoreOf<Team> {
+        Store(
+            initialState: Team.State(
+                id: UUID(),
+                name: "Team test",
+                colorIdentifier: .blue,
+                imageIdentifier: .octopus,
+                players: [
+                    Player.State(id: UUID(), name: "Player 1", image: .girl),
+                    Player.State(id: UUID(), name: "Player 2", image: .santa),
+                ]
+            ),
+            reducer: Team()
+        )
+    }
+}
+
+extension Team.State {
+    static var preview: Self {
+        Team.State(
+            id: UUID(),
+            name: "Team test",
+            colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
+            imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala
+        )
     }
 }
 #endif

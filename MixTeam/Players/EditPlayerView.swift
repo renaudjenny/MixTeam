@@ -4,13 +4,13 @@ import UIKit
 
 struct EditPlayerView: View {
     @Environment(\.presentationMode) var presentation
-    @Binding var player: Player
+    @Binding var player: DprPlayer
     let team: DprTeam
 
     var body: some View {
         VStack {
             playerNameField
-            ImagePicker(team: team, selection: $player.imageIdentifier, type: .player)
+            ImagePicker(color: team.colorIdentifier, selection: $player.imageIdentifier, type: .player)
         }
         .background(team.colorIdentifier.color.edgesIgnoringSafeArea(.all))
     }
@@ -51,37 +51,11 @@ struct EditPlayerView_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var player = Player(name: "Amelia", imageIdentifier: .girl)
+        @State private var player = DprPlayer(name: "Amelia", imageIdentifier: .girl)
         let team = DprTeam(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
 
         var body: some View {
             EditPlayerView(player: $player, team: team)
-        }
-    }
-}
-
-struct EditPlayerViewInteractive_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview()
-            .environmentObject(TeamsStore())
-    }
-
-    struct Preview: View {
-        @EnvironmentObject var teamsStore: TeamsStore
-        @State private var editedPlayer: Player?
-        var team: DprTeam { teamsStore.teams[1] }
-
-        var body: some View {
-            TeamRow(team: team, store: .preview)
-                .sheet(item: $editedPlayer) { player in
-                    EditPlayerView(
-                        player: .init(
-                            get: { teamsStore.teams[1].players[0] },
-                            set: { teamsStore.teams[1].players.updateOrAppend($0) }
-                        ),
-                        team: self.team
-                    )
-            }
         }
     }
 }

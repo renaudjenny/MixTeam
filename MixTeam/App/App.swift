@@ -5,66 +5,50 @@ struct App: ReducerProtocol {
         @available(*, deprecated, message: "Use teams instead")
         var dprTeams: IdentifiedArrayOf<DprTeam> = []
         var teams: IdentifiedArrayOf<Team.State> = []
-        var editedPlayer: Player?
-        var editedTeam: DprTeam?
+        var editedPlayer: DprPlayer?
+        var editedTeam: Team.State?
         var notEnoughTeamsAlert: AlertState<Action>?
     }
     enum Action: Equatable {
         case saveTeams
         case loadTeams
         case addTeam
-        case editTeam(DprTeam)
         case finishEditingTeam
-        case updateTeam(DprTeam)
-        case deleteTeam(DprTeam)
-        case createPlayer
-        case editPlayer(Player)
+        case editPlayer(DprPlayer)
         case finishEditingPlayer
-        case updatePlayer(Player)
-        case deletePlayer(Player)
-        case moveBackPlayer(Player)
+        case updatePlayer(DprPlayer)
+        case deletePlayer(DprPlayer)
+        case moveBackPlayer(DprPlayer)
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case team(id: Team.State.ID, action: Team.Action)
+        case teamEdited(Team.Action)
     }
     @Dependency(\.saveTeams) var saveTeams
     @Dependency(\.loadedTeams) var loadedTeams
+    @Dependency(\.uuid) var uuid
 
     // swiftlint:disable:next cyclomatic_complexity
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .saveTeams:
-                saveTeams(state.dprTeams.elements)
+                saveTeams(state.teams.elements)
                 return .none
             case .loadTeams:
-                state.dprTeams = IdentifiedArrayOf(uniqueElements: loadedTeams)
+                state.teams = IdentifiedArrayOf(uniqueElements: loadedTeams)
                 return .none
             case .addTeam:
                 let image = ImageIdentifier.teams.randomElement() ?? .koala
                 let color = ColorIdentifier.allCases.randomElement() ?? .red
                 let name = "\(color.name) \(image.name)".localizedCapitalized
-                state.dprTeams.updateOrAppend(DprTeam(name: name, colorIdentifier: color, imageIdentifier: image))
+                state.teams.updateOrAppend(
+                    Team.State(id: uuid(), name: name, colorIdentifier: color, imageIdentifier: image)
+                )
                 return Effect(value: .saveTeams)
-            case let .editTeam(team):
-                state.editedTeam = team
-                return .none
             case .finishEditingTeam:
                 state.editedTeam = nil
                 return .none
-            case let .updateTeam(team):
-                state.dprTeams.updateOrAppend(team)
-                return Effect(value: .saveTeams)
-            case let .deleteTeam(team):
-                state.dprTeams.remove(team)
-                return .none
-            case .createPlayer:
-                let name = Player.placeholders.randomElement() ?? ""
-                let image = ImageIdentifier.players.randomElement() ?? .unknown
-                let player = Player(name: name, imageIdentifier: image)
-                let firstTeamID = state.dprTeams[0].id
-                state.dprTeams[id: firstTeamID]?.players.updateOrAppend(player)
-                return Effect(value: .saveTeams)
             case let .editPlayer(player):
                 state.editedPlayer = player
                 return .none
@@ -120,8 +104,16 @@ struct App: ReducerProtocol {
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
+            case let .team(id, .edit):
+                state.editedTeam = state.teams[id: id]
+                return .none
+            case let .team(id, .delete):
+                state.teams.remove(id: id)
+                return Effect(value: .saveTeams)
             case .team(id:action:):
                 return Effect(value: .saveTeams)
+            case .teamEdited:
+                return .none
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {

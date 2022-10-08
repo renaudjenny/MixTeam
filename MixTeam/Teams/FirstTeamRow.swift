@@ -2,8 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct FirstTeamRow: View {
-    let team: DprTeam
-    let store: StoreOf<App>
+    let store: StoreOf<Team>
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -12,38 +11,36 @@ struct FirstTeamRow: View {
     }
 
     var card: some View {
-        VStack {
-            header
-                .font(.callout)
-                .foregroundColor(Color.white)
-                .padding(.top)
-            ForEach(team.players) { player in
-                PlayerRow(
-                    player: player,
-                    isInFirstTeam: true,
-                    store: store
-                )
+        WithViewStore(store) { viewStore in
+            VStack {
+                header
+                    .font(.callout)
+                    .foregroundColor(Color.white)
+                    .padding(.top)
+                ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+                addPlayerButton
             }
-            addPlayerButton
+            .frame(maxWidth: .infinity)
+            .background(viewStore.colorIdentifier.color)
+            .modifier(AddDashedCardStyle())
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal)
+            .padding(.bottom)
         }
-        .frame(maxWidth: .infinity)
-        .background(team.colorIdentifier.color)
-        .modifier(AddDashedCardStyle())
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal)
-        .padding(.bottom)
     }
 
     private var header: some View {
-        VStack {
-            Text(team.name)
-                .font(.title2)
-                .fontWeight(.semibold)
-                .padding(.horizontal)
-            Image(systemName: "person.3")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50, height: 50)
+        WithViewStore(store) { viewStore in
+            VStack {
+                Text(viewStore.name)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .padding(.horizontal)
+                Image(systemName: "person.3")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 50, height: 50)
+            }
         }
     }
 
@@ -75,24 +72,9 @@ struct FirstTeamRow_Previews: PreviewProvider {
     private struct Preview: View {
         var body: some View {
             ScrollView {
-                FirstTeamRow(
-                    team: DprTeam(
-                        name: "Players standing for a team with a too long text"),
-                    store: .preview
-                )
-                FirstTeamRow(
-                    team: DprTeam(
-                        name: "With right to left"),
-                    store: .preview
-                ).environment(\.layoutDirection, .rightToLeft)
-                TeamRow(
-                    team: DprTeam(
-                        name: "Test",
-                        colorIdentifier: .red,
-                        imageIdentifier: .koala
-                    ),
-                    store: .preview
-                )
+                FirstTeamRow(store: .firstRowPreview)
+                FirstTeamRow(store: .firstRowPreview).environment(\.layoutDirection, .rightToLeft)
+                TeamRow(store: .preview)
             }
         }
     }

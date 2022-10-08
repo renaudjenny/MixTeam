@@ -14,20 +14,17 @@ struct AppView: View {
             ScrollView {
                 LazyVStack {
                     header
-                    viewStore.dprTeams.first.map { FirstTeamRow(team: $0, store: store) }
+                    Text("First Row Placeholder").font(.title)
                     mixTeamButton
-                    ForEach(viewStore.dprTeams.dropFirst(), content: teamRow)
+//                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     addTeamButton
                 }
             }
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-            .sheet(item: viewStore.binding(get: { $0.editedTeam }, send: { _ in .finishEditingTeam })) {
-                viewStore.dprTeams.firstIndex(of: $0).map { index in
-                    EditTeamView(team: viewStore.binding(
-                        get: { $0.dprTeams[index] },
-                        send: { App.Action.updateTeam($0) }
-                    ))
+            .sheet(item: viewStore.binding(get: { $0.editedTeam }, send: { _ in .finishEditingTeam })) { _ in
+                IfLetStore(store.scope(state: \.editedTeam, action: App.Action.teamEdited)) { store in
+                    EditTeamView(store: store)
                 }
             }
             .sheet(item: viewStore.binding(get: { $0.editedPlayer }, send: { _ in .finishEditingPlayer })) { player in
@@ -90,11 +87,6 @@ struct AppView: View {
         .buttonStyle(MixTeamButtonStyle(color: .gray))
         .padding(.horizontal)
         .accessibility(label: Text("About"))
-    }
-
-    private func teamRow(team: DprTeam) -> some View {
-        TeamRow(team: team, store: store)
-            .transition(.move(edge: .leading))
     }
 
     private var mixTeamButton: some View {

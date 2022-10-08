@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ImagePicker: View {
-    let team: DprTeam
+    let color: ColorIdentifier
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
@@ -11,11 +11,11 @@ struct ImagePicker: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns) {
                 ForEach(images) {
-                    Cell(imageIdentifier: $0, team: team, selection: $selection)
+                    Cell(imageIdentifier: $0, color: color, selection: $selection)
                 }
             }.padding()
         }
-        .background(team.colorIdentifier.color)
+        .background(color.color)
         .modifier(AddDashedCardStyle())
         .padding()
     }
@@ -30,7 +30,7 @@ struct ImagePicker: View {
 
 private struct Cell: View {
     let imageIdentifier: ImageIdentifier
-    let team: DprTeam
+    let color: ColorIdentifier
     @Binding var selection: ImageIdentifier
 
     var body: some View {
@@ -52,7 +52,7 @@ private struct Cell: View {
 
     private var imageForegroundColor: Color {
         if selection == imageIdentifier {
-            return team.colorIdentifier.color
+            return color.color
         } else {
             return .white
         }
@@ -78,28 +78,17 @@ extension ImagePicker {
 struct PlayerImagePicker_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
-            .environmentObject(TeamsStore())
     }
 
     struct Preview: View {
-        @EnvironmentObject var teamsStore: TeamsStore
-        var selection: Binding<ImageIdentifier> {
-            .init(
-                get: { teamsStore.teams[1].players[0].imageIdentifier },
-                set: {
-                    var player = teamsStore.teams[1].players[0]
-                    player.imageIdentifier = $0
-                    teamsStore.teams[1].players.updateOrAppend(player)
-                }
-            )
-        }
+        var selection: Binding<ImageIdentifier> { .constant(.girl) }
 
         var body: some View {
             VStack {
-                ImagePicker(team: teamsStore.teams[1], selection: selection, type: .player)
+                ImagePicker(color: .red, selection: selection, type: .player)
                 Spacer()
-                TeamRow(team: teamsStore.teams[1], store: .preview)
-                Text("Selection: \(teamsStore.teams[1].players[0].imageIdentifier.rawValue)")
+                TeamRow(store: .preview)
+                Text("Selection: \(selection.wrappedValue.rawValue)")
             }
         }
     }

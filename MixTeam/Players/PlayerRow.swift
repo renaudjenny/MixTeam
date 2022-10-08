@@ -2,26 +2,20 @@ import ComposableArchitecture
 import SwiftUI
 
 struct PlayerRow: View {
-    let player: Player
-    let isInFirstTeam: Bool
-    let store: StoreOf<App>
+    let store: StoreOf<Player>
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.editPlayer(player)) } label: {
+        WithViewStore(store) { viewStore in
+            Button { viewStore.send(.edit) } label: {
                 HStack {
-                    player.imageIdentifier.image
+                    viewStore.image.image
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 60, height: 60)
                         .padding([.leading, .trailing])
-                    Text(player.name)
+                    Text(viewStore.name)
                     Spacer()
-                    PlayerRowButtons(
-                        player: player,
-                        isInFirstTeam: isInFirstTeam,
-                        store: store
-                    )
+                    PlayerRowButtons(store: store)
                 }
                 .foregroundColor(Color.white)
             }
@@ -31,18 +25,16 @@ struct PlayerRow: View {
 }
 
 private struct PlayerRowButtons: View {
-    let player: Player
-    let isInFirstTeam: Bool
-    let store: StoreOf<App>
+    let store: StoreOf<Player>
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            if isInFirstTeam {
-                Button { viewStore.send(.deletePlayer(player)) } label: {
+            if true {
+                Button { viewStore.send(.delete) } label: {
                     Image(systemName: "minus.circle.fill")
                 }.padding(.trailing)
             } else {
-                Button { viewStore.send(.moveBackPlayer(player)) } label: {
+                Button { viewStore.send(.moveBack) } label: {
                     Image(systemName: "gobackward")
                 }.padding(.trailing)
             }
@@ -54,18 +46,16 @@ private struct PlayerRowButtons: View {
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            PlayerRow(
-                player: .test,
-                isInFirstTeam: true,
-                store: .preview
-            )
+            PlayerRow(store: .preview)
             Color.white.frame(height: 20)
-            PlayerRow(
-                player: .test,
-                isInFirstTeam: false,
-                store: .preview
-            )
+            PlayerRow(store: .preview)
         }.background(Color.red)
+    }
+}
+
+extension StoreOf<Player> {
+    static var preview: StoreOf<Player> {
+        Store(initialState: Player.State(id: UUID(), name: "Test", image: .girl), reducer: Player())
     }
 }
 #endif

@@ -45,6 +45,7 @@
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
 		4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D28249BED2200E88F80 /* TeamsStore.swift */; };
 		4CFDCAD428F0B642002DBF2D /* TeamsPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD328F0B642002DBF2D /* TeamsPersistence.swift */; };
+		4CFDCAD828F200BC002DBF2D /* Team+Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD728F200BC002DBF2D /* Team+Example.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D28249BED2200E88F80 /* TeamsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsStore.swift; sourceTree = "<group>"; };
 		4CFDCAD328F0B642002DBF2D /* TeamsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsPersistence.swift; sourceTree = "<group>"; };
+		4CFDCAD728F200BC002DBF2D /* Team+Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Example.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +291,7 @@
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
 				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
 				4C1ED55724C82196005D6749 /* FirstTeamRow.swift */,
+				4CFDCAD728F200BC002DBF2D /* Team+Example.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
+				4CFDCAD828F200BC002DBF2D /* Team+Example.swift in Sources */,
 				4C1ED55824C82196005D6749 /* FirstTeamRow.swift in Sources */,
 				4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */,
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
