@@ -7,7 +7,6 @@ struct Team: ReducerProtocol {
         var name: String = ""
         var colorIdentifier: ColorIdentifier = .gray
         var imageIdentifier: ImageIdentifier = .unknown
-        var isFirstRow = false
         var players: IdentifiedArrayOf<Player.State> = []
     }
 
@@ -17,7 +16,6 @@ struct Team: ReducerProtocol {
         case imageUpdated(ImageIdentifier)
         case edit
         case delete
-        case createPlayer
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -37,12 +35,6 @@ struct Team: ReducerProtocol {
         case .edit:
             return .none
         case .delete:
-            return .none
-        case .createPlayer:
-            let name = DprPlayer.placeholders.randomElement() ?? ""
-            let image = ImageIdentifier.players.randomElement() ?? .unknown
-            let player = Player.State(id: uuid(), name: name, image: image, isInFirstRow: state.isFirstRow)
-            state.players.updateOrAppend(player)
             return .none
         case .player:
             return .none

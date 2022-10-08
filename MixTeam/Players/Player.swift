@@ -6,7 +6,7 @@ struct Player: ReducerProtocol {
         let id: UUID
         var name = ""
         var image: ImageIdentifier = .unknown
-        var isInFirstRow = false
+        var isStanding = false
     }
 
     enum Action: Equatable {

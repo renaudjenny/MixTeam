@@ -1,8 +1,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct FirstTeamRow: View {
-    let store: StoreOf<Team>
+struct StandingView: View {
+    let store: StoreOf<Standing>
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -17,11 +17,11 @@ struct FirstTeamRow: View {
                     .font(.callout)
                     .foregroundColor(Color.white)
                     .padding(.top)
-                ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+                ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
                 addPlayerButton
             }
             .frame(maxWidth: .infinity)
-            .background(viewStore.colorIdentifier.color)
+            .background(.gray)
             .modifier(AddDashedCardStyle())
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
@@ -32,7 +32,7 @@ struct FirstTeamRow: View {
     private var header: some View {
         WithViewStore(store) { viewStore in
             VStack {
-                Text(viewStore.name)
+                Text("Players standing for a team")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.horizontal)
@@ -72,11 +72,20 @@ struct FirstTeamRow_Previews: PreviewProvider {
     private struct Preview: View {
         var body: some View {
             ScrollView {
-                FirstTeamRow(store: .firstRowPreview)
-                FirstTeamRow(store: .firstRowPreview).environment(\.layoutDirection, .rightToLeft)
+                StandingView(store: .preview)
+                StandingView(store: .preview).environment(\.layoutDirection, .rightToLeft)
                 TeamRow(store: .preview)
             }
         }
+    }
+}
+
+extension StoreOf<Standing> {
+    static var preview: StoreOf<Standing> {
+        Store(
+            initialState: Standing.State(players: [Player.State(id: UUID(), name: "Player 1", image: .girl)]),
+            reducer: Standing()
+        )
     }
 }
 #endif

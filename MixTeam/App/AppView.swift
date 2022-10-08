@@ -14,9 +14,9 @@ struct AppView: View {
             ScrollView {
                 LazyVStack {
                     header
-                    Text("First Row Placeholder").font(.title)
+                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                     mixTeamButton
-//                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     addTeamButton
                 }
             }

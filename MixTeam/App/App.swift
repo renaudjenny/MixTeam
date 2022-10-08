@@ -4,6 +4,7 @@ struct App: ReducerProtocol {
     struct State: Equatable {
         @available(*, deprecated, message: "Use teams instead")
         var dprTeams: IdentifiedArrayOf<DprTeam> = []
+        var standing = Standing.State()
         var teams: IdentifiedArrayOf<Team.State> = []
         var editedPlayer: DprPlayer?
         var editedTeam: Team.State?
@@ -21,22 +22,26 @@ struct App: ReducerProtocol {
         case moveBackPlayer(DprPlayer)
         case mixTeam
         case dismissNotEnoughTeamsAlert
+        case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
         case teamEdited(Team.Action)
     }
-    @Dependency(\.saveTeams) var saveTeams
-    @Dependency(\.loadedTeams) var loadedTeams
+    @Dependency(\.save) var save
+    @Dependency(\.loaded) var loaded
     @Dependency(\.uuid) var uuid
 
     // swiftlint:disable:next cyclomatic_complexity
     var body: some ReducerProtocol<State, Action> {
+        Scope(state: \.standing, action: /Action.standing) {
+            Standing()
+        }
         Reduce { state, action in
             switch action {
             case .saveTeams:
-                saveTeams(state.teams.elements)
+                save(state)
                 return .none
             case .loadTeams:
-                state.teams = IdentifiedArrayOf(uniqueElements: loadedTeams)
+                state = loaded
                 return .none
             case .addTeam:
                 let image = ImageIdentifier.teams.randomElement() ?? .koala
@@ -104,6 +109,8 @@ struct App: ReducerProtocol {
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
+            case .standing:
+                return Effect(value: .saveTeams)
             case let .team(id, .edit):
                 state.editedTeam = state.teams[id: id]
                 return .none
@@ -119,5 +126,12 @@ struct App: ReducerProtocol {
         .forEach(\.teams, action: /Action.team(id:action:)) {
             Team()
         }
+    }
+}
+
+extension App.State: Codable {
+    enum CodingKeys: CodingKey {
+        case standing
+        case teams
     }
 }

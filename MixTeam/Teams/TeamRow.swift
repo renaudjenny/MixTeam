@@ -58,7 +58,7 @@ struct TeamRow_Previews: PreviewProvider {
             Group {
                 TeamRow(store: .preview)
                 TeamRow(store: .previewWithPlayers)
-                FirstTeamRow(store: .firstRowPreview)
+                StandingView(store: .preview)
             }
         }
     }
@@ -91,16 +91,6 @@ struct TeamRowUX_Previews: PreviewProvider {
 }
 
 extension StoreOf<Team> {
-    static var firstRowPreview: StoreOf<Team> {
-        Store(
-            initialState: Team.State(
-                id: UUID(),
-                name: "Players standing for a Team",
-                players: [Player.State(id: UUID(), name: "Player 1", image: .girl)]
-            ),
-            reducer: Team()
-        )
-    }
     static var preview: StoreOf<Team> {
         Store(initialState: .preview, reducer: Team())
     }
