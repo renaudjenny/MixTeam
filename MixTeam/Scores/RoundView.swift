@@ -40,9 +40,9 @@ struct RoundView: View {
         }
     }
 
-    private var teams: [Team] {
+    private var teams: [DprTeam] {
         (teamsStore.teams.dropFirst() + round.scores.map(\.team))
-            .reduce([], { result, team -> [Team] in
+            .reduce([], { result, team -> [DprTeam] in
                 if result.contains(where: { $0 == team }) { return result }
                 return result + [team]
             })
@@ -62,7 +62,7 @@ struct NewScoreView_Previews: PreviewProvider {
             return Round(
                 name: "Round 1",
                 scores: [
-                    Round.Score(team: [Team].exampleTeam[2], points: 15),
+                    Round.Score(team: [DprTeam].exampleTeam[2], points: 15),
                 ],
                 id: id
             )

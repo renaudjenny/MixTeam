@@ -66,11 +66,11 @@ struct ScoreboardView: View {
         isNavigateToNewRoundActive = true
     }
 
-    private func accumulatedPoints(for round: Round) -> [Team: Int] {
+    private func accumulatedPoints(for round: Round) -> [DprTeam: Int] {
         guard let roundIndex = rounds.firstIndex(of: round)
         else { return [:] }
-        return [Team: Int](
-            rounds[...roundIndex].flatMap(\.scores).map { score -> (Team, Int) in
+        return [DprTeam: Int](
+            rounds[...roundIndex].flatMap(\.scores).map { score -> (DprTeam, Int) in
                 (score.team, score.points)
             },
             uniquingKeysWith: { $0 + $1 }

@@ -14,31 +14,31 @@ struct AppView: View {
             ScrollView {
                 LazyVStack {
                     header
-                    viewStore.teams.first.map { FirstTeamRow(team: $0, store: store) }
+                    viewStore.dprTeams.first.map { FirstTeamRow(team: $0, store: store) }
                     mixTeamButton
-                    ForEach(viewStore.teams.dropFirst(), content: teamRow)
+                    ForEach(viewStore.dprTeams.dropFirst(), content: teamRow)
                     addTeamButton
                 }
             }
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(item: viewStore.binding(get: { $0.editedTeam }, send: { _ in .finishEditingTeam })) {
-                viewStore.teams.firstIndex(of: $0).map { index in
+                viewStore.dprTeams.firstIndex(of: $0).map { index in
                     EditTeamView(team: viewStore.binding(
-                        get: { $0.teams[index] },
+                        get: { $0.dprTeams[index] },
                         send: { App.Action.updateTeam($0) }
                     ))
                 }
             }
             .sheet(item: viewStore.binding(get: { $0.editedPlayer }, send: { _ in .finishEditingPlayer })) { player in
-                viewStore.teams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
-                    viewStore.teams[teamIndex].players.firstIndex(of: player).map { playerIndex in
+                viewStore.dprTeams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
+                    viewStore.dprTeams[teamIndex].players.firstIndex(of: player).map { playerIndex in
                         EditPlayerView(
                             player: viewStore.binding(
-                                get: { $0.teams[teamIndex].players[playerIndex] },
+                                get: { $0.dprTeams[teamIndex].players[playerIndex] },
                                 send: { .updatePlayer($0) }
                             ),
-                            team: viewStore.teams[teamIndex]
+                            team: viewStore.dprTeams[teamIndex]
                         )
                     }
                 }
@@ -92,7 +92,7 @@ struct AppView: View {
         .accessibility(label: Text("About"))
     }
 
-    private func teamRow(team: Team) -> some View {
+    private func teamRow(team: DprTeam) -> some View {
         TeamRow(team: team, store: store)
             .transition(.move(edge: .leading))
     }
@@ -161,7 +161,7 @@ struct PlayersView_Previews: PreviewProvider {
 
 extension StoreOf<App> {
     static var preview: StoreOf<App> {
-        Store(initialState: App.State(teams: .init(uniqueElements: [Team].exampleTeam)), reducer: App())
+        Store(initialState: App.State(dprTeams: .init(uniqueElements: [DprTeam].exampleTeam)), reducer: App())
     }
 }
 #endif

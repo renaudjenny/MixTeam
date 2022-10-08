@@ -2,7 +2,7 @@ import SwiftUI
 
 struct RoundRow: View {
     let round: Round
-    let accumulatedPoints: [Team: Int]
+    let accumulatedPoints: [DprTeam: Int]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -48,9 +48,9 @@ struct RoundRow_Previews: PreviewProvider {
             return Round(
                 name: "Test Round",
                 scores: [
-                    Round.Score(team: [Team].exampleTeam[1], points: 15),
-                    Round.Score(team: [Team].exampleTeam[2], points: 20),
-                    Round.Score(team: [Team].exampleTeam[3], points: 0),
+                    Round.Score(team: [DprTeam].exampleTeam[1], points: 15),
+                    Round.Score(team: [DprTeam].exampleTeam[2], points: 20),
+                    Round.Score(team: [DprTeam].exampleTeam[3], points: 0),
                 ],
                 id: id
             )
@@ -62,9 +62,9 @@ struct RoundRow_Previews: PreviewProvider {
                     ForEach(0..<3) { _ in
                         Section(header: HeaderView(round: .constant(round))) {
                             RoundRow(round: round, accumulatedPoints: [
-                                [Team].exampleTeam[1]: 20,
-                                [Team].exampleTeam[2]: 50,
-                                [Team].exampleTeam[3]: 0,
+                                [DprTeam].exampleTeam[1]: 20,
+                                [DprTeam].exampleTeam[2]: 50,
+                                [DprTeam].exampleTeam[3]: 0,
                             ])
                         }
                     }

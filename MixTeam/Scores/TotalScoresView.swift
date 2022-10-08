@@ -38,7 +38,7 @@ struct TotalScoresView: View {
         .background(Color.purple)
     }
 
-    private func total(for team: Team) -> String {
+    private func total(for team: DprTeam) -> String {
         String(
             rounds
                 .flatMap(\.scores)

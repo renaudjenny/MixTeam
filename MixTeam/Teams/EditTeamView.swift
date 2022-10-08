@@ -3,7 +3,7 @@ import SwiftUI
 struct EditTeamView: View {
     @Environment(\.presentationMode) var presentation
     @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Binding var team: Team
+    @Binding var team: DprTeam
     @State private var animateSplashGrowing: Bool = false
     @State private var animateSplashDripping: Bool = false
 
@@ -105,7 +105,7 @@ struct EditTeamView_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var team = Team(
+        @State private var team = DprTeam(
             name: "Test",
             colorIdentifier: .red,
             imageIdentifier: .koala
@@ -126,7 +126,7 @@ struct EditTeamViewInteractive_Previews: PreviewProvider {
     struct Preview: View {
         @EnvironmentObject var teamsStore: TeamsStore
         @State private var isEdited = false
-        private var team: Team { teamsStore.teams[1] }
+        private var team: DprTeam { teamsStore.teams[1] }
 
         var body: some View {
             TeamRow(team: team, store: .preview)

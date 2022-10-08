@@ -34,7 +34,7 @@ extension MixTeamLogic {
         }
     }
 
-    private func hasLessPlayer(teamA a: Team, teamB b: Team) -> Bool {
+    private func hasLessPlayer(teamA a: DprTeam, teamB b: DprTeam) -> Bool {
         a.players.count < b.players.count
     }
 }

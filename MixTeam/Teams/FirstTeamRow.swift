@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct FirstTeamRow: View {
-    let team: Team
+    let team: DprTeam
     let store: StoreOf<App>
 
     var body: some View {
@@ -76,17 +76,17 @@ struct FirstTeamRow_Previews: PreviewProvider {
         var body: some View {
             ScrollView {
                 FirstTeamRow(
-                    team: Team(
+                    team: DprTeam(
                         name: "Players standing for a team with a too long text"),
                     store: .preview
                 )
                 FirstTeamRow(
-                    team: Team(
+                    team: DprTeam(
                         name: "With right to left"),
                     store: .preview
                 ).environment(\.layoutDirection, .rightToLeft)
                 TeamRow(
-                    team: Team(
+                    team: DprTeam(
                         name: "Test",
                         colorIdentifier: .red,
                         imageIdentifier: .koala

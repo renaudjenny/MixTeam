@@ -5,8 +5,8 @@ protocol TeamsLogic {
     var teamsStore: TeamsStore { get }
 
     func createRandomTeam()
-    func edit(team: Team)
-    func delete(team: Team)
+    func edit(team: DprTeam)
+    func delete(team: DprTeam)
 }
 
 extension TeamsLogic {
@@ -16,7 +16,7 @@ extension TeamsLogic {
         let name = "\(color.name) \(image.name)".localizedCapitalized
 
         withAnimation {
-            teamsStore.teams.append(Team(
+            teamsStore.teams.append(DprTeam(
                 name: name,
                 colorIdentifier: color,
                 imageIdentifier: image
@@ -24,7 +24,7 @@ extension TeamsLogic {
         }
     }
 
-    func delete(team: Team) {
+    func delete(team: DprTeam) {
         guard let index = teamsStore.teams.firstIndex(of: team) else { return }
         guard index > 0 else { return }
 
@@ -37,7 +37,7 @@ extension TeamsLogic {
         }
     }
 
-    func edit(team: Team) {
+    func edit(team: DprTeam) {
         guard let teamIndex = teamsStore.teams.firstIndex(of: team) else {
             return
         }

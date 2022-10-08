@@ -2,7 +2,7 @@ import SwiftUI
 
 final class TeamsStore: ObservableObject {
     static let teamsKey = "teams"
-    @Published var teams: [Team] {
+    @Published var teams: [DprTeam] {
         didSet { save() }
     }
 
@@ -12,7 +12,7 @@ final class TeamsStore: ObservableObject {
             return
         }
 
-        let savedTeams = try? JSONDecoder().decode([Team].self, from: data)
+        let savedTeams = try? JSONDecoder().decode([DprTeam].self, from: data)
         teams = savedTeams ?? .exampleTeam
     }
 
@@ -22,7 +22,7 @@ final class TeamsStore: ObservableObject {
     }
 }
 
-extension Array where Element == Team {
+extension Array where Element == DprTeam {
     static let exampleTeam: Self = {
         guard let playersStandingTeamId = UUID(uuidString: "D6C7FA85-8DA0-45B7-8688-3D3390EACF05"),
               let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
@@ -30,7 +30,7 @@ extension Array where Element == Team {
               let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        var playersStandingTeam = Team(
+        var playersStandingTeam = DprTeam(
             id: playersStandingTeamId,
             name: "Players standing for a team",
             colorIdentifier: .gray, imageIdentifier: .unknown
@@ -39,7 +39,7 @@ extension Array where Element == Team {
             Player(name: "Amelia", imageIdentifier: .girl),
             Player(name: "José", imageIdentifier: .santa),
         ]
-        var koalaTeam = Team(
+        var koalaTeam = DprTeam(
             id: koalaTeamId,
             name: "Red Koala",
             colorIdentifier: .red,
@@ -49,13 +49,13 @@ extension Array where Element == Team {
         return [
             playersStandingTeam,
             koalaTeam,
-            Team(
+            DprTeam(
                 id: purpleElephantId,
                 name: "Purple Elephant",
                 colorIdentifier: .purple,
                 imageIdentifier: .elephant
             ),
-            Team(
+            DprTeam(
                 id: blueLionId,
                 name: "Blue Lion",
                 colorIdentifier: .blue,

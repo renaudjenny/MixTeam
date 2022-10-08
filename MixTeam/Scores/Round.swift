@@ -6,9 +6,9 @@ struct Round: Identifiable, Codable, Hashable {
     var id = UUID()
 
     struct Score: Identifiable, Codable, Hashable {
-        var team: Team
+        var team: DprTeam
         var points: Int
-        var id: Team.ID { team.id }
+        var id: DprTeam.ID { team.id }
     }
 }
 
@@ -30,7 +30,7 @@ extension Rounds: RawRepresentable {
 }
 
 extension Array where Element == Round {
-    var teams: [Team] {
+    var teams: [DprTeam] {
         flatMap(\.scores)
             .map(\.team)
             .reduce([], {
@@ -41,9 +41,9 @@ extension Array where Element == Round {
     }
 
     #if DEBUG
-    static let team1: Team = [Team].exampleTeam[1]
-    static let team2: Team = [Team].exampleTeam[2]
-    static let team3 = Team(
+    static let team1: DprTeam = [DprTeam].exampleTeam[1]
+    static let team2: DprTeam = [DprTeam].exampleTeam[2]
+    static let team3 = DprTeam(
         name: "The team who had no name",
         colorIdentifier: .red,
         imageIdentifier: .hippo,

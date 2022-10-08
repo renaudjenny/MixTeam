@@ -5,7 +5,7 @@ import UIKit
 struct EditPlayerView: View {
     @Environment(\.presentationMode) var presentation
     @Binding var player: Player
-    let team: Team
+    let team: DprTeam
 
     var body: some View {
         VStack {
@@ -52,7 +52,7 @@ struct EditPlayerView_Previews: PreviewProvider {
 
     struct Preview: View {
         @State private var player = Player(name: "Amelia", imageIdentifier: .girl)
-        let team = Team(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
+        let team = DprTeam(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
 
         var body: some View {
             EditPlayerView(player: $player, team: team)
@@ -69,7 +69,7 @@ struct EditPlayerViewInteractive_Previews: PreviewProvider {
     struct Preview: View {
         @EnvironmentObject var teamsStore: TeamsStore
         @State private var editedPlayer: Player?
-        var team: Team { teamsStore.teams[1] }
+        var team: DprTeam { teamsStore.teams[1] }
 
         var body: some View {
             TeamRow(team: team, store: .preview)

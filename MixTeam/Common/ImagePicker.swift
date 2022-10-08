@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ImagePicker: View {
-    let team: Team
+    let team: DprTeam
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
@@ -30,7 +30,7 @@ struct ImagePicker: View {
 
 private struct Cell: View {
     let imageIdentifier: ImageIdentifier
-    let team: Team
+    let team: DprTeam
     @Binding var selection: ImageIdentifier
 
     var body: some View {

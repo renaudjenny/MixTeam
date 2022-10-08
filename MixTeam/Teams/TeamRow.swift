@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct TeamRow: View {
-    let team: Team
+    let team: DprTeam
     let store: StoreOf<App>
 
     var body: some View {
@@ -64,7 +64,7 @@ struct TeamRow_Previews: PreviewProvider {
         var body: some View {
             Group {
                 TeamRow(
-                    team: Team(
+                    team: DprTeam(
                         id: UUID(),
                         name: "Team Test",
                         colorIdentifier: .red,
@@ -74,7 +74,7 @@ struct TeamRow_Previews: PreviewProvider {
                     store: .preview
                 )
                 TeamRow(
-                    team: Team(
+                    team: DprTeam(
                         id: UUID(),
                         name: "Team Test with Players",
                         colorIdentifier: .blue,
@@ -87,7 +87,7 @@ struct TeamRow_Previews: PreviewProvider {
                     store: .preview
                 )
                 FirstTeamRow(
-                    team: Team(
+                    team: DprTeam(
                         id: UUID(),
                         name: "Players standing for a Team",
                         colorIdentifier: .gray,
@@ -109,7 +109,7 @@ struct TeamRowUX_Previews: PreviewProvider {
     }
 
     private struct Preview: View {
-        @State private var teams: [Team] = [.test]
+        @State private var teams: [DprTeam] = [.test]
 
         var body: some View {
             ScrollView {
@@ -120,7 +120,7 @@ struct TeamRowUX_Previews: PreviewProvider {
             }
         }
 
-        private func teamRow(_ team: Team) -> some View {
+        private func teamRow(_ team: DprTeam) -> some View {
             TeamRow(team: team, store: .preview)
                 .transition(.move(edge: .leading))
         }
@@ -128,7 +128,7 @@ struct TeamRowUX_Previews: PreviewProvider {
         private func addTeam() {
             withAnimation {
                 teams.append(
-                    Team(
+                    DprTeam(
                         id: UUID(),
                         name: "Team Test",
                         colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
