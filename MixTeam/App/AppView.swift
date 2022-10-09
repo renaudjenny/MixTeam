@@ -24,23 +24,18 @@ struct AppView: View {
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
                 get: { $0.isEditTeamSheetPresented },
-                send: { .setEditTeamSheetIsPresented($0) })
-            ) {
+                send: { .setEditTeamSheetIsPresented($0) }
+            )) {
                 IfLetStore(store.scope(state: \.editedTeam, action: App.Action.teamEdited)) { store in
                     EditTeamView(store: store)
                 }
             }
-            .sheet(item: viewStore.binding(get: { $0.editedPlayer }, send: { _ in .finishEditingPlayer })) { player in
-                viewStore.dprTeams.firstIndex(where: { team in team.players.contains(player) }).map { teamIndex in
-                    viewStore.dprTeams[teamIndex].players.firstIndex(of: player).map { playerIndex in
-                        EditPlayerView(
-                            player: viewStore.binding(
-                                get: { $0.dprTeams[teamIndex].players[playerIndex] },
-                                send: { .updatePlayer($0) }
-                            ),
-                            team: viewStore.dprTeams[teamIndex]
-                        )
-                    }
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isEditPlayerSheetPresented },
+                send: { .setEditPlayerSheetIsPresented($0) }
+            )) {
+                IfLetStore(store.scope(state: \.editedPlayer, action: App.Action.playerEdited)) { store in
+                    EditPlayerView(store: store)
                 }
             }
             .background(Color.clear.sheet(isPresented: $isScoreboardPresented) {

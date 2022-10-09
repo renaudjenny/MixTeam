@@ -8,9 +8,12 @@ class MixTeamLogicTests: XCTestCase {
         let store = TestStore(initialState: .example, reducer: App())
 
         let allPlayers = store.state.standing.players + store.state.teams.flatMap(\.players)
-        let amelia = allPlayers.first { $0.name == "Amelia" }!
+        var amelia = allPlayers.first { $0.name == "Amelia" }!
         let jack = allPlayers.first { $0.name == "Jack" }!
-        let jose = allPlayers.first { $0.name == "José" }!
+        var jose = allPlayers.first { $0.name == "José" }!
+
+        amelia.isStanding = false
+        jose.isStanding = false
 
         store.dependencies.shufflePlayers = .alphabeticallySorted
         store.dependencies.save = { _ in }

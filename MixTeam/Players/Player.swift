@@ -7,6 +7,7 @@ struct Player: ReducerProtocol {
         var name = ""
         var image: ImageIdentifier = .unknown
         var isStanding = false
+        let color: ColorIdentifier
     }
 
     enum Action: Equatable {

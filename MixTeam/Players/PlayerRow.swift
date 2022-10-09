@@ -29,7 +29,7 @@ private struct PlayerRowButtons: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            if true {
+            if viewStore.isStanding {
                 Button { viewStore.send(.delete) } label: {
                     Image(systemName: "minus.circle.fill")
                 }.padding(.trailing)
@@ -55,7 +55,7 @@ struct PlayerRow_Previews: PreviewProvider {
 
 extension StoreOf<Player> {
     static var preview: StoreOf<Player> {
-        Store(initialState: Player.State(id: UUID(), name: "Test", image: .girl), reducer: Player())
+        Store(initialState: Player.State(id: UUID(), name: "Test", image: .girl, color: .red), reducer: Player())
     }
 }
 #endif

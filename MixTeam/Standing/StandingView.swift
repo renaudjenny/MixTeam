@@ -11,36 +11,32 @@ struct StandingView: View {
     }
 
     var card: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                header
-                    .font(.callout)
-                    .foregroundColor(Color.white)
-                    .padding(.top)
-                ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
-                addPlayerButton
-            }
-            .frame(maxWidth: .infinity)
-            .background(.gray)
-            .modifier(AddDashedCardStyle())
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal)
-            .padding(.bottom)
+        VStack {
+            header
+                .font(.callout)
+                .foregroundColor(Color.white)
+                .padding(.top)
+            ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
+            addPlayerButton
         }
+        .frame(maxWidth: .infinity)
+        .background(.gray)
+        .modifier(AddDashedCardStyle())
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal)
+        .padding(.bottom)
     }
 
     private var header: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                Text("Players standing for a team")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .padding(.horizontal)
-                Image(systemName: "person.3")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 50, height: 50)
-            }
+        VStack {
+            Text("Players standing for a team")
+                .font(.title2)
+                .fontWeight(.semibold)
+                .padding(.horizontal)
+            Image(systemName: "person.3")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
         }
     }
 
@@ -83,7 +79,9 @@ struct FirstTeamRow_Previews: PreviewProvider {
 extension StoreOf<Standing> {
     static var preview: StoreOf<Standing> {
         Store(
-            initialState: Standing.State(players: [Player.State(id: UUID(), name: "Player 1", image: .girl)]),
+            initialState: Standing.State(
+                players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .gray)]
+            ),
             reducer: Standing()
         )
     }

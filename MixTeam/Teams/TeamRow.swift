@@ -102,8 +102,8 @@ extension StoreOf<Team> {
                 colorIdentifier: .blue,
                 imageIdentifier: .octopus,
                 players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .girl),
-                    Player.State(id: UUID(), name: "Player 2", image: .santa),
+                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .blue),
+                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .blue),
                 ]
             ),
             reducer: Team()

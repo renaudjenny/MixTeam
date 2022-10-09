@@ -18,7 +18,7 @@ struct Standing: ReducerProtocol {
         case .createPlayer:
             let name = DprPlayer.placeholders.randomElement() ?? ""
             let image = ImageIdentifier.players.randomElement() ?? .unknown
-            let player = Player.State(id: uuid(), name: name, image: image, isStanding: true)
+            let player = Player.State(id: uuid(), name: name, image: image, isStanding: true, color: .gray)
             state.players.updateOrAppend(player)
             return .none
         case let .updatePlayer(player):

@@ -1,61 +1,64 @@
+import ComposableArchitecture
 import SwiftUI
-import Combine
-import UIKit
 
 struct EditPlayerView: View {
+    let store: StoreOf<Player>
     @Environment(\.presentationMode) var presentation
-    @Binding var player: DprPlayer
-    let team: DprTeam
 
     var body: some View {
-        VStack {
-            playerNameField
-            ImagePicker(color: team.colorIdentifier, selection: $player.imageIdentifier, type: .player)
+        WithViewStore(store) { viewStore in
+            VStack {
+                playerNameField
+                ImagePicker(
+                    color: viewStore.color,
+                    selection: viewStore.binding(get: { $0.image }, send: { .imageUpdated($0) }),
+                    type: .player
+                )
+            }
+            .background(viewStore.color.color.edgesIgnoringSafeArea(.all))
         }
-        .background(team.colorIdentifier.color.edgesIgnoringSafeArea(.all))
     }
 
     private var title: some View {
-        Text(player.name)
-            .font(.largeTitle)
-            .padding()
+        WithViewStore(store) { viewStore in
+            Text(viewStore.name)
+                .font(.largeTitle)
+                .padding()
+        }
     }
 
     private var playerNameField: some View {
-        HStack {
-            TextField("Edit", text: $player.name)
-                .foregroundColor(Color.white)
-                .font(.title)
-                .padding()
-                .background(team.colorIdentifier.color)
-                .modifier(AddDashedCardStyle())
-                .padding(.leading)
-            doneButton.padding(.trailing)
-        }.padding(.top)
+        WithViewStore(store) { viewStore in
+            HStack {
+                TextField("Edit", text: viewStore.binding(get: { $0.name }, send: { .nameUpdated($0) }))
+                    .foregroundColor(Color.white)
+                    .font(.title)
+                    .padding()
+                    .background(viewStore.color.color)
+                    .modifier(AddDashedCardStyle())
+                    .padding(.leading)
+                doneButton.padding(.trailing)
+            }.padding(.top)
+        }
     }
 
     private var doneButton: some View {
-        Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
-            Image(systemName: "checkmark")
-                .foregroundColor(team.colorIdentifier.color)
-                .padding()
-                .background(Splash2())
-                .foregroundColor(.white)
-        }).accessibility(label: Text("Done"))
-    }
-}
-
-struct EditPlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview()
-    }
-
-    struct Preview: View {
-        @State private var player = DprPlayer(name: "Amelia", imageIdentifier: .girl)
-        let team = DprTeam(name: "Green Koala", colorIdentifier: .green, imageIdentifier: .koala)
-
-        var body: some View {
-            EditPlayerView(player: $player, team: team)
+        WithViewStore(store) { viewStore in
+            Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
+                Image(systemName: "checkmark")
+                    .foregroundColor(viewStore.color.color)
+                    .padding()
+                    .background(Splash2())
+                    .foregroundColor(.white)
+            }).accessibility(label: Text("Done"))
         }
     }
 }
+
+#if DEBUG
+struct EditPlayerView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditPlayerView(store: .preview)
+    }
+}
+#endif
