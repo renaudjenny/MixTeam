@@ -47,6 +47,8 @@
 		4CFDCAD428F0B642002DBF2D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD328F0B642002DBF2D /* Persistence.swift */; };
 		4CFDCAD828F200BC002DBF2D /* Team+Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD728F200BC002DBF2D /* Team+Example.swift */; };
 		4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADA28F224E1002DBF2D /* Standing.swift */; };
+		4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */; };
+		4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,8 @@
 		4CFDCAD328F0B642002DBF2D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		4CFDCAD728F200BC002DBF2D /* Team+Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Example.swift"; sourceTree = "<group>"; };
 		4CFDCADA28F224E1002DBF2D /* Standing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standing.swift; sourceTree = "<group>"; };
+		4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+NotEnoughTeams.swift"; sourceTree = "<group>"; };
+		4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShufflePlayers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +225,7 @@
 			children = (
 				4C75738428F0AE1200A6E1EF /* App.swift */,
 				4C7FE786245A166A0011E8AB /* AppView.swift */,
+				4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				4CFDCAD328F0B642002DBF2D /* Persistence.swift */,
+				4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -504,8 +510,10 @@
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,
 				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
 				4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */,
+				4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
 				4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */,
+				4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */,
 				4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */,
 				4CAB7A81268714A800C58254 /* ForEach+Binding.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,

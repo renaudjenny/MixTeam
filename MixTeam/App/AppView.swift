@@ -22,7 +22,10 @@ struct AppView: View {
             }
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-            .sheet(item: viewStore.binding(get: { $0.editedTeam }, send: { _ in .finishEditingTeam })) { _ in
+            .sheet(isPresented: viewStore.binding(
+                get: { $0.isEditTeamSheetPresented },
+                send: { .setEditTeamSheetIsPresented($0) })
+            ) {
                 IfLetStore(store.scope(state: \.editedTeam, action: App.Action.teamEdited)) { store in
                     EditTeamView(store: store)
                 }

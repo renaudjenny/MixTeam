@@ -1,56 +1,34 @@
+import ComposableArchitecture
 import XCTest
 @testable import MixTeam
 import SwiftUI
 
 class MixTeamLogicTests: XCTestCase {
-    func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenNoAlertIsPresented() throws {
-        let teamsStore = TeamsStore()
-        teamsStore.teams = .exampleTeam
-        var presentedAlert: AppView.PresentedAlert?
-        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore) {
-            presentedAlert = $0
+    func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenNoAlertIsPresentedAndPlayersAreMixed() throws {
+        let store = TestStore(initialState: .example, reducer: App())
+
+        let allPlayers = store.state.standing.players + store.state.teams.flatMap(\.players)
+        let amelia = allPlayers.first { $0.name == "Amelia" }!
+        let jack = allPlayers.first { $0.name == "Jack" }!
+        let jose = allPlayers.first { $0.name == "José" }!
+
+        store.dependencies.shufflePlayers = .alphabeticallySorted
+        store.dependencies.save = { _ in }
+        store.send(.mixTeam) {
+            $0.notEnoughTeamsAlert = nil
+            $0.standing.players = []
+            $0.teams[id: $0.teams[0].id]?.players = [jose]
+            $0.teams[id: $0.teams[1].id]?.players = [jack]
+            $0.teams[id: $0.teams[2].id]?.players = [amelia]
         }
-
-        XCTAssertNil(presentedAlert)
-        playersLogic.mixTeam()
-        XCTAssertNil(presentedAlert)
-    }
-
-    func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenPlayersAreMixed() throws {
-        let teamsStore = TeamsStore()
-        teamsStore.teams = .exampleTeam
-        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore)
-
-        XCTAssertEqual(teamsStore.teams.first?.players.count, 2)
-        XCTAssertEqual(teamsStore.teams[1].players.count, 1)
-        XCTAssertEqual(teamsStore.teams[2].players.count, 0)
-        playersLogic.mixTeam()
-        XCTAssertEqual(teamsStore.teams.first?.players.count, 0)
-        XCTAssertGreaterThan(teamsStore.teams[2].players.count, 0)
+        store.receive(.saveTeams)
     }
 
     func testMixTeamWhenThereIsLessThan2TeamsAvailableAndMixTeamThenAlertIsPresented() throws {
-        let teamsStore = TeamsStore()
-        teamsStore.teams = []
-        var presentedAlert: AppView.PresentedAlert?
-        let playersLogic = MockedPlayersLogic(teamsStore: teamsStore) {
-            presentedAlert = $0
+        let store = TestStore(initialState: App.State(), reducer: App())
+
+        store.send(.mixTeam) {
+            $0.notEnoughTeamsAlert = .notEnoughTeams
         }
-
-        XCTAssertNil(presentedAlert)
-        playersLogic.mixTeam()
-        XCTAssertEqual(presentedAlert, .notEnoughTeams)
-    }
-}
-
-struct MockedPlayersLogic: MixTeamLogic {
-    var teamsStore: TeamsStore = TeamsStore()
-    var mockedPresentedAlertSet: (AppView.PresentedAlert?) -> Void = { _ in }
-
-    var presentedAlertBinding: Binding<AppView.PresentedAlert?> {
-        .init(
-            get: { nil },
-            set: { self.mockedPresentedAlertSet($0) }
-        )
     }
 }

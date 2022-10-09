@@ -9,12 +9,14 @@ struct App: ReducerProtocol {
         var editedPlayer: DprPlayer?
         var editedTeam: Team.State?
         var notEnoughTeamsAlert: AlertState<Action>?
+
+        var isEditTeamSheetPresented: Bool { editedTeam != nil }
     }
     enum Action: Equatable {
         case saveTeams
         case loadTeams
         case addTeam
-        case finishEditingTeam
+        case setEditTeamSheetIsPresented(Bool)
         case editPlayer(DprPlayer)
         case finishEditingPlayer
         case updatePlayer(DprPlayer)
@@ -28,6 +30,7 @@ struct App: ReducerProtocol {
     }
     @Dependency(\.save) var save
     @Dependency(\.loaded) var loaded
+    @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
     // swiftlint:disable:next cyclomatic_complexity
@@ -51,8 +54,10 @@ struct App: ReducerProtocol {
                     Team.State(id: uuid(), name: name, colorIdentifier: color, imageIdentifier: image)
                 )
                 return Effect(value: .saveTeams)
-            case .finishEditingTeam:
+            case .setEditTeamSheetIsPresented(false):
                 state.editedTeam = nil
+                return .none
+            case .setEditTeamSheetIsPresented:
                 return .none
             case let .editPlayer(player):
                 state.editedPlayer = player
@@ -79,32 +84,30 @@ struct App: ReducerProtocol {
                 state.dprTeams[id: firstTeamID]?.players.updateOrAppend(player)
                 return Effect(value: .saveTeams)
             case .mixTeam:
-                guard state.dprTeams.count > 2 else {
-                    state.notEnoughTeamsAlert = AlertState(
-                        title: TextState("Couldn't Mix Team with less than 2 teams. Go create some teams :)")
-                    )
+                guard state.teams.count > 2 else {
+                    state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
 
-                let players = state.dprTeams.flatMap(\.players)
+                let players = state.standing.players + state.teams.flatMap(\.players)
                 guard players.count > 0 else { return .none }
 
-                state.dprTeams = IdentifiedArrayOf(uniqueElements: state.dprTeams.map {
+                state.teams = IdentifiedArrayOf(uniqueElements: state.teams.map {
                     var newTeam = $0
                     newTeam.players = []
                     return newTeam
                 })
 
-                state.dprTeams = players.shuffled().reduce(state.dprTeams) { teams, player in
+                state.teams = shufflePlayers(players: players).reduce(state.teams) { teams, player in
                     var teams = teams
-                    let availableTeams = teams.filter { $0 != teams.first }
-                    guard let lessPlayerTeam = availableTeams
+                    guard let lessPlayerTeam = teams
                         .sorted(by: { $0.players.count < $1.players.count  })
                         .first
                     else { return teams }
                     teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
                     return teams
                 }
+                state.standing.players = []
                 return Effect(value: .saveTeams)
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
@@ -117,13 +120,18 @@ struct App: ReducerProtocol {
             case let .team(id, .delete):
                 state.teams.remove(id: id)
                 return Effect(value: .saveTeams)
-            case .team(id:action:):
+            case .team:
                 return Effect(value: .saveTeams)
             case .teamEdited:
-                return .none
+                guard let editedTeam = state.editedTeam else { return .none }
+                state.teams.updateOrAppend(editedTeam)
+                return Effect(value: .saveTeams)
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {
+            Team()
+        }
+        .ifLet(\.editedTeam, action: /Action.teamEdited) {
             Team()
         }
     }
