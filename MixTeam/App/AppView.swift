@@ -39,7 +39,7 @@ struct AppView: View {
                 }
             }
             .background(Color.clear.sheet(isPresented: $isScoreboardPresented) {
-                ScoreboardView()
+                ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
             })
             .background(Color.clear.sheet(isPresented: $isAboutPresented) {
                 aboutView
@@ -141,9 +141,7 @@ struct PlayersView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AppView(store: .preview)
-                .environmentObject(TeamsStore())
             AppView(store: .preview)
-                .environmentObject(TeamsStore())
                 .environment(\.colorScheme, .dark)
         }
     }

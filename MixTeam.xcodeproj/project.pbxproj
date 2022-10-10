@@ -15,9 +15,7 @@
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
 		4C3763C524A3DF5E00FA040B /* MixTeamLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */; };
-		4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973724914D1300D6D182 /* TeamsLogic.swift */; };
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
-		4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40059D245D4B3300ADF398 /* PlayersLogic.swift */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
 		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */; };
@@ -33,7 +31,6 @@
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
-		4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
 		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
 		4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5934268B016A00BF23F7 /* RoundRow.swift */; };
@@ -43,12 +40,12 @@
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */; };
 		4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */; };
-		4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CCA0D28249BED2200E88F80 /* TeamsStore.swift */; };
 		4CFDCAD428F0B642002DBF2D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD328F0B642002DBF2D /* Persistence.swift */; };
-		4CFDCAD828F200BC002DBF2D /* Team+Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD728F200BC002DBF2D /* Team+Example.swift */; };
+		4CFDCAD828F200BC002DBF2D /* App+Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAD728F200BC002DBF2D /* App+Example.swift */; };
 		4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADA28F224E1002DBF2D /* Standing.swift */; };
 		4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */; };
 		4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */; };
+		4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAE028F40D16002DBF2D /* Scores.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,9 +79,7 @@
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3733151EBFAA8700A5785E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogicTests.swift; sourceTree = "<group>"; };
-		4C38973724914D1300D6D182 /* TeamsLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsLogic.swift; sourceTree = "<group>"; };
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
-		4C40059D245D4B3300ADF398 /* PlayersLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersLogic.swift; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* MixTeamButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamButtonStyle.swift; sourceTree = "<group>"; };
@@ -97,7 +92,6 @@
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDashedCardStyle.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
-		4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogic.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
 		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4CBF5934268B016A00BF23F7 /* RoundRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRow.swift; sourceTree = "<group>"; };
@@ -107,12 +101,12 @@
 		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageIdentifier.swift; sourceTree = "<group>"; };
 		4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorIdentifier.swift; sourceTree = "<group>"; };
-		4CCA0D28249BED2200E88F80 /* TeamsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsStore.swift; sourceTree = "<group>"; };
 		4CFDCAD328F0B642002DBF2D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		4CFDCAD728F200BC002DBF2D /* Team+Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Example.swift"; sourceTree = "<group>"; };
+		4CFDCAD728F200BC002DBF2D /* App+Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "App+Example.swift"; sourceTree = "<group>"; };
 		4CFDCADA28F224E1002DBF2D /* Standing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standing.swift; sourceTree = "<group>"; };
 		4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+NotEnoughTeams.swift"; sourceTree = "<group>"; };
 		4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShufflePlayers.swift; sourceTree = "<group>"; };
+		4CFDCAE028F40D16002DBF2D /* Scores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scores.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,12 +166,10 @@
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
 				4CAB7A7F2687146900C58254 /* Extensions */,
-				4CB91CC724B7BC3C00B452D3 /* MixTeamLogic.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
 				4C8E60FE2679395000010C8B /* Scores */,
 				4C49458224BE22EB00A7A81A /* Styles */,
 				4CFCE6F524A341EF0030114B /* Teams */,
-				4CCA0D28249BED2200E88F80 /* TeamsStore.swift */,
 				4CEF9D471F8A972B00E34083 /* Utils */,
 				4C8B5A13244CB27100C8781B /* ViewModifiers */,
 				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
@@ -226,6 +218,7 @@
 				4C75738428F0AE1200A6E1EF /* App.swift */,
 				4C7FE786245A166A0011E8AB /* AppView.swift */,
 				4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */,
+				4CFDCAD728F200BC002DBF2D /* App+Example.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -249,6 +242,7 @@
 				4CAB7A7D268664A800C58254 /* RoundView.swift */,
 				4C8E60FF2679399E00010C8B /* ScoreboardView.swift */,
 				4CBF593A268E502700BF23F7 /* TotalScoresView.swift */,
+				4CFDCAE028F40D16002DBF2D /* Scores.swift */,
 			);
 			path = Scores;
 			sourceTree = "<group>";
@@ -286,7 +280,6 @@
 				4CBA6B21249E166500CA3851 /* EditPlayerView.swift */,
 				4C3733151EBFAA8700A5785E /* Player.swift */,
 				4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */,
-				4C40059D245D4B3300ADF398 /* PlayersLogic.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -297,8 +290,6 @@
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
-				4C38973724914D1300D6D182 /* TeamsLogic.swift */,
-				4CFDCAD728F200BC002DBF2D /* Team+Example.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -488,7 +479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */,
-				4C38973824914D1300D6D182 /* TeamsLogic.swift in Sources */,
+				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
@@ -499,16 +490,14 @@
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
-				4CFDCAD828F200BC002DBF2D /* Team+Example.swift in Sources */,
+				4CFDCAD828F200BC002DBF2D /* App+Example.swift in Sources */,
 				4C1ED55824C82196005D6749 /* StandingView.swift in Sources */,
 				4CAB7A7E268664A800C58254 /* RoundView.swift in Sources */,
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
 				4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CFDCAD428F0B642002DBF2D /* Persistence.swift in Sources */,
-				4CB91CC824B7BC3C00B452D3 /* MixTeamLogic.swift in Sources */,
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,
-				4CCA0D29249BED2200E88F80 /* TeamsStore.swift in Sources */,
 				4C1ED55624C75C3C005D6749 /* Shadow.swift in Sources */,
 				4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* MixTeamButtonStyle.swift in Sources */,
@@ -517,7 +506,6 @@
 				4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */,
 				4CAB7A81268714A800C58254 /* ForEach+Binding.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
-				4C40059E245D4B3300ADF398 /* PlayersLogic.swift in Sources */,
 				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
 				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */,

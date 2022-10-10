@@ -1,14 +1,14 @@
 import Foundation
 
-struct Round: Identifiable, Codable, Hashable {
+struct Round: Identifiable, Codable, Equatable {
     var name: String
     var scores: [Score]
     var id = UUID()
 
-    struct Score: Identifiable, Codable, Hashable {
-        var team: DprTeam
+    struct Score: Identifiable, Codable, Equatable {
+        var team: Team.State
         var points: Int
-        var id: DprTeam.ID { team.id }
+        var id: Team.State.ID { team.id }
     }
 }
 
@@ -30,7 +30,7 @@ extension Rounds: RawRepresentable {
 }
 
 extension Array where Element == Round {
-    var teams: [DprTeam] {
+    var teams: [Team.State] {
         flatMap(\.scores)
             .map(\.team)
             .reduce([], {
@@ -41,9 +41,10 @@ extension Array where Element == Round {
     }
 
     #if DEBUG
-    static let team1: DprTeam = [DprTeam].exampleTeam[1]
-    static let team2: DprTeam = [DprTeam].exampleTeam[2]
-    static let team3 = DprTeam(
+    static let team1: Team.State = App.State.example.teams[1]
+    static let team2: Team.State = App.State.example.teams[2]
+    static let team3 = Team.State(
+        id: UUID(uuidString: "21E5DDC4-7EDD-4F54-8DFA-B20BC396A12B")!,
         name: "The team who had no name",
         colorIdentifier: .red,
         imageIdentifier: .hippo,

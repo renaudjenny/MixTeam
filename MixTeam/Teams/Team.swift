@@ -2,12 +2,14 @@ import ComposableArchitecture
 import Foundation
 
 struct Team: ReducerProtocol {
-    struct State: Equatable, Identifiable, Codable {
+    struct State: Equatable, Identifiable, Codable, Hashable {
         let id: UUID
         var name: String = ""
         var colorIdentifier: ColorIdentifier = .gray
         var imageIdentifier: ImageIdentifier = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
+
+        func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
     enum Action: Equatable {

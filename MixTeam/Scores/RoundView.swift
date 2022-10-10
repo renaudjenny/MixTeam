@@ -1,54 +1,57 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct RoundView: View {
+    let store: StoreOf<Scores>
     @Binding var round: Round
-    @EnvironmentObject var teamsStore: TeamsStore
     @State private var backup: Round?
 
     var body: some View {
-        Form {
-            Section(header: Text("Name")) {
-                TextField(
-                    "Name for this round",
-                    text: $round.name
-                )
-            }
-
-            ForEach($round.scores) { _, score in
-                Section(header: Text(score.wrappedValue.team.name)) {
+        WithViewStore(store) { viewStore in
+            Form {
+                Section(header: Text("Name")) {
                     TextField(
-                        "Score for this team",
-                        text: score.points.string
+                        "Name for this round",
+                        text: $round.name
                     )
                 }
+
+                ForEach($round.scores) { _, score in
+                    Section(header: Text(score.wrappedValue.team.name)) {
+                        TextField(
+                            "Score for this team",
+                            text: score.points.string
+                        )
+                    }
+                }
             }
-        }
-        .navigationTitle(Text(round.name))
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button { round = backup ?? round } label: {
-                    Text("Reset")
+            .navigationTitle(Text(round.name))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { round = backup ?? round } label: {
+                        Text("Reset")
+                    }
+                }
+            }
+            .onAppear {
+                backup = round
+
+                let teams = (viewStore.teams + round.scores.map(\.team))
+                    .reduce([], { result, team -> [Team.State] in
+                        if result.contains(where: { $0 == team }) { return result }
+                        return result + [team]
+                    })
+
+                round.scores = teams.map { team in
+                    round.scores.first(where: { $0.team == team })
+                    ?? Round.Score(team: team, points: 0)
                 }
             }
         }
-        .onAppear {
-            backup = round
-            round.scores = teams.map { team in
-                round.scores.first(where: { $0.team == team })
-                    ?? Round.Score(team: team, points: 0)
-            }
-        }
-    }
-
-    private var teams: [DprTeam] {
-        (teamsStore.teams.dropFirst() + round.scores.map(\.team))
-            .reduce([], { result, team -> [DprTeam] in
-                if result.contains(where: { $0 == team }) { return result }
-                return result + [team]
-            })
     }
 }
 
+#if DEBUG
 struct NewScoreView_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -62,7 +65,7 @@ struct NewScoreView_Previews: PreviewProvider {
             return Round(
                 name: "Round 1",
                 scores: [
-                    Round.Score(team: [DprTeam].exampleTeam[2], points: 15),
+                    Round.Score(team: App.State.example.teams[2], points: 15),
                 ],
                 id: id
             )
@@ -71,7 +74,7 @@ struct NewScoreView_Previews: PreviewProvider {
         var body: some View {
             VStack {
                 NavigationView {
-                    RoundView(round: $round).environmentObject(TeamsStore())
+                    RoundView(store: .preview, round: $round)
                 }
                 VStack(alignment: .leading) {
                     Text("\(round.name)").font(.title3)
@@ -86,3 +89,4 @@ struct NewScoreView_Previews: PreviewProvider {
         }
     }
 }
+#endif

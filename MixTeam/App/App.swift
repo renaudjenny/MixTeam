@@ -4,6 +4,7 @@ struct App: ReducerProtocol {
     struct State: Equatable {
         var standing = Standing.State()
         var teams: IdentifiedArrayOf<Team.State> = []
+        var _scores = Scores.State()
         var editedPlayer: Player.State?
         var editedTeam: Team.State?
         var notEnoughTeamsAlert: AlertState<Action>?
@@ -11,6 +12,7 @@ struct App: ReducerProtocol {
         var isEditTeamSheetPresented: Bool { editedTeam != nil }
         var isEditPlayerSheetPresented: Bool { editedPlayer != nil }
     }
+
     enum Action: Equatable {
         case saveTeams
         case loadTeams
@@ -24,7 +26,9 @@ struct App: ReducerProtocol {
         case team(id: Team.State.ID, action: Team.Action)
         case teamEdited(Team.Action)
         case playerEdited(Player.Action)
+        case scores(Scores.Action)
     }
+
     @Dependency(\.save) var save
     @Dependency(\.loaded) var loaded
     @Dependency(\.shufflePlayers) var shufflePlayers
@@ -33,6 +37,9 @@ struct App: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
+        }
+        Scope(state: \.scores, action: /Action.scores) {
+            Scores()
         }
         Reduce { state, action in
             switch action {
@@ -138,6 +145,8 @@ struct App: ReducerProtocol {
                     state.standing.players.updateOrAppend(editedPlayer)
                 }
                 return Effect(value: .saveTeams)
+            case .scores:
+                return .none
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {

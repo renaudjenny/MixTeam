@@ -1,8 +1,9 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct ScoreboardView: View {
+    let store: StoreOf<Scores>
     @AppStorage("Scores.rounds") var rounds: Rounds = []
-    @EnvironmentObject var teamsStore: TeamsStore
     @Environment(\.presentationMode) private var presentationMode
     @State private var isNavigateToNewRoundActive = false
 
@@ -39,7 +40,7 @@ struct ScoreboardView: View {
     private var list: some View {
         List {
             ForEach($rounds) { _, round in
-                Section(header: HeaderView(round: round)) {
+                Section(header: HeaderView(store: store, round: round)) {
                     RoundRow(
                         round: round.wrappedValue,
                         accumulatedPoints: accumulatedPoints(for: round.wrappedValue)
@@ -58,19 +59,17 @@ struct ScoreboardView: View {
         rounds.remove(atOffsets: atOffsets)
     }
 
-    private func addRound() {
-        let scores = teamsStore.teams
-            .dropFirst()
-            .map { team in Round.Score(team: team, points: 0) }
+    private func addRound(teams: [Team.State]) {
+        let scores = teams.map { team in Round.Score(team: team, points: 0) }
         rounds.append(Round(name: "Round \(rounds.count + 1)", scores: scores))
         isNavigateToNewRoundActive = true
     }
 
-    private func accumulatedPoints(for round: Round) -> [DprTeam: Int] {
+    private func accumulatedPoints(for round: Round) -> [Team.State: Int] {
         guard let roundIndex = rounds.firstIndex(of: round)
         else { return [:] }
-        return [DprTeam: Int](
-            rounds[...roundIndex].flatMap(\.scores).map { score -> (DprTeam, Int) in
+        return [Team.State: Int](
+            rounds[...roundIndex].flatMap(\.scores).map { score -> (Team.State, Int) in
                 (score.team, score.points)
             },
             uniquingKeysWith: { $0 + $1 }
@@ -81,7 +80,7 @@ struct ScoreboardView: View {
     private func navigationToNew() -> some View {
         if rounds.count > 0 {
             NavigationLink(
-                destination: RoundView(round: $rounds[rounds.count - 1]),
+                destination: RoundView(store: store, round: $rounds[rounds.count - 1]),
                 isActive: $isNavigateToNewRoundActive,
                 label: EmptyView.init
             )
@@ -89,17 +88,19 @@ struct ScoreboardView: View {
     }
 
     private var addRoundButton: some View {
-        HStack {
-            Button(action: addRound) {
-                Text(Image(systemName: "plus"))
-                    .font(.title3)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .background(Color.purple.clipShape(Circle()))
+        WithViewStore(store.stateless) { viewStore in
+            HStack {
+                Button { viewStore.send(.addRound) } label: {
+                    Text(Image(systemName: "plus"))
+                        .font(.title3)
+                        .fontWeight(.black)
+                        .foregroundColor(.white)
+                        .padding(4)
+                        .background(Color.purple.clipShape(Circle()))
+                }
+                .buttonStyle(PlainButtonStyle())
+                .accessibility(label: Text("Add a new round"))
             }
-            .buttonStyle(PlainButtonStyle())
-            .accessibility(label: Text("Add a new round"))
         }
     }
 
@@ -121,10 +122,11 @@ struct ScoreboardView: View {
 }
 
 struct HeaderView: View {
+    let store: StoreOf<Scores>
     @Binding var round: Round
 
     var body: some View {
-        NavigationLink(destination: RoundView(round: $round)) {
+        NavigationLink(destination: RoundView(store: store, round: $round)) {
             HStack {
                 Text(round.name)
                     .foregroundColor(.white)
@@ -149,7 +151,7 @@ struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             Preview()
-            ScoreboardView(rounds: [])
+            ScoreboardView(store: .preview, rounds: [])
         }
     }
 
@@ -158,14 +160,25 @@ struct ScoreboardView_Previews: PreviewProvider {
 
         var body: some View {
             VStack {
-                ScoreboardView(rounds: .mock)
-                    .environmentObject(TeamsStore())
+                ScoreboardView(store: .preview, rounds: .mock)
                 Button("Reset App Storage") {
                     rounds = .mock
                 }
                 .accentColor(.red)
             }
         }
+    }
+}
+
+extension StoreOf<Scores> {
+    static var preview: StoreOf<Scores> {
+        Store(initialState: .preview, reducer: Scores())
+    }
+}
+
+extension Scores.State {
+    static var preview: Self {
+        Scores.State(teams: App.State.example.teams)
     }
 }
 #endif
