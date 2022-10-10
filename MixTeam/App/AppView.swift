@@ -151,7 +151,7 @@ struct PlayersView_Previews: PreviewProvider {
 
 extension StoreOf<App> {
     static var preview: StoreOf<App> {
-        Store(initialState: App.State(dprTeams: .init(uniqueElements: [DprTeam].exampleTeam)), reducer: App())
+        Store(initialState: .example, reducer: App())
     }
 }
 #endif

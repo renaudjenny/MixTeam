@@ -2,8 +2,6 @@ import ComposableArchitecture
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        @available(*, deprecated, message: "Use teams instead")
-        var dprTeams: IdentifiedArrayOf<DprTeam> = []
         var standing = Standing.State()
         var teams: IdentifiedArrayOf<Team.State> = []
         var editedPlayer: Player.State?
@@ -20,8 +18,6 @@ struct App: ReducerProtocol {
         case setEditTeamSheetIsPresented(Bool)
         case setEditPlayerSheetIsPresented(Bool)
         case finishEditingPlayer
-        case deletePlayer(DprPlayer)
-        case moveBackPlayer(DprPlayer)
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
@@ -34,7 +30,6 @@ struct App: ReducerProtocol {
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
-    // swiftlint:disable:next cyclomatic_complexity
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
@@ -68,19 +63,6 @@ struct App: ReducerProtocol {
             case .finishEditingPlayer:
                 state.editedPlayer = nil
                 return .none
-            case let .deletePlayer(player):
-                guard var team = state.dprTeams.first(where: { $0.players.contains(player) }) else { return .none }
-                team.players.remove(player)
-                state.dprTeams.updateOrAppend(team)
-                return Effect(value: .saveTeams)
-            case let .moveBackPlayer(player):
-                guard var team = state.dprTeams.first(where: { $0.players.contains(player) }) else { return .none }
-                team.players.remove(player)
-                state.dprTeams.updateOrAppend(team)
-
-                let firstTeamID = state.dprTeams[0].id
-                state.dprTeams[id: firstTeamID]?.players.updateOrAppend(player)
-                return Effect(value: .saveTeams)
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
@@ -112,6 +94,10 @@ struct App: ReducerProtocol {
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
+            case let .standing(.player(id, .edit)):
+                guard let player = state.standing.players[id: id] else { return .none }
+                state.editedPlayer = player
+                return .none
             case .standing:
                 return Effect(value: .saveTeams)
             case let .team(id, .edit):
@@ -133,6 +119,10 @@ struct App: ReducerProtocol {
                 player.isStanding = true
                 state.standing.players.updateOrAppend(player)
                 return Effect(value: .saveTeams)
+            case let .team(teamID, .player(playerID, .edit)):
+                guard let player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
+                state.editedPlayer = player
+                return .none
             case .team:
                 return Effect(value: .saveTeams)
             case .teamEdited:
@@ -140,11 +130,13 @@ struct App: ReducerProtocol {
                 state.teams.updateOrAppend(editedTeam)
                 return Effect(value: .saveTeams)
             case .playerEdited:
-                guard let editedPlayer = state.editedPlayer,
-                      var team = state.teams.first(where: { $0.players.contains(editedPlayer) })
-                else { return .none }
-                team.players.updateOrAppend(editedPlayer)
-                state.teams.updateOrAppend(team)
+                guard let editedPlayer = state.editedPlayer else { return .none }
+                if var team = state.teams.first(where: { $0.players.contains(editedPlayer) }) {
+                    team.players.updateOrAppend(editedPlayer)
+                    state.teams.updateOrAppend(team)
+                } else if state.standing.players.contains(editedPlayer) {
+                    state.standing.players.updateOrAppend(editedPlayer)
+                }
                 return Effect(value: .saveTeams)
             }
         }
