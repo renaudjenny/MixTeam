@@ -46,6 +46,8 @@
 		4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */; };
 		4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */; };
 		4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAE028F40D16002DBF2D /* Scores.swift */; };
+		4CFDCAE328F44107002DBF2D /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAE228F44107002DBF2D /* Score.swift */; };
+		4CFDCAE628F4442E002DBF2D /* ScoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCAE528F4442E002DBF2D /* ScoreRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,8 @@
 		4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+NotEnoughTeams.swift"; sourceTree = "<group>"; };
 		4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShufflePlayers.swift; sourceTree = "<group>"; };
 		4CFDCAE028F40D16002DBF2D /* Scores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scores.swift; sourceTree = "<group>"; };
+		4CFDCAE228F44107002DBF2D /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		4CFDCAE528F4442E002DBF2D /* ScoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +240,7 @@
 		4C8E60FE2679395000010C8B /* Scores */ = {
 			isa = PBXGroup;
 			children = (
+				4CFDCAE428F44421002DBF2D /* Score */,
 				4CBF5936268E4ED800BF23F7 /* Binding+IntAsString.swift */,
 				4CBF5938268E4F2500BF23F7 /* Round.swift */,
 				4CBF5934268B016A00BF23F7 /* RoundRow.swift */,
@@ -310,6 +315,15 @@
 				4C1ED55724C82196005D6749 /* StandingView.swift */,
 			);
 			path = Standing;
+			sourceTree = "<group>";
+		};
+		4CFDCAE428F44421002DBF2D /* Score */ = {
+			isa = PBXGroup;
+			children = (
+				4CFDCAE228F44107002DBF2D /* Score.swift */,
+				4CFDCAE528F4442E002DBF2D /* ScoreRow.swift */,
+			);
+			path = Score;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,6 +523,8 @@
 				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
 				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */,
+				4CFDCAE628F4442E002DBF2D /* ScoreRow.swift in Sources */,
+				4CFDCAE328F44107002DBF2D /* Score.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -821,7 +837,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
-				branch = "protocol-beta";
+				branch = main;
 				kind = branch;
 			};
 		};

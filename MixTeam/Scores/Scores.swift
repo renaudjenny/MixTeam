@@ -1,18 +1,43 @@
 import ComposableArchitecture
+import SwiftUI
 
 struct Scores: ReducerProtocol {
-    struct State: Equatable {
+    struct State: Equatable, Codable {
         private(set) var teams: IdentifiedArrayOf<Team.State> = []
+        var rounds: IdentifiedArrayOf<Round.State> = []
     }
 
     enum Action: Equatable {
         case addRound
+        case remove(atOffsets: IndexSet)
+        case round(id: Round.State.ID, action: Round.Action)
     }
 
-    func reduce(into state: inout State, action: Action) -> Effect<Action, Never> {
-        switch action {
-        case .addRound:
-            return .none
+    @Dependency(\.uuid) var uuid
+
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .addRound:
+                let roundCount = state.rounds.count
+                let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
+                    Score.State(
+                        team: team,
+                        points: 0,
+                        accumulatedPoints: state.accumulatedPoints(for: team, roundCount: roundCount)
+                    )
+                })
+                state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
+                return .none
+            case let .remove(offsets):
+                state.rounds.remove(atOffsets: offsets)
+                return .none
+            case .round:
+                return .none
+            }
+        }
+        .forEach(\.rounds, action: /Action.round) {
+            Round()
         }
     }
 }
@@ -20,10 +45,17 @@ struct Scores: ReducerProtocol {
 extension App.State {
     var scores: Scores.State {
         get {
-            Scores.State(teams: teams)
+            Scores.State(teams: teams, rounds: _scores.rounds)
         }
         set {
-            // TODO: add scores later
+            _scores.rounds = newValue.rounds
         }
+    }
+}
+
+private extension Scores.State {
+    func accumulatedPoints(for team: Team.State, roundCount: Int) -> Int {
+        guard roundCount > 0, roundCount <= rounds.count else { return 0 }
+        return rounds[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
     }
 }

@@ -1,37 +1,16 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct RoundRow: View {
-    let round: Round
-    let accumulatedPoints: [Team.State: Int]
+    let store: StoreOf<Round>
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEach(round.scores, content: line)
+            ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
+                ScoreRow(store: store)
+            }
         }
         .listRowInsets(EdgeInsets())
-    }
-
-    private func line(score: Round.Score) -> some View {
-        VStack(spacing: 0) {
-            HStack {
-                HStack {
-                    Text(score.team.name)
-                    Spacer()
-                }
-                HStack {
-                    Spacer()
-                    Text("+\(score.points)")
-                    Spacer()
-                    Text("\(accumulatedPoints[score.team] ?? 0)")
-                        .bold()
-                }
-            }
-            .padding(12)
-
-            if round.scores.last != score {
-                Color.white.frame(height: 2)
-            }
-        }
     }
 }
 
@@ -42,31 +21,28 @@ struct RoundRow_Previews: PreviewProvider {
     }
 
     private struct Preview: View {
-        let round: Round = {
+        let round: Round.State = {
             guard let id = UUID(uuidString: "09756F5B-C236-41FD-B46D-991544F1698A")
             else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-            return Round(
+            return Round.State(
+                id: id,
                 name: "Test Round",
                 scores: [
-                    Round.Score(team: App.State.example.teams[1], points: 15),
-                    Round.Score(team: App.State.example.teams[2], points: 20),
-                    Round.Score(team: App.State.example.teams[3], points: 0),
-                ],
-                id: id
+                    Score.State(team: App.State.example.teams[1], points: 15, accumulatedPoints: 15),
+                    Score.State(team: App.State.example.teams[2], points: 20, accumulatedPoints: 50),
+                    Score.State(team: App.State.example.teams[3], points: 0, accumulatedPoints: 0),
+                ]
             )
         }()
 
         var body: some View {
+            let store = Store(initialState: round, reducer: Round())
             NavigationView {
                 List {
                     ForEach(0..<3) { _ in
-                        Section(header: HeaderView(store: .preview, round: .constant(round))) {
-                            RoundRow(round: round, accumulatedPoints: [
-                                App.State.example.teams[1]: 20,
-                                App.State.example.teams[2]: 50,
-                                App.State.example.teams[3]: 0,
-                            ])
+                        Section(header: HeaderView(store: store)) {
+                            RoundRow(store: store)
                         }
                     }
                     .listRowBackground(Color.purple.opacity(20/100))

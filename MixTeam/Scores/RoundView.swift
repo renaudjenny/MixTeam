@@ -2,9 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct RoundView: View {
-    let store: StoreOf<Scores>
-    @Binding var round: Round
-    @State private var backup: Round?
+    let store: StoreOf<Round>
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -12,41 +10,32 @@ struct RoundView: View {
                 Section(header: Text("Name")) {
                     TextField(
                         "Name for this round",
-                        text: $round.name
+                        text: viewStore.binding(get: { $0.name }, send: { .nameUpdated($0) })
                     )
                 }
 
-                ForEach($round.scores) { _, score in
-                    Section(header: Text(score.wrappedValue.team.name)) {
-                        TextField(
-                            "Score for this team",
-                            text: score.points.string
-                        )
+                ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
+                    WithViewStore(store) { viewStore in
+                        Section(header: Text(viewStore.team.name)) {
+                            TextField(
+                                "Score for this team",
+                                text: viewStore.binding(get: { $0.points }, send: { .pointsUpdated($0) }).string
+                            )
+                        }
                     }
                 }
             }
-            .navigationTitle(Text(round.name))
+            .navigationTitle(Text(viewStore.name))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { round = backup ?? round } label: {
-                        Text("Reset")
+                    WithViewStore(store) { viewStore in
+                        Button { viewStore.send(.restoreBackup) } label: {
+                            Text("Reset")
+                        }
                     }
                 }
             }
-            .onAppear {
-                backup = round
-
-                let teams = (viewStore.teams + round.scores.map(\.team))
-                    .reduce([], { result, team -> [Team.State] in
-                        if result.contains(where: { $0 == team }) { return result }
-                        return result + [team]
-                    })
-
-                round.scores = teams.map { team in
-                    round.scores.first(where: { $0.team == team })
-                    ?? Round.Score(team: team, points: 0)
-                }
-            }
+            .task { viewStore.send(.start) }
         }
     }
 }
@@ -54,39 +43,29 @@ struct RoundView: View {
 #if DEBUG
 struct NewScoreView_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
-    }
-
-    private struct Preview: View {
-        @State private var round: Round = {
-            guard let id = UUID(uuidString: "881B7BC5-1BA6-4DDB-9C60-ACCDC4D87762")
-            else { fatalError("Cannot generate UUID from a defined UUID String") }
-
-            return Round(
-                name: "Round 1",
-                scores: [
-                    Round.Score(team: App.State.example.teams[2], points: 15),
-                ],
-                id: id
-            )
-        }()
-
-        var body: some View {
-            VStack {
-                NavigationView {
-                    RoundView(store: .preview, round: $round)
-                }
-                VStack(alignment: .leading) {
-                    Text("\(round.name)").font(.title3)
-                    ForEach(round.scores) { score in
-                        HStack {
-                            Text("\(score.team.name)")
-                            Text("\(score.points)")
-                        }
-                    }
-                }
-            }
+        NavigationView {
+            RoundView(store: .preview)
         }
+    }
+}
+
+extension StoreOf<Round> {
+    static var preview: StoreOf<Round> {
+        Store(initialState: .preview, reducer: Round())
+    }
+}
+
+extension Round.State {
+    static var preview: Self {
+        guard let id = UUID(uuidString: "881B7BC5-1BA6-4DDB-9C60-ACCDC4D87762")
+        else { fatalError("Cannot generate UUID from a defined UUID String") }
+
+        return Round.State(
+            id: id,
+            name: "Round 1",
+            scores: [
+            Score.State(team: App.State.example.teams[2], points: 15, accumulatedPoints: 15),
+        ])
     }
 }
 #endif

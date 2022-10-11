@@ -24,7 +24,7 @@ class MixTeamLogicTests: XCTestCase {
             $0.teams[id: $0.teams[1].id]?.players = [jack]
             $0.teams[id: $0.teams[2].id]?.players = [amelia]
         }
-        store.receive(.saveTeams)
+        store.receive(.saveState)
     }
 
     func testMixTeamWhenThereIsLessThan2TeamsAvailableAndMixTeamThenAlertIsPresented() throws {

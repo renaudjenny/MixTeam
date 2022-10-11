@@ -1,26 +1,29 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct TotalScoresView: View {
-    let rounds: [Round]
+    let store: StoreOf<Scores>
 
     var body: some View {
-        Section(header: header) {
-            ForEach(rounds.teams) { team in
-                HStack {
-                    Text("\(team.name)")
-                    Spacer()
-                    ZStack {
-                        Text("99999").hidden()
-                        Text(total(for: team))
-                            .fontWeight(.heavy)
-                            .foregroundColor(.white)
+        WithViewStore(store) { viewStore in
+            Section(header: header) {
+                ForEach(viewStore.teams) { team in
+                    HStack {
+                        Text("\(team.name)")
+                        Spacer()
+                        ZStack {
+                            Text("99999").hidden()
+                            Text(viewStore.state.total(for: team))
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                        }
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
+                        .background(Color.purple.clipShape(Ellipse()))
                     }
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 4)
-                    .background(Color.purple.clipShape(Ellipse()))
                 }
+                .listRowBackground(Color.purple.opacity(20/100))
             }
-            .listRowBackground(Color.purple.opacity(20/100))
         }
     }
 
@@ -37,8 +40,10 @@ struct TotalScoresView: View {
         .padding(.vertical, 8)
         .background(Color.purple)
     }
+}
 
-    private func total(for team: Team.State) -> String {
+private extension Scores.State {
+    func total(for team: Team.State) -> String {
         String(
             rounds
                 .flatMap(\.scores)
@@ -53,7 +58,7 @@ struct TotalScoresView: View {
 struct TotalScoresView_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            TotalScoresView(rounds: .mock)
+            TotalScoresView(store: .preview)
         }
     }
 }

@@ -44,7 +44,7 @@ struct AppView: View {
             .background(Color.clear.sheet(isPresented: $isAboutPresented) {
                 aboutView
             })
-            .task { viewStore.send(.loadTeams) }
+            .task { viewStore.send(.loadState) }
         }
     }
 

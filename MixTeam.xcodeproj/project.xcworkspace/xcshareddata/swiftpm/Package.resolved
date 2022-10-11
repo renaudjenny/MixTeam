@@ -15,7 +15,7 @@
       "location" : "https://github.com/renaudjenny/RenaudJennyAboutView",
       "state" : {
         "branch" : "main",
-        "revision" : "7c91b9715f3f52e73eeb583ebc5be7e095e83c81"
+        "revision" : "88b458bdb1cfed265a025f7d257d4fad4d5a5b24"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-composable-architecture",
       "state" : {
-        "branch" : "protocol-beta",
-        "revision" : "4bfc7edd1345056a87f8ee54ae7fec45b07d294e"
+        "branch" : "main",
+        "revision" : "ef137808e73b430db71a77c8407fd4c3b71a7372"
       }
     },
     {

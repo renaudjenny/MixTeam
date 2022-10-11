@@ -14,8 +14,8 @@ struct App: ReducerProtocol {
     }
 
     enum Action: Equatable {
-        case saveTeams
-        case loadTeams
+        case saveState
+        case loadState
         case addTeam
         case setEditTeamSheetIsPresented(Bool)
         case setEditPlayerSheetIsPresented(Bool)
@@ -43,10 +43,10 @@ struct App: ReducerProtocol {
         }
         Reduce { state, action in
             switch action {
-            case .saveTeams:
+            case .saveState:
                 save(state)
                 return .none
-            case .loadTeams:
+            case .loadState:
                 state = loaded
                 return .none
             case .addTeam:
@@ -56,7 +56,7 @@ struct App: ReducerProtocol {
                 state.teams.updateOrAppend(
                     Team.State(id: uuid(), name: name, colorIdentifier: color, imageIdentifier: image)
                 )
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case .setEditTeamSheetIsPresented(false):
                 state.editedTeam = nil
                 return .none
@@ -97,7 +97,7 @@ struct App: ReducerProtocol {
                     return teams
                 }
                 state.standing.players = []
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
@@ -106,7 +106,7 @@ struct App: ReducerProtocol {
                 state.editedPlayer = player
                 return .none
             case .standing:
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case let .team(id, .edit):
                 state.editedTeam = state.teams[id: id]
                 return .none
@@ -119,23 +119,23 @@ struct App: ReducerProtocol {
                 })
                 state.standing.players.append(contentsOf: players)
                 state.teams.remove(id: id)
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case let .team(teamID, .player(playerID, .moveBack)):
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
                 player.isStanding = true
                 state.standing.players.updateOrAppend(player)
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case let .team(teamID, .player(playerID, .edit)):
                 guard let player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.editedPlayer = player
                 return .none
             case .team:
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case .teamEdited:
                 guard let editedTeam = state.editedTeam else { return .none }
                 state.teams.updateOrAppend(editedTeam)
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case .playerEdited:
                 guard let editedPlayer = state.editedPlayer else { return .none }
                 if var team = state.teams.first(where: { $0.players.contains(editedPlayer) }) {
@@ -144,9 +144,9 @@ struct App: ReducerProtocol {
                 } else if state.standing.players.contains(editedPlayer) {
                     state.standing.players.updateOrAppend(editedPlayer)
                 }
-                return Effect(value: .saveTeams)
+                return Effect(value: .saveState)
             case .scores:
-                return .none
+                return Effect(value: .saveState)
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {
@@ -165,5 +165,6 @@ extension App.State: Codable {
     enum CodingKeys: CodingKey {
         case standing
         case teams
+        case _scores
     }
 }
