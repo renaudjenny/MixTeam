@@ -5,9 +5,10 @@ struct Round: ReducerProtocol {
     struct State: Identifiable, Codable, Equatable {
         let id: UUID
         var name: String
-        var teams: IdentifiedArrayOf<Team.State> = []
         var scores: IdentifiedArrayOf<Score.State> = []
         var backup = Data()
+
+        var teams: IdentifiedArrayOf<Team.State> { IdentifiedArrayOf(uniqueElements: scores.map(\.team)) }
     }
 
     enum Action: Equatable {

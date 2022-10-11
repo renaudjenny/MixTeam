@@ -9,6 +9,7 @@ struct Scores: ReducerProtocol {
 
     enum Action: Equatable {
         case addRound
+        case recalculateAccumulatedPoints
         case remove(atOffsets: IndexSet)
         case round(id: Round.State.ID, action: Round.Action)
     }
@@ -31,7 +32,17 @@ struct Scores: ReducerProtocol {
                 return .none
             case let .remove(offsets):
                 state.rounds.remove(atOffsets: offsets)
+                return Effect(value: .recalculateAccumulatedPoints)
+            case .recalculateAccumulatedPoints:
+                for (index, round) in state.rounds.enumerated() {
+                    for team in state.rounds[id: round.id]?.teams ?? [] {
+                        let accumulatedPoints = state.accumulatedPoints(for: team, roundCount: index + 1)
+                        state.rounds[id: round.id]?.scores[id: team.id]?.accumulatedPoints = accumulatedPoints
+                    }
+                }
                 return .none
+            case .round(_, .score(_, .pointsUpdated)):
+                return Effect(value: .recalculateAccumulatedPoints)
             case .round:
                 return .none
             }
