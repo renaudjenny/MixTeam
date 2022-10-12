@@ -53,12 +53,6 @@ struct StandingView: View {
     }
 }
 
-private extension CGSize {
-    static func + (lhs: Self, rhs: CGFloat) -> Self {
-        CGSize(width: lhs.width + rhs, height: lhs.height + rhs)
-    }
-}
-
 #if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
@@ -76,9 +70,9 @@ struct FirstTeamRow_Previews: PreviewProvider {
     }
 }
 
-extension StoreOf<Standing> {
-    static var preview: StoreOf<Standing> {
-        Store(
+extension Store where State == Standing.State, Action == Standing.Action {
+    static var preview: Self {
+        Self(
             initialState: Standing.State(
                 players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .gray)]
             ),

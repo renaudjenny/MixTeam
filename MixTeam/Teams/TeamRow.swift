@@ -50,17 +50,8 @@ struct TeamRow: View {
 #if DEBUG
 struct TeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
-    }
-
-    private struct Preview: View {
-        var body: some View {
-            Group {
-                TeamRow(store: .preview)
-                TeamRow(store: .previewWithPlayers)
-                StandingView(store: .preview)
-            }
-        }
+        TeamRow(store: .preview).previewDisplayName("Team Row Without Players")
+        TeamRow(store: .previewWithPlayers).previewDisplayName("Team Row With Players")
     }
 }
 
@@ -90,12 +81,12 @@ struct TeamRowUX_Previews: PreviewProvider {
     }
 }
 
-extension StoreOf<Team> {
-    static var preview: StoreOf<Team> {
-        Store(initialState: .preview, reducer: Team())
+extension Store where State == Team.State, Action == Team.Action {
+    static var preview: Self {
+        Self(initialState: .preview, reducer: Team())
     }
-    static var previewWithPlayers: StoreOf<Team> {
-        Store(
+    static var previewWithPlayers: Self {
+        Self(
             initialState: Team.State(
                 id: UUID(),
                 name: "Team test",

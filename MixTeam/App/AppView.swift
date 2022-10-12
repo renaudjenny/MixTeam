@@ -147,9 +147,9 @@ struct PlayersView_Previews: PreviewProvider {
     }
 }
 
-extension StoreOf<App> {
-    static var preview: StoreOf<App> {
-        Store(initialState: .example, reducer: App())
+extension Store where State == App.State, Action == App.Action {
+    static var preview: Self {
+        Self(initialState: .example, reducer: App())
     }
 }
 #endif

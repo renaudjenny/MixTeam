@@ -49,9 +49,9 @@ struct NewScoreView_Previews: PreviewProvider {
     }
 }
 
-extension StoreOf<Round> {
-    static var preview: StoreOf<Round> {
-        Store(initialState: .preview, reducer: Round())
+extension Store where State == Round.State, Action == Round.Action {
+    static var preview: Self {
+        Self(initialState: .preview, reducer: Round())
     }
 }
 

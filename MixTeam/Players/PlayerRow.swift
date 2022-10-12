@@ -53,9 +53,9 @@ struct PlayerRow_Previews: PreviewProvider {
     }
 }
 
-extension StoreOf<Player> {
-    static var preview: StoreOf<Player> {
-        Store(initialState: Player.State(id: UUID(), name: "Test", image: .girl, color: .red), reducer: Player())
+extension Store where State == Player.State, Action == Player.Action {
+    static var preview: Self {
+        Self(initialState: Player.State(id: UUID(), name: "Test", image: .girl, color: .red), reducer: Player())
     }
 }
 #endif

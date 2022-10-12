@@ -117,18 +117,37 @@ struct HeaderView: View {
 struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
         ScoreboardView(store: .preview)
+        ScoreboardView(store: .previewWithScores)
     }
 }
 
-extension StoreOf<Scores> {
-    static var preview: StoreOf<Scores> {
-        Store(initialState: .preview, reducer: Scores())
+extension Store where State == Scores.State, Action == Scores.Action {
+    static var preview: Self {
+        Self(initialState: .preview, reducer: Scores())
+    }
+    static var previewWithScores: Self {
+        Self(initialState: .previewWithScores, reducer: Scores())
     }
 }
 
 extension Scores.State {
     static var preview: Self {
         Scores.State(teams: App.State.example.teams)
+    }
+    static var previewWithScores: Self {
+        guard let roundID = UUID(uuidString: "3B9523DF-6CE6-4561-8B4A-003BD57BC22A")
+        else { fatalError("Cannot generate UUID from a defined UUID String") }
+
+        let teams = App.State.example.teams
+        return Scores.State(teams: teams, rounds: [
+            Round.State(
+                id: roundID,
+                name: "Round 1",
+                scores: IdentifiedArrayOf(uniqueElements: teams.map {
+                    Score.State(team: $0, points: 10, accumulatedPoints: 10)
+                })
+                )
+        ])
     }
 }
 #endif
