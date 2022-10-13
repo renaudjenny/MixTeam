@@ -35,17 +35,3 @@ struct Player: ReducerProtocol {
         }
     }
 }
-
-struct DprPlayer: Codable, Identifiable, Hashable {
-    var id = UUID()
-    var name: String = ""
-    var imageIdentifier: ImageIdentifier
-}
-
-#if DEBUG
-extension DprPlayer {
-    static var test: Self {
-        DprPlayer(id: UUID(), name: "Test", imageIdentifier: .girl)
-    }
-}
-#endif

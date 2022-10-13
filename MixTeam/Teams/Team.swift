@@ -43,25 +43,3 @@ struct Team: ReducerProtocol {
         }
     }
 }
-
-struct DprTeam: Codable, Identifiable, Hashable {
-    var id = UUID()
-    var name: String = ""
-    var colorIdentifier: ColorIdentifier = .gray
-    var imageIdentifier: ImageIdentifier = .unknown
-    var players: IdentifiedArrayOf<DprPlayer> = []
-}
-
-#if DEBUG
-extension DprTeam {
-    static var test: Self {
-        DprTeam(
-            id: UUID(),
-            name: "Team Test",
-            colorIdentifier: .red,
-            imageIdentifier: .koala,
-            players: []
-        )
-    }
-}
-#endif

@@ -1,4 +1,5 @@
 import Dependencies
+import IdentifiedCollections
 import Foundation
 import XCTestDynamicOverlay
 
@@ -21,7 +22,8 @@ extension DependencyValues {
 private struct PersistenceLoadDependencyKey: DependencyKey {
     static var liveValue: App.State {
         guard let data = UserDefaults.standard.data(forKey: appStateKey) else {
-            return .example
+            guard let migratedData = migratedData else { return .example }
+            return migratedData
         }
         return (try? JSONDecoder().decode(App.State.self, from: data)) ?? .example
     }
@@ -29,7 +31,108 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
         XCTFail("Load App State non implemented")
         return App.State()
     }
+
+    static var migratedData: App.State? {
+        struct DprPlayer: Codable, Identifiable, Hashable {
+            var id = UUID()
+            var name: String = ""
+            var imageIdentifier: ImageIdentifier
+        }
+
+        struct DprTeam: Codable, Identifiable, Hashable {
+            var id = UUID()
+            var name: String = ""
+            var colorIdentifier: ColorIdentifier = .gray
+            var imageIdentifier: ImageIdentifier = .unknown
+            var players: [DprPlayer] = []
+
+            var state: Team.State {
+                Team.State(
+                    id: id,
+                    name: name,
+                    colorIdentifier: colorIdentifier,
+                    imageIdentifier: imageIdentifier,
+                    players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+                        id: $0.id,
+                        name: $0.name,
+                        image: $0.imageIdentifier,
+                        isStanding: false,
+                        color: colorIdentifier
+                    ) })
+                )
+            }
+
+            var standing: Standing.State {
+                Standing.State(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+                    id: $0.id,
+                    name: $0.name,
+                    image: $0.imageIdentifier,
+                    isStanding: true,
+                    color: .gray
+                )}))
+            }
+        }
+
+        struct DprRound: Identifiable, Codable, Hashable {
+            var name: String
+            var scores: [DprScore]
+            var id = UUID()
+        }
+
+        struct DprScore: Identifiable, Codable, Hashable {
+            var team: DprTeam
+            var points: Int
+            var id: DprTeam.ID { team.id }
+        }
+
+        func roundStates(rounds: [DprRound]) -> [Round.State] {
+            rounds.reduce([]) { result, round in
+                let state = Round.State(
+                    id: round.id,
+                    name: round.name,
+                    scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
+                        team: score.team.state,
+                        points: score.points,
+                        accumulatedPoints: result.reduce(0) { result, round in
+                            result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
+                        }
+                    ) })
+                )
+
+                return result + [state]
+            }
+        }
+
+        let teamsData = UserDefaults.standard.data(forKey: "teams")
+        let teams = teamsData.flatMap { (try? JSONDecoder().decode([DprTeam].self, from: $0)) }
+
+        let roundsData = UserDefaults.standard.data(forKey: "Scores.rounds")
+        let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
+
+        if let teams, let rounds {
+            let standing = teams.first?.standing ?? Standing.State()
+            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
+            let scores = Scores.State(teams: teams, rounds: rounds)
+
+            return App.State(
+                standing: standing,
+                teams: teams,
+                _scores: scores
+            )
+        } else if let teams {
+            let standing = teams.first?.standing ?? Standing.State()
+            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+            return App.State(standing: standing, teams: teams)
+        } else if let rounds {
+            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
+            return App.State(_scores: Scores.State(teams: [], rounds: rounds))
+        } else {
+            return nil
+        }
+    }
 }
+
 extension DependencyValues {
     var loaded: App.State {
         get { self[PersistenceLoadDependencyKey.self] }
