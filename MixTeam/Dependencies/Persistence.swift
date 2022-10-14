@@ -23,6 +23,11 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
     static var liveValue: App.State {
         guard let data = UserDefaults.standard.data(forKey: appStateKey) else {
             guard let migratedData = migratedData else { return .example }
+            UserDefaults.standard.removeObject(forKey: "teams")
+            UserDefaults.standard.removeObject(forKey: "Scores.rounds")
+            if let data = try? JSONEncoder().encode(migratedData) {
+                UserDefaults.standard.set(data, forKey: appStateKey)
+            }
             return migratedData
         }
         return (try? JSONDecoder().decode(App.State.self, from: data)) ?? .example
@@ -93,7 +98,7 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                     scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
                         team: score.team.state,
                         points: score.points,
-                        accumulatedPoints: result.reduce(0) { result, round in
+                        accumulatedPoints: score.points + result.reduce(0) { result, round in
                             result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
                         }
                     ) })
@@ -106,7 +111,7 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
         let teamsData = UserDefaults.standard.data(forKey: "teams")
         let teams = teamsData.flatMap { (try? JSONDecoder().decode([DprTeam].self, from: $0)) }
 
-        let roundsData = UserDefaults.standard.data(forKey: "Scores.rounds")
+        let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
         let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
         if let teams, let rounds {
