@@ -137,13 +137,9 @@ struct AppView: View {
 }
 
 #if DEBUG
-struct PlayersView_Previews: PreviewProvider {
+struct AppView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            AppView(store: .preview)
-            AppView(store: .preview)
-                .environment(\.colorScheme, .dark)
-        }
+        AppView(store: .preview)
     }
 }
 

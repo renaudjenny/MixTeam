@@ -138,11 +138,10 @@ struct App: ReducerProtocol {
                 return Effect(value: .saveState)
             case .playerEdited:
                 guard let editedPlayer = state.editedPlayer else { return .none }
-                if var team = state.teams.first(where: { $0.players.contains(editedPlayer) }) {
-                    team.players.updateOrAppend(editedPlayer)
-                    state.teams.updateOrAppend(team)
+                if let teamID = state.teams.first(where: { $0.players.contains(editedPlayer) })?.id {
+                    state.teams[id: teamID]?.players[id: editedPlayer.id] = editedPlayer
                 } else if state.standing.players.contains(editedPlayer) {
-                    state.standing.players.updateOrAppend(editedPlayer)
+                    state.standing.players[id: editedPlayer.id] = editedPlayer
                 }
                 return Effect(value: .saveState)
             case .scores:

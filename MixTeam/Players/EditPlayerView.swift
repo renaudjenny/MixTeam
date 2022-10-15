@@ -9,11 +9,7 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             VStack {
                 playerNameField
-                ImagePicker(
-                    color: viewStore.color,
-                    selection: viewStore.binding(get: { $0.image }, send: { .imageUpdated($0) }),
-                    type: .player
-                )
+                ImagePicker(color: viewStore.color, selection: viewStore.binding(\.$image), type: .player)
             }
             .background(viewStore.color.color.edgesIgnoringSafeArea(.all))
         }
@@ -30,7 +26,7 @@ struct EditPlayerView: View {
     private var playerNameField: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                TextField("Edit", text: viewStore.binding(get: { $0.name }, send: { .nameUpdated($0) }))
+                TextField("Edit", text: viewStore.binding(\.$name))
                     .foregroundColor(Color.white)
                     .font(.title)
                     .padding()
@@ -44,7 +40,7 @@ struct EditPlayerView: View {
 
     private var doneButton: some View {
         WithViewStore(store) { viewStore in
-            Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
+            Button(action: { presentation.wrappedValue.dismiss() }, label: {
                 Image(systemName: "checkmark")
                     .foregroundColor(viewStore.color.color)
                     .padding()

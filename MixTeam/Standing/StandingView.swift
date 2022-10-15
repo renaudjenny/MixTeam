@@ -56,27 +56,20 @@ struct StandingView: View {
 #if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
-    }
-
-    private struct Preview: View {
-        var body: some View {
-            ScrollView {
-                StandingView(store: .preview)
-                StandingView(store: .preview).environment(\.layoutDirection, .rightToLeft)
-                TeamRow(store: .preview)
-            }
-        }
+        StandingView(store: .preview)
     }
 }
 
 extension Store where State == Standing.State, Action == Standing.Action {
     static var preview: Self {
-        Self(
-            initialState: Standing.State(
-                players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .gray)]
-            ),
-            reducer: Standing()
+        Self(initialState: .preview, reducer: Standing())
+    }
+}
+
+private extension Standing.State {
+    static var preview: Self {
+        Standing.State(
+            players: [Player.State(id: UUID(), name: "Player 1", image: .girl, isStanding: true, color: .gray)]
         )
     }
 }
