@@ -19,5 +19,8 @@ jobs:
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
 
-    - name: Xcode test
-      run: xcodebuild clean test -scheme MixTeam
+    - name: List available devices
+      run: xcrun simctl list
+
+    - name: Xcode test on specific device
+      run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation)'
