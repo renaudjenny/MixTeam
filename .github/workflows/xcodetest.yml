@@ -11,7 +11,7 @@ jobs:
     runs-on: macOS-12
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_14.0.1.app
@@ -19,8 +19,5 @@ jobs:
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
 
-    - name: Create iPhone SE Simulator
-      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)"
-
-    - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
+    - name: Xcode test
+      run: xcodebuild clean test -scheme MixTeam
