@@ -5,8 +5,6 @@ struct EditTeamView: View {
     @Environment(\.presentationMode) var presentation
     @Environment(\.verticalSizeClass) var verticalSizeClass
     var store: StoreOf<Team>
-    @State private var animateSplashGrowing: Bool = false
-    @State private var animateSplashDripping: Bool = false
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -37,14 +35,6 @@ struct EditTeamView: View {
                 }
             }
             .background(viewStore.colorIdentifier.color.edgesIgnoringSafeArea(.all))
-            .task {
-                withAnimation(.easeIn(duration: 0.4)) {
-                    self.animateSplashGrowing = true
-                }
-                withAnimation(.easeInOut(duration: 2).delay(0.4)) {
-                    self.animateSplashDripping = true
-                }
-            }
         }
     }
 
@@ -100,14 +90,14 @@ struct EditTeamView: View {
     }
 
     private var colors: some View {
-        WithViewStore(store.stateless) { viewStore in
+        WithViewStore(store) { viewStore in
             ForEach(ColorIdentifier.allCases) { colorIdentifier in
-                Button(action: { viewStore.send(.colorUpdated(colorIdentifier)) }, label: {
+                Button(action: { viewStore.send(.colorUpdated(colorIdentifier), animation: .easeInOut) }, label: {
                     colorIdentifier.color
                         .frame(width: 50, height: 50)
-                        .clipShape(Splash(animatableData: self.animateSplashDripping ? 1 : 0))
-                        .scaleEffect(self.animateSplashGrowing ? 1 : 0.1)
-                }).accessibility(label: Text("\(colorIdentifier.name) color"))
+                        .clipShape(Splash(animatableData: viewStore.colorIdentifier == colorIdentifier ? 1 : 0))
+                })
+                .accessibility(label: Text("\(colorIdentifier.name) color"))
             }
         }
     }
@@ -115,9 +105,6 @@ struct EditTeamView: View {
 
 struct EditTeamView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            EditTeamView(store: .preview)
-            EditTeamView(store: .preview).previewLayout(.fixed(width: 800, height: 400))
-        }
+        EditTeamView(store: .preview)
     }
 }

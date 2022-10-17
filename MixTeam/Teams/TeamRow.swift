@@ -66,17 +66,12 @@ struct TeamRowUX_Previews: PreviewProvider {
         var body: some View {
             WithViewStore(store) { viewStore in
                 ScrollView {
-                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: teamRow)
+                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     Button { viewStore.send(.addTeam) } label: {
                         Text("Add Team")
                     }
                 }
             }
-        }
-
-        private func teamRow(_ team: StoreOf<Team>) -> some View {
-            TeamRow(store: team)
-                .transition(.move(edge: .leading))
         }
     }
 }
