@@ -18,7 +18,7 @@ struct TeamRow: View {
             .frame(maxWidth: .infinity)
             .background(viewStore.colorIdentifier.color)
             .modifier(AddDashedCardStyle())
-            .modifier(AddSoftRemoveButton(remove: { viewStore.send(.delete) }))
+            .modifier(AddSoftRemoveButton(remove: { viewStore.send(.delete, animation: .easeInOut) }))
             .padding()
         }
     }
@@ -38,7 +38,7 @@ struct TeamRow: View {
                         .foregroundColor(viewStore.colorIdentifier.color)
                         .frame(width: 80, height: 80)
                         .padding()
-                        .background(Color.white.clipShape(Splash2()))
+                        .background(Color.white.clipShape(Splash2()).shadow(radius: 5))
                         .padding(.bottom)
                 }
             }
@@ -67,7 +67,7 @@ struct TeamRowUX_Previews: PreviewProvider {
             WithViewStore(store) { viewStore in
                 ScrollView {
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                    Button { viewStore.send(.addTeam) } label: {
+                    Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                         Text("Add Team")
                     }
                 }

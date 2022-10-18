@@ -42,7 +42,7 @@ struct StandingView: View {
 
     private var addPlayerButton: some View {
         WithViewStore(store.stateless) { ViewStore in
-            Button { ViewStore.send(.createPlayer) } label: {
+            Button { ViewStore.send(.createPlayer, animation: .easeInOut) } label: {
                 Image(systemName: "plus")
                     .frame(width: 50, height: 50)
                     .background(Color.white.clipShape(Splash2()))

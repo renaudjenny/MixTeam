@@ -61,3 +61,11 @@ struct AddSoftRemoveButton: ViewModifier {
         }
     }
 }
+
+#if DEBUG
+struct AddSoftRemoveButton_Previews: PreviewProvider {
+    static var previews: some View {
+        TeamRow(store: .preview).previewDisplayName("Team Row")
+    }
+}
+#endif

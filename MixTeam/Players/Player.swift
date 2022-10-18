@@ -19,17 +19,5 @@ struct Player: ReducerProtocol {
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
-        Reduce { state, action in
-            switch action {
-            case .binding:
-                return .none
-            case .edit:
-                return .none
-            case .delete:
-                return .none
-            case .moveBack:
-                return .none
-            }
-        }
     }
 }

@@ -146,7 +146,7 @@ extension Scores.State {
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
                     Score.State(team: $0, points: 10, accumulatedPoints: 10)
                 })
-                )
+            ),
         ])
     }
 }

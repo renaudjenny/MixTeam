@@ -62,7 +62,7 @@ private struct Cell: View {
     private var background: some View {
         Group {
             if selection == imageIdentifier {
-                Splash2()
+                Splash2().shadow(radius: 5)
             }
         }
     }

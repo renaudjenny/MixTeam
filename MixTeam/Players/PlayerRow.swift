@@ -30,11 +30,11 @@ private struct PlayerRowButtons: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             if viewStore.isStanding {
-                Button { viewStore.send(.delete) } label: {
+                Button { viewStore.send(.delete, animation: .easeInOut) } label: {
                     Image(systemName: "minus.circle.fill")
                 }.padding(.trailing)
             } else {
-                Button { viewStore.send(.moveBack) } label: {
+                Button { viewStore.send(.moveBack, animation: .easeInOut) } label: {
                     Image(systemName: "gobackward")
                 }.padding(.trailing)
             }

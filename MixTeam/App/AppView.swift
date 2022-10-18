@@ -89,7 +89,7 @@ struct AppView: View {
 
     private var mixTeamButton: some View {
         WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.mixTeam) } label: {
+            Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
                 HStack {
                     Image(systemName: "shuffle")
                     Text("Mix Team")
@@ -105,7 +105,7 @@ struct AppView: View {
 
     private var addTeamButton: some View {
         WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.addTeam) } label: {
+            Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                 HStack {
                     Image(systemName: "plus")
                     Text("Add a new Team")
