@@ -6,39 +6,16 @@ struct TotalScoresView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            Section(header: header) {
+            Section(header: Text("Total")) {
                 ForEach(viewStore.teams) { team in
                     HStack {
                         Text("\(team.name)")
                         Spacer()
-                        ZStack {
-                            Text("99999").hidden()
-                            Text(viewStore.state.total(for: team))
-                                .fontWeight(.heavy)
-                                .foregroundColor(.white)
-                        }
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 4)
-                        .background(Color.purple.clipShape(Ellipse()))
+                        Text(viewStore.state.total(for: team))
                     }
                 }
-                .listRowBackground(Color.purple.opacity(20/100))
             }
         }
-    }
-
-    private var header: some View {
-        HStack {
-        Text("Total")
-            .font(.title3)
-            .fontWeight(.heavy)
-            .foregroundColor(.white)
-            Spacer()
-        }
-        .listRowInsets(EdgeInsets())
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .background(Color.purple)
     }
 }
 

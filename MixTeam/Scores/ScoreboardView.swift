@@ -15,7 +15,10 @@ struct ScoreboardView: View {
                         VStack {
                             Text("Add your first round by tapping on the plus button")
                                 .foregroundColor(.gray)
-                            addRoundButton
+                            Button { viewStore.send(.addRound) } label: {
+                                Label("Add a new round", systemImage: "plus")
+                                    .labelStyle(.iconOnly)
+                            }
                         }
                         .padding()
                     }
@@ -23,13 +26,14 @@ struct ScoreboardView: View {
                 .navigationTitle(Text("Scoreboard"))
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        HStack {
-                            addRoundButton
-                            Spacer()
+                        Button { viewStore.send(.addRound) } label: {
+                            Label("Add a new round", systemImage: "plus")
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        doneButton
+                        Button { viewStore.send(.addRound) } label: {
+                            Label("Done", systemImage: "checkmark")
+                        }
                     }
                 }
             }
@@ -41,48 +45,15 @@ struct ScoreboardView: View {
             List {
                 ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
                     Section(header: HeaderView(store: store)) {
-                        RoundRow(store: store)
+                        ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
+                            ScoreRow(store: store)
+                        }
                     }
                 }
                 .onDelete { viewStore.send(.remove(atOffsets: $0)) }
-                .listRowBackground(Color.purple.opacity(20/100))
-
                 TotalScoresView(store: store)
             }
             .listStyle(.plain)
-        }
-    }
-
-    private var addRoundButton: some View {
-        WithViewStore(store.stateless) { viewStore in
-            HStack {
-                Button { viewStore.send(.addRound) } label: {
-                    Text(Image(systemName: "plus"))
-                        .font(.title3)
-                        .fontWeight(.black)
-                        .foregroundColor(.white)
-                        .padding(4)
-                        .background(Color.purple.clipShape(Circle()))
-                }
-                .buttonStyle(PlainButtonStyle())
-                .accessibility(label: Text("Add a new round"))
-            }
-        }
-    }
-
-    private var doneButton: some View {
-        HStack {
-            Button { presentationMode.wrappedValue.dismiss() } label: {
-                Text(Image(systemName: "checkmark"))
-                    .font(.title3)
-                    .fontWeight(.black)
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .background(Color.blue.clipShape(Circle()))
-            }
-            .buttonStyle(PlainButtonStyle())
-            .accessibility(label: Text("Add a new round"))
-            Spacer()
         }
     }
 }
@@ -95,20 +66,11 @@ struct HeaderView: View {
             NavigationLink(destination: RoundView(store: store)) {
                 HStack {
                     Text(viewStore.name)
-                        .foregroundColor(.white)
-                        .font(.title3)
-                        .fontWeight(.heavy)
                     Spacer()
-                    Text(Image(systemName: "highlighter"))
-                        .foregroundColor(.white)
-                        .font(.title3)
-                        .fontWeight(.heavy)
+                    Label("Edit", systemImage: "highlighter")
+                        .labelStyle(.iconOnly)
                 }
             }
-            .listRowInsets(EdgeInsets())
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .background(Color.purple.opacity(80/100))
         }
     }
 }

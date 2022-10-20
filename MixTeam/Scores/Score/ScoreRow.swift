@@ -6,22 +6,34 @@ struct ScoreRow: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            VStack(spacing: 0) {
-                HStack {
-                    HStack {
-                        Text(viewStore.team.name)
-                        Spacer()
-                    }
-                    HStack {
-                        Spacer()
-                        Text("+\(viewStore.points)")
-                        Spacer()
-                        Text("\(viewStore.accumulatedPoints)")
-                            .bold()
-                    }
-                }
-                .padding(12)
+            HStack {
+                Text(viewStore.team.name)
+                    .frame(width: 150, alignment: .leading)
+                Text("+\(viewStore.points)")
+                Spacer()
+                Text("\(viewStore.accumulatedPoints)")
+                    .bold()
             }
         }
     }
 }
+
+#if DEBUG
+struct ScoreRow_Previews: PreviewProvider {
+    static var previews: some View {
+        List {
+            ScoreRow(store: Store(initialState: .preview, reducer: Score()))
+            ScoreRow(store: Store(initialState: .secondPreview, reducer: Score()))
+        }
+    }
+}
+
+extension Score.State {
+    static var preview: Self {
+        Score.State(team: .preview, points: 15, accumulatedPoints: 35)
+    }
+    static var secondPreview: Self {
+        Score.State(team: .preview, points: 15, accumulatedPoints: 350)
+    }
+}
+#endif
