@@ -26,12 +26,12 @@ struct ScoreboardView: View {
                 .navigationTitle(Text("Scoreboard"))
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.addRound) } label: {
+                        Button { viewStore.send(.addRound, animation: .default) } label: {
                             Label("Add a new round", systemImage: "plus")
                         }
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.addRound) } label: {
+                        Button { presentationMode.wrappedValue.dismiss() } label: {
                             Label("Done", systemImage: "checkmark")
                         }
                     }
@@ -44,13 +44,17 @@ struct ScoreboardView: View {
         WithViewStore(store.stateless) { viewStore in
             List {
                 ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
-                    Section(header: HeaderView(store: store)) {
+                    VStack {
+                        HeaderView(store: store)
+                            .padding(.vertical, 4)
                         ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
                             ScoreRow(store: store)
                         }
                     }
+                    .padding(.vertical, 4)
                 }
-                .onDelete { viewStore.send(.remove(atOffsets: $0)) }
+                .onDelete { viewStore.send(.remove(atOffsets: $0), animation: .default) }
+
                 TotalScoresView(store: store)
             }
             .listStyle(.plain)
@@ -66,9 +70,11 @@ struct HeaderView: View {
             NavigationLink(destination: RoundView(store: store)) {
                 HStack {
                     Text(viewStore.name)
+                        .font(.title2)
                     Spacer()
                     Label("Edit", systemImage: "highlighter")
                         .labelStyle(.iconOnly)
+                        .font(.title2)
                 }
             }
         }
