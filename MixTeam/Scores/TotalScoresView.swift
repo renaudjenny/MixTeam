@@ -3,16 +3,23 @@ import SwiftUI
 
 struct TotalScoresView: View {
     let store: StoreOf<Scores>
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         WithViewStore(store) { viewStore in
             Section(header: Text("Total")) {
                 ForEach(viewStore.teams) { team in
                     HStack {
+                        team.imageIdentifier.image
+                            .resizable()
+                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                            .frame(maxWidth: 24, maxHeight: 24)
                         Text("\(team.name)")
                         Spacer()
                         Text(viewStore.state.total(for: team))
                     }
+                    .listRowBackground(team.colorIdentifier.color.opacity(30/100))
+                    .listRowSeparator(.hidden)
                 }
             }
         }
