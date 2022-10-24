@@ -45,19 +45,8 @@ struct ScoreboardView: View {
             ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
                 WithViewStore(store) { viewStore in
                     Section(header: Text(viewStore.name)) {
-                        NavigationLink(destination: RoundView(store: store)) {
-                            VStack {
-                                ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
-                                    ScoreRow(store: store)
-                                }
-                            }
-                        }
-                        .swipeActions {
-                            Button(
-                                role: .destructive,
-                                action: { viewStore.send(.remove, animation: .default) },
-                                label: { Label("Delete", systemImage: "trash") }
-                            )
+                        ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
+                            ScoreRow(store: store)
                         }
                     }
                 }

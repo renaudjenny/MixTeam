@@ -37,10 +37,12 @@ struct Scores: ReducerProtocol {
                     }
                 }
                 return .none
-            case let .round(id, action: .remove):
-                state.rounds.remove(id: id)
+            case let .round(id, action: .score(_, action: .remove)):
+                if state.rounds[id: id]?.scores.isEmpty == true {
+                    state.rounds.remove(id: id)
+                }
                 return Effect(value: .recalculateAccumulatedPoints)
-            case .round(_, .score(_, .pointsUpdated)):
+            case .round(_, .score(_, .binding)):
                 return Effect(value: .recalculateAccumulatedPoints)
             case .round:
                 return .none

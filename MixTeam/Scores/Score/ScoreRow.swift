@@ -15,16 +15,28 @@ struct ScoreRow: View {
                 Text(viewStore.team.name)
                     .lineLimit(1)
                     .frame(maxWidth: 120, alignment: .leading)
-                Text("+\(viewStore.points)")
-                    .frame(maxWidth: 50)
+
+                TextField(
+                    "0",
+                    value: viewStore.binding(\.$points),
+                    format: .number.sign(strategy: .always(includingZero: false))
+                )
+                .frame(maxWidth: 70)
+
                 Spacer()
+
                 Text("\(viewStore.accumulatedPoints)")
                     .bold()
+                    .frame(maxWidth: 50, alignment: .trailing)
             }
-            .padding()
-            .background {
-                viewStore.team.colorIdentifier.color.opacity(30/100).cornerRadius(8)
+            .swipeActions {
+                Button(role: .destructive) { viewStore.send(.remove, animation: .default) } label: {
+                    Label("Delete", systemImage: "trash")
+                }
             }
+            .listRowSeparator(.hidden)
+            .listRowBackground(viewStore.team.colorIdentifier.color.opacity(30/100))
+            .textFieldStyle(.roundedBorder)
         }
     }
 }
@@ -33,12 +45,8 @@ struct ScoreRow: View {
 struct ScoreRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            NavigationLink(destination: Text("")) {
-                VStack {
-                    ScoreRow(store: Store(initialState: .preview, reducer: Score()))
-                    ScoreRow(store: Store(initialState: .secondPreview, reducer: Score()))
-                }
-            }
+            ScoreRow(store: Store(initialState: .preview, reducer: Score()))
+            ScoreRow(store: Store(initialState: .secondPreview, reducer: Score()))
         }
     }
 }

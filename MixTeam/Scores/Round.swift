@@ -13,7 +13,6 @@ struct Round: ReducerProtocol {
 
     enum Action: Equatable {
         case nameUpdated(String)
-        case remove
         case start
         case restoreBackup
         case score(id: Score.State.ID, action: Score.Action)
@@ -24,8 +23,6 @@ struct Round: ReducerProtocol {
             switch action {
             case let .nameUpdated(name):
                 state.name = name
-                return .none
-            case .remove:
                 return .none
             case .start:
                 state.backup = (try? JSONEncoder().encode(state)) ?? Data()
@@ -44,6 +41,9 @@ struct Round: ReducerProtocol {
             case .restoreBackup:
                 guard let backup = try? JSONDecoder().decode(State.self, from: state.backup) else { return .none }
                 state = backup
+                return .none
+            case let .score(id: id, action: .remove):
+                state.scores.remove(id: id)
                 return .none
             case .score:
                 return .none
