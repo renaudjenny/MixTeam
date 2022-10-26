@@ -22,6 +22,7 @@ struct Scores: ReducerProtocol {
                 let roundCount = state.rounds.count
                 let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
                     Score.State(
+                        id: uuid(),
                         team: team,
                         points: 0,
                         accumulatedPoints: state.accumulatedPoints(for: team, roundCount: roundCount)
