@@ -12,11 +12,17 @@ struct ScoreboardView: View {
                 ZStack {
                     if viewStore.rounds.count > 0 {
                         list
-//                            .synchronize(viewStore.binding(\.$focusedField), self.$focusedField)
+                            .synchronize(viewStore.binding(\.$focusedField), $focusedField)
                             .modifier(ScrollDismissesKeyboard())
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
-                                    // TODO
+                                    Button { viewStore.send(.minusScore(score: focusedField)) } label: {
+                                        Label("Minus", systemImage: "minus.circle")
+                                    }
+
+                                    Button { focusedField = nil } label: {
+                                        Label("Done", systemImage: "checkmark")
+                                    }
                                 }
                             }
                     } else {
@@ -54,7 +60,7 @@ struct ScoreboardView: View {
                 WithViewStore(store) { viewStore in
                     Section(header: Text(viewStore.name)) {
                         ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
-                            ScoreRow(store: store)
+                            ScoreRow(store: store, focusedField: _focusedField)
                         }
                     }
                 }

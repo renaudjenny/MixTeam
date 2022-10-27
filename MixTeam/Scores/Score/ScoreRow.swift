@@ -4,6 +4,7 @@ import SwiftUI
 struct ScoreRow: View {
     let store: StoreOf<Score>
     @Environment(\.colorScheme) var colorScheme
+    @FocusState var focusedField: Score.State?
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -22,6 +23,8 @@ struct ScoreRow: View {
                     format: .number.sign(strategy: .always(includingZero: false))
                 )
                 .frame(maxWidth: 70)
+                .focused($focusedField, equals: viewStore.state)
+                .keyboardType(.numberPad)
 
                 Spacer()
 
