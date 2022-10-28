@@ -1,12 +1,12 @@
 import ComposableArchitecture
+import Foundation
 
 struct Score: ReducerProtocol {
     struct State: Equatable, Identifiable, Codable {
+        let id: UUID
         let team: Team.State
         @BindableState var points: Int
         var accumulatedPoints: Int
-
-        var id: Team.State.ID { team.id }
     }
 
     enum Action: BindableAction, Equatable {

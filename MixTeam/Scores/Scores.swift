@@ -5,23 +5,28 @@ struct Scores: ReducerProtocol {
     struct State: Equatable, Codable {
         private(set) var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
+        @BindableState var focusedField: Score.State?
     }
 
-    enum Action: Equatable {
+    enum Action: BindableAction, Equatable {
         case addRound
         case recalculateAccumulatedPoints
         case round(id: Round.State.ID, action: Round.Action)
+        case minusScore(score: Score.State?)
+        case binding(BindingAction<State>)
     }
 
     @Dependency(\.uuid) var uuid
 
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
             case .addRound:
                 let roundCount = state.rounds.count
                 let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
                     Score.State(
+                        id: uuid(),
                         team: team,
                         points: 0,
                         accumulatedPoints: state.accumulatedPoints(for: team, roundCount: roundCount)
@@ -33,7 +38,9 @@ struct Scores: ReducerProtocol {
                 for (index, round) in state.rounds.enumerated() {
                     for team in state.rounds[id: round.id]?.teams ?? [] {
                         let accumulatedPoints = state.accumulatedPoints(for: team, roundCount: index + 1)
-                        state.rounds[id: round.id]?.scores[id: team.id]?.accumulatedPoints = accumulatedPoints
+                        guard let scoreID = state.rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+                        else { continue }
+                        state.rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
                     }
                 }
                 return .none
@@ -45,6 +52,15 @@ struct Scores: ReducerProtocol {
             case .round(_, .score(_, .binding)):
                 return Effect(value: .recalculateAccumulatedPoints)
             case .round:
+                return .none
+            case let .minusScore(score):
+                guard let score,
+                      let roundID = state.rounds.first(where: { $0.scores.contains(score) })?.id
+                else { return .none }
+
+                state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
+                return Effect(value: .recalculateAccumulatedPoints)
+            case .binding:
                 return .none
             }
         }

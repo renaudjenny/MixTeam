@@ -4,6 +4,7 @@ import SwiftUI
 struct ScoreRow: View {
     let store: StoreOf<Score>
     @Environment(\.colorScheme) var colorScheme
+    @FocusState var focusedField: Score.State?
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -16,12 +17,10 @@ struct ScoreRow: View {
                     .lineLimit(1)
                     .frame(maxWidth: 120, alignment: .leading)
 
-                TextField(
-                    "0",
-                    value: viewStore.binding(\.$points),
-                    format: .number.sign(strategy: .always(includingZero: false))
-                )
-                .frame(maxWidth: 70)
+                TextField("", text: viewStore.binding(\.$points).string, prompt: Text("123"))
+                    .frame(maxWidth: 70)
+                    .focused($focusedField, equals: viewStore.state)
+                    .keyboardType(.numberPad)
 
                 Spacer()
 
@@ -53,10 +52,16 @@ struct ScoreRow_Previews: PreviewProvider {
 
 extension Score.State {
     static var preview: Self {
-        Score.State(team: .preview, points: 15, accumulatedPoints: 35)
+        guard let id = UUID(uuidString: "8A74A892-2C3F-4BB4-A8B3-19C5B1E0AD84") else {
+            fatalError("Cannot generate UUID from a defined UUID String")
+        }
+        return Score.State(id: id, team: .preview, points: 15, accumulatedPoints: 35)
     }
     static var secondPreview: Self {
-        Score.State(team: .preview, points: 15, accumulatedPoints: 350)
+        guard let id = UUID(uuidString: "7C3E9E9F-31CE-462B-9894-08C699B13AD0") else {
+            fatalError("Cannot generate UUID from a defined UUID String")
+        }
+        return Score.State(id: id, team: .preview, points: 15, accumulatedPoints: 350)
     }
 }
 #endif

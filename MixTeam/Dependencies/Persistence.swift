@@ -96,6 +96,7 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                     id: round.id,
                     name: round.name,
                     scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
+                        id: UUID(),
                         team: score.team.state,
                         points: score.points,
                         accumulatedPoints: score.points + result.reduce(0) { result, round in

@@ -4,6 +4,7 @@ import SwiftUI
 struct ScoreboardView: View {
     let store: StoreOf<Scores>
     @Environment(\.presentationMode) private var presentationMode
+    @FocusState private var focusedField: Score.State?
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -11,6 +12,18 @@ struct ScoreboardView: View {
                 ZStack {
                     if viewStore.rounds.count > 0 {
                         list
+                            .synchronize(viewStore.binding(\.$focusedField), $focusedField)
+                            .toolbar {
+                                ToolbarItemGroup(placement: .keyboard) {
+                                    Button { viewStore.send(.minusScore(score: focusedField)) } label: {
+                                        Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
+                                    }
+
+                                    Button { focusedField = nil } label: {
+                                        Label("Done", systemImage: "checkmark")
+                                    }
+                                }
+                            }
                     } else {
                         VStack {
                             Text("Add your first round by tapping on the plus button")
@@ -46,7 +59,7 @@ struct ScoreboardView: View {
                 WithViewStore(store) { viewStore in
                     Section(header: Text(viewStore.name)) {
                         ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
-                            ScoreRow(store: store)
+                            ScoreRow(store: store, focusedField: _focusedField)
                         }
                     }
                 }
@@ -54,6 +67,23 @@ struct ScoreboardView: View {
 
             TotalScoresView(store: store)
         }
+    }
+}
+
+extension View {
+    func synchronize<Value>(
+        _ first: Binding<Value>,
+        _ second: FocusState<Value>.Binding
+    ) -> some View {
+        self
+            .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
+            .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
+    }
+}
+
+extension Score.State: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
@@ -83,7 +113,12 @@ extension Scores.State {
               let round2ID = UUID(uuidString: "3891A3AB-0E2A-4874-AAB0-8228EB38E983"),
               let round3ID = UUID(uuidString: "00BAAAA0-33FE-43F2-BC46-29735A013953"),
               let round4ID = UUID(uuidString: "1F398B53-9F5E-486F-8C57-705E5659EADA"),
-              let round5ID = UUID(uuidString: "723994B2-4CC4-4BAD-A31E-22E5120A4D36")
+              let round5ID = UUID(uuidString: "723994B2-4CC4-4BAD-A31E-22E5120A4D36"),
+              let score1ID = UUID(uuidString: "2411540E-54BE-4176-A712-2DC702A60F1B"),
+              let score2ID = UUID(uuidString: "0105D2A7-9A66-4742-9D32-769DFB0E522C"),
+              let score3ID = UUID(uuidString: "0B778EB8-56ED-4830-8039-6D0972BDD473"),
+              let score4ID = UUID(uuidString: "E3306CB8-CB29-46FE-873C-A23E16606CAE"),
+              let score5ID = UUID(uuidString: "F33CA046-F479-4230-82F2-096A82F38A13")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
         let teams = App.State.example.teams
@@ -92,35 +127,35 @@ extension Scores.State {
                 id: round1ID,
                 name: "Round 1",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(team: $0, points: 10, accumulatedPoints: 10)
+                    Score.State(id: score1ID, team: $0, points: 10, accumulatedPoints: 10)
                 })
             ),
             Round.State(
                 id: round2ID,
                 name: "Round 2",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(team: $0, points: 10, accumulatedPoints: 20)
+                    Score.State(id: score2ID, team: $0, points: 10, accumulatedPoints: 20)
                 })
             ),
             Round.State(
                 id: round3ID,
                 name: "Round 3",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(team: $0, points: 10, accumulatedPoints: 30)
+                    Score.State(id: score3ID, team: $0, points: 10, accumulatedPoints: 30)
                 })
             ),
             Round.State(
                 id: round4ID,
                 name: "Round 4",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(team: $0, points: 10, accumulatedPoints: 40)
+                    Score.State(id: score4ID, team: $0, points: 10, accumulatedPoints: 40)
                 })
             ),
             Round.State(
                 id: round5ID,
                 name: "Round 5",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(team: $0, points: 10, accumulatedPoints: 50)
+                    Score.State(id: score5ID, team: $0, points: 10, accumulatedPoints: 50)
                 })
             ),
         ])
