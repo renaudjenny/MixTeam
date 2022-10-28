@@ -17,7 +17,7 @@ struct ScoreboardView: View {
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
                                     Button { viewStore.send(.minusScore(score: focusedField)) } label: {
-                                        Label("Minus", systemImage: "minus.circle")
+                                        Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
                                     }
 
                                     Button { focusedField = nil } label: {

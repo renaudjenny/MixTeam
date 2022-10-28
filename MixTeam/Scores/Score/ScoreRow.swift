@@ -17,14 +17,10 @@ struct ScoreRow: View {
                     .lineLimit(1)
                     .frame(maxWidth: 120, alignment: .leading)
 
-                TextField(
-                    "0",
-                    value: viewStore.binding(\.$points),
-                    format: .number.sign(strategy: .always(includingZero: false))
-                )
-                .frame(maxWidth: 70)
-                .focused($focusedField, equals: viewStore.state)
-                .keyboardType(.numberPad)
+                TextField("", text: viewStore.binding(\.$points).string, prompt: Text("123"))
+                    .frame(maxWidth: 70)
+                    .focused($focusedField, equals: viewStore.state)
+                    .keyboardType(.numberPad)
 
                 Spacer()
 
