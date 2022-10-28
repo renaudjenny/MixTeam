@@ -18,6 +18,7 @@ struct TotalScoresView: View {
                         Spacer()
                         Text(viewStore.state.total(for: team))
                     }
+                    .font(.body.bold())
                     .listRowBackground(team.colorIdentifier.color.opacity(30/100))
                     .listRowSeparator(.hidden)
                 }
@@ -31,7 +32,7 @@ private extension Scores.State {
         String(
             rounds
                 .flatMap(\.scores)
-                .filter { $0.id == team.id }
+                .filter { $0.team == team }
                 .map(\.points)
                 .reduce(0, +)
         )

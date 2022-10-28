@@ -13,7 +13,6 @@ struct ScoreboardView: View {
                     if viewStore.rounds.count > 0 {
                         list
                             .synchronize(viewStore.binding(\.$focusedField), $focusedField)
-                            .modifier(ScrollDismissesKeyboard())
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
                                     Button { viewStore.send(.minusScore(score: focusedField)) } label: {
@@ -67,16 +66,6 @@ struct ScoreboardView: View {
             }
 
             TotalScoresView(store: store)
-        }
-    }
-}
-
-private struct ScrollDismissesKeyboard: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            content.scrollDismissesKeyboard(.immediately)
-        } else {
-            content
         }
     }
 }
