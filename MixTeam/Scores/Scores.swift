@@ -11,12 +11,14 @@ struct Scores: ReducerProtocol {
     enum Action: BindableAction, Equatable {
         case addRound
         case recalculateAccumulatedPoints
+        case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
         case round(id: Round.State.ID, action: Round.Action)
         case minusScore(score: Score.State?)
         case binding(BindingAction<State>)
     }
 
     @Dependency(\.uuid) var uuid
+    private enum RecalculateTaskID {}
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
@@ -29,20 +31,27 @@ struct Scores: ReducerProtocol {
                         id: uuid(),
                         team: team,
                         points: 0,
-                        accumulatedPoints: state.accumulatedPoints(for: team, roundCount: roundCount)
+                        accumulatedPoints: state.rounds.accumulatedPoints(for: team, roundCount: roundCount)
                     )
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
                 return .none
             case .recalculateAccumulatedPoints:
-                for (index, round) in state.rounds.enumerated() {
-                    for team in state.rounds[id: round.id]?.teams ?? [] {
-                        let accumulatedPoints = state.accumulatedPoints(for: team, roundCount: index + 1)
-                        guard let scoreID = state.rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
-                        else { continue }
-                        state.rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
+                return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
+                    var rounds = rounds
+                    for (index, round) in rounds.enumerated() {
+                        for team in rounds[id: round.id]?.teams ?? [] {
+                            let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
+                            guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+                            else { continue }
+                            rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
+                        }
                     }
-                }
+                    return .updateAccumulatedPoints(rounds)
+                })
+                .cancellable(id: RecalculateTaskID.self)
+            case let .updateAccumulatedPoints(rounds):
+                state.rounds = rounds
                 return .none
             case let .round(id, action: .score(_, action: .remove)):
                 if state.rounds[id: id]?.scores.isEmpty == true {
@@ -81,9 +90,9 @@ extension App.State {
     }
 }
 
-private extension Scores.State {
+private extension IdentifiedArrayOf<Round.State> {
     func accumulatedPoints(for team: Team.State, roundCount: Int) -> Int {
-        guard roundCount > 0, roundCount <= rounds.count else { return 0 }
-        return rounds[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
+        guard roundCount > 0, roundCount <= count else { return 0 }
+        return self[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
     }
 }

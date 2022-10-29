@@ -92,7 +92,7 @@ struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
         ScoreboardView(store: .preview)
         ScoreboardView(store: .previewWithScores)
-//        ScoreboardView(store: .previewWithManyScores)
+        ScoreboardView(store: .previewWithManyScores)
     }
 }
 
