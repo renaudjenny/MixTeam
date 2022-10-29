@@ -92,6 +92,7 @@ struct ScoreboardView_Previews: PreviewProvider {
     static var previews: some View {
         ScoreboardView(store: .preview)
         ScoreboardView(store: .previewWithScores)
+//        ScoreboardView(store: .previewWithManyScores)
     }
 }
 
@@ -100,7 +101,10 @@ extension Store where State == Scores.State, Action == Scores.Action {
         Self(initialState: .preview, reducer: Scores())
     }
     static var previewWithScores: Self {
-        Self(initialState: .previewWithScores, reducer: Scores())
+        Self(initialState: .previewWithScores(count: 5), reducer: Scores())
+    }
+    static var previewWithManyScores: Self {
+        Self(initialState: .previewWithScores(count: 300), reducer: Scores())
     }
 }
 
@@ -108,57 +112,17 @@ extension Scores.State {
     static var preview: Self {
         Scores.State(teams: App.State.example.teams)
     }
-    static var previewWithScores: Self {
-        guard let round1ID = UUID(uuidString: "3B9523DF-6CE6-4561-8B4A-003BD57BC22A"),
-              let round2ID = UUID(uuidString: "3891A3AB-0E2A-4874-AAB0-8228EB38E983"),
-              let round3ID = UUID(uuidString: "00BAAAA0-33FE-43F2-BC46-29735A013953"),
-              let round4ID = UUID(uuidString: "1F398B53-9F5E-486F-8C57-705E5659EADA"),
-              let round5ID = UUID(uuidString: "723994B2-4CC4-4BAD-A31E-22E5120A4D36"),
-              let score1ID = UUID(uuidString: "2411540E-54BE-4176-A712-2DC702A60F1B"),
-              let score2ID = UUID(uuidString: "0105D2A7-9A66-4742-9D32-769DFB0E522C"),
-              let score3ID = UUID(uuidString: "0B778EB8-56ED-4830-8039-6D0972BDD473"),
-              let score4ID = UUID(uuidString: "E3306CB8-CB29-46FE-873C-A23E16606CAE"),
-              let score5ID = UUID(uuidString: "F33CA046-F479-4230-82F2-096A82F38A13")
-        else { fatalError("Cannot generate UUID from a defined UUID String") }
-
+    static func previewWithScores(count: Int) -> Self {
         let teams = App.State.example.teams
-        return Scores.State(teams: teams, rounds: [
+        let uuid = UUIDGenerator.incrementing
+        return Scores.State(teams: teams, rounds: IdentifiedArrayOf(uniqueElements: (1...count).map { i in
             Round.State(
-                id: round1ID,
-                name: "Round 1",
+                id: uuid(),
+                name: "Round \(i)",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: score1ID, team: $0, points: 10, accumulatedPoints: 10)
-                })
-            ),
-            Round.State(
-                id: round2ID,
-                name: "Round 2",
-                scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: score2ID, team: $0, points: 10, accumulatedPoints: 20)
-                })
-            ),
-            Round.State(
-                id: round3ID,
-                name: "Round 3",
-                scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: score3ID, team: $0, points: 10, accumulatedPoints: 30)
-                })
-            ),
-            Round.State(
-                id: round4ID,
-                name: "Round 4",
-                scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: score4ID, team: $0, points: 10, accumulatedPoints: 40)
-                })
-            ),
-            Round.State(
-                id: round5ID,
-                name: "Round 5",
-                scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: score5ID, team: $0, points: 10, accumulatedPoints: 50)
-                })
-            ),
-        ])
+                    Score.State(id: uuid(), team: $0, points: 10 * i, accumulatedPoints: 10 * i + 10 * (i - 1))
+                }))
+        }))
     }
 }
 #endif
