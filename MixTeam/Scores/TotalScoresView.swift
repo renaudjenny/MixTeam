@@ -12,7 +12,6 @@ struct TotalScoresView: View {
                     HStack {
                         team.imageIdentifier.image
                             .resizable()
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
                             .frame(maxWidth: 24, maxHeight: 24)
                         Text("\(team.name)")
                         Spacer()

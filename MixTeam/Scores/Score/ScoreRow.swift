@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ScoreRow: View {
     let store: StoreOf<Score>
-    @Environment(\.colorScheme) var colorScheme
     @FocusState var focusedField: Score.State?
 
     var body: some View {
@@ -11,7 +10,6 @@ struct ScoreRow: View {
             HStack {
                 viewStore.team.imageIdentifier.image
                     .resizable()
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
                     .frame(maxWidth: 24, maxHeight: 24)
                 Text(viewStore.team.name)
                     .lineLimit(1)

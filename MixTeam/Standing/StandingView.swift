@@ -14,9 +14,9 @@ struct StandingView: View {
         VStack {
             header
                 .font(.callout)
-                .foregroundColor(Color.white)
                 .padding(.top)
             ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
+                .padding()
             addPlayerButton
         }
         .frame(maxWidth: .infinity)

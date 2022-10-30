@@ -36,7 +36,7 @@ struct AddSoftRemoveButton: ViewModifier {
                 Image(systemName: "minus.circle.fill")
             }
         }
-        .buttonStyle(CommonButtonStyle(color: .red))
+        .buttonStyle(DashedButtonStyle(color: .red))
         .transition(.move(edge: .trailing))
         .padding(.leading)
     }

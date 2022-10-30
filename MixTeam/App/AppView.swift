@@ -65,11 +65,10 @@ struct AppView: View {
         Button { isScoreboardPresented = true } label: {
             Image(systemName: "list.bullet.rectangle")
                 .resizable()
-                .padding(14)
         }
         .frame(width: buttonSize.width, height: buttonSize.height)
         .modifier(Shadow())
-        .buttonStyle(MixTeamButtonStyle(color: .purple))
+        .buttonStyle(DashedButtonStyle(color: .purple))
         .padding(.horizontal)
         .accessibility(label: Text("Display scoreboard"))
     }
@@ -78,11 +77,10 @@ struct AppView: View {
         Button { isAboutPresented = true } label: {
             Image(systemName: "cube.box")
                 .resizable()
-                .padding(12)
         }
         .frame(width: buttonSize.width, height: buttonSize.height)
         .modifier(Shadow())
-        .buttonStyle(MixTeamButtonStyle(color: .gray))
+        .buttonStyle(DashedButtonStyle(color: .gray))
         .padding(.horizontal)
         .accessibility(label: Text("About"))
     }
@@ -94,10 +92,9 @@ struct AppView: View {
                     Image(systemName: "shuffle")
                     Text("Mix Team")
                 }
+                .frame(maxWidth: .infinity, minHeight: 30)
             }
-            .modifier(Shadow())
-            .buttonStyle(MixTeamButtonStyle())
-            .frame(height: 50)
+            .buttonStyle(DashedButtonStyle(color: .red))
             .padding(.horizontal)
             .accessibility(label: Text("Mix Team"))
         }
@@ -111,7 +108,7 @@ struct AppView: View {
                     Text("Add a new Team")
                 }.frame(maxWidth: .infinity)
             }
-            .buttonStyle(CommonButtonStyle(color: .red))
+            .buttonStyle(DashedButtonStyle(color: .red))
             .padding()
             .accessibility(label: Text("Add Team"))
         }

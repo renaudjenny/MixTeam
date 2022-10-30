@@ -9,10 +9,10 @@ struct TeamRow: View {
             VStack {
                 sectionHeader
                     .font(.callout)
-                    .foregroundColor(Color.white)
                     .padding(.top)
                 VStack {
                     ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+                        .padding()
                 }.padding(.bottom)
             }
             .frame(maxWidth: .infinity)
@@ -43,6 +43,7 @@ struct TeamRow: View {
                 }
             }
             .accessibility(label: Text("Edit Team \(viewStore.name)"))
+            .buttonStyle(.plain)
         }
     }
 }
