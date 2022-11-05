@@ -3,22 +3,27 @@ import Dependencies
 
 struct PlayerBadge: View {
     let player: Player.State
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         player.image.image
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .foregroundColor(player.color.color)
-            .brightness(-35/100)
+            .brightness(colorScheme == .dark ? -5/100 : 20/100)
             .padding(8)
-            .background(player.color.color.brightness(5/100).modifier(AddDashedCardStyle()))
+            .background {
+                player.color.color
+                    .brightness(colorScheme == .dark ? -5/100 : 15/100)
+                    .modifier(AddDashedCardStyle())
+            }
     }
 }
 
 #if DEBUG
 struct PlayerBadge_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerBadge(player: .preview).padding()
+        PlayerBadge(player: .preview)
+            .padding()
     }
 }
 

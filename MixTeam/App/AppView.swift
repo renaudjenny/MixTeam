@@ -11,15 +11,18 @@ struct AppView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            ScrollView {
-                LazyVStack {
+            List {
+                Group {
                     header
                     StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                     mixTeamButton
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                        .listRowBackground(Color.clear)
                     addTeamButton
                 }
+                .listRowSeparator(.hidden)
             }
+            .listStyle(.grouped)
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
@@ -38,12 +41,12 @@ struct AppView: View {
                     EditPlayerView(store: store)
                 }
             }
-            .background(Color.clear.sheet(isPresented: $isScoreboardPresented) {
+            .sheet(isPresented: $isScoreboardPresented) {
                 ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
-            })
-            .background(Color.clear.sheet(isPresented: $isAboutPresented) {
+            }
+            .sheet(isPresented: $isAboutPresented) {
                 aboutView
-            })
+            }
             .task { viewStore.send(.loadState) }
         }
     }
@@ -58,6 +61,7 @@ struct AppView: View {
             Spacer()
             aboutButton
         }
+        .listRowBackground(Color.clear)
         .padding(.vertical)
     }
 
@@ -69,7 +73,6 @@ struct AppView: View {
         .frame(width: buttonSize.width, height: buttonSize.height)
         .modifier(Shadow())
         .buttonStyle(DashedButtonStyle(color: .purple))
-        .padding(.horizontal)
         .accessibility(label: Text("Display scoreboard"))
     }
 
@@ -81,7 +84,6 @@ struct AppView: View {
         .frame(width: buttonSize.width, height: buttonSize.height)
         .modifier(Shadow())
         .buttonStyle(DashedButtonStyle(color: .gray))
-        .padding(.horizontal)
         .accessibility(label: Text("About"))
     }
 
@@ -97,6 +99,7 @@ struct AppView: View {
             .buttonStyle(DashedButtonStyle(color: .red))
             .padding(.horizontal)
             .accessibility(label: Text("Mix Team"))
+            .listRowBackground(Color.clear)
         }
     }
 
@@ -111,6 +114,7 @@ struct AppView: View {
             .buttonStyle(DashedButtonStyle(color: .red))
             .padding()
             .accessibility(label: Text("Add Team"))
+            .listRowBackground(Color.clear)
         }
     }
 

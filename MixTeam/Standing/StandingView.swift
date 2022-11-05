@@ -3,53 +3,36 @@ import SwiftUI
 
 struct StandingView: View {
     let store: StoreOf<Standing>
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            card
-        }
-    }
-
-    var card: some View {
-        VStack {
-            header
-                .font(.callout)
-                .padding(.top)
+        Section {
             ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
-                .padding()
-            addPlayerButton
+        } header: {
+            header
         }
-        .frame(maxWidth: .infinity)
-        .background(.gray)
-        .modifier(AddDashedCardStyle())
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal)
-        .padding(.bottom)
     }
 
     private var header: some View {
-        VStack {
-            Text("Players standing for a team")
-                .font(.title2)
-                .fontWeight(.semibold)
-                .padding(.horizontal)
-            Image(systemName: "person.3")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 50, height: 50)
-        }
-    }
-
-    private var addPlayerButton: some View {
         WithViewStore(store.stateless) { ViewStore in
-            Button { ViewStore.send(.createPlayer, animation: .easeInOut) } label: {
-                Image(systemName: "plus")
-                    .frame(width: 50, height: 50)
-                    .background(Color.white.clipShape(Splash2()))
-                    .foregroundColor(.gray)
-                    .accessibility(label: Text("Add Player"))
-            }.padding()
+            VStack {
+                Text("Players standing for a team")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                Button { ViewStore.send(.createPlayer, animation: .easeInOut) } label: {
+                    Label { Text("Add Player") } icon: {
+                        HStack {
+                            Image(systemName: "person.3")
+                            Image(systemName: "plus")
+                        }
+                        .font(.title3)
+                    }
+                    .labelStyle(.iconOnly)
+                }
+                .buttonStyle(DashedButtonStyle(color: .gray))
+            }
         }
+        .frame(maxWidth: .infinity)
     }
 }
 

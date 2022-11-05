@@ -93,6 +93,7 @@ struct App: ReducerProtocol {
                         .first
                     else { return teams }
                     player.isStanding = false
+                    player.color = lessPlayerTeam.colorIdentifier
                     teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
                     return teams
                 }
@@ -115,6 +116,7 @@ struct App: ReducerProtocol {
                 players = IdentifiedArrayOf(uniqueElements: players.map {
                     var player = $0
                     player.isStanding = true
+                    player.color = .gray
                     return player
                 })
                 state.standing.players.append(contentsOf: players)
@@ -124,6 +126,7 @@ struct App: ReducerProtocol {
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
                 player.isStanding = true
+                player.color = .gray
                 state.standing.players.updateOrAppend(player)
                 return Effect(value: .saveState)
             case let .team(teamID, .player(playerID, .edit)):

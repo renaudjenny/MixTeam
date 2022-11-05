@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DashedButtonStyle: ButtonStyle {
     let color: Color
+    @Environment(\.colorScheme) private var colorScheme
 
     func makeBody(configuration: Configuration) -> some View {
         HStack {
@@ -11,6 +12,7 @@ struct DashedButtonStyle: ButtonStyle {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(color)
+                .brightness(colorScheme == .dark ? -5/100 : 15/100)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(style: strokeStyle(isPressed: configuration.isPressed))
