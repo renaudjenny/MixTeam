@@ -67,13 +67,14 @@ struct AppView: View {
 
     private var scoreboardButton: some View {
         Button { isScoreboardPresented = true } label: {
-            Image(systemName: "list.bullet.rectangle")
-                .resizable()
+            Label { Text("Display scoreboard") } icon: {
+                Image(systemName: "list.bullet.rectangle")
+                    .resizable()
+            }
         }
+        .labelStyle(.iconOnly)
         .frame(width: buttonSize.width, height: buttonSize.height)
-        .modifier(Shadow())
         .buttonStyle(DashedButtonStyle(color: .purple))
-        .accessibility(label: Text("Display scoreboard"))
     }
 
     private var aboutButton: some View {
@@ -89,16 +90,13 @@ struct AppView: View {
 
     private var mixTeamButton: some View {
         WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
-                HStack {
-                    Image(systemName: "shuffle")
-                    Text("Mix Team")
+            Section {
+                Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
+                    Label("Mix Team", systemImage: "shuffle")
+                        .frame(maxWidth: .infinity, minHeight: 30)
                 }
-                .frame(maxWidth: .infinity, minHeight: 30)
+                .buttonStyle(DashedButtonStyle(color: .red))
             }
-            .buttonStyle(DashedButtonStyle(color: .red))
-            .padding(.horizontal)
-            .accessibility(label: Text("Mix Team"))
             .listRowBackground(Color.clear)
         }
     }
@@ -106,14 +104,10 @@ struct AppView: View {
     private var addTeamButton: some View {
         WithViewStore(store.stateless) { viewStore in
             Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
-                HStack {
-                    Image(systemName: "plus")
-                    Text("Add a new Team")
-                }.frame(maxWidth: .infinity)
+                Label("Add a new Team", systemImage: "plus")
+                    .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(DashedButtonStyle(color: .red))
-            .padding()
-            .accessibility(label: Text("Add Team"))
             .listRowBackground(Color.clear)
         }
     }

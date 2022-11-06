@@ -9,11 +9,10 @@ struct PlayerBadge: View {
         player.image.image
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .brightness(colorScheme == .dark ? -5/100 : 20/100)
             .padding(8)
+            .opacity(70/100)
             .background {
                 player.color.color
-                    .brightness(colorScheme == .dark ? -5/100 : 15/100)
                     .modifier(AddDashedCardStyle())
             }
     }

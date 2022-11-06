@@ -18,7 +18,6 @@
 		4C3763C524A3DF5E00FA040B /* MixTeamLogicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */; };
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
-		4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */; };
 		4C5F13322472F88C007B9F3E /* DashedButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* DashedButtonStyle.swift */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
@@ -83,7 +82,6 @@
 		4C3763C424A3DF5E00FA040B /* MixTeamLogicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamLogicTests.swift; sourceTree = "<group>"; };
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSoftRemoveButton.swift; sourceTree = "<group>"; };
 		4C5F13312472F88C007B9F3E /* DashedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedButtonStyle.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 			isa = PBXGroup;
 			children = (
 				4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */,
-				4C49458024BB14A700A7A81A /* AddSoftRemoveButton.swift */,
 				4C1ED55524C75C3B005D6749 /* Shadow.swift */,
 			);
 			path = ViewModifiers;
@@ -487,7 +484,6 @@
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
-				4C49458124BB14A700A7A81A /* AddSoftRemoveButton.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */,

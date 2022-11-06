@@ -17,7 +17,7 @@ struct PlayerRow: View {
                 }
             }
             .buttonStyle(.plain)
-            .listRowBackground(viewStore.color.color.brightness(colorScheme == .dark ? -20/100 : 20/100))
+            .listRowBackground(viewStore.color.color)
         }
     }
 }

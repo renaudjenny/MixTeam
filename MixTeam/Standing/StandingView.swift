@@ -30,16 +30,20 @@ struct StandingView: View {
                     .labelStyle(.iconOnly)
                 }
                 .buttonStyle(DashedButtonStyle(color: .gray))
+                .padding(.bottom)
             }
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.gray)
         }
-        .frame(maxWidth: .infinity)
     }
 }
 
 #if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        StandingView(store: .preview)
+        List {
+            StandingView(store: .preview)
+        }
     }
 }
 
