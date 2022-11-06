@@ -6,40 +6,14 @@ struct TeamRow: View {
     @State private var isRealRemoveButtonDisplayed = false
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                sectionHeader
-                    .font(.callout)
-                    .padding([.horizontal, .top])
-                ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
-                    .padding()
-
-            }
-            .padding(.bottom)
-            .overlay {
-                if isRealRemoveButtonDisplayed {
-                    ZStack {
-                        Button { withAnimation { isRealRemoveButtonDisplayed = false } } label: {
-                            Color.black
-                                .opacity(isRealRemoveButtonDisplayed ? 2/10 : 0)
-                        }
-                        Button { viewStore.send(.delete, animation: .easeInOut) } label: {
-                            VStack(spacing: 20) {
-                                Text("Delete!")
-                                Image(systemName: "minus.circle.fill")
-                            }
-                        }
-                        .buttonStyle(DashedButtonStyle(color: .red))
-                        .padding(.horizontal)
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .listRowBackground(viewStore.colorIdentifier.color)
+        Section {
+            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+        } header: {
+            header
         }
     }
 
-    private var sectionHeader: some View {
+    private var header: some View {
         WithViewStore(store) { viewStore in
             HStack {
                 Button { viewStore.send(.edit) } label: {
@@ -63,6 +37,28 @@ struct TeamRow: View {
                 }
                 .buttonStyle(.plain)
             }
+            .blur(radius: isRealRemoveButtonDisplayed ? 2 : 0)
+            .overlay {
+                if isRealRemoveButtonDisplayed {
+                    ZStack {
+                        Button { withAnimation { isRealRemoveButtonDisplayed = false } } label: {
+                            Color.clear
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        Button { viewStore.send(.delete, animation: .easeInOut) } label: {
+                            VStack(spacing: 20) {
+                                Text("Delete!")
+                                Image(systemName: "minus.circle.fill")
+                            }
+                        }
+                        .buttonStyle(DashedButtonStyle(color: .red))
+                        .padding(.horizontal)
+                    }
+                }
+            }
+            .padding()
+            .background(viewStore.colorIdentifier.color)
+            .listRowInsets(EdgeInsets())
         }
     }
 }
@@ -73,11 +69,13 @@ struct TeamRow_Previews: PreviewProvider {
         List {
             TeamRow(store: .preview)
         }
+        .listStyle(.grouped)
         .previewDisplayName("Team Row Without Players")
 
         List {
             TeamRow(store: .previewWithPlayers)
         }
+        .listStyle(.grouped)
         .previewDisplayName("Team Row With Players")
     }
 }
@@ -98,6 +96,7 @@ struct TeamRowUX_Previews: PreviewProvider {
                         Text("Add Team")
                     }
                 }
+                .listStyle(.grouped)
             }
         }
     }

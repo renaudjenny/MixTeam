@@ -30,10 +30,11 @@ struct StandingView: View {
                     .labelStyle(.iconOnly)
                 }
                 .buttonStyle(DashedButtonStyle(color: .gray))
-                .padding(.bottom)
             }
+            .padding(.vertical)
             .frame(maxWidth: .infinity)
-            .listRowBackground(Color.gray)
+            .background(Color.gray)
+            .listRowInsets(EdgeInsets())
         }
     }
 }
@@ -44,6 +45,7 @@ struct FirstTeamRow_Previews: PreviewProvider {
         List {
             StandingView(store: .preview)
         }
+        .listStyle(.grouped)
     }
 }
 

@@ -18,6 +18,7 @@ struct PlayerRow: View {
             }
             .buttonStyle(.plain)
             .listRowBackground(viewStore.color.color)
+            .listRowSeparator(.hidden)
         }
     }
 }

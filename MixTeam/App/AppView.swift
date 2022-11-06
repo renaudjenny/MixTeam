@@ -17,7 +17,6 @@ struct AppView: View {
                     StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                     mixTeamButton
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                        .listRowBackground(Color.clear)
                     addTeamButton
                 }
                 .listRowSeparator(.hidden)
@@ -97,7 +96,7 @@ struct AppView: View {
                 }
                 .buttonStyle(DashedButtonStyle(color: .red))
             }
-            .listRowBackground(Color.clear)
+            .listRowBackground(Color.red)
         }
     }
 
