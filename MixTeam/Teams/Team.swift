@@ -30,6 +30,9 @@ struct Team: ReducerProtocol {
             return .none
         case let .colorUpdated(color):
             state.colorIdentifier = color
+            for playerID in state.players.map(\.id) {
+                state.players[id: playerID]?.color = color
+            }
             return .none
         case let .imageUpdated(image):
             state.imageIdentifier = image

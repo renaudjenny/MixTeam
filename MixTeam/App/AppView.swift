@@ -14,12 +14,12 @@ struct AppView: View {
             List {
                 Group {
                     header
+                        .listRowSeparator(.hidden)
                     StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                     mixTeamButton
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     addTeamButton
                 }
-                .listRowSeparator(.hidden)
             }
             .listStyle(.grouped)
             .frame(maxWidth: 800)
