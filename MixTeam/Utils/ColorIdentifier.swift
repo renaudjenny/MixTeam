@@ -10,9 +10,17 @@ enum ColorIdentifier: String, Identifiable, CaseIterable, Codable {
     case green
     case gray
 
+    @available(*, deprecated, message: "Use color(for:) instead")
     var color: Color {
+        self.color(for: .light)
+    }
+
+    func color(for scheme: ColorScheme) -> Color {
         switch self {
-        case .yellow: return .yellow
+        case .yellow:
+            return scheme == .dark
+            ? Color(red: 255/255, green: 190/255, blue: 53/255)
+            : .yellow
         case .orange: return .orange
         case .red: return .red
         case .pink: return .pink
@@ -42,35 +50,49 @@ enum ColorIdentifier: String, Identifiable, CaseIterable, Codable {
 #if DEBUG
 struct Colors_Previews: PreviewProvider {
     static var previews: some View {
-        let colors: [[Color]] = ColorIdentifier.allCases.enumerated().reduce(into: [[], []]) { result, next in
-            if next.offset.isMultiple(of: 2) {
-                result[0].append(next.element.color)
-            } else {
-                result[1].append(next.element.color)
+        Preview()
+    }
+
+    struct Preview: View {
+        @Environment(\.colorScheme) var colorScheme
+
+        var body: some View {
+            let colors: [[Color]] = ColorIdentifier.allCases.enumerated().reduce(into: [[], []]) { result, next in
+                if next.offset.isMultiple(of: 2) {
+                    result[0].append(next.element.color(for: colorScheme))
+                } else {
+                    result[1].append(next.element.color(for: colorScheme))
+                }
             }
-        }
-        ScrollView {
-            HStack {
-                ForEach(colors, id: \.hashValue) { colorColumn in
-                    VStack {
-                        ForEach(colorColumn, id: \.hashValue) { color in
-                            preview(for: color)
+            ScrollView {
+                HStack {
+                    ForEach(colors, id: \.hashValue) { colorColumn in
+                        VStack {
+                            ForEach(colorColumn, id: \.hashValue) { color in
+                                preview(for: color)
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    private static func preview(for color: Color) -> some View {
-        VStack {
-            Text("Lorem Ipsum")
-                .font(.title)
-            Text("Smaller text")
-            
+        private func preview(for color: Color) -> some View {
+            VStack {
+                Text("Lorem Ipsum")
+                    .font(.title)
+                Text("Smaller text")
+
+                Button { } label: {
+                    Label("Add a new Team", systemImage: "plus")
+                        .frame(maxWidth: .infinity, minHeight: 30)
+                }
+                .buttonStyle(DashedButtonStyle(color: color))
+                .padding()
+            }
+            .frame(width: 180, height: 200)
+            .background(color)
         }
-        .frame(width: 180, height: 200)
-        .background(color)
     }
 }
 #endif
