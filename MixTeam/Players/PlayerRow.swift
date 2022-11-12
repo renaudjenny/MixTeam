@@ -17,7 +17,9 @@ struct PlayerRow: View {
                 }
             }
             .buttonStyle(.plain)
-            .listRowBackground(viewStore.color.color)
+            .padding(.horizontal)
+            .padding(.vertical)
+            .background(viewStore.color.color)
             .listRowSeparator(.hidden)
         }
     }
@@ -46,7 +48,7 @@ private struct PlayerRowButtons: View {
 #if DEBUG
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
-        List {
+        VStack(spacing: 0) {
             PlayerRow(store: .preview)
             PlayerRow(store: .preview)
         }

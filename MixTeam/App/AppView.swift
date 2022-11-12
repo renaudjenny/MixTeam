@@ -11,17 +11,17 @@ struct AppView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            List {
-                Group {
-                    header
-                        .listRowSeparator(.hidden)
-                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                    mixTeamButton
-                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                    addTeamButton
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    Group {
+                        header
+                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                        mixTeamButton
+                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                        addTeamButton
+                    }
                 }
             }
-            .listStyle(.grouped)
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
@@ -60,8 +60,7 @@ struct AppView: View {
             Spacer()
             aboutButton
         }
-        .listRowBackground(Color.clear)
-        .padding(.vertical)
+        .padding([.bottom, .horizontal])
     }
 
     private var scoreboardButton: some View {
@@ -88,15 +87,18 @@ struct AppView: View {
     }
 
     private var mixTeamButton: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Section {
-                Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
-                    Label("Mix Team", systemImage: "shuffle")
-                        .frame(maxWidth: .infinity, minHeight: 30)
-                }
-                .buttonStyle(DashedButtonStyle(color: .red))
+        WithViewStore(store) { viewStore in
+            Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
+                Label("Mix Team", systemImage: "shuffle")
+                    .frame(maxWidth: .infinity, minHeight: 30)
             }
-            .listRowBackground(Color.red)
+            .buttonStyle(DashedButtonStyle(color: .red))
+            .padding()
+            .background(LinearGradient(
+                colors: [.gray, viewStore.teams.first?.colorIdentifier.color ?? .gray],
+                startPoint: .top,
+                endPoint: .bottom
+            ))
         }
     }
 
@@ -107,7 +109,7 @@ struct AppView: View {
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(DashedButtonStyle(color: .red))
-            .listRowBackground(Color.clear)
+            .padding()
         }
     }
 

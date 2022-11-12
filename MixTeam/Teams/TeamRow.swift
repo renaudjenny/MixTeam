@@ -7,9 +7,8 @@ struct TeamRow: View {
 
     var body: some View {
         Section {
-            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
-        } header: {
             header
+            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
         }
     }
 
@@ -23,8 +22,8 @@ struct TeamRow: View {
                             .scaledToFit()
                             .frame(width: 80, height: 80)
                         Text(viewStore.name)
-                            .font(.title2)
-                            .fontWeight(.semibold)
+                            .font(.title)
+                            .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
