@@ -20,7 +20,6 @@ struct PlayerRow: View {
             .padding(.horizontal)
             .padding(.vertical)
             .background(viewStore.color.color)
-            .listRowSeparator(.hidden)
         }
     }
 }
@@ -49,8 +48,9 @@ private struct PlayerRowButtons: View {
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 0) {
-            PlayerRow(store: .preview)
-            PlayerRow(store: .preview)
+            ForEach(0..<2) { _ in
+                PlayerRow(store: .preview)
+            }
         }
     }
 }
