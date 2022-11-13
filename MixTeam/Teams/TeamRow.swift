@@ -28,6 +28,7 @@ struct TeamRow: View {
                     }
                 }
                 .buttonStyle(DashedButtonStyle(color: viewStore.colorIdentifier.color))
+                .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
                 .padding(.trailing)
 
                 Button { withAnimation { isRealRemoveButtonDisplayed = true } } label: {

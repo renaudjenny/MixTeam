@@ -91,7 +91,6 @@ struct AppView: View {
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(DashedButtonStyle(color: .red))
-            .padding()
             .listRowBackground(LinearGradient(
                 colors: [.gray, viewStore.teams.first?.colorIdentifier.color ?? .gray],
                 startPoint: .top,
@@ -107,7 +106,6 @@ struct AppView: View {
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(DashedButtonStyle(color: .red))
-            .padding()
         }
     }
 

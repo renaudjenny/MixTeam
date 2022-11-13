@@ -9,11 +9,14 @@ class MixTeamLogicTests: XCTestCase {
 
         let allPlayers = store.state.standing.players + store.state.teams.flatMap(\.players)
         var amelia = allPlayers.first { $0.name == "Amelia" }!
-        let jack = allPlayers.first { $0.name == "Jack" }!
+        var jack = allPlayers.first { $0.name == "Jack" }!
         var jose = allPlayers.first { $0.name == "José" }!
 
-        amelia.isStanding = false
         jose.isStanding = false
+        jose.color = store.state.teams[0].colorIdentifier
+        jack.color = store.state.teams[1].colorIdentifier
+        amelia.isStanding = false
+        amelia.color = store.state.teams[2].colorIdentifier
 
         store.dependencies.shufflePlayers = .alphabeticallySorted
         store.dependencies.save = { _ in }

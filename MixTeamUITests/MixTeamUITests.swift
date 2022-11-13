@@ -13,7 +13,7 @@ class MixTeamUITests: XCTestCase {
         app.swipeUp()
         app.swipeUp()
 
-        app.buttons["Add Team"].tap()
+        app.buttons["Add a new Team"].tap()
 
         app.buttons["Edit Team Purple Elephant"].tap()
 
