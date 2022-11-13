@@ -6,12 +6,10 @@ struct StandingView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        VStack {
+        Section {
             header
             ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
         }
-        .padding()
-        .background(Color.gray)
     }
 
     private var header: some View {
@@ -32,8 +30,9 @@ struct StandingView: View {
                 }
                 .buttonStyle(DashedButtonStyle(color: .gray))
             }
-            .padding(.vertical)
             .frame(maxWidth: .infinity)
+            .padding()
+            .listRowBackground(Color.gray)
         }
     }
 }
@@ -41,7 +40,10 @@ struct StandingView: View {
 #if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        StandingView(store: .preview)
+        List {
+            StandingView(store: .preview)
+        }
+        .listStyle(.plain)
     }
 }
 

@@ -27,7 +27,7 @@ struct PlayerBadge_Previews: PreviewProvider {
 }
 
 extension Player.State {
-    static var preview: Self {
+    static func preview(isStanding: Bool = false) -> Self {
         guard let image = ImageIdentifier.players.randomElement(),
               let color = ColorIdentifier.allCases.randomElement()
         else { fatalError("Cannot generate image & color as expected") }
@@ -36,9 +36,12 @@ extension Player.State {
             id: UUIDGenerator.incrementing(),
             name: "Test Player",
             image: image,
-            isStanding: false,
-            color: color
+            isStanding: isStanding,
+            color: isStanding ? .gray : color
         )
+    }
+    static var preview: Self {
+        .preview()
     }
 }
 #endif

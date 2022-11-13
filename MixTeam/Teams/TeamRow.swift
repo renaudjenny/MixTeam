@@ -55,8 +55,7 @@ struct TeamRow: View {
                     }
                 }
             }
-            .padding()
-            .background(viewStore.colorIdentifier.color)
+            .listRowBackground(viewStore.colorIdentifier.color)
         }
     }
 }
@@ -64,12 +63,12 @@ struct TeamRow: View {
 #if DEBUG
 struct TeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        LazyVStack(spacing: 0) {
+        List {
             TeamRow(store: .preview)
         }
         .previewDisplayName("Team Row Without Players")
 
-        LazyVStack(spacing: 0) {
+        List {
             TeamRow(store: .previewWithPlayers)
         }
         .previewDisplayName("Team Row With Players")
@@ -86,7 +85,7 @@ struct TeamRowUX_Previews: PreviewProvider {
 
         var body: some View {
             WithViewStore(store) { viewStore in
-                LazyVStack(spacing: 0) {
+                List {
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                         Text("Add Team")

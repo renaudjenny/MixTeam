@@ -11,17 +11,16 @@ struct AppView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    Group {
-                        header
-                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                        mixTeamButton
-                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                        addTeamButton
-                    }
+            List {
+                Group {
+                    header
+                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                    mixTeamButton
+                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                    addTeamButton
                 }
             }
+            .listStyle(.plain)
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
@@ -60,7 +59,6 @@ struct AppView: View {
             Spacer()
             aboutButton
         }
-        .padding([.bottom, .horizontal])
     }
 
     private var scoreboardButton: some View {
@@ -94,7 +92,7 @@ struct AppView: View {
             }
             .buttonStyle(DashedButtonStyle(color: .red))
             .padding()
-            .background(LinearGradient(
+            .listRowBackground(LinearGradient(
                 colors: [.gray, viewStore.teams.first?.colorIdentifier.color ?? .gray],
                 startPoint: .top,
                 endPoint: .bottom

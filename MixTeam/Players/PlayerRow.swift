@@ -12,33 +12,22 @@ struct PlayerRow: View {
                     PlayerBadge(player: viewStore.state)
                         .frame(width: 80, height: 80)
                     Text(viewStore.name)
-                    Spacer()
-                    PlayerRowButtons(store: store)
                 }
             }
             .buttonStyle(.plain)
-            .padding(.horizontal)
-            .padding(.vertical)
-            .background(viewStore.color.color)
-        }
-    }
-}
-
-private struct PlayerRowButtons: View {
-    let store: StoreOf<Player>
-
-    var body: some View {
-        WithViewStore(store) { viewStore in
-            if viewStore.isStanding {
-                Button { viewStore.send(.delete, animation: .easeInOut) } label: {
-                    Image(systemName: "minus.circle.fill")
+            .listRowBackground(viewStore.color.color(for: colorScheme))
+            .swipeActions(allowsFullSwipe: true) {
+                if viewStore.isStanding {
+                    Button(role: .destructive) { viewStore.send(.delete, animation: .easeInOut) } label: {
+                        Image(systemName: "trash")
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    Button { viewStore.send(.moveBack, animation: .easeInOut) } label: {
+                        Image(systemName: "gobackward")
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
-            } else {
-                Button { viewStore.send(.moveBack, animation: .easeInOut) } label: {
-                    Image(systemName: "gobackward")
-                }
-                .buttonStyle(.plain)
             }
         }
     }
@@ -47,17 +36,20 @@ private struct PlayerRowButtons: View {
 #if DEBUG
 struct PlayerRow_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 0) {
-            ForEach(0..<2) { _ in
-                PlayerRow(store: .preview)
+        List {
+            ForEach(0..<2) {
+                PlayerRow(store: .preview(isStanding: $0 != 1))
             }
         }
     }
 }
 
 extension Store where State == Player.State, Action == Player.Action {
+    static func preview(isStanding: Bool = false) -> Self {
+        Self(initialState: .preview(isStanding: isStanding), reducer: Player())
+    }
     static var preview: Self {
-        Self(initialState: .preview, reducer: Player())
+        .preview()
     }
 }
 #endif
