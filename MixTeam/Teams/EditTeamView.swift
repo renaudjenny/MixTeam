@@ -31,10 +31,15 @@ struct EditTeamView: View {
                             selection: viewStore.binding(get: { $0.imageIdentifier }, send: { .imageUpdated($0) }),
                             type: .team
                         )
+                        removeButton
                     }
                 }
             }
-            .background(viewStore.colorIdentifier.color.edgesIgnoringSafeArea(.all))
+            .background(color: viewStore.colorIdentifier)
+            .confirmationDialog(
+                store.scope(state: \.deleteConfirmationDialog),
+                dismiss: .removeConfirmationDismissed
+            )
         }
     }
 
@@ -45,7 +50,7 @@ struct EditTeamView: View {
                     .foregroundColor(Color.white)
                     .font(.title)
                     .padding()
-                    .background(viewStore.colorIdentifier.color)
+                    .background(color: viewStore.colorIdentifier)
                     .modifier(AddDashedCardStyle())
                     .padding(.leading)
                 doneButton.padding(.trailing)
@@ -101,10 +106,21 @@ struct EditTeamView: View {
             }
         }
     }
+
+    private var removeButton: some View {
+        WithViewStore(store) { viewStore in
+            Button(role: .destructive) { viewStore.send(.removeTapped) } label: {
+                Label("Remove this team", systemImage: "trash")
+            }
+            .buttonStyle(.borderedProminent)
+        }
+    }
 }
 
+#if DEBUG
 struct EditTeamView_Previews: PreviewProvider {
     static var previews: some View {
         EditTeamView(store: .preview)
     }
 }
+#endif

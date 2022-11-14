@@ -111,17 +111,6 @@ struct App: ReducerProtocol {
             case let .team(id, .edit):
                 state.editedTeam = state.teams[id: id]
                 return .none
-            case let .team(id, .delete):
-                guard var players = state.teams[id: id]?.players else { return .none }
-                players = IdentifiedArrayOf(uniqueElements: players.map {
-                    var player = $0
-                    player.isStanding = true
-                    player.color = .gray
-                    return player
-                })
-                state.standing.players.append(contentsOf: players)
-                state.teams.remove(id: id)
-                return Effect(value: .saveState)
             case let .team(teamID, .player(playerID, .moveBack)):
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
@@ -134,6 +123,18 @@ struct App: ReducerProtocol {
                 state.editedPlayer = player
                 return .none
             case .team:
+                return Effect(value: .saveState)
+            case .teamEdited(.delete):
+                guard let id = state.editedTeam?.id, var players = state.teams[id: id]?.players else { return .none }
+                players = IdentifiedArrayOf(uniqueElements: players.map {
+                    var player = $0
+                    player.isStanding = true
+                    player.color = .gray
+                    return player
+                })
+                state.standing.players.append(contentsOf: players)
+                state.teams.remove(id: id)
+                state.editedTeam = nil
                 return Effect(value: .saveState)
             case .teamEdited:
                 guard let editedTeam = state.editedTeam else { return .none }

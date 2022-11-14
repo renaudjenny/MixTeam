@@ -3,7 +3,6 @@ import SwiftUI
 
 struct TeamRow: View {
     let store: StoreOf<Team>
-    @State private var isRealRemoveButtonDisplayed = false
 
     var body: some View {
         Section {
@@ -27,36 +26,10 @@ struct TeamRow: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .buttonStyle(DashedButtonStyle(color: viewStore.colorIdentifier.color))
+                .buttonStyle(DashedButtonStyle(color: viewStore.colorIdentifier))
                 .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
-                .padding(.trailing)
-
-                Button { withAnimation { isRealRemoveButtonDisplayed = true } } label: {
-                    Label("Remove Team", systemImage: "minus.circle")
-                        .labelStyle(.iconOnly)
-                }
-                .buttonStyle(.plain)
             }
-            .blur(radius: isRealRemoveButtonDisplayed ? 2 : 0)
-            .overlay {
-                if isRealRemoveButtonDisplayed {
-                    ZStack {
-                        Button { withAnimation { isRealRemoveButtonDisplayed = false } } label: {
-                            Color.clear
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        Button { viewStore.send(.delete, animation: .easeInOut) } label: {
-                            VStack(spacing: 20) {
-                                Text("Delete!")
-                                Image(systemName: "minus.circle.fill")
-                            }
-                        }
-                        .buttonStyle(DashedButtonStyle(color: .red))
-                        .padding(.horizontal)
-                    }
-                }
-            }
-            .listRowBackground(viewStore.colorIdentifier.color)
+            .listRowBackground(color: viewStore.colorIdentifier)
         }
     }
 }

@@ -2,13 +2,14 @@ import ComposableArchitecture
 import Foundation
 
 struct Team: ReducerProtocol {
-    struct State: Equatable, Identifiable, Codable, Hashable {
+    struct State: Equatable, Identifiable, Hashable {
         let id: UUID
         var name: String = ""
         var colorIdentifier: ColorIdentifier = .gray
         var imageIdentifier: ImageIdentifier = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
+        var deleteConfirmationDialog: ConfirmationDialogState<Action>?
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
@@ -17,6 +18,8 @@ struct Team: ReducerProtocol {
         case colorUpdated(ColorIdentifier)
         case imageUpdated(ImageIdentifier)
         case edit
+        case removeTapped
+        case removeConfirmationDismissed
         case delete
         case player(id: Player.State.ID, action: Player.Action)
     }
@@ -39,10 +42,27 @@ struct Team: ReducerProtocol {
             return .none
         case .edit:
             return .none
+        case .removeTapped:
+            state.deleteConfirmationDialog = .teamDelete
+            return .none
+        case .removeConfirmationDismissed:
+            state.deleteConfirmationDialog = nil
+            return .none
         case .delete:
+            state.deleteConfirmationDialog = nil
             return .none
         case .player:
             return .none
         }
+    }
+}
+
+extension Team.State: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case name
+        case colorIdentifier
+        case imageIdentifier
+        case players
     }
 }

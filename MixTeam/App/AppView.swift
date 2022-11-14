@@ -92,7 +92,10 @@ struct AppView: View {
             }
             .buttonStyle(DashedButtonStyle(color: .red))
             .listRowBackground(LinearGradient(
-                colors: [.gray, viewStore.teams.first?.colorIdentifier.color ?? .gray],
+                colors: [
+                    .gray,
+                    viewStore.teams.first?.colorIdentifier.color(for: colorScheme) ?? .gray,
+                ],
                 startPoint: .top,
                 endPoint: .bottom
             ))

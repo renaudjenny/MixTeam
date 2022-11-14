@@ -26,6 +26,9 @@
 		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
+		4CAE86CF29225C3900CF6520 /* ListRowBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */; };
+		4CAE86D129225E1200CF6520 /* BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAE86D029225E1200CF6520 /* BackgroundColor.swift */; };
+		4CAE86D32922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC424B7AF2D00B452D3 /* AddDashedCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
@@ -87,6 +90,9 @@
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
+		4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowBackgroundColor.swift; sourceTree = "<group>"; };
+		4CAE86D029225E1200CF6520 /* BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundColor.swift; sourceTree = "<group>"; };
+		4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialogState+TeamDelete.swift"; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDashedCardStyle.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
@@ -227,6 +233,8 @@
 			children = (
 				4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */,
 				4C1ED55524C75C3B005D6749 /* Shadow.swift */,
+				4CAE86D029225E1200CF6520 /* BackgroundColor.swift */,
+				4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -281,6 +289,7 @@
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
+				4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -490,9 +499,11 @@
 				4CCA0D2124980E5600E88F80 /* ImageIdentifier.swift in Sources */,
 				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
+				4CAE86D129225E1200CF6520 /* BackgroundColor.swift in Sources */,
 				4CFDCAD828F200BC002DBF2D /* App+Example.swift in Sources */,
 				4C1ED55824C82196005D6749 /* StandingView.swift in Sources */,
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
+				4CAE86CF29225C3900CF6520 /* ListRowBackgroundColor.swift in Sources */,
 				4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CFDCAD428F0B642002DBF2D /* Persistence.swift in Sources */,
@@ -508,6 +519,7 @@
 				4CCA0D2324980E8A00E88F80 /* ColorIdentifier.swift in Sources */,
 				4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */,
 				4CFDCAE628F4442E002DBF2D /* ScoreRow.swift in Sources */,
+				4CAE86D32922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift in Sources */,
 				4CFDCAE328F44107002DBF2D /* Score.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);

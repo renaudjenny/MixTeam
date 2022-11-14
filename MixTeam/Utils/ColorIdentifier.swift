@@ -57,11 +57,13 @@ struct Colors_Previews: PreviewProvider {
         @Environment(\.colorScheme) var colorScheme
 
         var body: some View {
-            let colors: [[Color]] = ColorIdentifier.allCases.enumerated().reduce(into: [[], []]) { result, next in
+            let colors: [[ColorIdentifier]] = ColorIdentifier.allCases.enumerated().reduce(
+                into: [[], []]
+            ) { result, next in
                 if next.offset.isMultiple(of: 2) {
-                    result[0].append(next.element.color(for: colorScheme))
+                    result[0].append(next.element)
                 } else {
-                    result[1].append(next.element.color(for: colorScheme))
+                    result[1].append(next.element)
                 }
             }
             ScrollView {
@@ -77,7 +79,7 @@ struct Colors_Previews: PreviewProvider {
             }
         }
 
-        private func preview(for color: Color) -> some View {
+        private func preview(for color: ColorIdentifier) -> some View {
             VStack {
                 Text("Lorem Ipsum")
                     .font(.title)
@@ -91,7 +93,7 @@ struct Colors_Previews: PreviewProvider {
                 .padding()
             }
             .frame(width: 180, height: 200)
-            .background(color)
+            .background(color: color)
         }
     }
 }
