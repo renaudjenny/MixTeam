@@ -15,7 +15,7 @@ struct ImagePicker: View {
                 }
             }.padding()
         }
-        .background(color.color)
+        .background(color: color)
         .modifier(AddDashedCardStyle())
         .padding()
     }
@@ -32,6 +32,7 @@ private struct Cell: View {
     let imageIdentifier: ImageIdentifier
     let color: ColorIdentifier
     @Binding var selection: ImageIdentifier
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: select) {
@@ -52,7 +53,7 @@ private struct Cell: View {
 
     private var imageForegroundColor: Color {
         if selection == imageIdentifier {
-            return color.color
+            return color.color(for: colorScheme)
         } else {
             return .white
         }

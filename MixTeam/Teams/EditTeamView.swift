@@ -2,8 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 struct EditTeamView: View {
-    @Environment(\.presentationMode) var presentation
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.presentationMode) private var presentation
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.colorScheme) private var colorScheme
     var store: StoreOf<Team>
 
     var body: some View {
@@ -35,7 +36,7 @@ struct EditTeamView: View {
                     }
                 }
             }
-            .background(color: viewStore.colorIdentifier)
+            .background(color: viewStore.colorIdentifier, ignoreSafeAreaEdges: .all)
             .confirmationDialog(
                 store.scope(state: \.deleteConfirmationDialog),
                 dismiss: .removeConfirmationDismissed
@@ -59,10 +60,10 @@ struct EditTeamView: View {
     }
 
     private var doneButton: some View {
-        WithViewStore(store.actionless) { viewStore in
+        WithViewStore(store) { viewStore in
             Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
                 Image(systemName: "checkmark")
-                    .foregroundColor(viewStore.colorIdentifier.color)
+                    .foregroundColor(viewStore.colorIdentifier)
                     .padding()
                     .background(Splash2())
                     .foregroundColor(.white)
@@ -84,7 +85,7 @@ struct EditTeamView: View {
                 }
             }
             .padding()
-            .background(viewStore.colorIdentifier.color.brightness(-0.2))
+            .background(color: viewStore.colorIdentifier, brightness: -0.2)
             .modifier(AddDashedCardStyle())
             .padding()
         }
@@ -98,7 +99,7 @@ struct EditTeamView: View {
         WithViewStore(store) { viewStore in
             ForEach(ColorIdentifier.allCases) { colorIdentifier in
                 Button(action: { viewStore.send(.colorUpdated(colorIdentifier), animation: .easeInOut) }, label: {
-                    colorIdentifier.color
+                    colorIdentifier.color(for: colorScheme)
                         .frame(width: 50, height: 50)
                         .clipShape(Splash(animatableData: viewStore.colorIdentifier == colorIdentifier ? 1 : 0))
                 })

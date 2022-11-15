@@ -23,6 +23,7 @@
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
 		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
+		4C7652FF2923A99A00A591C4 /* ForegroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7652FE2923A99A00A591C4 /* ForegroundColor.swift */; };
 		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
@@ -88,6 +89,7 @@
 		4C5F13312472F88C007B9F3E /* DashedButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedButtonStyle.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		4C7652FE2923A99A00A591C4 /* ForegroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundColor.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowBackgroundColor.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				4CB91CC324B7AF2D00B452D3 /* AddDashedCardStyle.swift */,
 				4C1ED55524C75C3B005D6749 /* Shadow.swift */,
 				4CAE86D029225E1200CF6520 /* BackgroundColor.swift */,
+				4C7652FE2923A99A00A591C4 /* ForegroundColor.swift */,
 				4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */,
 			);
 			path = ViewModifiers;
@@ -502,6 +505,7 @@
 				4CAE86D129225E1200CF6520 /* BackgroundColor.swift in Sources */,
 				4CFDCAD828F200BC002DBF2D /* App+Example.swift in Sources */,
 				4C1ED55824C82196005D6749 /* StandingView.swift in Sources */,
+				4C7652FF2923A99A00A591C4 /* ForegroundColor.swift in Sources */,
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
 				4CAE86CF29225C3900CF6520 /* ListRowBackgroundColor.swift in Sources */,
 				4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */,

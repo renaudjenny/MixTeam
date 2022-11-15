@@ -3,7 +3,6 @@ import SwiftUI
 
 struct TotalScoresView: View {
     let store: StoreOf<Scores>
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -18,7 +17,7 @@ struct TotalScoresView: View {
                         Text(viewStore.state.total(for: team))
                     }
                     .font(.body.bold())
-                    .listRowBackground(team.colorIdentifier.color.opacity(30/100))
+                    .listRowBackground(color: team.colorIdentifier, opacity: 30/100)
                     .listRowSeparator(.hidden)
                 }
             }

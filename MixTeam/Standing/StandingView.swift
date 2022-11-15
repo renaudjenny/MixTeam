@@ -3,7 +3,6 @@ import SwiftUI
 
 struct StandingView: View {
     let store: StoreOf<Standing>
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         Section {

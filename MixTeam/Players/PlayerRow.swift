@@ -3,7 +3,6 @@ import SwiftUI
 
 struct PlayerRow: View {
     let store: StoreOf<Player>
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -15,7 +14,7 @@ struct PlayerRow: View {
                 }
             }
             .buttonStyle(.plain)
-            .listRowBackground(viewStore.color.color(for: colorScheme))
+            .listRowBackground(color: viewStore.color)
             .swipeActions(allowsFullSwipe: true) {
                 if viewStore.isStanding {
                     Button(role: .destructive) { viewStore.send(.delete, animation: .easeInOut) } label: {

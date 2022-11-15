@@ -32,7 +32,7 @@ struct ScoreRow: View {
                 }
             }
             .listRowSeparator(.hidden)
-            .listRowBackground(viewStore.team.colorIdentifier.color.opacity(30/100))
+            .listRowBackground(color: viewStore.team.colorIdentifier, opacity: 30/100)
             .textFieldStyle(.roundedBorder)
         }
     }

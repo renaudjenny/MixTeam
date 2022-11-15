@@ -3,7 +3,6 @@ import Dependencies
 
 struct PlayerBadge: View {
     let player: Player.State
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         player.image.image
@@ -11,10 +10,8 @@ struct PlayerBadge: View {
             .aspectRatio(contentMode: .fit)
             .padding(8)
             .opacity(70/100)
-            .background {
-                player.color.color
-                    .modifier(AddDashedCardStyle())
-            }
+            .background(color: player.color)
+            .modifier(AddDashedCardStyle())
     }
 }
 

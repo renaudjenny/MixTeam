@@ -11,7 +11,7 @@ struct EditPlayerView: View {
                 playerNameField
                 ImagePicker(color: viewStore.color, selection: viewStore.binding(\.$image), type: .player)
             }
-            .background(viewStore.color.color.edgesIgnoringSafeArea(.all))
+            .background(color: viewStore.color, ignoreSafeAreaEdges: .all)
         }
     }
 
@@ -30,7 +30,7 @@ struct EditPlayerView: View {
                     .foregroundColor(Color.white)
                     .font(.title)
                     .padding()
-                    .background(viewStore.color.color)
+                    .background(color: viewStore.color)
                     .modifier(AddDashedCardStyle())
                     .padding(.leading)
                 doneButton.padding(.trailing)
@@ -42,7 +42,7 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             Button(action: { presentation.wrappedValue.dismiss() }, label: {
                 Image(systemName: "checkmark")
-                    .foregroundColor(viewStore.color.color)
+                    .foregroundColor(viewStore.color)
                     .padding()
                     .background(Splash2())
                     .foregroundColor(.white)
