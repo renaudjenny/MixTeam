@@ -15,7 +15,6 @@ struct EditTeamView: View {
                     GeometryReader { geometry in
                         HStack(spacing: 0) {
                             ImagePicker(
-                                color: viewStore.colorIdentifier,
                                 selection: viewStore.binding(get: { $0.imageIdentifier }, send: { .imageUpdated($0) }),
                                 type: .team
                             )
@@ -28,7 +27,6 @@ struct EditTeamView: View {
                     VStack(spacing: 0) {
                         colorPicker
                         ImagePicker(
-                            color: viewStore.colorIdentifier,
                             selection: viewStore.binding(get: { $0.imageIdentifier }, send: { .imageUpdated($0) }),
                             type: .team
                         )
@@ -36,7 +34,7 @@ struct EditTeamView: View {
                     }
                 }
             }
-            .background(color: viewStore.colorIdentifier, ignoreSafeAreaEdges: .all)
+            .background(color: viewStore.colorIdentifier, brightness: 10/100, ignoreSafeAreaEdges: .all)
             .confirmationDialog(
                 store.scope(state: \.deleteConfirmationDialog),
                 dismiss: .removeConfirmationDismissed
@@ -48,7 +46,6 @@ struct EditTeamView: View {
         WithViewStore(store) { viewStore in
             HStack {
                 TextField("Edit", text: viewStore.binding(get: { $0.name }, send: { .nameUpdated($0) }))
-                    .foregroundColor(Color.white)
                     .font(.title)
                     .padding()
                     .background(color: viewStore.colorIdentifier)
@@ -60,35 +57,29 @@ struct EditTeamView: View {
     }
 
     private var doneButton: some View {
-        WithViewStore(store) { viewStore in
-            Button(action: { self.presentation.wrappedValue.dismiss() }, label: {
-                Image(systemName: "checkmark")
-                    .foregroundColor(viewStore.colorIdentifier)
-                    .padding()
-                    .background(Splash2())
-                    .foregroundColor(.white)
-            }).accessibility(label: Text("Done"))
+        Button { self.presentation.wrappedValue.dismiss() } label: {
+            Label("Done", systemImage: "checkmark")
         }
+        .labelStyle(.iconOnly)
+        .buttonStyle(.bordered)
     }
 
     private var colorPicker: some View {
-        WithViewStore(store.actionless) { viewStore in
-            ScrollView(colorPickerScrollAxes, showsIndicators: false) {
-                if verticalSizeClass == .compact {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
-                        colors
-                    }
-                } else {
-                    HStack {
-                        colors
-                    }
+        ScrollView(colorPickerScrollAxes, showsIndicators: false) {
+            if verticalSizeClass == .compact {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
+                    colors
+                }
+            } else {
+                HStack {
+                    colors
                 }
             }
-            .padding()
-            .background(color: viewStore.colorIdentifier, brightness: -0.2)
-            .modifier(AddDashedCardStyle())
-            .padding()
         }
+        .padding()
+        .background(Color.black)
+        .modifier(AddDashedCardStyle())
+        .padding()
     }
 
     private var colorPickerScrollAxes: Axis.Set {

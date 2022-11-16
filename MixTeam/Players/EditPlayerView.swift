@@ -9,7 +9,7 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             VStack {
                 playerNameField
-                ImagePicker(color: viewStore.color, selection: viewStore.binding(\.$image), type: .player)
+                ImagePicker(selection: viewStore.binding(\.$image), type: .player)
             }
             .background(color: viewStore.color, ignoreSafeAreaEdges: .all)
         }

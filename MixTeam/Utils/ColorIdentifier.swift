@@ -10,11 +10,6 @@ enum ColorIdentifier: String, Identifiable, CaseIterable, Codable {
     case green
     case gray
 
-    @available(*, deprecated, message: "Use color(for:) instead")
-    var color: Color {
-        self.color(for: .light)
-    }
-
     func color(for scheme: ColorScheme) -> Color {
         switch self {
         case .yellow:
@@ -67,9 +62,9 @@ struct Colors_Previews: PreviewProvider {
                 }
             }
             ScrollView {
-                HStack {
+                VStack {
                     ForEach(colors, id: \.hashValue) { colorColumn in
-                        VStack {
+                        HStack {
                             ForEach(colorColumn, id: \.hashValue) { color in
                                 preview(for: color)
                             }

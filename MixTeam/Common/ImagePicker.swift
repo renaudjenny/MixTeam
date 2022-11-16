@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ImagePicker: View {
-    let color: ColorIdentifier
     @Binding var selection: ImageIdentifier
     let type: ImagePickerType
 
@@ -11,13 +10,10 @@ struct ImagePicker: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns) {
                 ForEach(images) {
-                    Cell(imageIdentifier: $0, color: color, selection: $selection)
+                    Cell(imageIdentifier: $0, selection: $selection)
                 }
             }.padding()
         }
-        .background(color: color)
-        .modifier(AddDashedCardStyle())
-        .padding()
     }
 
     private var images: [ImageIdentifier] {
@@ -30,7 +26,6 @@ struct ImagePicker: View {
 
 private struct Cell: View {
     let imageIdentifier: ImageIdentifier
-    let color: ColorIdentifier
     @Binding var selection: ImageIdentifier
     @Environment(\.colorScheme) private var colorScheme
 
@@ -41,31 +36,18 @@ private struct Cell: View {
                 .renderingMode(.template)
                 .frame(width: 100, height: 100)
                 .padding()
-                .foregroundColor(imageForegroundColor)
         }
-        .background(background)
-        .foregroundColor(Color.white)
+        .buttonStyle(.plain)
+        .background {
+            if selection == imageIdentifier {
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke()
+            }
+        }
     }
 
     private func select() {
         selection = imageIdentifier
-    }
-
-    private var imageForegroundColor: Color {
-        if selection == imageIdentifier {
-            return color.color(for: colorScheme)
-        } else {
-            return .white
-        }
-
-    }
-
-    private var background: some View {
-        Group {
-            if selection == imageIdentifier {
-                Splash2().shadow(radius: 5)
-            }
-        }
     }
 }
 
@@ -82,14 +64,13 @@ struct PlayerImagePicker_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        var selection: Binding<ImageIdentifier> { .constant(.girl) }
+        @State private var selection: ImageIdentifier = .girl
 
         var body: some View {
             VStack {
-                ImagePicker(color: .red, selection: selection, type: .player)
+                ImagePicker(selection: $selection, type: .player)
                 Spacer()
-                TeamRow(store: .preview)
-                Text("Selection: \(selection.wrappedValue.rawValue)")
+                selection.image
             }
         }
     }

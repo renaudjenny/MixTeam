@@ -9,7 +9,7 @@ private struct BackgroundColor: ViewModifier {
     func body(content: Content) -> some View {
         content
             .background(color.color(for: colorScheme), ignoresSafeAreaEdges: ignoreSafeAreaEdges)
-            .brightness(brightness)
+            .brightness(colorScheme == .dark ? -brightness : brightness)
     }
 }
 
