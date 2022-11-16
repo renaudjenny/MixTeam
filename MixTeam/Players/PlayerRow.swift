@@ -13,7 +13,6 @@ struct PlayerRow: View {
                     Text(viewStore.name)
                 }
             }
-            .buttonStyle(.plain)
             .listRowBackground(color: viewStore.color)
             .swipeActions(allowsFullSwipe: true) {
                 if viewStore.isStanding {
@@ -40,6 +39,7 @@ struct PlayerRow_Previews: PreviewProvider {
                 PlayerRow(store: .preview(isStanding: $0 != 1))
             }
         }
+        .listStyle(.plain)
     }
 }
 

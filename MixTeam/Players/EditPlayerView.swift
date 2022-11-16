@@ -27,7 +27,6 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             HStack {
                 TextField("Edit", text: viewStore.binding(\.$name))
-                    .foregroundColor(Color.white)
                     .font(.title)
                     .padding()
                     .background(color: viewStore.color)
@@ -39,15 +38,11 @@ struct EditPlayerView: View {
     }
 
     private var doneButton: some View {
-        WithViewStore(store) { viewStore in
-            Button(action: { presentation.wrappedValue.dismiss() }, label: {
-                Image(systemName: "checkmark")
-                    .foregroundColor(viewStore.color)
-                    .padding()
-                    .background(Splash2())
-                    .foregroundColor(.white)
-            }).accessibility(label: Text("Done"))
+        Button { self.presentation.wrappedValue.dismiss() } label: {
+            Label("Done", systemImage: "checkmark")
         }
+        .labelStyle(.iconOnly)
+        .buttonStyle(.bordered)
     }
 }
 
