@@ -14,7 +14,7 @@ struct TeamRow: View {
     private var header: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                Button { viewStore.send(.edit) } label: {
+                Button { viewStore.send(.setEdit(isPresented: true)) } label: {
                     HStack {
                         viewStore.imageIdentifier.image
                             .resizable()

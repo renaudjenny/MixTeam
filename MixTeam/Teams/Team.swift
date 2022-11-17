@@ -17,7 +17,7 @@ struct Team: ReducerProtocol {
         case nameUpdated(String)
         case colorUpdated(ColorIdentifier)
         case imageUpdated(ImageIdentifier)
-        case edit
+        case setEdit(isPresented: Bool)
         case removeTapped
         case removeConfirmationDismissed
         case delete
@@ -40,7 +40,7 @@ struct Team: ReducerProtocol {
         case let .imageUpdated(image):
             state.imageIdentifier = image
             return .none
-        case .edit:
+        case .setEdit:
             return .none
         case .removeTapped:
             state.deleteConfirmationDialog = .teamDelete

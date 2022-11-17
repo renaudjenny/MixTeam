@@ -2,7 +2,6 @@ import ComposableArchitecture
 import SwiftUI
 
 struct EditTeamView: View {
-    @Environment(\.presentationMode) private var presentation
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.colorScheme) private var colorScheme
     var store: StoreOf<Team>
@@ -57,11 +56,13 @@ struct EditTeamView: View {
     }
 
     private var doneButton: some View {
-        Button { self.presentation.wrappedValue.dismiss() } label: {
-            Label("Done", systemImage: "checkmark")
+        WithViewStore(store.stateless) { viewStore in
+            Button { viewStore.send(.setEdit(isPresented: false)) } label: {
+                Label("Done", systemImage: "checkmark")
+            }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.bordered)
         }
-        .labelStyle(.iconOnly)
-        .buttonStyle(.bordered)
     }
 
     private var colorPicker: some View {
