@@ -26,33 +26,38 @@ struct Team: ReducerProtocol {
 
     @Dependency(\.uuid) var uuid
 
-    func reduce(into state: inout State, action: Action) -> Effect<Action, Never> {
-        switch action {
-        case let .nameUpdated(name):
-            state.name = name
-            return .none
-        case let .colorUpdated(color):
-            state.colorIdentifier = color
-            for playerID in state.players.map(\.id) {
-                state.players[id: playerID]?.color = color
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case let .nameUpdated(name):
+                state.name = name
+                return .none
+            case let .colorUpdated(color):
+                state.colorIdentifier = color
+                for playerID in state.players.map(\.id) {
+                    state.players[id: playerID]?.color = color
+                }
+                return .none
+            case let .imageUpdated(image):
+                state.imageIdentifier = image
+                return .none
+            case .setEdit:
+                return .none
+            case .removeTapped:
+                state.deleteConfirmationDialog = .teamDelete
+                return .none
+            case .removeConfirmationDismissed:
+                state.deleteConfirmationDialog = nil
+                return .none
+            case .delete:
+                state.deleteConfirmationDialog = nil
+                return .none
+            case .player:
+                return .none
             }
-            return .none
-        case let .imageUpdated(image):
-            state.imageIdentifier = image
-            return .none
-        case .setEdit:
-            return .none
-        case .removeTapped:
-            state.deleteConfirmationDialog = .teamDelete
-            return .none
-        case .removeConfirmationDismissed:
-            state.deleteConfirmationDialog = nil
-            return .none
-        case .delete:
-            state.deleteConfirmationDialog = nil
-            return .none
-        case .player:
-            return .none
+        }
+        .forEach(\.players, action: /Team.Action.player) {
+            Player()
         }
     }
 }

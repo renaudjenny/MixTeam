@@ -6,7 +6,7 @@ struct PlayerRow: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            Button { viewStore.send(.edit) } label: {
+            Button { viewStore.send(.setEdit(isPresented: true)) } label: {
                 HStack {
                     PlayerBadge(player: viewStore.state)
                         .frame(width: 80, height: 80)

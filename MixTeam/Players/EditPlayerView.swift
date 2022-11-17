@@ -3,13 +3,12 @@ import SwiftUI
 
 struct EditPlayerView: View {
     let store: StoreOf<Player>
-    @Environment(\.presentationMode) var presentation
 
     var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
                 playerNameField
-                ImagePicker(selection: viewStore.binding(\.$image), type: .player)
+                ImagePicker(selection: viewStore.binding(get: \.image, send: Player.Action.setImage), type: .player)
             }
             .background(color: viewStore.color, ignoreSafeAreaEdges: .all)
         }
@@ -26,7 +25,7 @@ struct EditPlayerView: View {
     private var playerNameField: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                TextField("Edit", text: viewStore.binding(\.$name))
+                TextField("Edit", text: viewStore.binding(get: \.name, send: Player.Action.setName))
                     .font(.title)
                     .padding()
                     .background(color: viewStore.color)
@@ -38,11 +37,13 @@ struct EditPlayerView: View {
     }
 
     private var doneButton: some View {
-        Button { self.presentation.wrappedValue.dismiss() } label: {
-            Label("Done", systemImage: "checkmark")
+        WithViewStore(store.stateless) { viewStore in
+            Button { viewStore.send(.setEdit(isPresented: false)) } label: {
+                Label("Done", systemImage: "checkmark")
+            }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.bordered)
         }
-        .labelStyle(.iconOnly)
-        .buttonStyle(.bordered)
     }
 }
 

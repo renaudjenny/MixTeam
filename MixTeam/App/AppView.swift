@@ -32,10 +32,10 @@ struct AppView: View {
                 }
             }
             .sheet(isPresented: viewStore.binding(
-                get: { $0.isEditPlayerSheetPresented },
-                send: { .setEditPlayerSheetIsPresented($0) }
+                get: \.isEditPlayerSheetPresented,
+                send: App.Action.setEditPlayerSheet(isPresented:)
             )) {
-                IfLetStore(store.scope(state: \.editedPlayer, action: App.Action.playerEdited)) { store in
+                IfLetStore(store.scope(state: \.editedPlayer, action: App.Action.editedPlayer)) { store in
                     EditPlayerView(store: store)
                 }
             }
