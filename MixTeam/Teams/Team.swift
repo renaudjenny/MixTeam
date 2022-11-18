@@ -4,19 +4,18 @@ import Foundation
 struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable, Hashable {
         let id: UUID
-        var name: String = ""
+        @BindableState var name: String = ""
         var colorIdentifier: ColorIdentifier = .gray
-        var imageIdentifier: ImageIdentifier = .unknown
+        @BindableState var imageIdentifier: ImageIdentifier = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
         var deleteConfirmationDialog: ConfirmationDialogState<Action>?
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
-    enum Action: Equatable {
-        case nameUpdated(String)
-        case colorUpdated(ColorIdentifier)
-        case imageUpdated(ImageIdentifier)
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
+        case setColor(ColorIdentifier)
         case setEdit(isPresented: Bool)
         case removeTapped
         case removeConfirmationDismissed
@@ -27,19 +26,18 @@ struct Team: ReducerProtocol {
     @Dependency(\.uuid) var uuid
 
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
-            case let .nameUpdated(name):
-                state.name = name
-                return .none
-            case let .colorUpdated(color):
+            case let .setColor(color):
                 state.colorIdentifier = color
-                for playerID in state.players.map(\.id) {
-                    state.players[id: playerID]?.color = color
+                for id in state.players.map(\.id) {
+                    var player = state.players[id: id]
+                    player?.color = state.colorIdentifier
+                    state.players[id: id] = player
                 }
                 return .none
-            case let .imageUpdated(image):
-                state.imageIdentifier = image
+            case .binding:
                 return .none
             case .setEdit:
                 return .none

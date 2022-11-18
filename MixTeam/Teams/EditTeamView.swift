@@ -14,7 +14,7 @@ struct EditTeamView: View {
                     GeometryReader { geometry in
                         HStack(spacing: 0) {
                             ImagePicker(
-                                selection: viewStore.binding(get: { $0.imageIdentifier }, send: { .imageUpdated($0) }),
+                                selection: viewStore.binding(\.$imageIdentifier),
                                 type: .team
                             )
                             .frame(width: geometry.size.width * 3/4)
@@ -26,7 +26,7 @@ struct EditTeamView: View {
                     VStack(spacing: 0) {
                         colorPicker
                         ImagePicker(
-                            selection: viewStore.binding(get: { $0.imageIdentifier }, send: { .imageUpdated($0) }),
+                            selection: viewStore.binding(\.$imageIdentifier),
                             type: .team
                         )
                         removeButton
@@ -34,6 +34,7 @@ struct EditTeamView: View {
                 }
             }
             .background(color: viewStore.colorIdentifier, brightness: 10/100, ignoreSafeAreaEdges: .all)
+            .animation(.easeInOut, value: viewStore.colorIdentifier)
             .confirmationDialog(
                 store.scope(state: \.deleteConfirmationDialog),
                 dismiss: .removeConfirmationDismissed
@@ -44,7 +45,7 @@ struct EditTeamView: View {
     private var teamNameField: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                TextField("Edit", text: viewStore.binding(get: { $0.name }, send: { .nameUpdated($0) }))
+                TextField("Edit", text: viewStore.binding(\.$name))
                     .font(.title)
                     .padding()
                     .background(color: viewStore.colorIdentifier)
@@ -90,11 +91,11 @@ struct EditTeamView: View {
     private var colors: some View {
         WithViewStore(store) { viewStore in
             ForEach(ColorIdentifier.allCases) { colorIdentifier in
-                Button(action: { viewStore.send(.colorUpdated(colorIdentifier), animation: .easeInOut) }, label: {
+                Button { viewStore.send(.setColor(colorIdentifier)) } label: {
                     colorIdentifier.color(for: colorScheme)
                         .frame(width: 50, height: 50)
                         .clipShape(Splash(animatableData: viewStore.colorIdentifier == colorIdentifier ? 1 : 0))
-                })
+                }
                 .accessibility(label: Text("\(colorIdentifier.name) color"))
             }
         }
