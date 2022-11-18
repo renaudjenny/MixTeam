@@ -8,7 +8,7 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             VStack {
                 playerNameField
-                ImagePicker(selection: viewStore.binding(get: \.image, send: Player.Action.setImage), type: .player)
+                ImagePicker(selection: viewStore.binding(\.$image), type: .player)
             }
             .background(color: viewStore.color, ignoreSafeAreaEdges: .all)
         }
@@ -25,7 +25,7 @@ struct EditPlayerView: View {
     private var playerNameField: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                TextField("Edit", text: viewStore.binding(get: \.name, send: Player.Action.setName))
+                TextField("Edit", text: viewStore.binding(\.$name))
                     .font(.title)
                     .padding()
                     .background(color: viewStore.color)
