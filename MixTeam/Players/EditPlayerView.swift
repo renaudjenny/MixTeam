@@ -10,7 +10,7 @@ struct EditPlayerView: View {
                 playerNameField
                 ImagePicker(selection: viewStore.binding(\.$image), type: .player)
             }
-            .background(color: viewStore.color, ignoreSafeAreaEdges: .all)
+            .background(color: viewStore.dprColor, ignoreSafeAreaEdges: .all)
         }
     }
 
@@ -28,8 +28,8 @@ struct EditPlayerView: View {
                 TextField("Edit", text: viewStore.binding(\.$name))
                     .font(.title)
                     .padding()
-                    .background(color: viewStore.color)
-                    .modifier(AddDashedCardStyle())
+                    .background(color: viewStore.dprColor)
+                    .dashedCardStyle()
                     .padding(.leading)
                 doneButton.padding(.trailing)
             }.padding(.top)

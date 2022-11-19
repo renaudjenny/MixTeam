@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(*, deprecated)
 private struct BackgroundColor: ViewModifier {
     let color: ColorIdentifier
     let brightness: Double
@@ -14,6 +15,7 @@ private struct BackgroundColor: ViewModifier {
 }
 
 extension View {
+    @available(*, deprecated)
     func background(
         color: ColorIdentifier,
         brightness: Double = 0,

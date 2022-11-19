@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(*, deprecated)
 private struct ForegroundColor: ViewModifier {
     let color: ColorIdentifier
     @Environment(\.colorScheme) private var colorScheme
@@ -10,6 +11,7 @@ private struct ForegroundColor: ViewModifier {
 }
 
 extension View {
+    @available(*, deprecated)
     func foregroundColor(_ color: ColorIdentifier) -> some View {
         modifier(ForegroundColor(color: color))
     }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(*, deprecated)
 private struct ListRowBackgroundColor: ViewModifier {
     let color: ColorIdentifier
     private(set) var opacity: Double
@@ -11,6 +12,7 @@ private struct ListRowBackgroundColor: ViewModifier {
 }
 
 extension View {
+    @available(*, deprecated)
     func listRowBackground(color: ColorIdentifier, opacity: Double = 1) -> some View {
         modifier(ListRowBackgroundColor(color: color, opacity: 1))
     }

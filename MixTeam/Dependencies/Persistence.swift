@@ -62,7 +62,8 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                         name: $0.name,
                         image: $0.imageIdentifier,
                         isStanding: false,
-                        color: colorIdentifier
+                        dprColor: colorIdentifier,
+                        color: colorIdentifier.mtColor
                     ) })
                 )
             }
@@ -73,7 +74,8 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                     name: $0.name,
                     image: $0.imageIdentifier,
                     isStanding: true,
-                    color: .gray
+                    dprColor: .gray,
+                    color: colorIdentifier.mtColor
                 )}))
             }
         }
@@ -143,5 +145,20 @@ extension DependencyValues {
     var loaded: App.State {
         get { self[PersistenceLoadDependencyKey.self] }
         set { self[PersistenceLoadDependencyKey.self] = newValue }
+    }
+}
+
+private extension ColorIdentifier {
+    var mtColor: MTColor {
+        switch self {
+        case .yellow: return .leather
+        case .orange: return .citrus
+        case .red: return .strawberry
+        case .pink: return .duck
+        case .purple: return .lilac
+        case .blue: return .bluejeans
+        case .green: return .grass
+        case .gray: return .aluminium
+        }
     }
 }

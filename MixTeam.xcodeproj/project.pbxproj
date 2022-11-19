@@ -24,6 +24,7 @@
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
 		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
 		4C7652FF2923A99A00A591C4 /* ForegroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7652FE2923A99A00A591C4 /* ForegroundColor.swift */; };
+		4C765301292799D200A591C4 /* ColorDuo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765300292799D200A591C4 /* ColorDuo.swift */; };
 		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
@@ -90,6 +91,7 @@
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4C7652FE2923A99A00A591C4 /* ForegroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundColor.swift; sourceTree = "<group>"; };
+		4C765300292799D200A591C4 /* ColorDuo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDuo.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		4CAE86CE29225C3900CF6520 /* ListRowBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowBackgroundColor.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			children = (
 				4CCA0D2024980E5600E88F80 /* ImageIdentifier.swift */,
 				4CCA0D2224980E8A00E88F80 /* ColorIdentifier.swift */,
+				4C765300292799D200A591C4 /* ColorDuo.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4C065FDF290EA8FD0054C5DF /* PlayerBadge.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
+				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,

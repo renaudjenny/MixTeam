@@ -12,10 +12,7 @@ enum ColorIdentifier: String, Identifiable, CaseIterable, Codable {
 
     func color(for scheme: ColorScheme) -> Color {
         switch self {
-        case .yellow:
-            return scheme == .dark
-            ? Color(red: 255/255, green: 190/255, blue: 53/255)
-            : .yellow
+        case .yellow: return .yellow
         case .orange: return .orange
         case .red: return .red
         case .pink: return .pink
@@ -65,8 +62,8 @@ struct Colors_Previews: PreviewProvider {
                 VStack {
                     ForEach(colors, id: \.hashValue) { colorColumn in
                         HStack {
-                            ForEach(colorColumn, id: \.hashValue) { color in
-                                preview(for: color)
+                            ForEach(colorColumn, id: \.hashValue) { dprColor in
+                                preview(for: dprColor)
                             }
                         }
                     }
@@ -74,7 +71,7 @@ struct Colors_Previews: PreviewProvider {
             }
         }
 
-        private func preview(for color: ColorIdentifier) -> some View {
+        private func preview(for dprColor: ColorIdentifier) -> some View {
             VStack {
                 Text("Lorem Ipsum")
                     .font(.title)
@@ -84,11 +81,11 @@ struct Colors_Previews: PreviewProvider {
                     Label("Add a new Team", systemImage: "plus")
                         .frame(maxWidth: .infinity, minHeight: 30)
                 }
-                .buttonStyle(DashedButtonStyle(color: color))
+                .buttonStyle(DashedButtonStyle(dprColor: dprColor))
                 .padding()
             }
             .frame(width: 180, height: 200)
-            .background(color: color)
+            .background(color: dprColor)
         }
     }
 }

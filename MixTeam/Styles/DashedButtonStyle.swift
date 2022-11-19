@@ -1,23 +1,37 @@
 import SwiftUI
 
 struct DashedButtonStyle: ButtonStyle {
-    let color: ColorIdentifier
+    @available(*, deprecated)
+    let dprColor: ColorIdentifier?
+    let color: MTColor?
     @Environment(\.colorScheme) private var colorScheme
+
+    @available(*, deprecated)
+    init(dprColor: ColorIdentifier) {
+        self.dprColor = dprColor
+        self.color = nil
+    }
+
+    init(color: MTColor) {
+        self.color = color
+        self.dprColor = nil
+    }
 
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.label
-                .foregroundColor(.primary)
+                .foregroundColor(color?.foregroundColor(scheme: colorScheme) ?? .primary)
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(color.color(for: colorScheme))
+                .fill(color?.backgroundColor(scheme: colorScheme) ?? dprColor?.color(for: colorScheme) ?? .gray)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(style: strokeStyle(isPressed: configuration.isPressed))
                         .padding(5)
                 )
+                .foregroundColor(color?.foregroundColor(scheme: colorScheme))
                 .modifier(Shadow(isApplied: !configuration.isPressed))
         )
     }
@@ -42,33 +56,35 @@ struct MixTeamButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             Button(action: action) {
-                Text("Common Button Style (Red)")
+                Text("Common Button Style (Aluminium)")
             }
-            .buttonStyle(DashedButtonStyle(color: .red))
+            .buttonStyle(DashedButtonStyle(color: .aluminium))
 
             Button(action: action) {
-                Text("Common Button Style (Green)")
+                Text("Common Button Style (Duck)")
             }
-            .buttonStyle(DashedButtonStyle(color: .green))
+            .buttonStyle(DashedButtonStyle(color: .duck))
 
             Button(action: action) {
                 Text("Small")
             }
-            .buttonStyle(DashedButtonStyle(color: .purple))
+            .buttonStyle(DashedButtonStyle(color: .citrus))
 
             Button(action: action) {
                 Image(systemName: "moon")
                 Text("With an icon")
             }
-            .buttonStyle(DashedButtonStyle(color: .gray))
+            .buttonStyle(DashedButtonStyle(color: .strawberry))
 
             Button(action: action) {
                 Image(systemName: "cube.box")
                     .resizable()
                     .frame(width: 60, height: 60)
             }
-            .buttonStyle(DashedButtonStyle(color: .gray))
+            .buttonStyle(DashedButtonStyle(color: .leather))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .backgroundAndForeground(color: .aluminium)
     }
 
     private static let action = { }

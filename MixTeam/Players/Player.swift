@@ -7,7 +7,11 @@ struct Player: ReducerProtocol {
         @BindableState var name = ""
         @BindableState var image: ImageIdentifier = .unknown
         var isStanding = false
-        var color: ColorIdentifier
+        
+        @available(*, deprecated)
+        var dprColor: ColorIdentifier
+
+        var color: MTColor
     }
 
     enum Action: BindableAction, Equatable {

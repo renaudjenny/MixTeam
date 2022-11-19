@@ -13,8 +13,8 @@ extension App.State {
 
         return App.State(
             standing: Standing.State(players: [
-                Player.State(id: ameliaID, name: "Amelia", image: .girl, isStanding: true, color: .gray),
-                Player.State(id: joseID, name: "José", image: .santa, isStanding: true, color: .gray),
+                Player.State(id: ameliaID, name: "Amelia", image: .girl, isStanding: true, dprColor: .gray, color: .aluminium),
+                Player.State(id: joseID, name: "José", image: .santa, isStanding: true, dprColor: .gray, color: .aluminium),
             ]),
             teams: [
                 Team.State(
@@ -22,7 +22,7 @@ extension App.State {
                     name: "Red Koala",
                     colorIdentifier: .red,
                     imageIdentifier: .koala,
-                    players: [Player.State(id: jackID, name: "Jack", image: .jack, color: .red)]
+                    players: [Player.State(id: jackID, name: "Jack", image: .jack, dprColor: .red, color: .strawberry)]
                 ),
                 Team.State(
                     id: purpleElephantId,

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(*, deprecated)
 struct Shadow: ViewModifier {
     static let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
     var isApplied: Bool = true

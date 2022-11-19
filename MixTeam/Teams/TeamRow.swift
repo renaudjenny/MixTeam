@@ -26,7 +26,7 @@ struct TeamRow: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .buttonStyle(DashedButtonStyle(color: viewStore.colorIdentifier))
+                .buttonStyle(DashedButtonStyle(dprColor: viewStore.colorIdentifier))
                 .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
             }
             .listRowBackground(color: viewStore.colorIdentifier)
@@ -82,8 +82,8 @@ extension Store where State == Team.State, Action == Team.Action {
                 colorIdentifier: .blue,
                 imageIdentifier: .octopus,
                 players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .blue),
-                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .blue),
+                    Player.State(id: UUID(), name: "Player 1", image: .girl, dprColor: .blue, color: .bluejeans),
+                    Player.State(id: UUID(), name: "Player 2", image: .santa, dprColor: .blue, color: .bluejeans),
                 ]
             ),
             reducer: Team()

@@ -10,8 +10,8 @@ struct PlayerBadge: View {
             .aspectRatio(contentMode: .fit)
             .padding(8)
             .opacity(70/100)
-            .background(color: player.color)
-            .modifier(AddDashedCardStyle())
+            .backgroundAndForeground(color: player.color)
+            .dashedCardStyle()
     }
 }
 
@@ -26,7 +26,7 @@ struct PlayerBadge_Previews: PreviewProvider {
 extension Player.State {
     static func preview(isStanding: Bool = false) -> Self {
         guard let image = ImageIdentifier.players.randomElement(),
-              let color = ColorIdentifier.allCases.randomElement()
+              let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement()
         else { fatalError("Cannot generate image & color as expected") }
 
         return Player.State(
@@ -34,7 +34,8 @@ extension Player.State {
             name: "Test Player",
             image: image,
             isStanding: isStanding,
-            color: isStanding ? .gray : color
+            dprColor: .gray,
+            color: isStanding ? .aluminium : color
         )
     }
     static var preview: Self {

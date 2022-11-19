@@ -5,7 +5,10 @@ struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable, Hashable {
         let id: UUID
         @BindableState var name: String = ""
+
+        @available(*, deprecated)
         var colorIdentifier: ColorIdentifier = .gray
+
         @BindableState var imageIdentifier: ImageIdentifier = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
@@ -33,7 +36,7 @@ struct Team: ReducerProtocol {
                 state.colorIdentifier = color
                 for id in state.players.map(\.id) {
                     var player = state.players[id: id]
-                    player?.color = state.colorIdentifier
+                    player?.dprColor = state.colorIdentifier
                     state.players[id: id] = player
                 }
                 return .none
