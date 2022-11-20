@@ -33,8 +33,8 @@ struct EditTeamView: View {
                     }
                 }
             }
-            .background(color: viewStore.colorIdentifier, brightness: 10/100, ignoreSafeAreaEdges: .all)
-            .animation(.easeInOut, value: viewStore.colorIdentifier)
+            .backgroundAndForeground(color: viewStore.color)
+            .animation(.easeInOut, value: viewStore.color)
             .confirmationDialog(
                 store.scope(state: \.deleteConfirmationDialog),
                 dismiss: .removeConfirmationDismissed
@@ -48,8 +48,8 @@ struct EditTeamView: View {
                 TextField("Edit", text: viewStore.binding(\.$name))
                     .font(.title)
                     .padding()
-                    .background(color: viewStore.colorIdentifier)
-                    .modifier(AddDashedCardStyle())
+                    .backgroundAndForeground(color: viewStore.color)
+                    .dashedCardStyle()
                     .padding(.leading)
                 doneButton.padding(.trailing)
             }.padding(.top)
@@ -80,7 +80,7 @@ struct EditTeamView: View {
         }
         .padding()
         .background(Color.black)
-        .modifier(AddDashedCardStyle())
+        .dashedCardStyle()
         .padding()
     }
 
@@ -90,13 +90,13 @@ struct EditTeamView: View {
 
     private var colors: some View {
         WithViewStore(store) { viewStore in
-            ForEach(ColorIdentifier.allCases) { colorIdentifier in
-                Button { viewStore.send(.setColor(colorIdentifier)) } label: {
-                    colorIdentifier.color(for: colorScheme)
+            ForEach(MTColor.allCases.filter({ $0 != .aluminium })) { color in
+                Button { viewStore.send(.setColor(color)) } label: {
+                    color.backgroundColor(scheme: colorScheme)
                         .frame(width: 50, height: 50)
-                        .clipShape(Splash(animatableData: viewStore.colorIdentifier == colorIdentifier ? 1 : 0))
+                        .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
                 }
-                .accessibility(label: Text("\(colorIdentifier.name) color"))
+                .accessibility(label: Text("\(color.rawValue.capitalized) color"))
             }
         }
     }

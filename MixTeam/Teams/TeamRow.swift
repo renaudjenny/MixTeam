@@ -26,10 +26,10 @@ struct TeamRow: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .buttonStyle(DashedButtonStyle(dprColor: viewStore.colorIdentifier))
+                .buttonStyle(.dashed(color: viewStore.color))
                 .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
             }
-            .listRowBackground(color: viewStore.colorIdentifier)
+            .backgroundAndForeground(color: viewStore.color)
         }
     }
 }
@@ -79,7 +79,7 @@ extension Store where State == Team.State, Action == Team.Action {
             initialState: Team.State(
                 id: UUID(),
                 name: "Team test",
-                colorIdentifier: .blue,
+                color: .bluejeans,
                 imageIdentifier: .octopus,
                 players: [
                     Player.State(id: UUID(), name: "Player 1", image: .girl, dprColor: .blue, color: .bluejeans),
@@ -96,7 +96,7 @@ extension Team.State {
         Team.State(
             id: UUID(),
             name: "Team test",
-            colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
+            color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
             imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala
         )
     }

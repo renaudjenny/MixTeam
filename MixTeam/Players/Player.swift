@@ -7,7 +7,7 @@ struct Player: ReducerProtocol {
         @BindableState var name = ""
         @BindableState var image: ImageIdentifier = .unknown
         var isStanding = false
-        
+
         @available(*, deprecated)
         var dprColor: ColorIdentifier
 

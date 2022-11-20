@@ -19,21 +19,21 @@ extension App.State {
             teams: [
                 Team.State(
                     id: koalaTeamId,
-                    name: "Red Koala",
-                    colorIdentifier: .red,
+                    name: "Strawberry Koala",
+                    color: .strawberry,
                     imageIdentifier: .koala,
                     players: [Player.State(id: jackID, name: "Jack", image: .jack, dprColor: .red, color: .strawberry)]
                 ),
                 Team.State(
                     id: purpleElephantId,
-                    name: "Purple Elephant",
-                    colorIdentifier: .purple,
+                    name: "Lilac Elephant",
+                    color: .lilac,
                     imageIdentifier: .elephant
                 ),
                 Team.State(
                     id: blueLionId,
-                    name: "Blue Lion",
-                    colorIdentifier: .blue,
+                    name: "Bluejeans Lion",
+                    color: .bluejeans,
                     imageIdentifier: .lion
                 ),
             ]

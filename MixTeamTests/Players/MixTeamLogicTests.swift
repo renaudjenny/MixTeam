@@ -13,10 +13,10 @@ class MixTeamLogicTests: XCTestCase {
         var jose = allPlayers.first { $0.name == "José" }!
 
         jose.isStanding = false
-        jose.dprColor = store.state.teams[0].colorIdentifier
-        jack.dprColor = store.state.teams[1].colorIdentifier
+        jose.color = store.state.teams[0].color
+        jack.color = store.state.teams[1].color
         amelia.isStanding = false
-        amelia.dprColor = store.state.teams[2].colorIdentifier
+        amelia.color = store.state.teams[2].color
 
         store.dependencies.shufflePlayers = .alphabeticallySorted
         store.dependencies.save = { _ in }

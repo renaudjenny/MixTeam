@@ -52,6 +52,12 @@ struct DashedButtonStyle: ButtonStyle {
     }
 }
 
+extension ButtonStyle where Self == DashedButtonStyle {
+    static func dashed(color: MTColor) -> Self {
+        DashedButtonStyle(color: color)
+    }
+}
+
 struct MixTeamButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -68,7 +74,7 @@ struct MixTeamButtonStyle_Previews: PreviewProvider {
             Button(action: action) {
                 Text("Small")
             }
-            .buttonStyle(DashedButtonStyle(color: .citrus))
+            .buttonStyle(DashedButtonStyle(color: .peach))
 
             Button(action: action) {
                 Image(systemName: "moon")

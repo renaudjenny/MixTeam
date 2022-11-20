@@ -17,7 +17,7 @@ struct TotalScoresView: View {
                         Text(viewStore.state.total(for: team))
                     }
                     .font(.body.bold())
-                    .listRowBackground(color: team.colorIdentifier, opacity: 30/100)
+                    .backgroundAndForeground(color: team.color)
                     .listRowSeparator(.hidden)
                 }
             }

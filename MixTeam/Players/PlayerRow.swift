@@ -13,7 +13,7 @@ struct PlayerRow: View {
                     Text(viewStore.name)
                 }
             }
-            .listRowBackground(color: viewStore.dprColor)
+            .backgroundAndForeground(color: viewStore.color)
             .swipeActions(allowsFullSwipe: true) {
                 if viewStore.isStanding {
                     Button(role: .destructive) { viewStore.send(.delete, animation: .easeInOut) } label: {

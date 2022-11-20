@@ -81,7 +81,7 @@ struct Colors_Previews: PreviewProvider {
                     Label("Add a new Team", systemImage: "plus")
                         .frame(maxWidth: .infinity, minHeight: 30)
                 }
-                .buttonStyle(DashedButtonStyle(dprColor: dprColor))
+                .buttonStyle(.bordered)
                 .padding()
             }
             .frame(width: 180, height: 200)

@@ -27,11 +27,11 @@ struct StandingView: View {
                     }
                     .labelStyle(.iconOnly)
                 }
-                .buttonStyle(DashedButtonStyle(color: .aluminium))
+                .buttonStyle(.dashed(color: .aluminium))
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .listRowBackground(Color.gray)
+            .backgroundAndForeground(color: .aluminium)
         }
     }
 }

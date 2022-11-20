@@ -9,6 +9,8 @@ struct Team: ReducerProtocol {
         @available(*, deprecated)
         var colorIdentifier: ColorIdentifier = .gray
 
+        var color: MTColor = .aluminium
+
         @BindableState var imageIdentifier: ImageIdentifier = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
@@ -18,7 +20,9 @@ struct Team: ReducerProtocol {
 
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case setColor(ColorIdentifier)
+        @available(*, deprecated)
+        case setDprColor(ColorIdentifier)
+        case setColor(MTColor)
         case setEdit(isPresented: Bool)
         case removeTapped
         case removeConfirmationDismissed
@@ -32,12 +36,18 @@ struct Team: ReducerProtocol {
         BindingReducer()
         Reduce { state, action in
             switch action {
-            case let .setColor(color):
+            case let .setDprColor(color):
                 state.colorIdentifier = color
                 for id in state.players.map(\.id) {
                     var player = state.players[id: id]
-                    player?.dprColor = state.colorIdentifier
+                    player?.color = state.color
                     state.players[id: id] = player
+                }
+                return .none
+            case let .setColor(color):
+                state.color = color
+                for id in state.players.map(\.id) {
+                    state.players[id: id]?.color = color
                 }
                 return .none
             case .binding:
@@ -67,7 +77,7 @@ extension Team.State: Codable {
     enum CodingKeys: CodingKey {
         case id
         case name
-        case colorIdentifier
+        case color
         case imageIdentifier
         case players
     }

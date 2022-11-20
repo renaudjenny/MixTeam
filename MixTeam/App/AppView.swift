@@ -92,15 +92,7 @@ struct AppView: View {
                 Label("Mix Team", systemImage: "shuffle")
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
-            .buttonStyle(DashedButtonStyle(color: .aluminium))
-            .listRowBackground(LinearGradient(
-                colors: [
-                    .gray,
-                    viewStore.teams.first?.colorIdentifier.color(for: colorScheme) ?? .gray,
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            ))
+            .buttonStyle(.dashed(color: .aluminium))
         }
     }
 

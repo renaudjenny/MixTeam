@@ -5,14 +5,14 @@ private struct ColorDuo {
     let background: Color
 }
 
-enum MTColor: String, Codable, CaseIterable {
+enum MTColor: String, Codable, CaseIterable, Identifiable {
     case leather
     case strawberry
     case lilac
     case bluejeans
-    case grass
+    case conifer
     case duck
-    case citrus
+    case peach
     case aluminium
 
     private var duo: ColorDuo {
@@ -33,7 +33,7 @@ enum MTColor: String, Codable, CaseIterable {
             foreground: Color(hue: 216/360, saturation: 100/100, lightness: 36/100),
             background: Color(hue: 213/360, saturation: 53/100, lightness: 81/100)
         )
-        case .grass: return ColorDuo(
+        case .conifer: return ColorDuo(
             foreground: Color(hue: 151/360, saturation: 100/100, lightness: 23/100),
             background: Color(hue: 143/360, saturation: 34/100, lightness: 75/100)
         )
@@ -41,7 +41,7 @@ enum MTColor: String, Codable, CaseIterable {
             foreground: Color(hue: 191/360, saturation: 100/100, lightness: 19/100),
             background: Color(hue: 190/360, saturation: 54/100, lightness: 74/100)
         )
-        case .citrus: return ColorDuo(
+        case .peach: return ColorDuo(
             foreground: Color(hue: 15/360, saturation: 88/100, lightness: 45/100),
             background: Color(hue: 12/360, saturation: 98/100, lightness: 83/100)
         )
@@ -58,6 +58,8 @@ enum MTColor: String, Codable, CaseIterable {
     func backgroundColor(scheme: ColorScheme) -> Color {
         scheme == .dark ? self.duo.foreground : self.duo.background
     }
+
+    var id: Int { hashValue }
 }
 
 private extension Color {

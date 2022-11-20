@@ -152,12 +152,12 @@ private extension ColorIdentifier {
     var mtColor: MTColor {
         switch self {
         case .yellow: return .leather
-        case .orange: return .citrus
+        case .orange: return .peach
         case .red: return .strawberry
         case .pink: return .duck
         case .purple: return .lilac
         case .blue: return .bluejeans
-        case .green: return .grass
+        case .green: return .conifer
         case .gray: return .aluminium
         }
     }
