@@ -1,38 +1,27 @@
 import SwiftUI
 
+// MARK: - Dashed Button Style
+
 struct DashedButtonStyle: ButtonStyle {
-    @available(*, deprecated)
-    let dprColor: ColorIdentifier?
-    let color: MTColor?
+    let color: MTColor
     @Environment(\.colorScheme) private var colorScheme
-
-    @available(*, deprecated)
-    init(dprColor: ColorIdentifier) {
-        self.dprColor = dprColor
-        self.color = nil
-    }
-
-    init(color: MTColor) {
-        self.color = color
-        self.dprColor = nil
-    }
 
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.label
-                .foregroundColor(color?.foregroundColor(scheme: colorScheme) ?? .primary)
+                .foregroundColor(color.foregroundColor(scheme: colorScheme))
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(color?.backgroundColor(scheme: colorScheme) ?? dprColor?.color(for: colorScheme) ?? .gray)
+                .fill(color.backgroundColor(scheme: colorScheme))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(style: strokeStyle(isPressed: configuration.isPressed))
                         .padding(5)
                 )
-                .foregroundColor(color?.foregroundColor(scheme: colorScheme))
-                .modifier(Shadow(isApplied: !configuration.isPressed))
+                .foregroundColor(color.foregroundColor(scheme: colorScheme))
+                .modifier(MTShadow(isApplied: !configuration.isPressed))
         )
     }
 
@@ -58,6 +47,7 @@ extension ButtonStyle where Self == DashedButtonStyle {
     }
 }
 
+#if DEBUG
 struct MixTeamButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -94,4 +84,62 @@ struct MixTeamButtonStyle_Previews: PreviewProvider {
     }
 
     private static let action = { }
+}
+#endif
+
+// MARK: - Dashed Card Style
+
+private struct DashedCardStyle: ViewModifier {
+    var isShadowApplied: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(overlay)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .modifier(MTShadow(isApplied: isShadowApplied))
+    }
+
+    private var overlay: some View {
+        RoundedRectangle(cornerRadius: 16)
+            .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
+            .padding(5)
+    }
+}
+
+extension View {
+    func dashedCardStyle(isShadowApplied: Bool = true) -> some View {
+        modifier(DashedCardStyle(isShadowApplied: isShadowApplied))
+    }
+}
+
+#if DEBUG
+struct DashedCardStyle_Previews: PreviewProvider {
+    static var previews: some View {
+        Rectangle()
+            .fill(Color.gray)
+            .dashedCardStyle()
+            .frame(width: 300, height: 300)
+    }
+}
+#endif
+
+// MARK: MixTeam Shadow
+
+private struct MTShadow: ViewModifier {
+    var isApplied: Bool
+    private let shadowColor = Color(.sRGBLinear, white: 0, opacity: 0.25)
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                Color.white.clipShape(RoundedRectangle(cornerRadius: 20)).shadow(
+                    color: shadowColor,
+                    radius: radius, x: x, y: y
+                )
+            )
+    }
+
+    private var radius: CGFloat { isApplied ? 3 : 0 }
+    private var x: CGFloat { isApplied ? -2 : 0 }
+    private var y: CGFloat { isApplied ? 2 : 0 }
 }

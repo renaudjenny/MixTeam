@@ -8,7 +8,7 @@ struct ScoreRow: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                viewStore.team.imageIdentifier.image
+                viewStore.team.image.image
                     .resizable()
                     .frame(maxWidth: 24, maxHeight: 24)
                 Text(viewStore.team.name)

@@ -13,10 +13,7 @@ struct EditTeamView: View {
                 if verticalSizeClass == .compact {
                     GeometryReader { geometry in
                         HStack(spacing: 0) {
-                            ImagePicker(
-                                selection: viewStore.binding(\.$imageIdentifier),
-                                type: .team
-                            )
+                            ImagePicker(selection: viewStore.binding(\.$image), type: .team)
                             .frame(width: geometry.size.width * 3/4)
                             colorPicker
                                 .frame(width: geometry.size.width * 1/4)
@@ -25,10 +22,7 @@ struct EditTeamView: View {
                 } else {
                     VStack(spacing: 0) {
                         colorPicker
-                        ImagePicker(
-                            selection: viewStore.binding(\.$imageIdentifier),
-                            type: .team
-                        )
+                        ImagePicker(selection: viewStore.binding(\.$image), type: .team)
                         removeButton
                     }
                 }

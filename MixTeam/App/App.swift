@@ -64,7 +64,7 @@ struct App: ReducerProtocol {
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
                 let name = "\(color.rawValue.capitalized) \(image.name)".localizedCapitalized
                 state.teams.updateOrAppend(
-                    Team.State(id: uuid(), name: name, color: color, imageIdentifier: image)
+                    Team.State(id: uuid(), name: name, color: color, image: image)
                 )
                 return Effect(value: .saveState)
             case .setEditTeamSheet(isPresented: false):

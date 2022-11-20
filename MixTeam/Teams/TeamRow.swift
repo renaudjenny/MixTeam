@@ -16,7 +16,7 @@ struct TeamRow: View {
             HStack {
                 Button { viewStore.send(.setEdit(isPresented: true)) } label: {
                     HStack {
-                        viewStore.imageIdentifier.image
+                        viewStore.image.image
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
@@ -80,10 +80,10 @@ extension Store where State == Team.State, Action == Team.Action {
                 id: UUID(),
                 name: "Team test",
                 color: .bluejeans,
-                imageIdentifier: .octopus,
+                image: .octopus,
                 players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .girl, dprColor: .blue, color: .bluejeans),
-                    Player.State(id: UUID(), name: "Player 2", image: .santa, dprColor: .blue, color: .bluejeans),
+                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .bluejeans),
+                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
                 ]
             ),
             reducer: Team()
@@ -97,7 +97,7 @@ extension Team.State {
             id: UUID(),
             name: "Team test",
             color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
-            imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala
+            image: ImageIdentifier.teams.randomElement() ?? .koala
         )
     }
 }

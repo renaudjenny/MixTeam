@@ -33,9 +33,8 @@ extension Player.State {
             id: UUIDGenerator.incrementing(),
             name: "Test Player",
             image: image,
-            isStanding: isStanding,
-            dprColor: .gray,
-            color: isStanding ? .aluminium : color
+            color: isStanding ? .aluminium : color,
+            isStanding: isStanding
         )
     }
     static var preview: Self {

@@ -1,6 +1,7 @@
 import Dependencies
 import IdentifiedCollections
 import Foundation
+import SwiftUI
 import XCTestDynamicOverlay
 
 private let appStateKey = "app-state"
@@ -55,15 +56,14 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                 Team.State(
                     id: id,
                     name: name,
-                    colorIdentifier: colorIdentifier,
-                    imageIdentifier: imageIdentifier,
+                    color: colorIdentifier.mtColor,
+                    image: imageIdentifier,
                     players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                         id: $0.id,
                         name: $0.name,
                         image: $0.imageIdentifier,
-                        isStanding: false,
-                        dprColor: colorIdentifier,
-                        color: colorIdentifier.mtColor
+                        color: colorIdentifier.mtColor,
+                        isStanding: false
                     ) })
                 )
             }
@@ -73,9 +73,8 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                     id: $0.id,
                     name: $0.name,
                     image: $0.imageIdentifier,
-                    isStanding: true,
-                    dprColor: .gray,
-                    color: colorIdentifier.mtColor
+                    color: colorIdentifier.mtColor,
+                    isStanding: true
                 )}))
             }
         }
@@ -148,6 +147,9 @@ extension DependencyValues {
     }
 }
 
+// MARK: - Deprecated ColorIdentifier
+// To remove after version 2 once the migration code from version 1 to 2 is also removed
+
 private extension ColorIdentifier {
     var mtColor: MTColor {
         switch self {
@@ -161,4 +163,15 @@ private extension ColorIdentifier {
         case .gray: return .aluminium
         }
     }
+}
+
+private enum ColorIdentifier: String, Codable {
+    case yellow
+    case orange
+    case red
+    case pink
+    case purple
+    case blue
+    case green
+    case gray
 }
