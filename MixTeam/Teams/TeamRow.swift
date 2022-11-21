@@ -16,7 +16,7 @@ struct TeamRow: View {
             HStack {
                 Button { viewStore.send(.setEdit(isPresented: true)) } label: {
                     HStack {
-                        viewStore.image.image
+                        Image(mtImage: viewStore.image)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
@@ -97,7 +97,7 @@ extension Team.State {
             id: UUID(),
             name: "Team test",
             color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
-            image: ImageIdentifier.teams.randomElement() ?? .koala
+            image: MTImage.teams.randomElement() ?? .koala
         )
     }
 }

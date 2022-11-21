@@ -6,7 +6,7 @@ struct Team: ReducerProtocol {
         let id: UUID
         @BindableState var name: String = ""
         var color: MTColor = .aluminium
-        @BindableState var image: ImageIdentifier = .unknown
+        @BindableState var image: MTImage = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
         var deleteConfirmationDialog: ConfirmationDialogState<Action>?

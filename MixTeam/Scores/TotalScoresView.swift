@@ -9,7 +9,7 @@ struct TotalScoresView: View {
             Section(header: Text("Total")) {
                 ForEach(viewStore.teams) { team in
                     HStack {
-                        team.image.image
+                        Image(mtImage: team.image)
                             .resizable()
                             .frame(maxWidth: 24, maxHeight: 24)
                         Text("\(team.name)")

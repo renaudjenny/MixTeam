@@ -5,7 +5,7 @@ struct PlayerBadge: View {
     let player: Player.State
 
     var body: some View {
-        player.image.image
+        Image(mtImage: player.image)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .padding(8)
@@ -25,7 +25,7 @@ struct PlayerBadge_Previews: PreviewProvider {
 
 extension Player.State {
     static func preview(isStanding: Bool = false) -> Self {
-        guard let image = ImageIdentifier.players.randomElement(),
+        guard let image = MTImage.players.randomElement(),
               let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement()
         else { fatalError("Cannot generate image & color as expected") }
 

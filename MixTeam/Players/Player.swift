@@ -5,7 +5,7 @@ struct Player: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: UUID
         @BindableState var name = ""
-        @BindableState var image: ImageIdentifier = .unknown
+        @BindableState var image: MTImage = .unknown
         var color: MTColor = .aluminium
         var isStanding = false
     }

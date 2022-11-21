@@ -60,9 +60,9 @@ struct App: ReducerProtocol {
                 state = loaded
                 return .none
             case .addTeam:
-                let image = ImageIdentifier.teams.randomElement() ?? .koala
+                let image = MTImage.teams.randomElement() ?? .koala
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
-                let name = "\(color.rawValue.capitalized) \(image.name)".localizedCapitalized
+                let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 state.teams.updateOrAppend(
                     Team.State(id: uuid(), name: name, color: color, image: image)
                 )
