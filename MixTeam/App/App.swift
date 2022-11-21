@@ -60,11 +60,11 @@ struct App: ReducerProtocol {
                 state = loaded
                 return .none
             case .addTeam:
-                let image = ImageIdentifier.teams.randomElement() ?? .koala
-                let color = ColorIdentifier.allCases.randomElement() ?? .red
-                let name = "\(color.name) \(image.name)".localizedCapitalized
+                let image = MTImage.teams.randomElement() ?? .koala
+                let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
+                let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 state.teams.updateOrAppend(
-                    Team.State(id: uuid(), name: name, colorIdentifier: color, imageIdentifier: image)
+                    Team.State(id: uuid(), name: name, color: color, image: image)
                 )
                 return Effect(value: .saveState)
             case .setEditTeamSheet(isPresented: false):
@@ -100,7 +100,7 @@ struct App: ReducerProtocol {
                         .first
                     else { return teams }
                     player.isStanding = false
-                    player.color = lessPlayerTeam.colorIdentifier
+                    player.color = lessPlayerTeam.color
                     teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
                     return teams
                 }
@@ -121,7 +121,7 @@ struct App: ReducerProtocol {
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
                 player.isStanding = true
-                player.color = .gray
+                player.color = .aluminium
                 state.standing.players.updateOrAppend(player)
                 return Effect(value: .saveState)
             case let .team(_, .player(playerID, .setEdit(isPresented))):
@@ -132,7 +132,7 @@ struct App: ReducerProtocol {
                 players = IdentifiedArrayOf(uniqueElements: players.map {
                     var player = $0
                     player.isStanding = true
-                    player.color = .gray
+                    player.color = .aluminium
                     return player
                 })
                 state.standing.players.append(contentsOf: players)

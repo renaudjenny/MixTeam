@@ -1,6 +1,7 @@
 import Dependencies
 import IdentifiedCollections
 import Foundation
+import SwiftUI
 import XCTestDynamicOverlay
 
 private let appStateKey = "app-state"
@@ -55,14 +56,14 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                 Team.State(
                     id: id,
                     name: name,
-                    colorIdentifier: colorIdentifier,
-                    imageIdentifier: imageIdentifier,
+                    color: colorIdentifier.mtColor,
+                    image: imageIdentifier.mtImage,
                     players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                         id: $0.id,
                         name: $0.name,
-                        image: $0.imageIdentifier,
-                        isStanding: false,
-                        color: colorIdentifier
+                        image: $0.imageIdentifier.mtImage,
+                        color: colorIdentifier.mtColor,
+                        isStanding: false
                     ) })
                 )
             }
@@ -71,9 +72,9 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
                 Standing.State(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                     id: $0.id,
                     name: $0.name,
-                    image: $0.imageIdentifier,
-                    isStanding: true,
-                    color: .gray
+                    image: $0.imageIdentifier.mtImage,
+                    color: colorIdentifier.mtColor,
+                    isStanding: true
                 )}))
             }
         }
@@ -144,4 +145,71 @@ extension DependencyValues {
         get { self[PersistenceLoadDependencyKey.self] }
         set { self[PersistenceLoadDependencyKey.self] = newValue }
     }
+}
+
+// MARK: - Deprecated ColorIdentifier
+// To remove after version 2 once the migration code from version 1 to 2 is also removed
+
+private extension ColorIdentifier {
+    var mtColor: MTColor {
+        switch self {
+        case .yellow: return .leather
+        case .orange: return .peach
+        case .red: return .strawberry
+        case .pink: return .duck
+        case .purple: return .lilac
+        case .blue: return .bluejeans
+        case .green: return .conifer
+        case .gray: return .aluminium
+        }
+    }
+}
+
+private enum ColorIdentifier: String, Codable {
+    case yellow
+    case orange
+    case red
+    case pink
+    case purple
+    case blue
+    case green
+    case gray
+}
+
+private extension ImageIdentifier {
+    var mtImage: MTImage {
+        switch self {
+        case .elephant: return .elephant
+        case .koala: return .koala
+        case .panda: return .panda
+        case .octopus: return .octopus
+        case .lion: return .lion
+        case .hippo: return .hippo
+        case .girl: return .girl
+        case .woman: return .woman
+        case .jack: return .jack
+        case .santa: return .santa
+        case .clown: return .clown
+        case .pirate: return .pirate
+        case .unknown: return .unknown
+        }
+    }
+}
+
+private enum ImageIdentifier: String, Codable {
+    case elephant = "elephant"
+    case koala = "koala"
+    case panda = "panda"
+    case octopus = "octopus"
+    case lion = "lion"
+    case hippo = "hippo"
+
+    case girl = "girl"
+    case woman = "woman"
+    case jack = "jack"
+    case santa = "santa"
+    case clown = "clown"
+    case pirate = "pirate"
+
+    case unknown = ""
 }

@@ -27,11 +27,11 @@ struct StandingView: View {
                     }
                     .labelStyle(.iconOnly)
                 }
-                .buttonStyle(DashedButtonStyle(color: .gray))
+                .buttonStyle(.dashed(color: .aluminium))
             }
             .frame(maxWidth: .infinity)
             .padding()
-            .listRowBackground(Color.gray)
+            .backgroundAndForeground(color: .aluminium)
         }
     }
 }
@@ -55,7 +55,7 @@ extension Store where State == Standing.State, Action == Standing.Action {
 private extension Standing.State {
     static var preview: Self {
         Standing.State(
-            players: [Player.State(id: UUID(), name: "Player 1", image: .girl, isStanding: true, color: .gray)]
+            players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .aluminium, isStanding: true)]
         )
     }
 }

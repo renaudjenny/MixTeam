@@ -15,15 +15,21 @@ class MixTeamUITests: XCTestCase {
 
         app.buttons["Add a new Team"].tap()
 
-        app.buttons["Edit Team Purple Elephant"].tap()
+        app.buttons["Edit Team Lilac Elephant"].tap()
 
         app.buttons["koala"].tap()
 
-        app.buttons["red color"].tap()
+        app.buttons["Strawberry color"].tap()
 
         let yourTeamNameTextField = app.textFields["Edit"]
         yourTeamNameTextField.tap()
-        yourTeamNameTextField.typeText("Red Koalas\n")
+
+        for _ in 0..<30 {
+            guard yourTeamNameTextField.value as? String != "" else { break }
+            yourTeamNameTextField.typeText(XCUIKeyboardKey.delete.rawValue)
+        }
+
+        yourTeamNameTextField.typeText("Strawberry Koalas\n")
         app.buttons["Done"].tap()
     }
 }

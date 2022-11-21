@@ -13,28 +13,28 @@ extension App.State {
 
         return App.State(
             standing: Standing.State(players: [
-                Player.State(id: ameliaID, name: "Amelia", image: .girl, isStanding: true, color: .gray),
-                Player.State(id: joseID, name: "José", image: .santa, isStanding: true, color: .gray),
+                Player.State(id: ameliaID, name: "Amelia", image: .girl, color: .aluminium, isStanding: true),
+                Player.State(id: joseID, name: "José", image: .santa, color: .aluminium, isStanding: true),
             ]),
             teams: [
                 Team.State(
                     id: koalaTeamId,
-                    name: "Red Koala",
-                    colorIdentifier: .red,
-                    imageIdentifier: .koala,
-                    players: [Player.State(id: jackID, name: "Jack", image: .jack, color: .red)]
+                    name: "Strawberry Koala",
+                    color: .strawberry,
+                    image: .koala,
+                    players: [Player.State(id: jackID, name: "Jack", image: .jack, color: .strawberry)]
                 ),
                 Team.State(
                     id: purpleElephantId,
-                    name: "Purple Elephant",
-                    colorIdentifier: .purple,
-                    imageIdentifier: .elephant
+                    name: "Lilac Elephant",
+                    color: .lilac,
+                    image: .elephant
                 ),
                 Team.State(
                     id: blueLionId,
-                    name: "Blue Lion",
-                    colorIdentifier: .blue,
-                    imageIdentifier: .lion
+                    name: "Bluejeans Lion",
+                    color: .bluejeans,
+                    image: .lion
                 ),
             ]
         )

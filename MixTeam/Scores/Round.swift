@@ -91,8 +91,8 @@ extension Array where Element == Round.State {
         let team3 = Team.State(
             id: thirdTeamID,
             name: "The team who had no name",
-            colorIdentifier: .red,
-            imageIdentifier: .hippo,
+            color: .strawberry,
+            image: .hippo,
             players: []
         )
 

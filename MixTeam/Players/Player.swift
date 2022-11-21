@@ -2,12 +2,12 @@ import ComposableArchitecture
 import Foundation
 
 struct Player: ReducerProtocol {
-    struct State: Equatable, Identifiable, Codable {
+    struct State: Equatable, Identifiable {
         let id: UUID
         @BindableState var name = ""
-        @BindableState var image: ImageIdentifier = .unknown
+        @BindableState var image: MTImage = .unknown
+        var color: MTColor = .aluminium
         var isStanding = false
-        var color: ColorIdentifier
     }
 
     enum Action: BindableAction, Equatable {
@@ -19,5 +19,15 @@ struct Player: ReducerProtocol {
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
+    }
+}
+
+extension Player.State: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case name
+        case image
+        case color
+        case isStanding
     }
 }

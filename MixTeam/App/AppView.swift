@@ -19,8 +19,10 @@ struct AppView: View {
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                     addTeamButton
                 }
+                .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
+            .backgroundAndForeground(color: .aluminium)
             .frame(maxWidth: 800)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
@@ -59,6 +61,7 @@ struct AppView: View {
             Spacer()
             aboutButton
         }
+        .listRowBackground(Color.clear)
     }
 
     private var scoreboardButton: some View {
@@ -70,7 +73,7 @@ struct AppView: View {
         }
         .labelStyle(.iconOnly)
         .frame(width: buttonSize.width, height: buttonSize.height)
-        .buttonStyle(DashedButtonStyle(color: .purple))
+        .buttonStyle(DashedButtonStyle(color: .aluminium))
     }
 
     private var aboutButton: some View {
@@ -79,8 +82,7 @@ struct AppView: View {
                 .resizable()
         }
         .frame(width: buttonSize.width, height: buttonSize.height)
-        .modifier(Shadow())
-        .buttonStyle(DashedButtonStyle(color: .gray))
+        .buttonStyle(DashedButtonStyle(color: .aluminium))
         .accessibility(label: Text("About"))
     }
 
@@ -90,15 +92,7 @@ struct AppView: View {
                 Label("Mix Team", systemImage: "shuffle")
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
-            .buttonStyle(DashedButtonStyle(color: .red))
-            .listRowBackground(LinearGradient(
-                colors: [
-                    .gray,
-                    viewStore.teams.first?.colorIdentifier.color(for: colorScheme) ?? .gray,
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            ))
+            .buttonStyle(.dashed(color: .aluminium))
         }
     }
 
@@ -108,7 +102,7 @@ struct AppView: View {
                 Label("Add a new Team", systemImage: "plus")
                     .frame(maxWidth: .infinity, minHeight: 30)
             }
-            .buttonStyle(DashedButtonStyle(color: .red))
+            .buttonStyle(DashedButtonStyle(color: .aluminium))
         }
     }
 
@@ -120,13 +114,8 @@ struct AppView: View {
                 .padding(.top)
                 .shadow(radius: 5)
         } background: {
-            Group {
-                colorScheme == .light
-                ? Color.gray.opacity(1/2)
-                : Color.black.opacity(3/4)
-            }
-            .modifier(AddDashedCardStyle())
-            .shadow(radius: 6)
+            MTColor.aluminium.backgroundColor(scheme: colorScheme)
+                .dashedCardStyle()
         }
     }
 }

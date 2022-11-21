@@ -5,8 +5,8 @@ struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable, Hashable {
         let id: UUID
         @BindableState var name: String = ""
-        var colorIdentifier: ColorIdentifier = .gray
-        @BindableState var imageIdentifier: ImageIdentifier = .unknown
+        var color: MTColor = .aluminium
+        @BindableState var image: MTImage = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
         var deleteConfirmationDialog: ConfirmationDialogState<Action>?
@@ -15,7 +15,7 @@ struct Team: ReducerProtocol {
 
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case setColor(ColorIdentifier)
+        case setColor(MTColor)
         case setEdit(isPresented: Bool)
         case removeTapped
         case removeConfirmationDismissed
@@ -30,11 +30,9 @@ struct Team: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case let .setColor(color):
-                state.colorIdentifier = color
+                state.color = color
                 for id in state.players.map(\.id) {
-                    var player = state.players[id: id]
-                    player?.color = state.colorIdentifier
-                    state.players[id: id] = player
+                    state.players[id: id]?.color = color
                 }
                 return .none
             case .binding:
@@ -64,8 +62,8 @@ extension Team.State: Codable {
     enum CodingKeys: CodingKey {
         case id
         case name
-        case colorIdentifier
-        case imageIdentifier
+        case color
+        case image
         case players
     }
 }

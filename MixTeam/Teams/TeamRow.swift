@@ -16,7 +16,7 @@ struct TeamRow: View {
             HStack {
                 Button { viewStore.send(.setEdit(isPresented: true)) } label: {
                     HStack {
-                        viewStore.imageIdentifier.image
+                        Image(mtImage: viewStore.image)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
@@ -26,10 +26,10 @@ struct TeamRow: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .buttonStyle(DashedButtonStyle(color: viewStore.colorIdentifier))
+                .buttonStyle(.dashed(color: viewStore.color))
                 .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
             }
-            .listRowBackground(color: viewStore.colorIdentifier)
+            .backgroundAndForeground(color: viewStore.color)
         }
     }
 }
@@ -79,11 +79,11 @@ extension Store where State == Team.State, Action == Team.Action {
             initialState: Team.State(
                 id: UUID(),
                 name: "Team test",
-                colorIdentifier: .blue,
-                imageIdentifier: .octopus,
+                color: .bluejeans,
+                image: .octopus,
                 players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .blue),
-                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .blue),
+                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .bluejeans),
+                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
                 ]
             ),
             reducer: Team()
@@ -96,8 +96,8 @@ extension Team.State {
         Team.State(
             id: UUID(),
             name: "Team test",
-            colorIdentifier: ColorIdentifier.allCases.randomElement() ?? .red,
-            imageIdentifier: ImageIdentifier.teams.randomElement() ?? .koala
+            color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
+            image: MTImage.teams.randomElement() ?? .koala
         )
     }
 }

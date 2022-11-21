@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ImagePicker: View {
-    @Binding var selection: ImageIdentifier
+    @Binding var selection: MTImage
     let type: ImagePickerType
 
     let columns = [GridItem(.adaptive(minimum: 120))]
@@ -10,28 +10,28 @@ struct ImagePicker: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: columns) {
                 ForEach(images) {
-                    Cell(imageIdentifier: $0, selection: $selection)
+                    Cell(image: $0, selection: $selection)
                 }
             }.padding()
         }
     }
 
-    private var images: [ImageIdentifier] {
+    private var images: [MTImage] {
         switch type {
-        case .team: return ImageIdentifier.teams
-        case .player: return ImageIdentifier.players
+        case .team: return MTImage.teams
+        case .player: return MTImage.players
         }
     }
 }
 
 private struct Cell: View {
-    let imageIdentifier: ImageIdentifier
-    @Binding var selection: ImageIdentifier
+    let image: MTImage
+    @Binding var selection: MTImage
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: select) {
-            imageIdentifier.image
+            Image(mtImage: image)
                 .resizable()
                 .renderingMode(.template)
                 .frame(width: 100, height: 100)
@@ -39,7 +39,7 @@ private struct Cell: View {
         }
         .buttonStyle(.plain)
         .background {
-            if selection == imageIdentifier {
+            if selection == image {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke()
             }
@@ -47,7 +47,7 @@ private struct Cell: View {
     }
 
     private func select() {
-        selection = imageIdentifier
+        selection = image
     }
 }
 
@@ -64,13 +64,13 @@ struct PlayerImagePicker_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var selection: ImageIdentifier = .girl
+        @State private var selection: MTImage = .girl
 
         var body: some View {
             VStack {
                 ImagePicker(selection: $selection, type: .player)
                 Spacer()
-                selection.image
+                Image(mtImage: selection)
             }
         }
     }

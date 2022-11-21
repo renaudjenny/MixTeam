@@ -27,7 +27,6 @@ struct ScoreboardView: View {
                     } else {
                         VStack {
                             Text("Add your first round by tapping on the plus button")
-                                .foregroundColor(.gray)
                             Button { viewStore.send(.addRound) } label: {
                                 Label("Add a new round", systemImage: "plus")
                                     .labelStyle(.iconOnly)
@@ -50,6 +49,7 @@ struct ScoreboardView: View {
                     }
                 }
             }
+            .backgroundAndForeground(color: .aluminium)
         }
     }
 

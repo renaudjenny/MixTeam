@@ -8,7 +8,7 @@ struct ScoreRow: View {
     var body: some View {
         WithViewStore(store) { viewStore in
             HStack {
-                viewStore.team.imageIdentifier.image
+                Image(mtImage: viewStore.team.image)
                     .resizable()
                     .frame(maxWidth: 24, maxHeight: 24)
                 Text(viewStore.team.name)
@@ -32,7 +32,7 @@ struct ScoreRow: View {
                 }
             }
             .listRowSeparator(.hidden)
-            .listRowBackground(color: viewStore.team.colorIdentifier, opacity: 30/100)
+            .backgroundAndForeground(color: viewStore.team.color)
             .textFieldStyle(.roundedBorder)
         }
     }
