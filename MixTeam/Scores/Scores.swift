@@ -2,7 +2,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct Scores: ReducerProtocol {
-    struct State: Equatable, Codable {
+    struct State: Equatable {
         private(set) var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
         @BindableState var focusedField: Score.State?
@@ -40,7 +40,7 @@ struct Scores: ReducerProtocol {
                 return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
                     var rounds = rounds
                     for (index, round) in rounds.enumerated() {
-                        for team in rounds[id: round.id]?.teams ?? [] {
+                        for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
                             let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
                             guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
                             else { continue }
@@ -79,13 +79,33 @@ struct Scores: ReducerProtocol {
     }
 }
 
+extension Scores.State: Codable {
+    enum CodingKeys: CodingKey {
+        case rounds
+    }
+}
+
+extension Scores.State {
+    var archivedTeams: IdentifiedArrayOf<Team.State> {
+        let roundTeams = Set(rounds.map(\.scores).flatMap(\.elements).map(\.team))
+        return IdentifiedArrayOf(uniqueElements: roundTeams.subtracting(teams))
+    }
+}
+
 extension App.State {
     var scores: Scores.State {
         get {
-            Scores.State(teams: teams, rounds: _scores.rounds)
+            Scores.State(
+                teams: teams,
+                rounds: _scores.rounds
+            )
         }
         set {
-            _scores.rounds = newValue.rounds
+            (
+                _scores.rounds
+            ) = (
+                newValue.rounds
+            )
         }
     }
 }

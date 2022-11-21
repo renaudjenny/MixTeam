@@ -1,7 +1,7 @@
 import ComposableArchitecture
 
 struct Standing: ReducerProtocol {
-    struct State: Equatable, Codable {
+    struct State: Equatable {
         var players: IdentifiedArrayOf<Player.State> = []
     }
 
@@ -35,5 +35,11 @@ struct Standing: ReducerProtocol {
         .forEach(\.players, action: /Standing.Action.player) {
             Player()
         }
+    }
+}
+
+extension Standing.State: Codable {
+    enum CodingKeys: CodingKey {
+        case players
     }
 }

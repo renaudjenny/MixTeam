@@ -2,19 +2,14 @@ import ComposableArchitecture
 import Foundation
 
 struct Round: ReducerProtocol {
-    struct State: Identifiable, Codable, Equatable {
+    struct State: Identifiable, Equatable {
         let id: UUID
         var name: String
         var scores: IdentifiedArrayOf<Score.State> = []
-        var backup = Data()
-
-        var teams: IdentifiedArrayOf<Team.State> { IdentifiedArrayOf(uniqueElements: scores.map(\.team)) }
     }
 
     enum Action: Equatable {
         case nameUpdated(String)
-        case start
-        case restoreBackup
         case score(id: Score.State.ID, action: Score.Action)
     }
 
@@ -26,24 +21,6 @@ struct Round: ReducerProtocol {
             case let .nameUpdated(name):
                 state.name = name
                 return .none
-            case .start:
-                state.backup = (try? JSONEncoder().encode(state)) ?? Data()
-
-                let teams = (state.teams + state.scores.map(\.team))
-                    .reduce([], { result, team -> [Team.State] in
-                        if result.contains(where: { $0 == team }) { return result }
-                        return result + [team]
-                    })
-
-                state.scores = IdentifiedArrayOf(uniqueElements: teams.map { team in
-                    state.scores.first(where: { $0.team == team })
-                    ?? Score.State(id: uuid(), team: team, points: 0, accumulatedPoints: 0)
-                })
-                return .none
-            case .restoreBackup:
-                guard let backup = try? JSONDecoder().decode(State.self, from: state.backup) else { return .none }
-                state = backup
-                return .none
             case let .score(id: id, action: .remove):
                 state.scores.remove(id: id)
                 return .none
@@ -54,6 +31,14 @@ struct Round: ReducerProtocol {
         .forEach(\.scores, action: /Round.Action.score) {
             Score()
         }
+    }
+}
+
+extension Round.State: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case name
+        case scores
     }
 }
 
