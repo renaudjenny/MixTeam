@@ -24,8 +24,7 @@ class MixTeamUITests: XCTestCase {
         let yourTeamNameTextField = app.textFields["Edit"]
         yourTeamNameTextField.tap()
 
-        for _ in 0..<30 {
-            guard yourTeamNameTextField.value as? String != "" else { break }
+        for _ in 0..<"Lilac Elephant".count {
             yourTeamNameTextField.typeText(XCUIKeyboardKey.delete.rawValue)
         }
 

@@ -8,13 +8,13 @@ struct EditTeamView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            VStack {
+            ScrollView {
                 teamNameField
                 if verticalSizeClass == .compact {
                     GeometryReader { geometry in
-                        HStack(spacing: 0) {
+                        HStack {
                             ImagePicker(selection: viewStore.binding(\.$image), type: .team)
-                            .frame(width: geometry.size.width * 3/4)
+                                .frame(width: geometry.size.width * 3/4)
                             colorPicker
                                 .frame(width: geometry.size.width * 1/4)
                         }
@@ -61,33 +61,33 @@ struct EditTeamView: View {
     }
 
     private var colorPicker: some View {
-        ScrollView(colorPickerScrollAxes, showsIndicators: false) {
+        Group {
             if verticalSizeClass == .compact {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
                     colors
                 }
             } else {
-                HStack {
-                    colors
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        colors
+                    }
                 }
             }
         }
         .padding()
-        .background(Color.black)
+        .backgroundAndForeground(color: .aluminium)
         .dashedCardStyle()
         .padding()
-    }
-
-    private var colorPickerScrollAxes: Axis.Set {
-        verticalSizeClass == .compact ? .vertical : .horizontal
     }
 
     private var colors: some View {
         WithViewStore(store) { viewStore in
             ForEach(MTColor.allCases.filter({ $0 != .aluminium })) { color in
                 Button { viewStore.send(.setColor(color)) } label: {
-                    color.backgroundColor(scheme: colorScheme)
+                    Color.clear
                         .frame(width: 50, height: 50)
+                        .overlay(Splash(animatableData: viewStore.color == color ? 1 : 0).stroke(lineWidth: 2.5))
+                        .backgroundAndForeground(color: color)
                         .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
                 }
                 .accessibility(label: Text("\(color.rawValue.capitalized) color"))
@@ -101,6 +101,8 @@ struct EditTeamView: View {
                 Label("Remove this team", systemImage: "trash")
             }
             .buttonStyle(.borderedProminent)
+            .foregroundColor(.primary)
+            .padding()
         }
     }
 }

@@ -8,9 +8,11 @@ class MixTeamLogicTests: XCTestCase {
         let store = TestStore(initialState: .example, reducer: App())
 
         let allPlayers = store.state.standing.players + store.state.teams.flatMap(\.players)
-        var amelia = allPlayers.first { $0.name == "Amelia" }!
-        var jack = allPlayers.first { $0.name == "Jack" }!
-        var jose = allPlayers.first { $0.name == "José" }!
+        guard
+            var amelia = allPlayers.first(where: { $0.name == "Amelia" }),
+            var jack = allPlayers.first(where: { $0.name == "Jack" }),
+            var jose = allPlayers.first(where: { $0.name == "José" })
+        else { fatalError("Cannot instanciate named players") }
 
         jose.isStanding = false
         jose.color = store.state.teams[0].color

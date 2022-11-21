@@ -7,13 +7,12 @@ struct ImagePicker: View {
     let columns = [GridItem(.adaptive(minimum: 120))]
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            LazyVGrid(columns: columns) {
-                ForEach(images) {
-                    Cell(image: $0, selection: $selection)
-                }
-            }.padding()
+        LazyVGrid(columns: columns) {
+            ForEach(images) {
+                Cell(image: $0, selection: $selection)
+            }
         }
+        .padding()
     }
 
     private var images: [MTImage] {
