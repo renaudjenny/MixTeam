@@ -40,6 +40,7 @@ struct PlayerRow_Previews: PreviewProvider {
             }
         }
         .listStyle(.plain)
+        .listRowSeparator(.hidden)
     }
 }
 

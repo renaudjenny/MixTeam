@@ -1,5 +1,9 @@
 import SwiftUI
 
+enum StandardMetrics {
+    static let cornerRadius = 12.0
+}
+
 // MARK: - Dashed Button Style
 
 struct DashedButtonStyle: ButtonStyle {
@@ -13,12 +17,12 @@ struct DashedButtonStyle: ButtonStyle {
         }
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: StandardMetrics.cornerRadius)
                 .fill(color.backgroundColor(scheme: colorScheme))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: StandardMetrics.cornerRadius - 2)
                         .stroke(style: strokeStyle(isPressed: configuration.isPressed))
-                        .padding(5)
+                        .padding(3)
                 )
                 .foregroundColor(color.foregroundColor(scheme: colorScheme))
                 .modifier(MTShadow(isApplied: !configuration.isPressed))
@@ -28,14 +32,14 @@ struct DashedButtonStyle: ButtonStyle {
     func strokeStyle(isPressed: Bool) -> StrokeStyle {
         if isPressed {
             return StrokeStyle(
-                lineWidth: 2,
-                dash: [5, 5],
-                dashPhase: 5
+                lineWidth: 1,
+                dash: [5, 2],
+                dashPhase: 2
             )
         }
         return StrokeStyle(
-            lineWidth: 2,
-            dash: [5, 5],
+            lineWidth: 1,
+            dash: [5, 2],
             dashPhase: 3
         )
     }
@@ -95,14 +99,14 @@ private struct DashedCardStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay(overlay)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .clipShape(RoundedRectangle(cornerRadius: StandardMetrics.cornerRadius))
             .modifier(MTShadow(isApplied: isShadowApplied))
     }
 
     private var overlay: some View {
-        RoundedRectangle(cornerRadius: 16)
-            .stroke(style: .init(lineWidth: 2, dash: [5, 5], dashPhase: 3))
-            .padding(5)
+        RoundedRectangle(cornerRadius: StandardMetrics.cornerRadius - 2)
+            .stroke(style: .init(lineWidth: 1, dash: [5, 2], dashPhase: 3))
+            .padding(3)
     }
 }
 

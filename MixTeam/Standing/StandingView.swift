@@ -43,6 +43,7 @@ struct FirstTeamRow_Previews: PreviewProvider {
             StandingView(store: .preview)
         }
         .listStyle(.plain)
+        .listRowSeparator(.hidden)
     }
 }
 

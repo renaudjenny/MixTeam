@@ -77,7 +77,7 @@ private struct BackgroundAndForeground: ViewModifier {
     func body(content: Content) -> some View {
         content
             .foregroundColor(color.foregroundColor(scheme: colorScheme))
-            .background(color.backgroundColor(scheme: colorScheme))
+            .background(color.backgroundColor(scheme: colorScheme), ignoresSafeAreaEdges: .all)
             .listRowBackground(color.backgroundColor(scheme: colorScheme))
     }
 }

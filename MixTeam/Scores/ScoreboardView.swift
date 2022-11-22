@@ -31,6 +31,7 @@ struct ScoreboardView: View {
                                 Label("Add a new round", systemImage: "plus")
                                     .labelStyle(.iconOnly)
                             }
+                            .padding()
                         }
                         .padding()
                     }

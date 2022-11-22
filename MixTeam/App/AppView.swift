@@ -20,10 +20,11 @@ struct AppView: View {
                     addTeamButton
                 }
                 .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
             .backgroundAndForeground(color: .aluminium)
-            .frame(maxWidth: 800)
+            .scrollContentBackgroundLegacy(.hidden)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: viewStore.binding(
                 get: \.isEditTeamSheetPresented,
@@ -61,7 +62,6 @@ struct AppView: View {
             Spacer()
             aboutButton
         }
-        .listRowBackground(Color.clear)
     }
 
     private var scoreboardButton: some View {
@@ -90,9 +90,9 @@ struct AppView: View {
         WithViewStore(store) { viewStore in
             Button { viewStore.send(.mixTeam, animation: .easeInOut) } label: {
                 Label("Mix Team", systemImage: "shuffle")
-                    .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(.dashed(color: .aluminium))
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -100,9 +100,9 @@ struct AppView: View {
         WithViewStore(store.stateless) { viewStore in
             Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                 Label("Add a new Team", systemImage: "plus")
-                    .frame(maxWidth: .infinity, minHeight: 30)
             }
             .buttonStyle(DashedButtonStyle(color: .aluminium))
+            .frame(maxWidth: .infinity)
         }
     }
 

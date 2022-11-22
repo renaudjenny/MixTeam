@@ -39,7 +39,7 @@ private struct Cell: View {
         .buttonStyle(.plain)
         .background {
             if selection == image {
-                RoundedRectangle(cornerRadius: 20)
+                RoundedRectangle(cornerRadius: 12)
                     .stroke()
             }
         }

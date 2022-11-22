@@ -6,7 +6,7 @@ struct EditPlayerView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            VStack {
+            ScrollView {
                 playerNameField
                 ImagePicker(selection: viewStore.binding(\.$image), type: .player)
             }

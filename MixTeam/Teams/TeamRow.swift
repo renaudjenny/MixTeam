@@ -40,11 +40,15 @@ struct TeamRow_Previews: PreviewProvider {
         List {
             TeamRow(store: .preview)
         }
+        .listStyle(.plain)
+        .padding()
         .previewDisplayName("Team Row Without Players")
 
         List {
             TeamRow(store: .previewWithPlayers)
         }
+        .listStyle(.plain)
+        .padding()
         .previewDisplayName("Team Row With Players")
     }
 }
