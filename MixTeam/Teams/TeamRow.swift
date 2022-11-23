@@ -19,11 +19,13 @@ struct TeamRow: View {
                         Image(mtImage: viewStore.image)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
+                            .frame(width: 48, height: 48)
                         Text(viewStore.name)
-                            .font(.title)
+                            .font(.title2)
+                            .fontWeight(.black)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 16)
                     }
                 }
                 .buttonStyle(.dashed(color: viewStore.color))
@@ -46,6 +48,7 @@ struct TeamRow_Previews: PreviewProvider {
 
         List {
             TeamRow(store: .previewWithPlayers)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .padding()
@@ -65,6 +68,7 @@ struct TeamRowUX_Previews: PreviewProvider {
             WithViewStore(store) { viewStore in
                 List {
                     ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                        .listRowSeparator(.hidden)
                     Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                         Text("Add Team")
                     }
