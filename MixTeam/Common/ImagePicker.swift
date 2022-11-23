@@ -3,13 +3,14 @@ import SwiftUI
 struct ImagePicker: View {
     @Binding var selection: MTImage
     let type: ImagePickerType
+    let color: MTColor
 
-    let columns = [GridItem(.adaptive(minimum: 120))]
+    let columns = [GridItem(.adaptive(minimum: 90, maximum: 100))]
 
     var body: some View {
         LazyVGrid(columns: columns) {
             ForEach(images) {
-                Cell(image: $0, selection: $selection)
+                Cell(image: $0, selection: $selection.animation(), color: color)
             }
         }
         .padding()
@@ -26,23 +27,26 @@ struct ImagePicker: View {
 private struct Cell: View {
     let image: MTImage
     @Binding var selection: MTImage
+    let color: MTColor
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: select) {
             Image(mtImage: image)
                 .resizable()
-                .renderingMode(.template)
-                .frame(width: 100, height: 100)
+                .frame(width: 48, height: 48)
                 .padding()
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(
+                            selection == image
+                            ? color.foregroundColor(scheme: colorScheme).opacity(20/100)
+                            : Color.clear
+                        )
+                }
+            
         }
         .buttonStyle(.plain)
-        .background {
-            if selection == image {
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke()
-            }
-        }
     }
 
     private func select() {
@@ -67,7 +71,7 @@ struct PlayerImagePicker_Previews: PreviewProvider {
 
         var body: some View {
             VStack {
-                ImagePicker(selection: $selection, type: .player)
+                ImagePicker(selection: $selection, type: .player, color: .aluminium)
                 Spacer()
                 Image(mtImage: selection)
             }

@@ -13,17 +13,25 @@ struct EditTeamView: View {
                 if verticalSizeClass == .compact {
                     GeometryReader { geometry in
                         HStack {
-                            ImagePicker(selection: viewStore.binding(\.$image), type: .team)
+                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
                                 .frame(width: geometry.size.width * 3/4)
                             colorPicker
                                 .frame(width: geometry.size.width * 1/4)
                         }
                     }
                 } else {
-                    VStack(spacing: 0) {
+                    VStack(spacing: 16) {
                         colorPicker
-                        ImagePicker(selection: viewStore.binding(\.$image), type: .team)
-                        removeButton
+                        VStack(spacing: 0) {
+                            Text("Choose a mascot")
+                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+                        }
+                        Spacer()
+                        HStack(spacing: 32) {
+                            removeButton
+                            doneButton
+                        }
+                        .padding()
                     }
                 }
             }
@@ -38,60 +46,77 @@ struct EditTeamView: View {
 
     private var teamNameField: some View {
         WithViewStore(store) { viewStore in
-            HStack {
-                TextField("Edit", text: viewStore.binding(\.$name))
-                    .font(.title)
-                    .padding()
-                    .backgroundAndForeground(color: viewStore.color)
-                    .dashedCardStyle()
-                    .padding(.leading)
-                doneButton.padding(.trailing)
-            }.padding(.top)
+            TextField("Edit", text: viewStore.binding(\.$name))
+                .font(.title2.weight(.medium))
+                .multilineTextAlignment(.center)
+                .padding(12)
+                .backgroundAndForeground(color: viewStore.color)
+                .dashedCardStyle()
+                .padding()
         }
     }
 
     private var doneButton: some View {
-        WithViewStore(store.stateless) { viewStore in
+        WithViewStore(store) { viewStore in
             Button { viewStore.send(.setEdit(isPresented: false)) } label: {
                 Label("Done", systemImage: "checkmark")
+                    .labelStyle(.iconOnly)
             }
-            .labelStyle(.iconOnly)
-            .buttonStyle(.bordered)
+            .foregroundColor(viewStore.color.backgroundColor(scheme: colorScheme))
+            .padding(8)
+            .background {
+                viewStore.color.foregroundColor(scheme: colorScheme)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
         }
     }
 
     private var colorPicker: some View {
-        Group {
+        VStack {
+            Text("Choose a colour")
             if verticalSizeClass == .compact {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
-                    colors
+                HStack {
+                    VStack(spacing: 20) {
+                        color(.peach)
+                        color(.strawberry)
+                        color(.lilac)
+                    }
+                    VStack(spacing: 20) {
+                        color(.leather)
+                        color(.conifer)
+                        color(.duck)
+                        color(.bluejeans)
+                    }
                 }
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        colors
+                VStack {
+                    HStack(spacing: 20) {
+                        color(.leather)
+                        color(.conifer)
+                        color(.duck)
+                        color(.bluejeans)
+                    }
+                    HStack(spacing: 20) {
+                        color(.peach)
+                        color(.strawberry)
+                        color(.lilac)
                     }
                 }
             }
         }
         .padding()
-        .backgroundAndForeground(color: .aluminium)
-        .dashedCardStyle()
-        .padding()
     }
 
-    private var colors: some View {
+    private func color(_ color: MTColor) -> some View {
         WithViewStore(store) { viewStore in
-            ForEach(MTColor.allCases.filter({ $0 != .aluminium })) { color in
-                Button { viewStore.send(.setColor(color)) } label: {
-                    Color.clear
-                        .frame(width: 50, height: 50)
-                        .overlay(Splash(animatableData: viewStore.color == color ? 1 : 0).stroke(lineWidth: 2.5))
-                        .backgroundAndForeground(color: color)
-                        .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
-                }
-                .accessibility(label: Text("\(color.rawValue.capitalized) color"))
+            Button { viewStore.send(.setColor(color)) } label: {
+                Color.clear
+                    .frame(width: 48, height: 48)
+                    .overlay(Splash(animatableData: viewStore.color == color ? 1 : 0).stroke(lineWidth: 2.5))
+                    .backgroundAndForeground(color: color)
+                    .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
             }
+            .accessibility(label: Text("\(color.rawValue.capitalized) color"))
         }
     }
 
@@ -99,8 +124,8 @@ struct EditTeamView: View {
         WithViewStore(store) { viewStore in
             Button(role: .destructive) { viewStore.send(.removeTapped) } label: {
                 Label("Remove this team", systemImage: "trash")
+                    .labelStyle(.iconOnly)
             }
-            .buttonStyle(.borderedProminent)
             .foregroundColor(.primary)
             .padding()
         }

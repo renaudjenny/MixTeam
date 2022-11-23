@@ -8,7 +8,7 @@ struct EditPlayerView: View {
         WithViewStore(store) { viewStore in
             ScrollView {
                 playerNameField
-                ImagePicker(selection: viewStore.binding(\.$image), type: .player)
+                ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
             }
             .backgroundAndForeground(color: viewStore.color)
         }
