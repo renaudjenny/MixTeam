@@ -8,32 +8,44 @@ struct EditTeamView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            ScrollView {
-                teamNameField
-                if verticalSizeClass == .compact {
-                    GeometryReader { geometry in
-                        HStack {
-                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
-                                .frame(width: geometry.size.width * 3/4)
+            NavigationView {
+                ScrollView {
+                    teamNameField
+                    if verticalSizeClass == .compact {
+                        GeometryReader { geometry in
+                            HStack {
+                                ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+                                    .frame(width: geometry.size.width * 3/4)
+                                colorPicker
+                                    .frame(width: geometry.size.width * 1/4)
+                            }
+                        }
+                    } else {
+                        VStack(spacing: 16) {
                             colorPicker
-                                .frame(width: geometry.size.width * 1/4)
+                            VStack(spacing: 0) {
+                                Text("Choose a mascot")
+                                ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+                            }
                         }
-                    }
-                } else {
-                    VStack(spacing: 16) {
-                        colorPicker
-                        VStack(spacing: 0) {
-                            Text("Choose a mascot")
-                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
-                        }
-                        Spacer()
-                        HStack(spacing: 32) {
-                            removeButton
-                            doneButton
-                        }
-                        .padding()
                     }
                 }
+                .backgroundAndForeground(color: viewStore.color)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button { viewStore.send(.setEdit(isPresented: false)) } label: {
+                            Label("Done", systemImage: "checkmark")
+                                .labelStyle(.iconOnly)
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(role: .destructive) { viewStore.send(.removeTapped) } label: {
+                            Label("Remove this team", systemImage: "trash")
+                                .labelStyle(.iconOnly)
+                        }
+                    }
+                }
+                .toolbarBackgroundLegacy(color: viewStore.color.backgroundColor(scheme: colorScheme))
             }
             .backgroundAndForeground(color: viewStore.color)
             .animation(.easeInOut, value: viewStore.color)
@@ -47,27 +59,12 @@ struct EditTeamView: View {
     private var teamNameField: some View {
         WithViewStore(store) { viewStore in
             TextField("Edit", text: viewStore.binding(\.$name))
-                .font(.title2.weight(.medium))
+                .font(.title2.weight(.black))
                 .multilineTextAlignment(.center)
                 .padding(12)
                 .backgroundAndForeground(color: viewStore.color)
                 .dashedCardStyle()
                 .padding()
-        }
-    }
-
-    private var doneButton: some View {
-        WithViewStore(store) { viewStore in
-            Button { viewStore.send(.setEdit(isPresented: false)) } label: {
-                Label("Done", systemImage: "checkmark")
-                    .labelStyle(.iconOnly)
-            }
-            .foregroundColor(viewStore.color.backgroundColor(scheme: colorScheme))
-            .padding(8)
-            .background {
-                viewStore.color.foregroundColor(scheme: colorScheme)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            }
         }
     }
 
@@ -117,17 +114,6 @@ struct EditTeamView: View {
                     .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
             }
             .accessibility(label: Text("\(color.rawValue.capitalized) color"))
-        }
-    }
-
-    private var removeButton: some View {
-        WithViewStore(store) { viewStore in
-            Button(role: .destructive) { viewStore.send(.removeTapped) } label: {
-                Label("Remove this team", systemImage: "trash")
-                    .labelStyle(.iconOnly)
-            }
-            .foregroundColor(.primary)
-            .padding()
         }
     }
 }

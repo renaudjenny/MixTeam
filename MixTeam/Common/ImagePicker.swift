@@ -34,17 +34,21 @@ private struct Cell: View {
         Button(action: select) {
             Image(mtImage: image)
                 .resizable()
+                .scaleEffect(selection == image ? 105/100 : 100/100)
                 .frame(width: 48, height: 48)
                 .padding()
                 .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(
-                            selection == image
-                            ? color.foregroundColor(scheme: colorScheme).opacity(20/100)
-                            : Color.clear
-                        )
+                    if selection == image {
+                        ZStack {
+                            color.backgroundColor(scheme: colorScheme)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .shadow(color: Color(white: 20/100, opacity: 20/100), radius: 2, x: 1, y: 1)
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(color.foregroundColor(scheme: colorScheme))
+                                .opacity(20/100)
+                        }
+                    }
                 }
-            
         }
         .buttonStyle(.plain)
     }
