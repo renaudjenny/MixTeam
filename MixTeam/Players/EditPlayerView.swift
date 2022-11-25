@@ -6,43 +6,27 @@ struct EditPlayerView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            ScrollView {
-                playerNameField
-                ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
+            NavigationView {
+                ScrollView {
+                    TextField("Edit", text: viewStore.binding(\.$name))
+                        .font(.title)
+                        .padding(12)
+                        .backgroundAndForeground(color: viewStore.color)
+                        .dashedCardStyle()
+                        .padding()
+                    ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button { viewStore.send(.setEdit(isPresented: false)) } label: {
+                            Label("Done", systemImage: "checkmark")
+                                .labelStyle(.iconOnly)
+                        }
+                    }
+                }
+                .backgroundAndForeground(color: viewStore.color)
             }
             .backgroundAndForeground(color: viewStore.color)
-        }
-    }
-
-    private var title: some View {
-        WithViewStore(store) { viewStore in
-            Text(viewStore.name)
-                .font(.largeTitle)
-                .padding()
-        }
-    }
-
-    private var playerNameField: some View {
-        WithViewStore(store) { viewStore in
-            HStack {
-                TextField("Edit", text: viewStore.binding(\.$name))
-                    .font(.title)
-                    .padding()
-                    .backgroundAndForeground(color: viewStore.color)
-                    .dashedCardStyle()
-                    .padding(.leading)
-                doneButton.padding(.trailing)
-            }.padding(.top)
-        }
-    }
-
-    private var doneButton: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Button { viewStore.send(.setEdit(isPresented: false)) } label: {
-                Label("Done", systemImage: "checkmark")
-            }
-            .labelStyle(.iconOnly)
-            .buttonStyle(.bordered)
         }
     }
 }
