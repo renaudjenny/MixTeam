@@ -3,6 +3,7 @@ import SwiftUI
 
 struct EditPlayerView: View {
     let store: StoreOf<Player>
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -24,9 +25,9 @@ struct EditPlayerView: View {
                         }
                     }
                 }
+                .toolbarBackgroundLegacy(color: viewStore.color.backgroundColor(scheme: colorScheme))
                 .backgroundAndForeground(color: viewStore.color)
             }
-            .backgroundAndForeground(color: viewStore.color)
         }
     }
 }

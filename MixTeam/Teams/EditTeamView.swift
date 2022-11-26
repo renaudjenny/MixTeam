@@ -2,9 +2,10 @@ import ComposableArchitecture
 import SwiftUI
 
 struct EditTeamView: View {
+    let store: StoreOf<Team>
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.colorScheme) private var colorScheme
-    var store: StoreOf<Team>
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -33,7 +34,7 @@ struct EditTeamView: View {
                 .backgroundAndForeground(color: viewStore.color)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.setEdit(isPresented: false)) } label: {
+                        Button { dismiss() } label: {
                             Label("Done", systemImage: "checkmark")
                                 .labelStyle(.iconOnly)
                         }

@@ -16,7 +16,7 @@ struct Team: ReducerProtocol {
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case setColor(MTColor)
-        case setEdit(isPresented: Bool)
+        case presentEdit
         case removeTapped
         case removeConfirmationDismissed
         case delete
@@ -37,7 +37,7 @@ struct Team: ReducerProtocol {
                 return .none
             case .binding:
                 return .none
-            case .setEdit:
+            case .presentEdit:
                 return .none
             case .removeTapped:
                 state.deleteConfirmationDialog = .teamDelete
