@@ -11,29 +11,23 @@ struct AppView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            List {
-                Group {
-                    header
-                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                    mixTeamButton
-                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                    addTeamButton
+            NavigationView {
+                List {
+                    Group {
+                        header
+                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                        mixTeamButton
+                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                            .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
+                        addTeamButton
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
+                .backgroundAndForeground(color: .aluminium)
             }
             .listStyle(.plain)
-            .backgroundAndForeground(color: .aluminium)
-            .scrollContentBackgroundLegacy(.hidden)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-            .sheet(isPresented: viewStore.binding(
-                get: \.isEditTeamSheetPresented,
-                send: App.Action.setEditTeamSheet(isPresented:)
-            )) {
-                IfLetStore(store.scope(state: \.editedTeam, action: App.Action.editedTeam)) { store in
-                    EditTeamView(store: store)
-                }
-            }
             .sheet(isPresented: viewStore.binding(
                 get: \.isEditPlayerSheetPresented,
                 send: App.Action.setEditPlayerSheet(isPresented:)

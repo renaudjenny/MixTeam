@@ -23,11 +23,9 @@
 		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
 		4C765301292799D200A591C4 /* ColorDuo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765300292799D200A591C4 /* ColorDuo.swift */; };
 		4C765303292B7A6500A591C4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765302292B7A6500A591C4 /* Image.swift */; };
-		4C765305292D584700A591C4 /* View+ScrollContentBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765304292D584700A591C4 /* View+ScrollContentBackground.swift */; };
 		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
-		4CAE86D32922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
@@ -84,10 +82,8 @@
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4C765300292799D200A591C4 /* ColorDuo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDuo.swift; sourceTree = "<group>"; };
 		4C765302292B7A6500A591C4 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
-		4C765304292D584700A591C4 /* View+ScrollContentBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ScrollContentBackground.swift"; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
-		4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialogState+TeamDelete.swift"; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
@@ -216,7 +212,6 @@
 				4C7FE786245A166A0011E8AB /* AppView.swift */,
 				4C765300292799D200A591C4 /* ColorDuo.swift */,
 				4C765302292B7A6500A591C4 /* Image.swift */,
-				4C765304292D584700A591C4 /* View+ScrollContentBackground.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -261,7 +256,6 @@
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
-				4CAE86D22922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -460,7 +454,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */,
-				4C765305292D584700A591C4 /* View+ScrollContentBackground.swift in Sources */,
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
@@ -487,7 +480,6 @@
 				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
 				4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */,
 				4CFDCAE628F4442E002DBF2D /* ScoreRow.swift in Sources */,
-				4CAE86D32922619600CF6520 /* ConfirmationDialogState+TeamDelete.swift in Sources */,
 				4CFDCAE328F44107002DBF2D /* Score.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
@@ -530,6 +522,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -591,6 +584,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

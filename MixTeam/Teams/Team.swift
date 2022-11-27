@@ -9,17 +9,12 @@ struct Team: ReducerProtocol {
         @BindableState var image: MTImage = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
 
-        var deleteConfirmationDialog: ConfirmationDialogState<Action>?
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case setColor(MTColor)
-        case presentEdit
-        case removeTapped
-        case removeConfirmationDismissed
-        case delete
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -36,17 +31,6 @@ struct Team: ReducerProtocol {
                 }
                 return .none
             case .binding:
-                return .none
-            case .presentEdit:
-                return .none
-            case .removeTapped:
-                state.deleteConfirmationDialog = .teamDelete
-                return .none
-            case .removeConfirmationDismissed:
-                state.deleteConfirmationDialog = nil
-                return .none
-            case .delete:
-                state.deleteConfirmationDialog = nil
                 return .none
             case .player:
                 return .none

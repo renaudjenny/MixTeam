@@ -25,7 +25,6 @@ struct EditPlayerView: View {
                         }
                     }
                 }
-                .toolbarBackgroundLegacy(color: viewStore.color.backgroundColor(scheme: colorScheme))
                 .backgroundAndForeground(color: viewStore.color)
             }
         }

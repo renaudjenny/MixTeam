@@ -13,23 +13,19 @@ struct TeamRow: View {
 
     private var header: some View {
         WithViewStore(store) { viewStore in
-            HStack {
-                Button { viewStore.send(.presentEdit) } label: {
-                    HStack {
-                        Image(mtImage: viewStore.image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 48, height: 48)
-                        Text(viewStore.name)
-                            .font(.title2)
-                            .fontWeight(.black)
-                            .multilineTextAlignment(.leading)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 16)
-                    }
+            NavigationLink(destination: EditTeamView(store: store)) {
+                HStack {
+                    Image(mtImage: viewStore.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 48, height: 48)
+                    Text(viewStore.name)
+                        .font(.title2)
+                        .fontWeight(.black)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
                 }
-                .buttonStyle(.dashed(color: viewStore.color))
-                .accessibilityLabel(Text("Edit Team \(viewStore.name)"))
             }
             .backgroundAndForeground(color: viewStore.color)
         }
@@ -39,19 +35,23 @@ struct TeamRow: View {
 #if DEBUG
 struct TeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        List {
-            TeamRow(store: .preview)
+        NavigationView {
+            List {
+                TeamRow(store: .preview)
+            }
+            .listStyle(.plain)
+            .padding()
         }
-        .listStyle(.plain)
-        .padding()
         .previewDisplayName("Team Row Without Players")
 
-        List {
-            TeamRow(store: .previewWithPlayers)
-                .listRowSeparator(.hidden)
+        NavigationView {
+            List {
+                TeamRow(store: .previewWithPlayers)
+                    .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
+            .padding()
         }
-        .listStyle(.plain)
-        .padding()
         .previewDisplayName("Team Row With Players")
     }
 }
@@ -66,11 +66,13 @@ struct TeamRowUX_Previews: PreviewProvider {
 
         var body: some View {
             WithViewStore(store) { viewStore in
-                List {
-                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                        .listRowSeparator(.hidden)
-                    Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
-                        Text("Add Team")
+                NavigationView {
+                    List {
+                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                            .listRowSeparator(.hidden)
+                        Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
+                            Text("Add Team")
+                        }
                     }
                 }
             }
