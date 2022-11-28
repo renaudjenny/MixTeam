@@ -109,7 +109,7 @@ struct AppView: View {
                 .shadow(radius: 5)
         } background: {
             MTColor.aluminium.backgroundColor(scheme: colorScheme)
-                .dashedCardStyle()
+                .dashedCardStyle(color: MTColor.aluminium)
         }
     }
 }

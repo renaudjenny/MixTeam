@@ -11,9 +11,7 @@ struct EditPlayerView: View {
                 ScrollView {
                     TextField("Edit", text: viewStore.binding(\.$name))
                         .font(.title)
-                        .padding(12)
-                        .backgroundAndForeground(color: viewStore.color)
-                        .dashedCardStyle()
+                        .dashedCardStyle(color: viewStore.color)
                         .padding()
                     ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
                 }

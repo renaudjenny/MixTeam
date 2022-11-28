@@ -38,9 +38,7 @@ struct EditTeamView: View {
             TextField("Edit", text: viewStore.binding(\.$name))
                 .font(.title2.weight(.black))
                 .multilineTextAlignment(.center)
-                .padding(12)
-                .backgroundAndForeground(color: viewStore.color)
-                .dashedCardStyle()
+                .dashedCardStyle(color: viewStore.color)
                 .padding()
         }
     }

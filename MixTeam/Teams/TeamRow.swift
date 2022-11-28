@@ -26,6 +26,7 @@ struct TeamRow: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 16)
                 }
+                .dashedCardStyle(color: viewStore.color)
             }
             .backgroundAndForeground(color: viewStore.color)
         }

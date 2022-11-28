@@ -94,10 +94,14 @@ struct MixTeamButtonStyle_Previews: PreviewProvider {
 // MARK: - Dashed Card Style
 
 private struct DashedCardStyle: ViewModifier {
-    var isShadowApplied: Bool
+    let color: MTColor
+    let isShadowApplied: Bool
+    @Environment(\.colorScheme) private var colorScheme
 
     func body(content: Content) -> some View {
         content
+            .padding(12)
+            .background(color.backgroundColor(scheme: colorScheme))
             .overlay(overlay)
             .clipShape(RoundedRectangle(cornerRadius: StandardMetrics.cornerRadius))
             .modifier(MTShadow(isApplied: isShadowApplied))
@@ -111,18 +115,24 @@ private struct DashedCardStyle: ViewModifier {
 }
 
 extension View {
-    func dashedCardStyle(isShadowApplied: Bool = true) -> some View {
-        modifier(DashedCardStyle(isShadowApplied: isShadowApplied))
+    func dashedCardStyle(color: MTColor, isShadowApplied: Bool = true) -> some View {
+        modifier(DashedCardStyle(color: color, isShadowApplied: isShadowApplied))
     }
 }
 
 #if DEBUG
 struct DashedCardStyle_Previews: PreviewProvider {
     static var previews: some View {
-        Rectangle()
-            .fill(Color.gray)
-            .dashedCardStyle()
-            .frame(width: 300, height: 300)
+        VStack {
+            TextField("Test", text: .constant("Test"))
+                .dashedCardStyle(color: .aluminium)
+                .frame(width: 300, height: 300)
+
+            Rectangle()
+                .fill(MTColor.aluminium.backgroundColor(scheme: .light))
+                .dashedCardStyle(color: .aluminium)
+                .frame(width: 300, height: 300)
+        }
     }
 }
 #endif
