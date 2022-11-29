@@ -30,7 +30,6 @@ struct StandingView: View {
                 .buttonStyle(.dashed(color: .aluminium))
             }
             .frame(maxWidth: .infinity)
-            .padding()
             .backgroundAndForeground(color: .aluminium)
         }
     }

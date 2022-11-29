@@ -14,7 +14,6 @@ struct AppView: View {
             NavigationView {
                 List {
                     Group {
-                        header
                         StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                         mixTeamButton
                         ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
@@ -25,6 +24,28 @@ struct AppView: View {
                     .listRowSeparator(.hidden)
                 }
                 .backgroundAndForeground(color: .aluminium)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Mix Team")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button { isScoreboardPresented = true } label: {
+                            Label { Text("Display scoreboard") } icon: {
+                                Image(systemName: "list.bullet.rectangle")
+                                    .resizable()
+                            }
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button { isAboutPresented = true } label: {
+                            Image(systemName: "cube.box")
+                                .resizable()
+                        }
+                    }
+                }
             }
             .listStyle(.plain)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
@@ -44,40 +65,6 @@ struct AppView: View {
             }
             .task { viewStore.send(.loadState) }
         }
-    }
-
-    private var header: some View {
-        HStack {
-            scoreboardButton
-            Spacer()
-            Text("Mix Team")
-                .font(.largeTitle)
-                .fontWeight(.black)
-            Spacer()
-            aboutButton
-        }
-    }
-
-    private var scoreboardButton: some View {
-        Button { isScoreboardPresented = true } label: {
-            Label { Text("Display scoreboard") } icon: {
-                Image(systemName: "list.bullet.rectangle")
-                    .resizable()
-            }
-        }
-        .labelStyle(.iconOnly)
-        .frame(width: buttonSize.width, height: buttonSize.height)
-        .buttonStyle(DashedButtonStyle(color: .aluminium))
-    }
-
-    private var aboutButton: some View {
-        Button { isAboutPresented = true } label: {
-            Image(systemName: "cube.box")
-                .resizable()
-        }
-        .frame(width: buttonSize.width, height: buttonSize.height)
-        .buttonStyle(DashedButtonStyle(color: .aluminium))
-        .accessibility(label: Text("About"))
     }
 
     private var mixTeamButton: some View {
