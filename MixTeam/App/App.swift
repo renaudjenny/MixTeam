@@ -6,33 +6,18 @@ struct App: ReducerProtocol {
         var standing = Standing.State()
         var teams: IdentifiedArrayOf<Team.State> = []
         var _scores = Scores.State()
-        var editedPlayerID: Player.State.ID?
         var notEnoughTeamsAlert: AlertState<Action>?
-
-        var isEditPlayerSheetPresented: Bool { editedPlayerID != nil }
-        var editedPlayer: Player.State? {
-            editedPlayerID.flatMap { playerID -> Player.State? in
-                if let teamID = teams.first(where: { $0.players.map(\.id).contains(playerID) })?.id {
-                    return teams[id: teamID]?.players[id: playerID]
-                } else if standing.players.map(\.id).contains(playerID) {
-                    return standing.players[id: playerID]
-                }
-                return nil
-            }
-        }
     }
 
     enum Action: Equatable {
         case saveState
         case loadState
         case addTeam
-        case setEditPlayerSheet(isPresented: Bool)
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
         case deleteTeams(IndexSet)
-        case editedPlayer(Player.Action)
         case scores(Scores.Action)
     }
 
@@ -64,11 +49,6 @@ struct App: ReducerProtocol {
                     Team.State(id: uuid(), name: name, color: color, image: image)
                 )
                 return Effect(value: .saveState)
-            case .setEditPlayerSheet(isPresented: false):
-                state.editedPlayerID = nil
-                return .none
-            case .setEditPlayerSheet:
-                return .none
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
@@ -101,9 +81,6 @@ struct App: ReducerProtocol {
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
-            case let .standing(.player(playerID, .setEdit(isPresented))):
-                state.editedPlayerID = isPresented ? playerID : nil
-                return .task { .setEditPlayerSheet(isPresented: isPresented) }
             case .standing:
                 return Effect(value: .saveState)
             case let .team(teamID, .player(playerID, .moveBack)):
@@ -113,9 +90,6 @@ struct App: ReducerProtocol {
                 player.color = .aluminium
                 state.standing.players.updateOrAppend(player)
                 return Effect(value: .saveState)
-            case let .team(_, .player(playerID, .setEdit(isPresented))):
-                state.editedPlayerID = isPresented ? playerID : nil
-                return .task { .setEditPlayerSheet(isPresented: isPresented) }
             case .team:
                 return Effect(value: .saveState)
             case let .deleteTeams(indexSet):
@@ -131,14 +105,6 @@ struct App: ReducerProtocol {
                 }
                 state.teams.remove(atOffsets: indexSet)
                 return Effect(value: .saveState)
-            case let .editedPlayer(playerAction):
-                guard let playerID = state.editedPlayerID else { return .none }
-                if let teamID = state.teams.first(where: { $0.players.map(\.id).contains(playerID) })?.id {
-                    return .task { .team(id: teamID, action: .player(id: playerID, action: playerAction)) }
-                } else if state.standing.players.map(\.id).contains(playerID) {
-                    return .task { .standing(.player(id: playerID, action: playerAction)) }
-                }
-                return .none
             case .scores:
                 return Effect(value: .saveState)
             }

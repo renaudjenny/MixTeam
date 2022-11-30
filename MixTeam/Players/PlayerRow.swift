@@ -6,7 +6,7 @@ struct PlayerRow: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            Button { viewStore.send(.setEdit(isPresented: true)) } label: {
+            NavigationLink(destination: EditPlayerView(store: store)) {
                 HStack {
                     Image(mtImage: viewStore.image)
                         .resizable()

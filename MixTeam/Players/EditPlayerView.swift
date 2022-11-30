@@ -15,14 +15,6 @@ struct EditPlayerView: View {
                         .padding()
                     ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.setEdit(isPresented: false)) } label: {
-                            Label("Done", systemImage: "checkmark")
-                                .labelStyle(.iconOnly)
-                        }
-                    }
-                }
                 .backgroundAndForeground(color: viewStore.color)
             }
         }

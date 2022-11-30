@@ -49,14 +49,6 @@ struct AppView: View {
             }
             .listStyle(.plain)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-            .sheet(isPresented: viewStore.binding(
-                get: \.isEditPlayerSheetPresented,
-                send: App.Action.setEditPlayerSheet(isPresented:)
-            )) {
-                IfLetStore(store.scope(state: \.editedPlayer, action: App.Action.editedPlayer)) { store in
-                    EditPlayerView(store: store)
-                }
-            }
             .sheet(isPresented: $isScoreboardPresented) {
                 ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
             }
