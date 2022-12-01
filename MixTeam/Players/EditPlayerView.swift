@@ -7,16 +7,14 @@ struct EditPlayerView: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            NavigationView {
-                ScrollView {
-                    TextField("Edit", text: viewStore.binding(\.$name))
-                        .font(.title)
-                        .dashedCardStyle(color: viewStore.color)
-                        .padding()
-                    ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
-                }
-                .backgroundAndForeground(color: viewStore.color)
+            ScrollView {
+                TextField("Edit", text: viewStore.binding(\.$name))
+                    .font(.title)
+                    .dashedCardStyle(color: viewStore.color)
+                    .padding()
+                ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
             }
+            .backgroundAndForeground(color: viewStore.color)
         }
     }
 }
@@ -24,7 +22,9 @@ struct EditPlayerView: View {
 #if DEBUG
 struct EditPlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        EditPlayerView(store: .preview)
+        NavigationView {
+            EditPlayerView(store: .preview)
+        }
     }
 }
 #endif
