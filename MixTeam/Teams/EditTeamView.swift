@@ -88,7 +88,7 @@ struct EditTeamView: View {
                     .backgroundAndForeground(color: color)
                     .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
             }
-            .accessibility(label: Text("\(color.rawValue.capitalized) color"))
+            .accessibility(label: Text("\(color.rawValue)"))
         }
     }
 }
