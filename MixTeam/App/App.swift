@@ -11,7 +11,8 @@ struct App: ReducerProtocol {
 
     enum Action: Equatable {
         case saveState
-        case loadState
+        case load
+        case loaded(TaskResult<State>)
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
@@ -22,7 +23,7 @@ struct App: ReducerProtocol {
     }
 
     @Dependency(\.save) var save
-    @Dependency(\.loaded) var loaded
+    @Dependency(\.load) var load
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
@@ -36,11 +37,19 @@ struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .saveState:
-                save(state)
-                return .none
-            case .loadState:
-                state = loaded
-                return .none
+                return .fireAndForget { [state] in
+                    try await save(state)
+                }
+            case .load:
+                return .task { await .loaded(TaskResult { try await load() }) }
+            case let .loaded(loaded):
+                switch loaded {
+                case let .success(newState):
+                    state = newState
+                    return .none
+                case .failure:
+                    return .none
+                }
             case .addTeam:
                 let image = MTImage.teams.randomElement() ?? .koala
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium

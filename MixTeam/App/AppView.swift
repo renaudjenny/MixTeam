@@ -55,7 +55,7 @@ struct AppView: View {
             .sheet(isPresented: $isAboutPresented) {
                 aboutView
             }
-            .task { viewStore.send(.loadState) }
+            .task { viewStore.send(.load) }
         }
     }
 

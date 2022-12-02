@@ -4,36 +4,46 @@ import Foundation
 import SwiftUI
 import XCTestDynamicOverlay
 
-private let appStateKey = "app-state"
+private let stateFileName = "MixTeamStateV2_0_0"
 
 private struct PersistenceSaveDependencyKey: DependencyKey {
-    static var liveValue = { (state: App.State) in
-        guard let data = try? JSONEncoder().encode(state) else { return }
-        UserDefaults.standard.set(data, forKey: appStateKey)
+    static var liveValue = { (state: App.State) async throws in
+        let data = try JSONEncoder().encode(state)
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        else { return }
+        try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
     }
-    static var testValue: (App.State) -> Void = XCTUnimplemented("Save App State non implemented")
+    static var testValue: (App.State) async throws -> Void = XCTUnimplemented("Save App State non implemented")
 }
 extension DependencyValues {
-    var save: (App.State) -> Void {
+    var save: (App.State) async throws -> Void {
         get { self[PersistenceSaveDependencyKey.self] }
         set { self[PersistenceSaveDependencyKey.self] = newValue }
     }
 }
 
 private struct PersistenceLoadDependencyKey: DependencyKey {
-    static var liveValue: App.State {
-        guard let data = UserDefaults.standard.data(forKey: appStateKey) else {
+    static var liveValue = { () async throws -> App.State in
+        guard
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+            let data = try? Data(contentsOf: url.appendingPathComponent(stateFileName, conformingTo: .json))
+        else {
             guard let migratedData = migratedData else { return .example }
             UserDefaults.standard.removeObject(forKey: "teams")
             UserDefaults.standard.removeObject(forKey: "Scores.rounds")
-            if let data = try? JSONEncoder().encode(migratedData) {
-                UserDefaults.standard.set(data, forKey: appStateKey)
+            if
+                let data = try? JSONEncoder().encode(migratedData),
+                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
             }
             return migratedData
         }
-        return (try? JSONDecoder().decode(App.State.self, from: data)) ?? .example
+        #if DEBUG
+        print("Document folder: \(url)")
+        #endif
+        return try JSONDecoder().decode(App.State.self, from: data)
     }
-    static var testValue: App.State {
+    static var testValue = { () async throws -> App.State in
         XCTFail("Load App State non implemented")
         return App.State()
     }
@@ -141,7 +151,7 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
 }
 
 extension DependencyValues {
-    var loaded: App.State {
+    var load: () async throws -> App.State {
         get { self[PersistenceLoadDependencyKey.self] }
         set { self[PersistenceLoadDependencyKey.self] = newValue }
     }
