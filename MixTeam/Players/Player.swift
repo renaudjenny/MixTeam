@@ -8,6 +8,7 @@ struct Player: ReducerProtocol {
         @BindableState var image: MTImage = .unknown
         var color: MTColor = .aluminium
         var isStanding = false
+        var isArchived = false
     }
 
     enum Action: BindableAction, Equatable {

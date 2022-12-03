@@ -85,13 +85,6 @@ extension Scores.State: Codable {
     }
 }
 
-extension Scores.State {
-    var archivedTeams: IdentifiedArrayOf<Team.State> {
-        let roundTeams = Set(rounds.map(\.scores).flatMap(\.elements).map(\.team))
-        return IdentifiedArrayOf(uniqueElements: roundTeams.subtracting(teams))
-    }
-}
-
 extension App.State {
     var scores: Scores.State {
         get {

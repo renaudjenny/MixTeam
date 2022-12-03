@@ -43,16 +43,6 @@ extension Round.State: Codable {
 }
 
 extension Array where Element == Round.State {
-    var teams: [Team.State] {
-        flatMap(\.scores)
-            .map(\.team)
-            .reduce([], {
-                guard !$0.contains($1)
-                else { return $0 }
-                return $0 + [$1]
-            })
-    }
-
     #if DEBUG
     static let mock: Self = {
         guard let thirdTeamID = UUID(uuidString: "21E5DDC4-7EDD-4F54-8DFA-B20BC396A12B"),

@@ -41,11 +41,27 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
         #if DEBUG
         print("Document folder: \(url)")
         #endif
-        return try JSONDecoder().decode(App.State.self, from: data)
+        return try inflateDecodedData(data)
     }
     static var testValue = { () async throws -> App.State in
         XCTFail("Load App State non implemented")
         return App.State()
+    }
+
+    static func inflateDecodedData(_ data: Data) throws -> App.State {
+        var state = try JSONDecoder().decode(App.State.self, from: data)
+
+        state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
+            var round = $0
+            round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+                var score = $0
+                score.team = state.teams[id: score.team.id] ?? score.team
+                return score
+            })
+            return round
+        })
+
+        return state
     }
 
     static var migratedData: App.State? {

@@ -8,6 +8,7 @@ struct Team: ReducerProtocol {
         var color: MTColor = .aluminium
         @BindableState var image: MTImage = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
+        var isArchived = false
 
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
@@ -49,5 +50,6 @@ extension Team.State: Codable {
         case color
         case image
         case players
+        case isArchived
     }
 }
