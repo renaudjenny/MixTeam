@@ -16,6 +16,7 @@ private struct PersistenceSaveDependencyKey: DependencyKey {
     static var testValue: (App.State) async throws -> Void = XCTUnimplemented("Save App State non implemented")
 }
 extension DependencyValues {
+    @available(*, deprecated, message: "Use appPersistence dependency")
     var save: (App.State) async throws -> Void {
         get { self[PersistenceSaveDependencyKey.self] }
         set { self[PersistenceSaveDependencyKey.self] = newValue }
@@ -167,10 +168,15 @@ private struct PersistenceLoadDependencyKey: DependencyKey {
 }
 
 extension DependencyValues {
+    @available(*, deprecated, message: "Use appPersistence dependency")
     var load: () async throws -> App.State {
         get { self[PersistenceLoadDependencyKey.self] }
         set { self[PersistenceLoadDependencyKey.self] = newValue }
     }
+}
+
+enum PersistenceError: Error {
+    case cannotGetDocumentDirectoryWithUserDomainMask
 }
 
 // MARK: - Deprecated ColorIdentifier

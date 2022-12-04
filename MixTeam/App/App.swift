@@ -22,8 +22,7 @@ struct App: ReducerProtocol {
         case scores(Scores.Action)
     }
 
-    @Dependency(\.save) var save
-    @Dependency(\.load) var load
+    @Dependency(\.appPersistence) var appPersistence
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
@@ -38,10 +37,10 @@ struct App: ReducerProtocol {
             switch action {
             case .saveState:
                 return .fireAndForget { [state] in
-                    try await save(state)
+                    try await appPersistence().save(state)
                 }
             case .load:
-                return .task { await .loaded(TaskResult { try await load() }) }
+                return .task { await .loaded(TaskResult { try await appPersistence().load() }) }
             case let .loaded(loaded):
                 switch loaded {
                 case let .success(newState):
