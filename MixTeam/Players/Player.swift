@@ -28,7 +28,5 @@ extension Player.State: Codable {
         case id
         case name
         case image
-        case color
-        case isStanding
     }
 }
