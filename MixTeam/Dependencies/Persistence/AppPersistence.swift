@@ -16,6 +16,11 @@ struct AppPersistence {
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(appFileName, conformingTo: .json))
         else { return .example }
+
+        #if DEBUG
+        print("Document folder: \(url)")
+        #endif
+
         return try JSONDecoder().decode(App.State.self, from: data)
     }
     var save: (App.State) async throws -> Void = { state in

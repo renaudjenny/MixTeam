@@ -26,8 +26,7 @@ extension IdentifiedArrayOf<Team.State> {
     static var example: Self {
         guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
               let purpleElephantId = UUID(uuidString: "98DBAF6C-685D-461F-9F81-E5E1E003B9AA"),
-              let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9"),
-              let jackID = UUID(uuidString: "34BC8929-C2F6-42D5-8131-8F048CE649A6")
+              let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
         return [
@@ -36,7 +35,7 @@ extension IdentifiedArrayOf<Team.State> {
                 name: "Strawberry Koala",
                 color: .strawberry,
                 image: .koala,
-                players: [Player.State(id: jackID, name: "Jack", image: .jack, color: .strawberry)]
+                players: IdentifiedArrayOf<Player.State>.example.last.map { [$0] } ?? []
             ),
             Team.State(
                 id: purpleElephantId,

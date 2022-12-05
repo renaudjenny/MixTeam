@@ -20,6 +20,7 @@
 		4C5F63BF293D2FBF006FBE85 /* TeamPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */; };
 		4C5F63C1293D3A7A006FBE85 /* AppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C0293D3A7A006FBE85 /* AppPersistence.swift */; };
 		4C5F63C3293D3C67006FBE85 /* StandingPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C2293D3C67006FBE85 /* StandingPersistence.swift */; };
+		4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
@@ -83,6 +84,7 @@
 		4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamPersistence.swift; sourceTree = "<group>"; };
 		4C5F63C0293D3A7A006FBE85 /* AppPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistence.swift; sourceTree = "<group>"; };
 		4C5F63C2293D3C67006FBE85 /* StandingPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingPersistence.swift; sourceTree = "<group>"; };
+		4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPersistence.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		4C765300292799D200A591C4 /* ColorDuo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDuo.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */,
 				4C5F63C0293D3A7A006FBE85 /* AppPersistence.swift */,
 				4C5F63C2293D3C67006FBE85 /* StandingPersistence.swift */,
+				4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
+				4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,

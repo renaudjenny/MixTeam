@@ -10,7 +10,6 @@ struct App: ReducerProtocol {
     }
 
     enum Action: Equatable {
-        case saveState
         case load
         case loaded(TaskResult<State>)
         case addTeam
@@ -35,10 +34,6 @@ struct App: ReducerProtocol {
         }
         Reduce { state, action in
             switch action {
-            case .saveState:
-                return .fireAndForget { [state] in
-                    try await appPersistence().save(state)
-                }
             case .load:
                 return .task { await .loaded(TaskResult { try await appPersistence().load() }) }
             case let .loaded(loaded):
@@ -56,7 +51,10 @@ struct App: ReducerProtocol {
                 state.teams.updateOrAppend(
                     Team.State(id: uuid(), name: name, color: color, image: image)
                 )
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().save(state)
+                    try await appPersistence().team.save(state.teams)
+                }
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
@@ -85,21 +83,33 @@ struct App: ReducerProtocol {
                     return teams
                 }
                 state.standing.players = []
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().save(state)
+                    try await appPersistence().team.save(state.teams)
+                    try await appPersistence().standing.save(state.standing)
+                }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
             case .standing:
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().standing.save(state.standing)
+                }
             case let .team(teamID, .player(playerID, .moveBack)):
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
                 player.isStanding = true
                 player.color = .aluminium
                 state.standing.players.updateOrAppend(player)
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().save(state)
+                    try await appPersistence().standing.save(state.standing)
+                    try await appPersistence().team.save(state.teams)
+                }
             case .team:
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().team.save(state.teams)
+                }
             case let .deleteTeams(indexSet):
                 for index in indexSet {
                     var players = state.teams[index].players
@@ -112,9 +122,15 @@ struct App: ReducerProtocol {
                     state.standing.players.append(contentsOf: players)
                 }
                 state.teams.remove(atOffsets: indexSet)
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().save(state)
+                    try await appPersistence().standing.save(state.standing)
+                    try await appPersistence().team.save(state.teams)
+                }
             case .scores:
-                return Effect(value: .saveState)
+                return .fireAndForget { [state] in
+                    try await appPersistence().save(state)
+                }
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {
@@ -125,8 +141,21 @@ struct App: ReducerProtocol {
 
 extension App.State: Codable {
     enum CodingKeys: CodingKey {
-        case standing
-        case teams
+        case teamIDs
         case _scores
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        standing = Standing.State()
+        let teamsIDs = try values.decode([Team.State.ID].self, forKey: .teamIDs)
+        teams = IdentifiedArrayOf(uniqueElements: teamsIDs.map { Team.State(id: $0) })
+        _scores = try values.decode(Scores.State.self, forKey: ._scores)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(teams.map(\.id), forKey: .teamIDs)
+        try container.encode(_scores, forKey: ._scores)
     }
 }

@@ -7,7 +7,6 @@ struct Standing: ReducerProtocol {
 
     enum Action: Equatable {
         case createPlayer
-        case updatePlayer(Player.State)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -20,9 +19,6 @@ struct Standing: ReducerProtocol {
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
                 let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
-                state.players.updateOrAppend(player)
-                return .none
-            case let .updatePlayer(player):
                 state.players.updateOrAppend(player)
                 return .none
             case let .player(id, action: .delete):
