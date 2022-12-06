@@ -25,6 +25,7 @@ struct App: ReducerProtocol {
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
+    private enum LoadTaskID {}
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
@@ -35,7 +36,13 @@ struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .load:
-                return .task { await .loaded(TaskResult { try await appPersistence.load() }) }
+                return .run { send in
+                    for try await updatedState in appPersistence.app() {
+                        await send(.loaded(
+                            TaskResult { try await updatedState.inflate(appPersistence: appPersistence) }
+                        ))
+                    }
+                }
             case let .loaded(loaded):
                 switch loaded {
                 case let .success(newState):
@@ -161,7 +168,30 @@ extension App.State: Codable {
 }
 
 private extension App.State {
-    var allPlayers: IdentifiedArrayOf<Player.State> {
-        IdentifiedArrayOf(uniqueElements: teams.flatMap(\.players) + standing.players)
+    func inflate(appPersistence: AppPersistence) async throws -> App.State {
+        let players = try await appPersistence.player.load()
+
+        let teams = IdentifiedArrayOf(uniqueElements: try await appPersistence.team.load().map {
+            var team = $0
+            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
+                var player = players[id: $0.id]
+                player?.color = team.color
+                return player
+            })
+            return team
+        })
+
+        var standing = try await appPersistence.standing.load()
+        standing.players = IdentifiedArrayOf(uniqueElements: standing.players.compactMap {
+            var player = players[id: $0.id]
+            player?.isStanding = true
+            return player
+        })
+
+        var state = self
+        state.teams = IdentifiedArrayOf(uniqueElements: state.teams.compactMap { teams[id: $0.id] })
+        state.standing = standing
+
+        return state
     }
 }
