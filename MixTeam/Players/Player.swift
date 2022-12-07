@@ -18,8 +18,22 @@ struct Player: ReducerProtocol {
         case moveBack
     }
 
+    @Dependency(\.appPersistence.player) var playerPersistence
+
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .binding:
+                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state) }
+            case .setEdit:
+                return .none
+            case .delete:
+                return .fireAndForget { [state] in try await playerPersistence.remove(state) }
+            case .moveBack:
+                return .none
+            }
+        }
     }
 }
 

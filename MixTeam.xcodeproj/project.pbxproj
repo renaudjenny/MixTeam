@@ -21,6 +21,7 @@
 		4C5F63C1293D3A7A006FBE85 /* AppPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C0293D3A7A006FBE85 /* AppPersistence.swift */; };
 		4C5F63C3293D3C67006FBE85 /* StandingPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C2293D3C67006FBE85 /* StandingPersistence.swift */; };
 		4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */; };
+		4C5F63C8294114E9006FBE85 /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 4C5F63C7294114E9006FBE85 /* AsyncAlgorithms */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
@@ -117,6 +118,7 @@
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
+				4C5F63C8294114E9006FBE85 /* AsyncAlgorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +327,7 @@
 				4C86575C255479C20040EA04 /* RenaudJennyAboutView */,
 				4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */,
 				4C75738128F0ADC600A6E1EF /* Dependencies */,
+				4C5F63C7294114E9006FBE85 /* AsyncAlgorithms */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -408,6 +411,7 @@
 			packageReferences = (
 				4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */,
 				4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				4C5F63C6294114E9006FBE85 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 			);
 			productRefGroup = 4C3732DE1EBF8E8100A5785E /* Products */;
 			projectDirPath = "";
@@ -811,6 +815,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4C5F63C6294114E9006FBE85 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-async-algorithms";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.3;
+			};
+		};
 		4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
@@ -830,6 +842,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4C5F63C7294114E9006FBE85 /* AsyncAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C5F63C6294114E9006FBE85 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */;
+			productName = AsyncAlgorithms;
+		};
 		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

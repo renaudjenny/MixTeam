@@ -20,6 +20,18 @@ struct PlayerPersistence {
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
+    var updateOrAppend: (Player.State) async throws -> Void = { player in
+        let persistence = PlayerPersistence()
+        var players = try await persistence.load()
+        players.updateOrAppend(player)
+        try await persistence.save(players)
+    }
+    var remove: (Player.State) async throws -> Void = { player in
+        let persistence = PlayerPersistence()
+        var players = try await persistence.load()
+        players.remove(player)
+        try await persistence.save(players)
+    }
 }
 
 extension IdentifiedArrayOf<Player.State> {
