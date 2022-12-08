@@ -1,247 +1,247 @@
-import Dependencies
-import IdentifiedCollections
-import Foundation
-import SwiftUI
-import XCTestDynamicOverlay
-
-private let stateFileName = "MixTeamStateV2_0_0"
-
-private struct PersistenceSaveDependencyKey: DependencyKey {
-    static var liveValue = { (state: App.State) async throws in
-        let data = try JSONEncoder().encode(state)
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        else { return }
-        try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
-    }
-    static var testValue: (App.State) async throws -> Void = XCTUnimplemented("Save App State non implemented")
-}
-extension DependencyValues {
-    @available(*, deprecated, message: "Use appPersistence dependency")
-    var save: (App.State) async throws -> Void {
-        get { self[PersistenceSaveDependencyKey.self] }
-        set { self[PersistenceSaveDependencyKey.self] = newValue }
-    }
-}
-
-private struct PersistenceLoadDependencyKey: DependencyKey {
-    static var liveValue = { () async throws -> App.State in
-        guard
-            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-            let data = try? Data(contentsOf: url.appendingPathComponent(stateFileName, conformingTo: .json))
-        else {
-            guard let migratedData = migratedData else { return .example }
-            UserDefaults.standard.removeObject(forKey: "teams")
-            UserDefaults.standard.removeObject(forKey: "Scores.rounds")
-            if
-                let data = try? JSONEncoder().encode(migratedData),
-                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-                try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
-            }
-            return migratedData
-        }
-        #if DEBUG
-        print("Document folder: \(url)")
-        #endif
-        return try inflateDecodedData(data)
-    }
-    static var testValue = { () async throws -> App.State in
-        XCTFail("Load App State non implemented")
-        return App.State()
-    }
-
-    static func inflateDecodedData(_ data: Data) throws -> App.State {
-        var state = try JSONDecoder().decode(App.State.self, from: data)
-
-        state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
-            var round = $0
-            round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
-                var score = $0
-                score.team = state.teams[id: score.team.id] ?? score.team
-                return score
-            })
-            return round
-        })
-
-        return state
-    }
-
-    static var migratedData: App.State? {
-        struct DprPlayer: Codable, Identifiable, Hashable {
-            var id = UUID()
-            var name: String = ""
-            var imageIdentifier: ImageIdentifier
-        }
-
-        struct DprTeam: Codable, Identifiable, Hashable {
-            var id = UUID()
-            var name: String = ""
-            var colorIdentifier: ColorIdentifier = .gray
-            var imageIdentifier: ImageIdentifier = .unknown
-            var players: [DprPlayer] = []
-
-            var state: Team.State {
-                Team.State(
-                    id: id,
-                    name: name,
-                    color: colorIdentifier.mtColor,
-                    image: imageIdentifier.mtImage,
-                    players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
-                        id: $0.id,
-                        name: $0.name,
-                        image: $0.imageIdentifier.mtImage,
-                        color: colorIdentifier.mtColor,
-                        isStanding: false
-                    ) })
-                )
-            }
-
-            var standing: Standing.State {
-                Standing.State(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
-                    id: $0.id,
-                    name: $0.name,
-                    image: $0.imageIdentifier.mtImage,
-                    color: colorIdentifier.mtColor,
-                    isStanding: true
-                )}))
-            }
-        }
-
-        struct DprRound: Identifiable, Codable, Hashable {
-            var name: String
-            var scores: [DprScore]
-            var id = UUID()
-        }
-
-        struct DprScore: Identifiable, Codable, Hashable {
-            var team: DprTeam
-            var points: Int
-            var id: DprTeam.ID { team.id }
-        }
-
-        func roundStates(rounds: [DprRound]) -> [Round.State] {
-            rounds.reduce([]) { result, round in
-                let state = Round.State(
-                    id: round.id,
-                    name: round.name,
-                    scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
-                        id: UUID(),
-                        team: score.team.state,
-                        points: score.points,
-                        accumulatedPoints: score.points + result.reduce(0) { result, round in
-                            result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
-                        }
-                    ) })
-                )
-
-                return result + [state]
-            }
-        }
-
-        let teamsData = UserDefaults.standard.data(forKey: "teams")
-        let teams = teamsData.flatMap { (try? JSONDecoder().decode([DprTeam].self, from: $0)) }
-
-        let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
-        let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
-
-        if let teams, let rounds {
-            let standing = teams.first?.standing ?? Standing.State()
-            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
-            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
-            let scores = Scores.State(teams: teams, rounds: rounds)
-
-            return App.State(
-                standing: standing,
-                teams: teams,
-                _scores: scores
-            )
-        } else if let teams {
-            let standing = teams.first?.standing ?? Standing.State()
-            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
-            return App.State(standing: standing, teams: teams)
-        } else if let rounds {
-            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
-            return App.State(_scores: Scores.State(teams: [], rounds: rounds))
-        } else {
-            return nil
-        }
-    }
-}
-
-extension DependencyValues {
-    @available(*, deprecated, message: "Use appPersistence dependency")
-    var load: () async throws -> App.State {
-        get { self[PersistenceLoadDependencyKey.self] }
-        set { self[PersistenceLoadDependencyKey.self] = newValue }
-    }
-}
-
-enum PersistenceError: Error {
-    case cannotGetDocumentDirectoryWithUserDomainMask
-}
-
-// MARK: - Deprecated ColorIdentifier
-// To remove after version 2 once the migration code from version 1 to 2 is also removed
-
-private extension ColorIdentifier {
-    var mtColor: MTColor {
-        switch self {
-        case .yellow: return .leather
-        case .orange: return .peach
-        case .red: return .strawberry
-        case .pink: return .duck
-        case .purple: return .lilac
-        case .blue: return .bluejeans
-        case .green: return .conifer
-        case .gray: return .aluminium
-        }
-    }
-}
-
-private enum ColorIdentifier: String, Codable {
-    case yellow
-    case orange
-    case red
-    case pink
-    case purple
-    case blue
-    case green
-    case gray
-}
-
-private extension ImageIdentifier {
-    var mtImage: MTImage {
-        switch self {
-        case .elephant: return .elephant
-        case .koala: return .koala
-        case .panda: return .panda
-        case .octopus: return .octopus
-        case .lion: return .lion
-        case .hippo: return .hippo
-        case .girl: return .girl
-        case .woman: return .woman
-        case .jack: return .jack
-        case .santa: return .santa
-        case .clown: return .clown
-        case .pirate: return .pirate
-        case .unknown: return .unknown
-        }
-    }
-}
-
-private enum ImageIdentifier: String, Codable {
-    case elephant = "elephant"
-    case koala = "koala"
-    case panda = "panda"
-    case octopus = "octopus"
-    case lion = "lion"
-    case hippo = "hippo"
-
-    case girl = "girl"
-    case woman = "woman"
-    case jack = "jack"
-    case santa = "santa"
-    case clown = "clown"
-    case pirate = "pirate"
-
-    case unknown = ""
-}
+//import Dependencies
+//import IdentifiedCollections
+//import Foundation
+//import SwiftUI
+//import XCTestDynamicOverlay
+//
+//private let stateFileName = "MixTeamStateV2_0_0"
+//
+//private struct PersistenceSaveDependencyKey: DependencyKey {
+//    static var liveValue = { (state: App.State) async throws in
+//        let data = try JSONEncoder().encode(state)
+//        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+//        else { return }
+//        try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
+//    }
+//    static var testValue: (App.State) async throws -> Void = XCTUnimplemented("Save App State non implemented")
+//}
+//extension DependencyValues {
+//    @available(*, deprecated, message: "Use appPersistence dependency")
+//    var save: (App.State) async throws -> Void {
+//        get { self[PersistenceSaveDependencyKey.self] }
+//        set { self[PersistenceSaveDependencyKey.self] = newValue }
+//    }
+//}
+//
+//private struct PersistenceLoadDependencyKey: DependencyKey {
+//    static var liveValue = { () async throws -> App.State in
+//        guard
+//            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+//            let data = try? Data(contentsOf: url.appendingPathComponent(stateFileName, conformingTo: .json))
+//        else {
+//            guard let migratedData = migratedData else { return .example }
+//            UserDefaults.standard.removeObject(forKey: "teams")
+//            UserDefaults.standard.removeObject(forKey: "Scores.rounds")
+//            if
+//                let data = try? JSONEncoder().encode(migratedData),
+//                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+//                try data.write(to: url.appendingPathComponent(stateFileName, conformingTo: .json))
+//            }
+//            return migratedData
+//        }
+//        #if DEBUG
+//        print("Document folder: \(url)")
+//        #endif
+//        return try inflateDecodedData(data)
+//    }
+//    static var testValue = { () async throws -> App.State in
+//        XCTFail("Load App State non implemented")
+//        return App.State()
+//    }
+//
+//    static func inflateDecodedData(_ data: Data) throws -> App.State {
+//        var state = try JSONDecoder().decode(App.State.self, from: data)
+//
+//        state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
+//            var round = $0
+//            round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+//                var score = $0
+//                score.team = state.teams[id: score.team.id] ?? score.team
+//                return score
+//            })
+//            return round
+//        })
+//
+//        return state
+//    }
+//
+//    static var migratedData: App.State? {
+//        struct DprPlayer: Codable, Identifiable, Hashable {
+//            var id = UUID()
+//            var name: String = ""
+//            var imageIdentifier: ImageIdentifier
+//        }
+//
+//        struct DprTeam: Codable, Identifiable, Hashable {
+//            var id = UUID()
+//            var name: String = ""
+//            var colorIdentifier: ColorIdentifier = .gray
+//            var imageIdentifier: ImageIdentifier = .unknown
+//            var players: [DprPlayer] = []
+//
+//            var state: Team.State {
+//                Team.State(
+//                    id: id,
+//                    name: name,
+//                    color: colorIdentifier.mtColor,
+//                    image: imageIdentifier.mtImage,
+//                    players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+//                        id: $0.id,
+//                        name: $0.name,
+//                        image: $0.imageIdentifier.mtImage,
+//                        color: colorIdentifier.mtColor,
+//                        isStanding: false
+//                    ) })
+//                )
+//            }
+//
+//            var standing: Standing.State {
+//                Standing.State(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+//                    id: $0.id,
+//                    name: $0.name,
+//                    image: $0.imageIdentifier.mtImage,
+//                    color: colorIdentifier.mtColor,
+//                    isStanding: true
+//                )}))
+//            }
+//        }
+//
+//        struct DprRound: Identifiable, Codable, Hashable {
+//            var name: String
+//            var scores: [DprScore]
+//            var id = UUID()
+//        }
+//
+//        struct DprScore: Identifiable, Codable, Hashable {
+//            var team: DprTeam
+//            var points: Int
+//            var id: DprTeam.ID { team.id }
+//        }
+//
+//        func roundStates(rounds: [DprRound]) -> [Round.State] {
+//            rounds.reduce([]) { result, round in
+//                let state = Round.State(
+//                    id: round.id,
+//                    name: round.name,
+//                    scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
+//                        id: UUID(),
+//                        team: score.team.state,
+//                        points: score.points,
+//                        accumulatedPoints: score.points + result.reduce(0) { result, round in
+//                            result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
+//                        }
+//                    ) })
+//                )
+//
+//                return result + [state]
+//            }
+//        }
+//
+//        let teamsData = UserDefaults.standard.data(forKey: "teams")
+//        let teams = teamsData.flatMap { (try? JSONDecoder().decode([DprTeam].self, from: $0)) }
+//
+//        let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
+//        let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
+//
+//        if let teams, let rounds {
+//            let standing = teams.first?.standing ?? Standing.State()
+//            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+//            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
+//            let scores = Scores.State(teams: teams, rounds: rounds)
+//
+//            return App.State(
+//                standing: standing,
+//                teams: teams,
+//                _scores: scores
+//            )
+//        } else if let teams {
+//            let standing = teams.first?.standing ?? Standing.State()
+//            let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+//            return App.State(standing: standing, teams: teams)
+//        } else if let rounds {
+//            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
+//            return App.State(_scores: Scores.State(teams: [], rounds: rounds))
+//        } else {
+//            return nil
+//        }
+//    }
+//}
+//
+//extension DependencyValues {
+//    @available(*, deprecated, message: "Use appPersistence dependency")
+//    var load: () async throws -> App.State {
+//        get { self[PersistenceLoadDependencyKey.self] }
+//        set { self[PersistenceLoadDependencyKey.self] = newValue }
+//    }
+//}
+//
+//enum PersistenceError: Error {
+//    case cannotGetDocumentDirectoryWithUserDomainMask
+//}
+//
+//// MARK: - Deprecated ColorIdentifier
+//// To remove after version 2 once the migration code from version 1 to 2 is also removed
+//
+//private extension ColorIdentifier {
+//    var mtColor: MTColor {
+//        switch self {
+//        case .yellow: return .leather
+//        case .orange: return .peach
+//        case .red: return .strawberry
+//        case .pink: return .duck
+//        case .purple: return .lilac
+//        case .blue: return .bluejeans
+//        case .green: return .conifer
+//        case .gray: return .aluminium
+//        }
+//    }
+//}
+//
+//private enum ColorIdentifier: String, Codable {
+//    case yellow
+//    case orange
+//    case red
+//    case pink
+//    case purple
+//    case blue
+//    case green
+//    case gray
+//}
+//
+//private extension ImageIdentifier {
+//    var mtImage: MTImage {
+//        switch self {
+//        case .elephant: return .elephant
+//        case .koala: return .koala
+//        case .panda: return .panda
+//        case .octopus: return .octopus
+//        case .lion: return .lion
+//        case .hippo: return .hippo
+//        case .girl: return .girl
+//        case .woman: return .woman
+//        case .jack: return .jack
+//        case .santa: return .santa
+//        case .clown: return .clown
+//        case .pirate: return .pirate
+//        case .unknown: return .unknown
+//        }
+//    }
+//}
+//
+//private enum ImageIdentifier: String, Codable {
+//    case elephant = "elephant"
+//    case koala = "koala"
+//    case panda = "panda"
+//    case octopus = "octopus"
+//    case lion = "lion"
+//    case hippo = "hippo"
+//
+//    case girl = "girl"
+//    case woman = "woman"
+//    case jack = "jack"
+//    case santa = "santa"
+//    case clown = "clown"
+//    case pirate = "pirate"
+//
+//    case unknown = ""
+//}

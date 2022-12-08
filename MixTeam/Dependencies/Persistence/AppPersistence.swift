@@ -14,7 +14,14 @@ private struct Persistence {
 
     init() {
         Task { [self] in
-            // TODO: manage migration
+            if let migratedData {
+                try await save(migratedData)
+                await app.send(migratedData)
+//                UserDefaults.standard.removeObject(forKey: "teams")
+//                UserDefaults.standard.removeObject(forKey: "Scores.rounds")
+                return
+            }
+
             guard
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
                 let data = try? Data(contentsOf: url.appendingPathComponent(appFileName, conformingTo: .json))
