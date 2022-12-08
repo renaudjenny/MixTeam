@@ -3,18 +3,17 @@ import Foundation
 import XCTestDynamicOverlay
 import AsyncAlgorithms
 
-struct AppPersistence {
-    private static let appFileName = "MixTeamAppV2_0_0"
-    private static var onSave: ((App.State) async -> Void)?
+private struct Persistence {
+    private let appFileName = "MixTeamAppV2_0_0"
 
     var team = TeamPersistence()
     var standing = StandingPersistence()
     var player = PlayerPersistence()
 
-    var app: () -> AsyncThrowingChannel<App.State, Error> = {
-        let app = AsyncThrowingChannel<App.State, Error>()
-        Task {
-            onSave = { await app.send($0) }
+    var app: AsyncThrowingChannel<App.State, Error> = AsyncThrowingChannel<App.State, Error>()
+
+    init() {
+        Task { [self] in
             // TODO: manage migration
             guard
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
@@ -38,25 +37,34 @@ struct AppPersistence {
                 await app.fail(error)
             }
         }
-        return app
     }
 
-    var save: (App.State) async throws -> Void = { state in
-        await onSave?(state)
+    func save(_ state: App.State) async throws {
+        await app.send(state)
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(appFileName, conformingTo: .json))
     }
 
-    private static func persistAndReturnExample() async throws -> App.State {
-        let appPersistence = AppPersistence()
-        try await appPersistence.save(.example)
-        try await appPersistence.team.save(.example)
-        try await appPersistence.standing.save(.example)
-        try await appPersistence.player.save(.example)
+    private func persistAndReturnExample() async throws -> App.State {
+        try await save(.example)
+        try await team.save(.example)
+        try await standing.save(.example)
+        try await player.save(.example)
         return .example
     }
+}
+
+struct AppPersistence {
+    private static var persistence = Persistence()
+
+    var team = persistence.team
+    var standing = persistence.standing
+    var player = persistence.player
+
+    var app: () -> AsyncThrowingChannel<App.State, Error> = { persistence.app }
+    var save: (App.State) async throws -> Void = persistence.save
 }
 
 extension App.State {
