@@ -14,13 +14,7 @@ private struct Persistence {
 
     init() {
         Task { [self] in
-            if let migratedData {
-                try await save(migratedData)
-                await app.send(migratedData)
-//                UserDefaults.standard.removeObject(forKey: "teams")
-//                UserDefaults.standard.removeObject(forKey: "Scores.rounds")
-                return
-            }
+            if try await migrateIfNeeded() { return }
 
             guard
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
@@ -60,6 +54,18 @@ private struct Persistence {
         try await standing.save(.example)
         try await player.save(.example)
         return .example
+    }
+
+    private func migrateIfNeeded() async throws -> Bool {
+        guard let migratedData else { return false }
+        try await save(migratedData)
+        try await team.save(migratedData.teams)
+        try await standing.save(migratedData.standing)
+        try await player.save(migratedData.teams.flatMap(\.players) + migratedData.standing.players)
+        await app.send(migratedData)
+        UserDefaults.standard.removeObject(forKey: "teams")
+        UserDefaults.standard.removeObject(forKey: "Scores.rounds")
+        return true
     }
 }
 
