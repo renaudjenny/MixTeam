@@ -1,7 +1,7 @@
+import AsyncAlgorithms
 import Dependencies
 import Foundation
 import XCTestDynamicOverlay
-import AsyncAlgorithms
 
 private struct Persistence {
     private let appFileName = "MixTeamAppV2_0_0"
@@ -10,7 +10,7 @@ private struct Persistence {
     var standing = StandingPersistence()
     var player = PlayerPersistence()
 
-    var app: AsyncThrowingChannel<App.State, Error> = AsyncThrowingChannel<App.State, Error>()
+    var app = AsyncThrowingChannel<App.State, Error>()
 
     init() {
         Task { [self] in
@@ -70,7 +70,7 @@ private struct Persistence {
 }
 
 struct AppPersistence {
-    private static var persistence = Persistence()
+    private static let persistence = Persistence()
 
     var team = persistence.team
     var standing = persistence.standing
@@ -92,6 +92,7 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         var appPersistence = AppPersistence()
         appPersistence.app = XCTUnimplemented("App Persistance stream unimplemented")
         appPersistence.save = XCTUnimplemented("App Persistence save unimplemented")
+        appPersistence.team.teams = XCTUnimplemented("Team Persistence load unimplemented")
         appPersistence.team.load = XCTUnimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = XCTUnimplemented("Team Persistence save unimplemented")
         appPersistence.standing.load = XCTUnimplemented("Standing Persistence load unimplemented")
