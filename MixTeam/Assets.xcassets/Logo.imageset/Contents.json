@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "logo-200.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "logo-400.png",
+      "filename" : "Mix-Team-New-Line-400x400.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "logo-600.png",
+      "filename" : "Mix-Team-New-Line-600x600.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
