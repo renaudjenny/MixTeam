@@ -5,7 +5,8 @@ import IdentifiedCollections
 private struct Persistence {
     private let teamFileName = "MixTeamTeamV2_0_0"
 
-    var teams = AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error>()
+    var channel = AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error>()
+    private var last: IdentifiedArrayOf<Team.State>?
 
     init() {
         Task { [self] in
@@ -13,27 +14,29 @@ private struct Persistence {
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
                 let data = try? Data(contentsOf: url.appendingPathComponent(teamFileName, conformingTo: .json))
             else {
-                await teams.send(.example)
+                await channel.send(.example)
                 return
             }
 
             do {
-                await teams.send(try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data))
+                await channel.send(try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data))
             } catch {
-                await teams.fail(error)
+                await channel.fail(error)
             }
         }
     }
 
-    func load() async throws -> IdentifiedArrayOf<Team.State> {
-        for try await teams in teams.prefix(1) {
-            return teams
+    mutating func load() async throws -> IdentifiedArrayOf<Team.State> {
+        if let last { return last }
+        for try await teams in channel.prefix(1) {
+            last = teams
         }
-        return []
+        return last ?? []
     }
 
-    func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
-        await teams.send(states)
+    mutating func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
+        last = states
+        await channel.send(states)
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
@@ -42,11 +45,11 @@ private struct Persistence {
 }
 
 struct TeamPersistence {
-    private static let persistence = Persistence()
+    private static var persistence = Persistence()
 
-    var teams: () -> AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error> = { persistence.teams }
-    var load: () async throws -> IdentifiedArrayOf<Team.State> = persistence.load
-    var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = persistence.save
+    var channel: () -> AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error> = { persistence.channel }
+    var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
+    var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
 }
 
 extension IdentifiedArrayOf<Team.State> {

@@ -92,11 +92,12 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         var appPersistence = AppPersistence()
         appPersistence.app = XCTUnimplemented("App Persistance stream unimplemented")
         appPersistence.save = XCTUnimplemented("App Persistence save unimplemented")
-        appPersistence.team.teams = XCTUnimplemented("Team Persistence load unimplemented")
+        appPersistence.team.channel = XCTUnimplemented("Team Persistence channel unimplemented")
         appPersistence.team.load = XCTUnimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = XCTUnimplemented("Team Persistence save unimplemented")
         appPersistence.standing.load = XCTUnimplemented("Standing Persistence load unimplemented")
         appPersistence.standing.save = XCTUnimplemented("Standing Persistence save unimplemented")
+        appPersistence.player.channel = XCTUnimplemented("Standing Persistence channel unimplemented")
         appPersistence.player.load = XCTUnimplemented("Player Persistence load unimplemented")
         appPersistence.player.save = XCTUnimplemented("Player Persistence save unimplemented")
         return appPersistence
