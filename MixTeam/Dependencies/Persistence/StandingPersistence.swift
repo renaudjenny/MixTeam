@@ -28,7 +28,7 @@ extension Standing.State {
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
         return Standing.State(players: [
-            Player.State(id: ameliaID, name: "Amelia", image: .girl, color: .aluminium, isStanding: true),
+            Player.State(id: ameliaID, name: "Amelia", image: .amelie, color: .aluminium, isStanding: true),
             Player.State(id: joseID, name: "José", image: .santa, color: .aluminium, isStanding: true),
         ])
     }

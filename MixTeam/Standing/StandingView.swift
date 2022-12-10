@@ -55,7 +55,7 @@ extension Store where State == Standing.State, Action == Standing.Action {
 private extension Standing.State {
     static var preview: Self {
         Standing.State(
-            players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .aluminium, isStanding: true)]
+            players: [Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .aluminium, isStanding: true)]
         )
     }
 }

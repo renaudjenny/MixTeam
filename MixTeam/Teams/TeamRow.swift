@@ -93,7 +93,7 @@ extension Store where State == Team.State, Action == Team.Action {
                 color: .bluejeans,
                 image: .octopus,
                 players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .girl, color: .bluejeans),
+                    Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .bluejeans),
                     Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
                 ]
             ),

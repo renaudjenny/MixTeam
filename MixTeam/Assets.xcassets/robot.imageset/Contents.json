@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "amalie-poulain.pdf",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "robot@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "robot@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

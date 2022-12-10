@@ -70,7 +70,7 @@ extension IdentifiedArrayOf<Player.State> {
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
         return [
-            Player.State(id: ameliaID, name: "Amelia", image: .girl),
+            Player.State(id: ameliaID, name: "Amelia", image: .amelie),
             Player.State(id: joseID, name: "José", image: .santa),
             Player.State(id: jackID, name: "Jack", image: .jack),
         ]
