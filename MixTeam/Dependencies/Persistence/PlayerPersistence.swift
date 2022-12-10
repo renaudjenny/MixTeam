@@ -1,6 +1,5 @@
 import Foundation
 import IdentifiedCollections
-import XCTestDynamicOverlay
 
 private struct Persistence {
     private let playerFileName = "MixTeamPlayerV2_0_0"
@@ -26,6 +25,17 @@ private struct Persistence {
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
+
+    mutating func updateOrAppend(state: Player.State) async throws {
+        var states = try await load()
+        states.updateOrAppend(state)
+        try await save(states)
+    }
+    mutating func remove(state: Player.State) async throws {
+        var states = try await load()
+        states.remove(state)
+        try await save(states)
+    }
 }
 
 struct PlayerPersistence {
@@ -37,16 +47,8 @@ struct PlayerPersistence {
     var stream: () -> AsyncThrowingStream<IdentifiedArrayOf<Player.State>, Error> = { stream }
     var load: () async throws -> IdentifiedArrayOf<Player.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Player.State>) async throws -> Void = { try await persistence.save($0) }
-    var updateOrAppend: (Player.State) async throws -> Void = { player in
-        var players = try await persistence.load()
-        players.updateOrAppend(player)
-        try await persistence.save(players)
-    }
-    var remove: (Player.State) async throws -> Void = { player in
-        var players = try await persistence.load()
-        players.remove(player)
-        try await persistence.save(players)
-    }
+    var updateOrAppend: (Player.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
+    var remove: (Player.State) async throws -> Void = { try await persistence.remove(state: $0) }
 }
 
 extension IdentifiedArrayOf<Player.State> {

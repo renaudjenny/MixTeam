@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Citrouille.pdf",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "jack@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "jack@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

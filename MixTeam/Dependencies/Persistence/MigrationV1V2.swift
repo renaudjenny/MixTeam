@@ -152,7 +152,7 @@ private enum ImageIdentifier: String, Codable {
         case .lion: return .lion
         case .hippo: return .hippo
         case .girl: return .amelie
-        case .woman: return .woman
+        case .woman: return .lara
         case .jack: return .jack
         case .santa: return .santa
         case .clown: return .clown

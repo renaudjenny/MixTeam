@@ -1,55 +1,54 @@
-import AsyncAlgorithms
 import Foundation
 import IdentifiedCollections
 
 private struct Persistence {
     private let teamFileName = "MixTeamTeamV2_0_0"
 
-    var channel = AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error>()
-    private var last: IdentifiedArrayOf<Team.State>?
-
-    init() {
-        Task { [self] in
-            guard
-                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-                let data = try? Data(contentsOf: url.appendingPathComponent(teamFileName, conformingTo: .json))
-            else {
-                await channel.send(.example)
-                return
-            }
-
-            do {
-                await channel.send(try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data))
-            } catch {
-                await channel.fail(error)
-            }
-        }
-    }
+    var saveHandler: ((IdentifiedArrayOf<Team.State>) -> Void)?
+    private var cache: IdentifiedArrayOf<Team.State>?
 
     mutating func load() async throws -> IdentifiedArrayOf<Team.State> {
-        if let last { return last }
-        for try await teams in channel.prefix(1) {
-            last = teams
-        }
-        return last ?? []
+        if let cache { return cache }
+        guard
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+            let data = try? Data(contentsOf: url.appendingPathComponent(teamFileName, conformingTo: .json))
+        else { return .example }
+
+        return try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
     }
 
     mutating func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
-        last = states
-        await channel.send(states)
+        cache = states
+        saveHandler?(states)
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
+
+    mutating func updateOrAppend(state: Team.State) async throws {
+        var states = try await load()
+        states.updateOrAppend(state)
+        try await save(states)
+    }
+    mutating func remove(state: Team.State) async throws {
+        var states = try await load()
+        states.remove(state)
+        try await save(states)
+    }
 }
 
 struct TeamPersistence {
     private static var persistence = Persistence()
+    private static var stream: AsyncThrowingStream<IdentifiedArrayOf<Team.State>, Error> {
+        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
+    }
 
-    var channel: () -> AsyncThrowingChannel<IdentifiedArrayOf<Team.State>, Error> = { persistence.channel }
+    var stream: () -> AsyncThrowingStream<IdentifiedArrayOf<Team.State>, Error> = { stream }
     var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
+    var updateOrAppend: (Team.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
+    var remove: (Team.State) async throws -> Void = { try await persistence.remove(state: $0) }
 }
 
 extension IdentifiedArrayOf<Team.State> {
