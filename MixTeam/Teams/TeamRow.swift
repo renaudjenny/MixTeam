@@ -104,8 +104,11 @@ extension Store where State == Team.State, Action == Team.Action {
 
 extension Team.State {
     static var preview: Self {
-        Team.State(
-            id: UUID(),
+        guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
+            fatalError("Cannot generate UUID from a defined UUID String")
+        }
+        return Team.State(
+            id: id,
             name: "Team test",
             color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
             image: MTImage.teams.randomElement() ?? .koala

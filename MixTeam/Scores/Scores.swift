@@ -29,9 +29,9 @@ struct Scores: ReducerProtocol {
                 let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
                     Score.State(
                         id: uuid(),
-                        team: team,
+                        teamID: team.id,
                         points: 0,
-                        accumulatedPoints: state.rounds.accumulatedPoints(for: team, roundCount: roundCount)
+                        accumulatedPoints: state.rounds.accumulatedPoints(for: team.id, roundCount: roundCount)
                     )
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
@@ -40,9 +40,9 @@ struct Scores: ReducerProtocol {
                 return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
                     var rounds = rounds
                     for (index, round) in rounds.enumerated() {
-                        for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
-                            let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
-                            guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+                        for teamID in rounds[id: round.id]?.scores.map(\.teamID) ?? [] {
+                            let accumulatedPoints = rounds.accumulatedPoints(for: teamID, roundCount: index + 1)
+                            guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.teamID == teamID })?.id
                             else { continue }
                             rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
                         }
@@ -104,8 +104,8 @@ extension App.State {
 }
 
 private extension IdentifiedArrayOf<Round.State> {
-    func accumulatedPoints(for team: Team.State, roundCount: Int) -> Int {
+    func accumulatedPoints(for teamID: Team.State.ID, roundCount: Int) -> Int {
         guard roundCount > 0, roundCount <= count else { return 0 }
-        return self[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
+        return self[...(roundCount - 1)].flatMap(\.scores).filter { $0.teamID == teamID }.map(\.points).reduce(0, +)
     }
 }

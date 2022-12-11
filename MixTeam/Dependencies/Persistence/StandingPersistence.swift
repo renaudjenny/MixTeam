@@ -27,14 +27,14 @@ private struct Persistence {
 }
 
 struct StandingPersistence {
-    private static var persistance = Persistence()
+    private static var persistence = Persistence()
     private static var stream: AsyncThrowingStream<Standing.State, Error> {
-        AsyncThrowingStream { continuation in persistance.saveHandler = { continuation.yield($0) } }
+        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
     }
 
     var stream: () -> AsyncThrowingStream<Standing.State, Error> = { stream }
-    var load: () async throws -> Standing.State = { try await persistance.load() }
-    var save: (Standing.State) async throws -> Void = { try await persistance.save($0) }
+    var load: () async throws -> Standing.State = { try await persistence.load() }
+    var save: (Standing.State) async throws -> Void = { try await persistence.save($0) }
 }
 
 extension Standing.State {

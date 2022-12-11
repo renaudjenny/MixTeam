@@ -81,8 +81,8 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
     static var liveValue = AppPersistence()
     static var testValue: AppPersistence = {
         var appPersistence = AppPersistence()
-        appPersistence.stream = unimplemented("App Persistance stream unimplemented")
-        appPersistence.load = unimplemented("App Persistance load unimplemented")
+        appPersistence.stream = unimplemented("App Persistence stream unimplemented")
+        appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.team.stream = unimplemented("Team Persistence stream unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")

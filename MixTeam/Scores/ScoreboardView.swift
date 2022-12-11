@@ -121,7 +121,7 @@ extension Scores.State {
                 id: uuid(),
                 name: "Round \(i)",
                 scores: IdentifiedArrayOf(uniqueElements: teams.map {
-                    Score.State(id: uuid(), team: $0, points: 10 * i, accumulatedPoints: 10 * i + 10 * (i - 1))
+                    Score.State(id: uuid(), teamID: $0.id, points: 10 * i, accumulatedPoints: 10 * i + 10 * (i - 1))
                 }))
         }))
     }

@@ -76,33 +76,33 @@ extension Array where Element == Round.State {
                 id: round1ID,
                 name: "Round 1",
                 scores: [
-                    Score.State(id: score1ID, team: team1, points: 0, accumulatedPoints: 0),
-                    Score.State(id: score2ID, team: team2, points: 20, accumulatedPoints: 20),
+                    Score.State(id: score1ID, teamID: team1.id, points: 0, accumulatedPoints: 0),
+                    Score.State(id: score2ID, teamID: team2.id, points: 20, accumulatedPoints: 20),
                 ]
             ),
             Round.State(
                 id: round2ID,
                 name: "Round 2",
                 scores: [
-                    Score.State(id: score3ID, team: team1, points: 10, accumulatedPoints: 10),
-                    Score.State(id: score4ID, team: team2, points: 20, accumulatedPoints: 40),
+                    Score.State(id: score3ID, teamID: team1.id, points: 10, accumulatedPoints: 10),
+                    Score.State(id: score4ID, teamID: team2.id, points: 20, accumulatedPoints: 40),
                 ]
             ),
             Round.State(
                 id: round3ID,
                 name: "Round 3",
                 scores: [
-                    Score.State(id: score5ID, team: team1, points: 10, accumulatedPoints: 30),
-                    Score.State(id: score6ID, team: team2, points: 50, accumulatedPoints: 90),
+                    Score.State(id: score5ID, teamID: team1.id, points: 10, accumulatedPoints: 30),
+                    Score.State(id: score6ID, teamID: team2.id, points: 50, accumulatedPoints: 90),
                 ]
             ),
             Round.State(
                 id: round4ID,
                 name: "Round 4",
                 scores: [
-                    Score.State(id: score7ID, team: team1, points: 10, accumulatedPoints: 40),
-                    Score.State(id: score8ID, team: team2, points: 50, accumulatedPoints: 140),
-                    Score.State(id: score9ID, team: team3, points: 15, accumulatedPoints: 15),
+                    Score.State(id: score7ID, teamID: team1.id, points: 10, accumulatedPoints: 40),
+                    Score.State(id: score8ID, teamID: team2.id, points: 50, accumulatedPoints: 140),
+                    Score.State(id: score9ID, teamID: team3.id, points: 15, accumulatedPoints: 15),
                 ]
             ),
         ]

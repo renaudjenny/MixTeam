@@ -30,7 +30,7 @@ private extension Scores.State {
         String(
             rounds
                 .flatMap(\.scores)
-                .filter { $0.team == team }
+                .filter { $0.teamID == team.id }
                 .map(\.points)
                 .reduce(0, +)
         )

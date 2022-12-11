@@ -61,10 +61,10 @@ var migratedData: App.State? {
                 name: round.name,
                 scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
                     id: UUID(),
-                    team: score.team.state,
+                    teamID: score.team.state.id,
                     points: score.points,
                     accumulatedPoints: score.points + result.reduce(0) { result, round in
-                        result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
+                        result + round.scores.filter { $0.teamID == score.team.id }.map(\.points).reduce(0, +)
                     }
                 ) })
             )
