@@ -38,7 +38,10 @@ struct App: ReducerProtocol {
             switch action {
             case .load:
                 return .run { send in
-                    for try await updatedState in appPersistence.app() {
+                    await send(.loaded(
+                        TaskResult { try await appPersistence.load().inflate(appPersistence: appPersistence) }
+                    ))
+                    for try await updatedState in appPersistence.stream() {
                         await send(.loaded(
                             TaskResult { try await updatedState.inflate(appPersistence: appPersistence) }
                         ))

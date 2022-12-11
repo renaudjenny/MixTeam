@@ -7,7 +7,7 @@ private struct Persistence {
     var saveHandler: ((IdentifiedArrayOf<Team.State>) -> Void)?
     private var cache: IdentifiedArrayOf<Team.State>?
 
-    mutating func load() async throws -> IdentifiedArrayOf<Team.State> {
+    func load() async throws -> IdentifiedArrayOf<Team.State> {
         if let cache { return cache }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,

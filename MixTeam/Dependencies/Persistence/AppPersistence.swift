@@ -1,4 +1,3 @@
-import AsyncAlgorithms
 import Dependencies
 import Foundation
 import XCTestDynamicOverlay
@@ -10,45 +9,34 @@ private struct Persistence {
     var standing = StandingPersistence()
     var player = PlayerPersistence()
 
-    var app = AsyncThrowingChannel<App.State, Error>()
+    var saveHandler: ((App.State) -> Void)?
+    private var cache: App.State?
 
-    init() {
-        Task { [self] in
-            if try await migrateIfNeeded() { return }
+    mutating func load() async throws -> App.State {
+        if let migratedData = try await migrateIfNeeded() { return migratedData }
 
-            guard
-                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-                let data = try? Data(contentsOf: url.appendingPathComponent(appFileName, conformingTo: .json))
-            else {
-                do {
-                    await app.send(try await persistAndReturnExample())
-                } catch {
-                    await app.fail(error)
-                }
-                return
-            }
+        guard
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+            let data = try? Data(contentsOf: url.appendingPathComponent(appFileName, conformingTo: .json))
+        else { return try await persistAndReturnExample() }
 
-            #if DEBUG
-            print("Document folder: \(url)")
-            #endif
+        #if DEBUG
+        print("Document folder: \(url)")
+        #endif
 
-            do {
-                await app.send(try JSONDecoder().decode(App.State.self, from: data))
-            } catch {
-                await app.fail(error)
-            }
-        }
+        return try JSONDecoder().decode(App.State.self, from: data)
     }
 
-    func save(_ state: App.State) async throws {
-        await app.send(state)
+    mutating func save(_ state: App.State) async throws {
+        cache = state
+        saveHandler?(state)
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(appFileName, conformingTo: .json))
     }
 
-    private func persistAndReturnExample() async throws -> App.State {
+    private mutating func persistAndReturnExample() async throws -> App.State {
         try await save(.example)
         try await team.save(.example)
         try await standing.save(.example)
@@ -56,28 +44,31 @@ private struct Persistence {
         return .example
     }
 
-    private func migrateIfNeeded() async throws -> Bool {
-        guard let migratedData else { return false }
+    private mutating func migrateIfNeeded() async throws -> App.State? {
+        guard let migratedData else { return nil }
         try await save(migratedData)
         try await team.save(migratedData.teams)
         try await standing.save(migratedData.standing)
         try await player.save(migratedData.teams.flatMap(\.players) + migratedData.standing.players)
-        await app.send(migratedData)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
-        return true
+        return migratedData
     }
 }
 
 struct AppPersistence {
-    private static let persistence = Persistence()
+    private static var persistence = Persistence()
+    private static var stream: AsyncThrowingStream<App.State, Error> {
+        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
+    }
 
     var team = persistence.team
     var standing = persistence.standing
     var player = persistence.player
 
-    var app: () -> AsyncThrowingChannel<App.State, Error> = { persistence.app }
-    var save: (App.State) async throws -> Void = persistence.save
+    var stream: () -> AsyncThrowingStream<App.State, Error> = { stream }
+    var load: () async throws -> App.State = { try await persistence.load() }
+    var save: (App.State) async throws -> Void = { try await persistence.save($0) }
 }
 
 extension App.State {
@@ -90,7 +81,8 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
     static var liveValue = AppPersistence()
     static var testValue: AppPersistence = {
         var appPersistence = AppPersistence()
-        appPersistence.app = unimplemented("App Persistance stream unimplemented")
+        appPersistence.stream = unimplemented("App Persistance stream unimplemented")
+        appPersistence.load = unimplemented("App Persistance load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.team.stream = unimplemented("Team Persistence stream unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")

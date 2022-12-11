@@ -1,24 +1,40 @@
 import Foundation
 
-struct StandingPersistence {
-    private static var cache: Standing.State?
-    private static let standingFileName = "MixTeamStandingV2_0_0"
+private struct Persistence {
+    private let standingFileName = "MixTeamStandingV2_0_0"
 
-    var load: () async throws -> Standing.State = {
+    var saveHandler: ((Standing.State) -> Void)?
+    private var cache: Standing.State?
+
+    func load() async throws -> Standing.State {
         if let cache { return cache }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(standingFileName, conformingTo: .json))
         else { return .example }
+
         return try JSONDecoder().decode(Standing.State.self, from: data)
     }
-    var save: (Standing.State) async throws -> Void = { standing in
-        cache = standing
-        let data = try JSONEncoder().encode(standing)
+
+    mutating func save(_ state: Standing.State) async throws {
+        cache = state
+        saveHandler?(state)
+        let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(standingFileName, conformingTo: .json))
     }
+}
+
+struct StandingPersistence {
+    private static var persistance = Persistence()
+    private static var stream: AsyncThrowingStream<Standing.State, Error> {
+        AsyncThrowingStream { continuation in persistance.saveHandler = { continuation.yield($0) } }
+    }
+
+    var stream: () -> AsyncThrowingStream<Standing.State, Error> = { stream }
+    var load: () async throws -> Standing.State = { try await persistance.load() }
+    var save: (Standing.State) async throws -> Void = { try await persistance.save($0) }
 }
 
 extension Standing.State {
