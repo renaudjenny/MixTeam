@@ -5,45 +5,73 @@ struct StandingView: View {
     let store: StoreOf<Standing>
 
     var body: some View {
-        Section {
-            header
-            ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
+        WithViewStore(store.stateless) { viewStore in
+            Section {
+                header
+                SwitchStore(store) {
+                    CaseLet(state: /Standing.State.loading, action: Standing.Action.player) { loadingStore in
+                        playersRedacted(store: loadingStore.actionless)
+                            .task { @MainActor in
+                                try? await Task.sleep(nanoseconds: 1_000_000_000 * 4)
+                                viewStore.send(.load)
+                            }
+                    }
+                    CaseLet(state: /Standing.State.loaded, action: Standing.Action.player) { loadedStore in
+                        ForEachStore(loadedStore, content: PlayerRow.init)
+                    }
+                    CaseLet(state: /Standing.State.error, action: Standing.Action.player) { error in
+                        WithViewStore(error.actionless) { viewStore in
+                            Text(viewStore.state)
+                        }
+                    }
+                }
+            }
         }
     }
 
     private var header: some View {
         WithViewStore(store) { viewStore in
-            Group {
-                switch viewStore.playersState {
-                case .loading:
-                    Text("Players standing for a team")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .task { @MainActor in viewStore.send(.load) }
-                case .loaded:
-                    VStack {
-                        Text("Players standing for a team")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                        Button { viewStore.send(.createPlayer, animation: .easeInOut) } label: {
-                            Label { Text("Add Player") } icon: {
-                                HStack {
-                                    Image(systemName: "person.3")
-                                    Image(systemName: "plus")
-                                }
-                                .font(.title3)
-                            }
-                            .labelStyle(.iconOnly)
+            VStack {
+                Text("Players standing for a team")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                Button { viewStore.send(.createPlayer, animation: .easeInOut) } label: {
+                    Label { Text("Add Player") } icon: {
+                        HStack {
+                            Image(systemName: "person.3")
+                            Image(systemName: "plus")
                         }
-                        .buttonStyle(.dashed(color: .aluminium))
+                        .font(.title3)
                     }
-                case .error:
-                    Text("Error!")
+                    .labelStyle(.iconOnly)
                 }
+                .buttonStyle(.dashed(color: .aluminium))
             }
             .frame(maxWidth: .infinity)
             .backgroundAndForeground(color: .aluminium)
         }
+    }
+
+    private func playersRedacted(store: Store<[Player.State.ID], Never>) -> some View {
+        WithViewStore(store) { viewStore in
+            List {
+                ForEach(viewStore.state, id: \.self) { _ in playerRedactedRow }
+            }
+        }
+    }
+
+    private var playerRedactedRow: some View {
+        HStack {
+            Image(mtImage: .unknown)
+                .resizable()
+                .frame(width: 48, height: 48)
+                .redacted(reason: .placeholder)
+            Text("Placeholder name")
+                .fontWeight(.medium)
+                .redacted(reason: .placeholder)
+        }
+        .backgroundAndForeground(color: .aluminium)
+        .padding(.leading, 24)
     }
 }
 
@@ -66,7 +94,7 @@ extension Store where State == Standing.State, Action == Standing.Action {
 
 private extension Standing.State {
     static var preview: Self {
-        Standing.State(
+        .loaded(
             players: [Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .aluminium, isStanding: true)]
         )
     }

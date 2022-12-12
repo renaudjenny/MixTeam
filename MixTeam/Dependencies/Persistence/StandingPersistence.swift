@@ -43,7 +43,7 @@ extension Standing.State {
               let joseID = UUID(uuidString: "C0F0266B-FFF1-47B0-8A2C-CC90BC36CF15")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        return Standing.State(players: [
+        return .loaded(players: [
             Player.State(id: ameliaID, name: "Amelia", image: .amelie, color: .aluminium, isStanding: true),
             Player.State(id: joseID, name: "José", image: .santa, color: .aluminium, isStanding: true),
         ])

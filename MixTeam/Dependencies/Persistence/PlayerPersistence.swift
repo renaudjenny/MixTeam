@@ -31,9 +31,9 @@ private struct Persistence {
         states.updateOrAppend(state)
         try await save(states)
     }
-    mutating func remove(state: Player.State) async throws {
+    mutating func remove(id: Player.State.ID) async throws {
         var states = try await load()
-        states.remove(state)
+        states.remove(id: id)
         try await save(states)
     }
 }
@@ -48,7 +48,7 @@ struct PlayerPersistence {
     var load: () async throws -> IdentifiedArrayOf<Player.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Player.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Player.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
-    var remove: (Player.State) async throws -> Void = { try await persistence.remove(state: $0) }
+    var remove: (Player.State.ID) async throws -> Void = { try await persistence.remove(id: $0) }
 }
 
 extension IdentifiedArrayOf<Player.State> {

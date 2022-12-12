@@ -4,7 +4,7 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var standing = Standing.State()
+        var standing: Standing.State = .loading(playerIDs: [])
         var teams: IdentifiedArrayOf<Team.State> = []
         var _scores = Scores.State()
         var notEnoughTeamsAlert: AlertState<Action>?
@@ -62,12 +62,12 @@ struct App: ReducerProtocol {
                     try await appPersistence.team.save(state.teams)
                 }
             case .mixTeam:
-                guard state.teams.count > 1 else {
+                guard state.teams.count > 1, case let .loaded(standingPlayers) = state.standing else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
 
-                let players: [Player.State] = state.standing.players + state.teams.flatMap(\.players)
+                let players: [Player.State] = standingPlayers + state.teams.flatMap(\.players)
                 guard players.count > 0 else { return .none }
 
                 state.teams = IdentifiedArrayOf(uniqueElements: state.teams.map {
@@ -88,7 +88,7 @@ struct App: ReducerProtocol {
                     teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
                     return teams
                 }
-                state.standing.players = []
+                state.standing = .loaded(players: [])
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                     try await appPersistence.team.save(state.teams)
@@ -100,11 +100,15 @@ struct App: ReducerProtocol {
             case .standing:
                 return .none
             case let .team(teamID, .player(playerID, .moveBack)):
-                guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
+                guard
+                    var player = state.teams[id: teamID]?.players[id: playerID],
+                    case var .loaded(standingPlayers) = state.standing
+                else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
                 player.isStanding = true
                 player.color = .aluminium
-                state.standing.players.updateOrAppend(player)
+                standingPlayers.updateOrAppend(player)
+                state.standing = .loaded(players: standingPlayers)
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                     try await appPersistence.standing.save(state.standing)
@@ -113,6 +117,7 @@ struct App: ReducerProtocol {
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
+                guard case var .loaded(standingPlayers) = state.standing else { return .none }
                 for index in indexSet {
                     var players = state.teams[index].players
                     players = IdentifiedArrayOf(uniqueElements: players.map {
@@ -121,7 +126,8 @@ struct App: ReducerProtocol {
                         player.color = .aluminium
                         return player
                     })
-                    state.standing.players.append(contentsOf: players)
+                    standingPlayers.append(contentsOf: players)
+                    state.standing = .loaded(players: standingPlayers)
                 }
                 state.teams.remove(atOffsets: indexSet)
                 return .fireAndForget { [state] in
@@ -147,7 +153,7 @@ extension App.State: Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        standing = Standing.State()
+        standing = .loading(playerIDs: [])
         let teamsIDs = try values.decode([Team.State.ID].self, forKey: .teamIDs)
         teams = IdentifiedArrayOf(uniqueElements: teamsIDs.map { Team.State(id: $0) })
         _scores = try values.decode(Scores.State.self, forKey: ._scores)

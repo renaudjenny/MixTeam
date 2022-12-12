@@ -45,11 +45,11 @@ private struct Persistence {
     }
 
     private mutating func migrateIfNeeded() async throws -> App.State? {
-        guard let migratedData else { return nil }
+        guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing  else { return nil }
         try await save(migratedData)
         try await team.save(migratedData.teams)
         try await standing.save(migratedData.standing)
-        try await player.save(migratedData.teams.flatMap(\.players) + migratedData.standing.players)
+        try await player.save(migratedData.teams.flatMap(\.players) + standingPlayers)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
         return migratedData

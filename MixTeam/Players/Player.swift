@@ -29,7 +29,7 @@ struct Player: ReducerProtocol {
             case .setEdit:
                 return .none
             case .delete:
-                return .fireAndForget { [state] in try await playerPersistence.remove(state) }
+                return .fireAndForget { [state] in try await playerPersistence.remove(state.id) }
             case .moveBack:
                 return .none
             }

@@ -32,7 +32,7 @@ var migratedData: App.State? {
         }
 
         var standing: Standing.State {
-            Standing.State(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+            .loaded(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                 id: $0.id,
                 name: $0.name,
                 image: $0.imageIdentifier.mtImage,
@@ -79,8 +79,7 @@ var migratedData: App.State? {
     let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
     let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
-    if let teams, let rounds {
-        let standing = teams.first?.standing ?? Standing.State()
+    if let teams, let rounds, let standing = teams.first?.standing {
         let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
         let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
         let scores = Scores.State(teams: teams, rounds: rounds)
@@ -90,8 +89,7 @@ var migratedData: App.State? {
             teams: teams,
             _scores: scores
         )
-    } else if let teams {
-        let standing = teams.first?.standing ?? Standing.State()
+    } else if let teams, let standing = teams.first?.standing {
         let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
         return App.State(standing: standing, teams: teams)
     } else if let rounds {
