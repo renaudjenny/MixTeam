@@ -39,13 +39,8 @@ struct App: ReducerProtocol {
             case .load:
                 return .run { send in
                     await send(.loaded(
-                        TaskResult { try await appPersistence.load().inflate(appPersistence: appPersistence) }
+                        TaskResult { try await appPersistence.load() }
                     ))
-                    for try await updatedState in appPersistence.stream() {
-                        await send(.loaded(
-                            TaskResult { try await updatedState.inflate(appPersistence: appPersistence) }
-                        ))
-                    }
                 }
             case let .loaded(loaded):
                 switch loaded {
@@ -103,9 +98,7 @@ struct App: ReducerProtocol {
                 state.notEnoughTeamsAlert = nil
                 return .none
             case .standing:
-                return .fireAndForget { [state] in
-                    try await appPersistence.standing.save(state.standing)
-                }
+                return .none
             case let .team(teamID, .player(playerID, .moveBack)):
                 guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
                 state.teams[id: teamID]?.players.remove(id: playerID)
@@ -118,9 +111,7 @@ struct App: ReducerProtocol {
                     try await appPersistence.team.save(state.teams)
                 }
             case .team:
-                return .fireAndForget { [state] in
-                    try await appPersistence.team.save(state.teams)
-                }
+                return .none
             case let .deleteTeams(indexSet):
                 for index in indexSet {
                     var players = state.teams[index].players
@@ -139,9 +130,7 @@ struct App: ReducerProtocol {
                     try await appPersistence.team.save(state.teams)
                 }
             case .scores:
-                return .fireAndForget { [state] in
-                    try await appPersistence.save(state)
-                }
+                return .none
             }
         }
         .forEach(\.teams, action: /Action.team(id:action:)) {
@@ -168,34 +157,5 @@ extension App.State: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(teams.map(\.id), forKey: .teamIDs)
         try container.encode(_scores, forKey: ._scores)
-    }
-}
-
-private extension App.State {
-    func inflate(appPersistence: AppPersistence) async throws -> App.State {
-        let players = try await appPersistence.player.load()
-
-        let teams = IdentifiedArrayOf(uniqueElements: try await appPersistence.team.load().map {
-            var team = $0
-            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
-                var player = players[id: $0.id]
-                player?.color = team.color
-                return player
-            })
-            return team
-        })
-
-        var standing = try await appPersistence.standing.load()
-        standing.players = IdentifiedArrayOf(uniqueElements: standing.players.compactMap {
-            var player = players[id: $0.id]
-            player?.isStanding = true
-            return player
-        })
-
-        var state = self
-        state.teams = IdentifiedArrayOf(uniqueElements: state.teams.compactMap { teams[id: $0.id] })
-        state.standing = standing
-
-        return state
     }
 }

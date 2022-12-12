@@ -1,12 +1,24 @@
 import ComposableArchitecture
 
 struct Standing: ReducerProtocol {
+    // TODO: Use enum State instead? See
+    // https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/reducerprotocol/ifcaselet(_:action:then:file:fileid:line:)
     struct State: Equatable {
         var players: IdentifiedArrayOf<Player.State> = []
+
+        var playersState: PlayersState = .loading
+    }
+
+    enum PlayersState: Equatable {
+        case loading
+        case loaded(IdentifiedArrayOf<Player.State>)
+        case error
     }
 
     enum Action: Equatable {
         case createPlayer
+        case load
+        case loaded(TaskResult<IdentifiedArrayOf<Player.State>>)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -25,6 +37,23 @@ struct Standing: ReducerProtocol {
                     var players = try await playerPersistence.load()
                     players.updateOrAppend(player)
                     try await playerPersistence.save(players)
+                }
+            case .load:
+                return .task {
+                    await .loaded(TaskResult {
+                        try await playerPersistence.load()
+                    })
+                }
+                .animation(.default)
+            case let .loaded(result):
+                switch result {
+                case let .success(players):
+                    state.players = players
+                    state.playersState = .loaded(players)
+                    return .none
+                case .failure:
+                    state.playersState = .error
+                    return .none
                 }
             case let .player(id, action: .delete):
                 state.players.remove(id: id)

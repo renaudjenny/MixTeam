@@ -42,6 +42,7 @@
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CF355332942847100366084 /* MigrationV1V2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF355322942847100366084 /* MigrationV1V2.swift */; };
 		4CF35535294284E200366084 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF35534294284E200366084 /* PersistenceError.swift */; };
+		4CF355382946909000366084 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 4CF355372946909000366084 /* SwiftUINavigation */; };
 		4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADA28F224E1002DBF2D /* Standing.swift */; };
 		4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */; };
 		4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADE28F2BD8C002DBF2D /* ShufflePlayers.swift */; };
@@ -120,6 +121,7 @@
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
+				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
 				4C5F63C8294114E9006FBE85 /* AsyncAlgorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,6 +333,7 @@
 				4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */,
 				4C75738128F0ADC600A6E1EF /* Dependencies */,
 				4C5F63C7294114E9006FBE85 /* AsyncAlgorithms */,
+				4CF355372946909000366084 /* SwiftUINavigation */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -415,6 +418,7 @@
 				4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */,
 				4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				4C5F63C6294114E9006FBE85 /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
+				4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
 			);
 			productRefGroup = 4C3732DE1EBF8E8100A5785E /* Products */;
 			projectDirPath = "";
@@ -843,6 +847,14 @@
 				kind = branch;
 			};
 		};
+		4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swiftui-navigation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -865,6 +877,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */;
 			productName = RenaudJennyAboutView;
+		};
+		4CF355372946909000366084 /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
+			productName = SwiftUINavigation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -11,6 +11,8 @@ enum MTImage: String, Identifiable, Codable {
     case whale = "whale"
     case otter = "otter"
     case penguin = "penguin"
+    case butterfly = "butterfly"
+    case bunny = "bunny"
 
     case amelie = "amelie"
     case lara = "lara"
@@ -42,7 +44,7 @@ extension MTImage {
         ]
     }
     static var teams: [Self] {
-        [.elephant, .koala, .panda, .octopus, .lion, .hippo, .starfish, .whale, .otter, .penguin]
+        [.elephant, .koala, .panda, .octopus, .lion, .hippo, .starfish, .whale, .otter, .penguin, .butterfly, .bunny]
     }
 }
 

@@ -10,16 +10,26 @@ struct Team: ReducerProtocol {
         var players: IdentifiedArrayOf<Player.State> = []
         var isArchived = false
 
+        var teamStatus: TeamStatus = .loading
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
+    }
+
+    indirect enum TeamStatus: Equatable {
+        case loading
+        case loaded(Team.State)
+        case error
     }
 
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case setColor(MTColor)
+        case load
+        case loaded(TaskResult<Team.State>)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence.team) var teamPersistence
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
@@ -35,6 +45,23 @@ struct Team: ReducerProtocol {
                 return .none
             case .player:
                 return .none
+            case .load:
+                return .task { [state] in
+                    await .loaded(TaskResult {
+                        try await teamPersistence.load()[id: state.id] ?? state
+                    })
+                }
+                .animation(.default)
+            case let .loaded(result):
+                switch result {
+                case let .success(team):
+                    state = team
+                    state.teamStatus = .loaded(team)
+                    return .none
+                case .failure:
+                    state.teamStatus = .error
+                    return .none
+                }
             }
         }
         .forEach(\.players, action: /Team.Action.player) {

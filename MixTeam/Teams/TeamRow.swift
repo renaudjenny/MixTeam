@@ -13,21 +13,33 @@ struct TeamRow: View {
 
     private var header: some View {
         WithViewStore(store) { viewStore in
-            NavigationLink(destination: EditTeamView(store: store)) {
-                HStack {
-                    Image(mtImage: viewStore.image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 48, height: 48)
-                    Text(viewStore.name)
-                        .font(.title2)
-                        .fontWeight(.black)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 16)
+            Group {
+                switch viewStore.teamStatus {
+                case .loading:
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: 48)
+                        .task { @MainActor in viewStore.send(.load) }
+                case let .loaded(team):
+                    NavigationLink(destination: EditTeamView(store: store)) {
+                        HStack {
+                            Image(mtImage: team.image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 48, height: 48)
+                            Text(team.name)
+                                .font(.title2)
+                                .fontWeight(.black)
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 16)
+                        }
+                    }
+                case .error:
+                    Text("ERROR!")
+                        .frame(maxWidth: .infinity, maxHeight: 48)
                 }
-                .dashedCardStyle(color: viewStore.color)
             }
+            .dashedCardStyle(color: viewStore.color)
             .backgroundAndForeground(color: viewStore.color)
         }
     }
@@ -86,19 +98,7 @@ extension Store where State == Team.State, Action == Team.Action {
         Self(initialState: .preview, reducer: Team())
     }
     static var previewWithPlayers: Self {
-        Self(
-            initialState: Team.State(
-                id: UUID(),
-                name: "Team test",
-                color: .bluejeans,
-                image: .octopus,
-                players: [
-                    Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .bluejeans),
-                    Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
-                ]
-            ),
-            reducer: Team()
-        )
+        Self(initialState: .previewWithPlayers, reducer: Team())
     }
 }
 
@@ -107,12 +107,32 @@ extension Team.State {
         guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        return Team.State(
+        var state = Team.State(
             id: id,
             name: "Team test",
             color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
             image: MTImage.teams.randomElement() ?? .koala
         )
+        state.teamStatus = .loaded(state)
+        return state
+    }
+
+    static var previewWithPlayers: Self {
+        guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
+            fatalError("Cannot generate UUID from a defined UUID String")
+        }
+        var state = Self(
+            id: id,
+            name: "Team test",
+            color: .bluejeans,
+            image: .octopus,
+            players: [
+                Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .bluejeans),
+                Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
+            ]
+        )
+        state.teamStatus = .loaded(state)
+        return state
     }
 }
 #endif

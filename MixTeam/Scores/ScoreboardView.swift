@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import SwiftUINavigation
 
 struct ScoreboardView: View {
     let store: StoreOf<Scores>
@@ -12,7 +13,7 @@ struct ScoreboardView: View {
                 ZStack {
                     if viewStore.rounds.count > 0 {
                         list
-                            .synchronize(viewStore.binding(\.$focusedField), $focusedField)
+                            .bind(viewStore.binding(\.$focusedField), to: $focusedField)
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
                                     Button { viewStore.send(.minusScore(score: focusedField)) } label: {
@@ -70,17 +71,17 @@ struct ScoreboardView: View {
         }
     }
 }
-
-extension View {
-    func synchronize<Value>(
-        _ first: Binding<Value>,
-        _ second: FocusState<Value>.Binding
-    ) -> some View {
-        self
-            .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
-            .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
-    }
-}
+//
+//extension View {
+//    func synchronize<Value>(
+//        _ first: Binding<Value>,
+//        _ second: FocusState<Value>.Binding
+//    ) -> some View {
+//        self
+//            .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
+//            .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
+//    }
+//}
 
 extension Score.State: Hashable {
     func hash(into hasher: inout Hasher) {

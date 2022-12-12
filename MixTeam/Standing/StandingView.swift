@@ -12,22 +12,34 @@ struct StandingView: View {
     }
 
     private var header: some View {
-        WithViewStore(store.stateless) { ViewStore in
-            VStack {
-                Text("Players standing for a team")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                Button { ViewStore.send(.createPlayer, animation: .easeInOut) } label: {
-                    Label { Text("Add Player") } icon: {
-                        HStack {
-                            Image(systemName: "person.3")
-                            Image(systemName: "plus")
-                        }
+        WithViewStore(store) { viewStore in
+            Group {
+                switch viewStore.playersState {
+                case .loading:
+                    Text("Players standing for a team")
                         .font(.title3)
+                        .fontWeight(.semibold)
+                        .task { @MainActor in viewStore.send(.load) }
+                case .loaded:
+                    VStack {
+                        Text("Players standing for a team")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                        Button { viewStore.send(.createPlayer, animation: .easeInOut) } label: {
+                            Label { Text("Add Player") } icon: {
+                                HStack {
+                                    Image(systemName: "person.3")
+                                    Image(systemName: "plus")
+                                }
+                                .font(.title3)
+                            }
+                            .labelStyle(.iconOnly)
+                        }
+                        .buttonStyle(.dashed(color: .aluminium))
                     }
-                    .labelStyle(.iconOnly)
+                case .error:
+                    Text("Error!")
                 }
-                .buttonStyle(.dashed(color: .aluminium))
             }
             .frame(maxWidth: .infinity)
             .backgroundAndForeground(color: .aluminium)
