@@ -37,46 +37,38 @@ struct Standing: ReducerProtocol {
                     try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
                 }
             case .load:
-                // TODO: optimise and refactor redundant code in the load section (delegate to the loaded section!)
+                @Sendable func taskResult(
+                    standingPlayerIDs: [Player.State.ID],
+                    players: IdentifiedArrayOf<Player.State>
+                ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
+                    await TaskResult {
+                        IdentifiedArrayOf(uniqueElements: players
+                            .filter { standingPlayerIDs.contains($0.id) }
+                            .map {
+                                var player = $0
+                                player.isStanding = true
+                                return player
+                            }
+                        )
+                    }
+                }
                 return .merge(
                     .task {
-                        await .loaded(TaskResult {
-                            let ids = try await standingPersistence.load().playerIDs
-                            return IdentifiedArrayOf(uniqueElements: try await playerPersistence.load()
-                                .filter { ids.contains($0.id) }
-                                .map {
-                                    var player = $0
-                                    player.isStanding = true
-                                    return player
-                                })
-                        })
+                        let ids = try await standingPersistence.load().playerIDs
+                        let players = try await playerPersistence.load()
+                        return .loaded(await taskResult(standingPlayerIDs: ids, players: players))
                     },
                     .run { send in
                         for try await standing in standingPersistence.stream() {
                             let ids = standing.playerIDs
-                            await send(.loaded(TaskResult {
-                                IdentifiedArrayOf(uniqueElements: try await playerPersistence.load()
-                                    .filter { ids.contains($0.id) }
-                                    .map {
-                                        var player = $0
-                                        player.isStanding = true
-                                        return player
-                                    })
-                            }))
+                            let players = try await playerPersistence.load()
+                            await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
                         }
                     },
                     .run { send in
                         for try await players in playerPersistence.stream() {
                             let ids = try await standingPersistence.load().playerIDs
-                            await send(.loaded(TaskResult {
-                                IdentifiedArrayOf(uniqueElements: players
-                                    .filter { ids.contains($0.id) }
-                                    .map {
-                                        var player = $0
-                                        player.isStanding = true
-                                        return player
-                                    })
-                            }))
+                            await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
                         }
                     }
                 )
