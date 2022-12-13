@@ -30,23 +30,56 @@ struct Standing: ReducerProtocol {
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
                 let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
-
-                // TODO: This part could maybe be automatically done by a subscription to the playerPersistence stream?
                 players.updateOrAppend(player)
-                state = .loaded(players: players)
-                // END of TODO
 
                 return .fireAndForget { [players] in
                     try await playerPersistence.updateOrAppend(player)
                     try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
                 }
             case .load:
-                return .task {
-                    await .loaded(TaskResult {
-                        let ids = try await standingPersistence.load().playerIDs
-                        return try await playerPersistence.load().filter { ids.contains($0.id) }
-                    })
-                }
+                // TODO: optimise and refactor redundant code in the load section (delegate to the loaded section!)
+                return .merge(
+                    .task {
+                        await .loaded(TaskResult {
+                            let ids = try await standingPersistence.load().playerIDs
+                            return IdentifiedArrayOf(uniqueElements: try await playerPersistence.load()
+                                .filter { ids.contains($0.id) }
+                                .map {
+                                    var player = $0
+                                    player.isStanding = true
+                                    return player
+                                })
+                        })
+                    },
+                    .run { send in
+                        for try await standing in standingPersistence.stream() {
+                            let ids = standing.playerIDs
+                            await send(.loaded(TaskResult {
+                                IdentifiedArrayOf(uniqueElements: try await playerPersistence.load()
+                                    .filter { ids.contains($0.id) }
+                                    .map {
+                                        var player = $0
+                                        player.isStanding = true
+                                        return player
+                                    })
+                            }))
+                        }
+                    },
+                    .run { send in
+                        for try await players in playerPersistence.stream() {
+                            let ids = try await standingPersistence.load().playerIDs
+                            await send(.loaded(TaskResult {
+                                IdentifiedArrayOf(uniqueElements: players
+                                    .filter { ids.contains($0.id) }
+                                    .map {
+                                        var player = $0
+                                        player.isStanding = true
+                                        return player
+                                    })
+                            }))
+                        }
+                    }
+                )
                 .animation(.default)
             case let .loaded(result):
                 switch result {
@@ -59,25 +92,13 @@ struct Standing: ReducerProtocol {
                 }
             case let .player(id, action: .delete):
                 guard case var .loaded(players) = state else { return .none }
-
-                // TODO: This part could maybe be automatically done by a subscription to the playerPersistence stream?
                 players.remove(id: id)
-                state = .loaded(players: players)
-                // END of TODO
 
                 return .fireAndForget { [players] in
-                    try await playerPersistence.remove(id)
                     try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
                 }
-            case let .player(id, _):
-                // TODO: check if it's really necessary? Could it be done by subscribing to the playerPersistance stream?
-                guard case var .loaded(players) = state, let player = players[id: id] else { return .none }
-                players.updateOrAppend(player)
-                state = .loaded(players: players)
-                return .fireAndForget { [players] in
-                    try await playerPersistence.updateOrAppend(player)
-                    try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
-                }
+            case .player:
+                return .none
             }
         }
         .ifCaseLet(/State.loaded(players:), action: /Action.player) {
