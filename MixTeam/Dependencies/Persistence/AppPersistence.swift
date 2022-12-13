@@ -48,7 +48,7 @@ private struct Persistence {
         guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing  else { return nil }
         try await save(migratedData)
         try await team.save(migratedData.teams)
-        try await standing.save(migratedData.standing)
+        try await standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
         try await player.save(migratedData.teams.flatMap(\.players) + standingPlayers)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")

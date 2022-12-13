@@ -9,12 +9,9 @@ struct StandingView: View {
             Section {
                 header
                 SwitchStore(store) {
-                    CaseLet(state: /Standing.State.loading, action: Standing.Action.player) { loadingStore in
-                        playersRedacted(store: loadingStore.actionless)
-                            .task { @MainActor in
-                                try? await Task.sleep(nanoseconds: 1_000_000_000 * 4)
-                                viewStore.send(.load)
-                            }
+                    CaseLet(state: /Standing.State.loading, action: Standing.Action.player) { _ in
+                        loadingView
+                            .task { @MainActor in viewStore.send(.load) }
                     }
                     CaseLet(state: /Standing.State.loaded, action: Standing.Action.player) { loadedStore in
                         ForEachStore(loadedStore, content: PlayerRow.init)
@@ -52,26 +49,20 @@ struct StandingView: View {
         }
     }
 
-    private func playersRedacted(store: Store<[Player.State.ID], Never>) -> some View {
-        WithViewStore(store) { viewStore in
-            List {
-                ForEach(viewStore.state, id: \.self) { _ in playerRedactedRow }
+    private var loadingView: some View {
+        ForEach(0..<3) { _ in
+            HStack {
+                Image(mtImage: .unknown)
+                    .resizable()
+                    .frame(width: 48, height: 48)
+                    .redacted(reason: .placeholder)
+                Text("Placeholder name")
+                    .fontWeight(.medium)
+                    .redacted(reason: .placeholder)
             }
+            .backgroundAndForeground(color: .aluminium)
+            .padding(.leading, 24)
         }
-    }
-
-    private var playerRedactedRow: some View {
-        HStack {
-            Image(mtImage: .unknown)
-                .resizable()
-                .frame(width: 48, height: 48)
-                .redacted(reason: .placeholder)
-            Text("Placeholder name")
-                .fontWeight(.medium)
-                .redacted(reason: .placeholder)
-        }
-        .backgroundAndForeground(color: .aluminium)
-        .padding(.leading, 24)
     }
 }
 

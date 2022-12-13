@@ -4,7 +4,7 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var standing: Standing.State = .loading(playerIDs: [])
+        var standing: Standing.State = .loading
         var teams: IdentifiedArrayOf<Team.State> = []
         var _scores = Scores.State()
         var notEnoughTeamsAlert: AlertState<Action>?
@@ -92,7 +92,7 @@ struct App: ReducerProtocol {
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                     try await appPersistence.team.save(state.teams)
-                    try await appPersistence.standing.save(state.standing)
+                    try await appPersistence.standing.save(Standing.Persistence(playerIDs: []))
                 }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
@@ -109,9 +109,9 @@ struct App: ReducerProtocol {
                 player.color = .aluminium
                 standingPlayers.updateOrAppend(player)
                 state.standing = .loaded(players: standingPlayers)
-                return .fireAndForget { [state] in
+                return .fireAndForget { [state, standingPlayers] in
                     try await appPersistence.save(state)
-                    try await appPersistence.standing.save(state.standing)
+                    try await appPersistence.standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
                     try await appPersistence.team.save(state.teams)
                 }
             case .team:
@@ -130,9 +130,9 @@ struct App: ReducerProtocol {
                     state.standing = .loaded(players: standingPlayers)
                 }
                 state.teams.remove(atOffsets: indexSet)
-                return .fireAndForget { [state] in
+                return .fireAndForget { [state, standingPlayers] in
                     try await appPersistence.save(state)
-                    try await appPersistence.standing.save(state.standing)
+                    try await appPersistence.standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
                     try await appPersistence.team.save(state.teams)
                 }
             case .scores:
@@ -153,7 +153,7 @@ extension App.State: Codable {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        standing = .loading(playerIDs: [])
+        standing = .loading
         let teamsIDs = try values.decode([Team.State.ID].self, forKey: .teamIDs)
         teams = IdentifiedArrayOf(uniqueElements: teamsIDs.map { Team.State(id: $0) })
         _scores = try values.decode(Scores.State.self, forKey: ._scores)
