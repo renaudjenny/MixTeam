@@ -66,13 +66,17 @@ struct App: ReducerProtocol {
                     state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
+                let teamsPlayers = state.teams.flatMap { team -> IdentifiedArrayOf<Player.State> in
+                    guard case let .loaded(players) = team.players else { return [] }
+                    return players
+                }
 
-                let players: [Player.State] = standingPlayers + state.teams.flatMap(\.players)
+                let players: [Player.State] = standingPlayers + teamsPlayers
                 guard players.count > 0 else { return .none }
 
                 state.teams = IdentifiedArrayOf(uniqueElements: state.teams.map {
                     var newTeam = $0
-                    newTeam.players = []
+                    newTeam.players = .loaded([])
                     return newTeam
                 })
 
@@ -80,12 +84,14 @@ struct App: ReducerProtocol {
                     var teams = teams
                     var player = player
                     guard let lessPlayerTeam = teams
-                        .sorted(by: { $0.players.count < $1.players.count  })
+                        .sorted(by: { $0.playerIDs.count < $1.playerIDs.count })
                         .first
                     else { return teams }
                     player.isStanding = false
                     player.color = lessPlayerTeam.color
-                    teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
+                    guard case var .loaded(players) = teams[id: lessPlayerTeam.id]?.players else { return teams }
+                    players.updateOrAppend(player)
+                    teams[id: lessPlayerTeam.id]?.players = .loaded(players)
                     return teams
                 }
                 state.standing = .loaded(players: [])
@@ -101,10 +107,12 @@ struct App: ReducerProtocol {
                 return .none
             case let .team(teamID, .player(playerID, .moveBack)):
                 guard
-                    var player = state.teams[id: teamID]?.players[id: playerID],
+                    case var .loaded(players) = state.teams[id: teamID]?.players,
+                    var player = players[id: playerID],
                     case var .loaded(standingPlayers) = state.standing
                 else { return .none }
-                state.teams[id: teamID]?.players.remove(id: playerID)
+                players.remove(id: playerID)
+                state.teams[id: teamID]?.players = .loaded(players)
                 player.isStanding = true
                 player.color = .aluminium
                 standingPlayers.updateOrAppend(player)
@@ -119,7 +127,7 @@ struct App: ReducerProtocol {
             case let .deleteTeams(indexSet):
                 guard case var .loaded(standingPlayers) = state.standing else { return .none }
                 for index in indexSet {
-                    var players = state.teams[index].players
+                    guard case var .loaded(players) = state.teams[index].players else { continue }
                     players = IdentifiedArrayOf(uniqueElements: players.map {
                         var player = $0
                         player.isStanding = true

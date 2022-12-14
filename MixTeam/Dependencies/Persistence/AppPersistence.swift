@@ -1,5 +1,6 @@
 import Dependencies
 import Foundation
+import IdentifiedCollections
 import XCTestDynamicOverlay
 
 private struct Persistence {
@@ -45,11 +46,15 @@ private struct Persistence {
     }
 
     private mutating func migrateIfNeeded() async throws -> App.State? {
-        guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing  else { return nil }
+        guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing else { return nil }
         try await save(migratedData)
         try await team.save(migratedData.teams)
         try await standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
-        try await player.save(migratedData.teams.flatMap(\.players) + standingPlayers)
+        let teamsPlayers: [Player.State] = migratedData.teams.map(\.players).flatMap {
+            guard case let .loaded(players) = $0 else { return IdentifiedArrayOf<Player.State>(uniqueElements: []) }
+            return players
+        }
+        try await player.save(teamsPlayers + standingPlayers)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
         return migratedData

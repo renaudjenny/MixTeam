@@ -5,42 +5,61 @@ struct TeamRow: View {
     let store: StoreOf<Team>
 
     var body: some View {
-        Section {
-            header
-            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+        WithViewStore(store.stateless) { viewStore in
+            Section {
+                header
+//                SwitchStore(store.scope(state: \.players, action: Team.Action.player)) {
+//                    CaseLet(state: /Team.Players.loading, action: Team.Action.player) { _ in
+//                        loadingView
+//                            .task { @MainActor in viewStore.send(.load) }
+//                    }
+//                    CaseLet(state: /Team.Players.loaded, action: /Team.Action.player) { loadedStore in
+//                        ForEachStore(loadedStore, content: PlayerRow.init)
+//                    }
+//                    CaseLet(state: /Team.Players.error, action: Team.Action.player) { error in
+//                        WithViewStore(error.actionless) { viewStore in
+//                            Text(viewStore.state)
+//                        }
+//                    }
+//                }
+            }
         }
     }
 
     private var header: some View {
         WithViewStore(store) { viewStore in
-            Group {
-                switch viewStore.teamStatus {
-                case .loading:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: 48)
-                        .task { @MainActor in viewStore.send(.load) }
-                case let .loaded(team):
-                    NavigationLink(destination: EditTeamView(store: store)) {
-                        HStack {
-                            Image(mtImage: team.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 48, height: 48)
-                            Text(team.name)
-                                .font(.title2)
-                                .fontWeight(.black)
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 16)
-                        }
-                    }
-                case .error:
-                    Text("ERROR!")
-                        .frame(maxWidth: .infinity, maxHeight: 48)
+            NavigationLink(destination: EditTeamView(store: store)) {
+                HStack {
+                    Image(mtImage: viewStore.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 48, height: 48)
+                    Text(viewStore.name)
+                        .font(.title2)
+                        .fontWeight(.black)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
                 }
             }
             .dashedCardStyle(color: viewStore.color)
             .backgroundAndForeground(color: viewStore.color)
+        }
+    }
+
+    private var loadingView: some View {
+        ForEach(0..<3) { _ in
+            HStack {
+                Image(mtImage: .unknown)
+                    .resizable()
+                    .frame(width: 48, height: 48)
+                    .redacted(reason: .placeholder)
+                Text("Placeholder name")
+                    .fontWeight(.medium)
+                    .redacted(reason: .placeholder)
+            }
+            .backgroundAndForeground(color: .aluminium)
+            .padding(.leading, 24)
         }
     }
 }
@@ -107,32 +126,28 @@ extension Team.State {
         guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        var state = Team.State(
+        return Team.State(
             id: id,
             name: "Team test",
             color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
             image: MTImage.teams.randomElement() ?? .koala
         )
-        state.teamStatus = .loaded(state)
-        return state
     }
 
     static var previewWithPlayers: Self {
         guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        var state = Self(
+        return Self(
             id: id,
             name: "Team test",
             color: .bluejeans,
             image: .octopus,
-            players: [
+            players: .loaded([
                 Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .bluejeans),
                 Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
-            ]
+            ])
         )
-        state.teamStatus = .loaded(state)
-        return state
     }
 }
 #endif

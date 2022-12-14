@@ -7,16 +7,22 @@ struct Team: ReducerProtocol {
         @BindableState var name: String = ""
         var color: MTColor = .aluminium
         @BindableState var image: MTImage = .unknown
-        var players: IdentifiedArrayOf<Player.State> = []
+        var playerIDs: [Player.State.ID] = []
         var isArchived = false
 
-        var teamStatus: TeamStatus = .loading
+        var players: Players = .loading {
+            didSet {
+                guard case let .loaded(players) = players else { return }
+                playerIDs = players.map(\.id)
+            }
+        }
+
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
-    indirect enum TeamStatus: Equatable {
+    enum Players: Equatable {
         case loading
-        case loaded(Team.State)
+        case loaded(IdentifiedArrayOf<Player.State>)
         case error
     }
 
@@ -24,12 +30,13 @@ struct Team: ReducerProtocol {
         case binding(BindingAction<State>)
         case setColor(MTColor)
         case load
-        case loaded(TaskResult<Team.State>)
+        case loaded(TaskResult<IdentifiedArrayOf<Player.State>>)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
     @Dependency(\.uuid) var uuid
     @Dependency(\.appPersistence.team) var teamPersistence
+    @Dependency(\.appPersistence.player) var playerPersistence
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
@@ -37,35 +44,57 @@ struct Team: ReducerProtocol {
             switch action {
             case let .setColor(color):
                 state.color = color
-                for id in state.players.map(\.id) {
-                    state.players[id: id]?.color = color
+                guard case var .loaded(players) = state.players else { return .none }
+                for id in players.map(\.id) {
+                    players[id: id]?.color = color
                 }
-                return .none
+                state.players = .loaded(players)
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .binding:
-                return .none
-            case .player:
-                return .none
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .load:
-                return .task { [state] in
-                    await .loaded(TaskResult {
-                        try await teamPersistence.load()[id: state.id] ?? state
-                    })
+                let state = state
+                @Sendable func taskResult(
+                    players: IdentifiedArrayOf<Player.State>
+                ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
+                    await TaskResult {
+                        IdentifiedArrayOf(uniqueElements: players
+                            .filter { state.playerIDs.contains($0.id) }
+                            .map {
+                                var player = $0
+                                player.color = state.color
+                                return player
+                            })
+                    }
                 }
-                .animation(.default)
+                return .merge(
+                    .task {
+                        let players = try await playerPersistence.load()
+                        return .loaded(await taskResult(players: players))
+                    }
+                    // TODO: add .run with subscription to the playerPersistence stream
+                )
             case let .loaded(result):
                 switch result {
-                case let .success(team):
-                    state = team
-                    state.teamStatus = .loaded(team)
+                case let .success(players):
+                    state.players = .loaded(players)
                     return .none
                 case .failure:
-                    state.teamStatus = .error
+                    state.players = .error
                     return .none
                 }
+            case .player:
+                return .none
             }
         }
-        .forEach(\.players, action: /Team.Action.player) {
-            Player()
+        Scope(state: \.players, action: /Action.player) {
+            EmptyReducer()
+                .ifCaseLet(/Players.loaded, action: /.self) {
+                    EmptyReducer()
+                        .forEach(\.self, action: /.self) {
+                            Player()
+                        }
+                }
         }
     }
 }
@@ -78,26 +107,5 @@ extension Team.State: Codable {
         case image
         case playerIDs
         case isArchived
-    }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Team.State.ID.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
-        color = try values.decode(MTColor.self, forKey: .color)
-        image = try values.decode(MTImage.self, forKey: .image)
-        let playersIDs = try values.decode([Player.State.ID].self, forKey: .playerIDs)
-        players = IdentifiedArrayOf(uniqueElements: playersIDs.map { Player.State(id: $0) })
-        isArchived = try values.decode(Bool.self, forKey: .isArchived)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(color, forKey: .color)
-        try container.encode(image, forKey: .image)
-        try container.encode(players.map(\.id), forKey: .playerIDs)
-        try container.encode(isArchived, forKey: .isArchived)
     }
 }

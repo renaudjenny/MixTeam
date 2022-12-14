@@ -67,8 +67,7 @@ extension Array where Element == Round.State {
             id: thirdTeamID,
             name: "The team who had no name",
             color: .strawberry,
-            image: .hippo,
-            players: []
+            image: .hippo
         )
 
         return [

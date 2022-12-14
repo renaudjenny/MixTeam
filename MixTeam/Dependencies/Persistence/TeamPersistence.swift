@@ -64,11 +64,11 @@ extension IdentifiedArrayOf<Team.State> {
                 name: "Strawberry Koala",
                 color: .strawberry,
                 image: .koala,
-                players: IdentifiedArrayOf<Player.State>.example.last.map {
+                players: .loaded(IdentifiedArrayOf<Player.State>.example.last.map {
                     var last = $0
                     last.color = .strawberry
                     return [last]
-                } ?? []
+                } ?? [])
             ),
             Team.State(
                 id: purpleElephantId,

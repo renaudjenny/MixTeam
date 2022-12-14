@@ -21,13 +21,13 @@ var migratedData: App.State? {
                 name: name,
                 color: colorIdentifier.mtColor,
                 image: imageIdentifier.mtImage,
-                players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+                players: .loaded(IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                     id: $0.id,
                     name: $0.name,
                     image: $0.imageIdentifier.mtImage,
                     color: colorIdentifier.mtColor,
                     isStanding: false
-                ) })
+                ) }))
             )
         }
 
