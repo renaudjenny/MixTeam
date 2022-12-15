@@ -23,7 +23,7 @@ struct Team: ReducerProtocol {
     enum Players: Equatable {
         case loading
         case loaded(IdentifiedArrayOf<Player.State>)
-        case error
+        case error(String)
     }
 
     enum Action: BindableAction, Equatable {
@@ -79,8 +79,8 @@ struct Team: ReducerProtocol {
                 case let .success(players):
                     state.players = .loaded(players)
                     return .none
-                case .failure:
-                    state.players = .error
+                case let .failure(error):
+                    state.players = .error(error.localizedDescription)
                     return .none
                 }
             case .player:

@@ -1,3 +1,3 @@
-enum PersistenceError: Error {
+enum PersistenceError: Error, Equatable {
     case cannotGetDocumentDirectoryWithUserDomainMask
 }
