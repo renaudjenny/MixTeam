@@ -5,24 +5,9 @@ struct TeamRow: View {
     let store: StoreOf<Team>
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Section {
-                header
-//                SwitchStore(store.scope(state: \.players, action: Team.Action.player)) {
-//                    CaseLet(state: /Team.Players.loading, action: Team.Action.player) { _ in
-//                        loadingView
-//                            .task { @MainActor in viewStore.send(.load) }
-//                    }
-//                    CaseLet(state: /Team.Players.loaded, action: /Team.Action.player) { loadedStore in
-//                        ForEachStore(loadedStore, content: PlayerRow.init)
-//                    }
-//                    CaseLet(state: /Team.Players.error, action: Team.Action.player) { error in
-//                        WithViewStore(error.actionless) { viewStore in
-//                            Text(viewStore.state)
-//                        }
-//                    }
-//                }
-            }
+        Section {
+            header
+            playersView
         }
     }
 
@@ -44,6 +29,26 @@ struct TeamRow: View {
             }
             .dashedCardStyle(color: viewStore.color)
             .backgroundAndForeground(color: viewStore.color)
+        }
+    }
+
+    private var playersView: some View {
+        WithViewStore(store.stateless) { viewStore in
+            SwitchStore(store.scope(state: \.players, action: Team.Action.player)) {
+                CaseLet(state: /Team.Players.loading, action: Team.Action.player) { _ in
+                    loadingView
+                        .task { @MainActor in viewStore.send(.load) }
+                }
+                CaseLet(state: /Team.Players.loaded, action: Team.Action.player) { loadedStore in
+                    ForEachStore(loadedStore, content: PlayerRow.init)
+                }
+                CaseLet(state: /Team.Players.error, action: Team.Action.player) { _ in
+//                    WithViewStore(error.actionless) { viewStore in
+                        // TODO: display correct error
+                        Text("TODO error")
+//                    }
+                }
+            }
         }
     }
 
