@@ -88,7 +88,10 @@ extension Scores.State: Codable {
 extension App.State {
     var scores: Scores.State {
         get {
-            Scores.State(
+            // TODO: it's not correct, address that later
+            guard case let .loaded(teams) = teams
+            else { return Scores.State(teams: [], rounds: _scores.rounds) }
+            return Scores.State(
                 teams: teams,
                 rounds: _scores.rounds
             )

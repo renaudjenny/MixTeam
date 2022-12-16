@@ -61,47 +61,42 @@ extension Array where Element == Round.State {
               let score9ID = UUID(uuidString: "3623C100-C8B9-4DA4-9D56-2FDE37601B8E")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        let team1: Team.State = App.State.example.teams[1]
-        let team2: Team.State = App.State.example.teams[2]
-        let team3 = Team.State(
-            id: thirdTeamID,
-            name: "The team who had no name",
-            color: .strawberry,
-            image: .hippo
-        )
+        let team1ID = App.State.example.teamIDs[0]
+        let team2ID = App.State.example.teamIDs[1]
+        let team3ID = App.State.example.teamIDs[2]
 
         return [
             Round.State(
                 id: round1ID,
                 name: "Round 1",
                 scores: [
-                    Score.State(id: score1ID, teamID: team1.id, points: 0, accumulatedPoints: 0),
-                    Score.State(id: score2ID, teamID: team2.id, points: 20, accumulatedPoints: 20),
+                    Score.State(id: score1ID, teamID: team1ID, points: 0, accumulatedPoints: 0),
+                    Score.State(id: score2ID, teamID: team2ID, points: 20, accumulatedPoints: 20),
                 ]
             ),
             Round.State(
                 id: round2ID,
                 name: "Round 2",
                 scores: [
-                    Score.State(id: score3ID, teamID: team1.id, points: 10, accumulatedPoints: 10),
-                    Score.State(id: score4ID, teamID: team2.id, points: 20, accumulatedPoints: 40),
+                    Score.State(id: score3ID, teamID: team1ID, points: 10, accumulatedPoints: 10),
+                    Score.State(id: score4ID, teamID: team2ID, points: 20, accumulatedPoints: 40),
                 ]
             ),
             Round.State(
                 id: round3ID,
                 name: "Round 3",
                 scores: [
-                    Score.State(id: score5ID, teamID: team1.id, points: 10, accumulatedPoints: 30),
-                    Score.State(id: score6ID, teamID: team2.id, points: 50, accumulatedPoints: 90),
+                    Score.State(id: score5ID, teamID: team1ID, points: 10, accumulatedPoints: 30),
+                    Score.State(id: score6ID, teamID: team2ID, points: 50, accumulatedPoints: 90),
                 ]
             ),
             Round.State(
                 id: round4ID,
                 name: "Round 4",
                 scores: [
-                    Score.State(id: score7ID, teamID: team1.id, points: 10, accumulatedPoints: 40),
-                    Score.State(id: score8ID, teamID: team2.id, points: 50, accumulatedPoints: 140),
-                    Score.State(id: score9ID, teamID: team3.id, points: 15, accumulatedPoints: 15),
+                    Score.State(id: score7ID, teamID: team1ID, points: 10, accumulatedPoints: 40),
+                    Score.State(id: score8ID, teamID: team2ID, points: 50, accumulatedPoints: 140),
+                    Score.State(id: score9ID, teamID: team3ID, points: 15, accumulatedPoints: 15),
                 ]
             ),
         ]

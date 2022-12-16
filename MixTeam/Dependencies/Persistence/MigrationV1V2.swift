@@ -85,13 +85,13 @@ var migratedData: App.State? {
         let scores = Scores.State(teams: teams, rounds: rounds)
 
         return App.State(
+            _scores: scores,
             standing: standing,
-            teams: teams,
-            _scores: scores
+            teams: .loaded(teams)
         )
     } else if let teams, let standing = teams.first?.standing {
         let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
-        return App.State(standing: standing, teams: teams)
+        return App.State(standing: standing, teams: .loaded(teams))
     } else if let rounds {
         let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
         return App.State(_scores: Scores.State(teams: [], rounds: rounds))

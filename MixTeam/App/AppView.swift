@@ -10,52 +10,48 @@ struct AppView: View {
     private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            NavigationView {
-                List {
-                    Group {
-                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                        mixTeamButton
-                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                            .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
-                        addTeamButton
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+        NavigationView {
+            List {
+                Group {
+                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                    mixTeamButton
+                    teams
+                    addTeamButton
                 }
-                .backgroundAndForeground(color: .aluminium)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mix Team")
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button { isScoreboardPresented = true } label: {
-                            Label { Text("Display scoreboard") } icon: {
-                                Image(systemName: "list.bullet.rectangle")
-                                    .resizable()
-                            }
-                        }
-                    }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { isAboutPresented = true } label: {
-                            Image(systemName: "cube.box")
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            }
+            .backgroundAndForeground(color: .aluminium)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Mix Team")
+                        .font(.largeTitle)
+                        .fontWeight(.black)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button { isScoreboardPresented = true } label: {
+                        Label { Text("Display scoreboard") } icon: {
+                            Image(systemName: "list.bullet.rectangle")
                                 .resizable()
                         }
                     }
                 }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { isAboutPresented = true } label: {
+                        Image(systemName: "cube.box")
+                            .resizable()
+                    }
+                }
             }
-            .listStyle(.plain)
-            .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-            .sheet(isPresented: $isScoreboardPresented) {
-                ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
-            }
-            .sheet(isPresented: $isAboutPresented) {
-                aboutView
-            }
-            .task { viewStore.send(.load) }
+        }
+        .listStyle(.plain)
+        .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
+        .sheet(isPresented: $isScoreboardPresented) {
+            ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
+        }
+        .sheet(isPresented: $isAboutPresented) {
+            aboutView
         }
     }
 
@@ -66,6 +62,52 @@ struct AppView: View {
             }
             .buttonStyle(.dashed(color: .aluminium))
             .frame(maxWidth: .infinity)
+        }
+    }
+
+    private typealias TeamAction = (Team.State.ID, Team.Action)
+    private typealias TeamsState = IdentifiedArrayOf<Team.State>
+
+    private var teams: some View {
+        WithViewStore(store.stateless) { viewStore in
+            SwitchStore(store.scope(state: \.teams, action: App.Action.team(id:action:))) {
+                CaseLet(state: /App.Teams.loading) { (_: Store<Void, TeamAction>) in
+                    loadingView
+                        .task { @MainActor in viewStore.send(.load) }
+                }
+                CaseLet(state: /App.Teams.loaded) { (store: Store<TeamsState, TeamAction>) in
+                    ForEachStore(store, content: TeamRow.init)
+                        .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
+                }
+                CaseLet(state: /App.Teams.error) { (store: Store<String, TeamAction>) in
+                    WithViewStore(store.actionless) { viewStore in
+                        Text(viewStore.state)
+                    }
+                }
+            }
+        }
+    }
+
+    private var loadingView: some View {
+        WithViewStore(store) { viewStore in
+            let teamsCount = viewStore.teamIDs.count > 0 ? viewStore.teamIDs.count : 1
+            ForEach(0..<teamsCount, id: \.self) { _ in
+                HStack {
+                    Image(mtImage: .unknown)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                        .redacted(reason: .placeholder)
+                    Text("Placeholder name")
+                        .font(.title2)
+                        .fontWeight(.black)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 16)
+                        .redacted(reason: .placeholder)
+                }
+                .dashedCardStyle(color: .aluminium)
+                .backgroundAndForeground(color: .aluminium)
+            }
         }
     }
 

@@ -46,11 +46,14 @@ private struct Persistence {
     }
 
     private mutating func migrateIfNeeded() async throws -> App.State? {
-        guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing else { return nil }
+        guard let migratedData,
+              case let .loaded(standingPlayers) = migratedData.standing,
+              case let .loaded(teams) = migratedData.teams
+        else { return nil }
         try await save(migratedData)
-        try await team.save(migratedData.teams)
+        try await team.save(teams)
         try await standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
-        let teamsPlayers: [Player.State] = migratedData.teams.map(\.players).flatMap {
+        let teamsPlayers: [Player.State] = teams.map(\.players).flatMap {
             guard case let .loaded(players) = $0 else { return IdentifiedArrayOf<Player.State>(uniqueElements: []) }
             return players
         }
@@ -78,7 +81,8 @@ struct AppPersistence {
 
 extension App.State {
     static var example: Self {
-        App.State(standing: .example, teams: .example)
+        let teams: IdentifiedArrayOf<Team.State> = .example
+        return Self(teamIDs: teams.map(\.id), standing: .example, teams: .loaded(teams))
     }
 }
 

@@ -71,17 +71,6 @@ struct ScoreboardView: View {
         }
     }
 }
-//
-//extension View {
-//    func synchronize<Value>(
-//        _ first: Binding<Value>,
-//        _ second: FocusState<Value>.Binding
-//    ) -> some View {
-//        self
-//            .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
-//            .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
-//    }
-//}
 
 extension Score.State: Hashable {
     func hash(into hasher: inout Hasher) {
@@ -112,10 +101,11 @@ extension Store where State == Scores.State, Action == Scores.Action {
 
 extension Scores.State {
     static var preview: Self {
-        Scores.State(teams: App.State.example.teams)
+        guard case let .loaded(teams) = App.State.example.teams else { return Self() }
+        return Self(teams: teams)
     }
     static func previewWithScores(count: Int) -> Self {
-        let teams = App.State.example.teams
+        guard case let .loaded(teams) = App.State.example.teams else { return Self() }
         let uuid = UUIDGenerator.incrementing
         return Scores.State(teams: teams, rounds: IdentifiedArrayOf(uniqueElements: (1...count).map { i in
             Round.State(

@@ -7,6 +7,7 @@ struct Standing: ReducerProtocol {
         case error(String)
     }
 
+    // TODO: refactor that the way we've done App or Team States
     struct Persistence: Codable {
         let playerIDs: [Player.State.ID]
     }

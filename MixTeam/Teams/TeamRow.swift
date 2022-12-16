@@ -102,6 +102,9 @@ struct TeamRowUX_Previews: PreviewProvider {
         Preview(store: .preview)
     }
 
+    private typealias TeamAction = (Team.State.ID, Team.Action)
+    private typealias TeamsState = IdentifiedArrayOf<Team.State>
+
     private struct Preview: View {
         let store: StoreOf<App>
 
@@ -109,8 +112,12 @@ struct TeamRowUX_Previews: PreviewProvider {
             WithViewStore(store) { viewStore in
                 NavigationView {
                     List {
-                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                            .listRowSeparator(.hidden)
+                        SwitchStore(store.scope(state: \.teams, action: App.Action.team(id:action:))) {
+                            CaseLet(state: /App.Teams.loaded) { (store: Store<TeamsState, TeamAction>) in
+                                ForEachStore(store, content: TeamRow.init)
+                                    .listRowSeparator(.hidden)
+                            }
+                        }
                         Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                             Text("Add Team")
                         }
