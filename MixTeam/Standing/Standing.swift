@@ -1,15 +1,21 @@
 import ComposableArchitecture
 
 struct Standing: ReducerProtocol {
-    enum State: Equatable {
-        case loading
-        case loaded(players: IdentifiedArrayOf<Player.State>)
-        case error(String)
+    struct State: Equatable {
+        var playerIDs: [Player.State.ID]
+
+        var players: Players = .loading {
+            didSet {
+                guard case let .loaded(players) = players else { return }
+                playerIDs = players.map(\.id)
+            }
+        }
     }
 
-    // TODO: refactor that the way we've done App or Team States
-    struct Persistence: Codable {
-        let playerIDs: [Player.State.ID]
+    enum Players: Equatable {
+        case loading
+        case loaded(IdentifiedArrayOf<Player.State>)
+        case error(String)
     }
 
     enum Action: Equatable {
@@ -27,15 +33,16 @@ struct Standing: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .createPlayer:
-                guard case var .loaded(players) = state else { return .none }
+                guard case var .loaded(players) = state.players else { return .none }
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
                 let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
                 players.updateOrAppend(player)
+                state.players = .loaded(players)
 
-                return .fireAndForget { [players] in
+                return .fireAndForget { [state] in
                     try await playerPersistence.updateOrAppend(player)
-                    try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
+                    try await standingPersistence.save(state)
                 }
             case .load:
                 @Sendable func taskResult(
@@ -77,28 +84,38 @@ struct Standing: ReducerProtocol {
             case let .loaded(result):
                 switch result {
                 case let .success(players):
-                    state = .loaded(players: players)
+                    state.players = .loaded(players)
                     return .none
                 case let .failure(error):
-                    state = .error(error.localizedDescription)
+                    state.players = .error(error.localizedDescription)
                     return .none
                 }
-            case let .player(id, action: .delete):
-                guard case var .loaded(players) = state else { return .none }
-                players.remove(id: id)
-
-                return .fireAndForget { [players] in
-                    try await standingPersistence.save(Persistence(playerIDs: players.map(\.id)))
-                }
+                // TODO: this should be managed by the Player reduced in theory
+//            case let .player(id, action: .delete):
+//                guard case var .loaded(players) = state.players else { return .none }
+//                players.remove(id: id)
+//
+//                return .fireAndForget { [players] in
+//                    try await standingPersistence.save(state)
+//                }
             case .player:
                 return .none
             }
         }
-        .ifCaseLet(/State.loaded(players:), action: /Action.player) {
+        Scope(state: \.players, action: /Action.player, {
             EmptyReducer()
-                .forEach(\.self, action: /.self) {
-                    Player()
+                .ifCaseLet(/Players.loaded, action: /.self) {
+                    EmptyReducer()
+                        .forEach(\.self, action: /.self) {
+                            Player()
+                        }
                 }
-        }
+        })
+    }
+}
+
+extension Standing.State: Codable {
+    enum CodingKeys: CodingKey {
+        case playerIDs
     }
 }

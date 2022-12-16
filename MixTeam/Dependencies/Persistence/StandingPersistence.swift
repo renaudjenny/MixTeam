@@ -3,20 +3,20 @@ import Foundation
 private struct Persistence {
     private let standingFileName = "MixTeamStandingV2_0_0"
 
-    var saveHandler: ((Standing.Persistence) -> Void)?
-    private var cache: Standing.Persistence?
+    var saveHandler: ((Standing.State) -> Void)?
+    private var cache: Standing.State?
 
-    func load() async throws -> Standing.Persistence {
+    func load() async throws -> Standing.State {
         if let cache { return cache }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(standingFileName, conformingTo: .json))
         else { return .example }
 
-        return try JSONDecoder().decode(Standing.Persistence.self, from: data)
+        return try JSONDecoder().decode(Standing.State.self, from: data)
     }
 
-    mutating func save(_ state: Standing.Persistence) async throws {
+    mutating func save(_ state: Standing.State) async throws {
         cache = state
         saveHandler?(state)
         let data = try JSONEncoder().encode(state)
@@ -28,13 +28,13 @@ private struct Persistence {
 
 struct StandingPersistence {
     private static var persistence = Persistence()
-    private static var stream: AsyncThrowingStream<Standing.Persistence, Error> {
+    private static var stream: AsyncThrowingStream<Standing.State, Error> {
         AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
     }
 
-    var stream: () -> AsyncThrowingStream<Standing.Persistence, Error> = { stream }
-    var load: () async throws -> Standing.Persistence = { try await persistence.load() }
-    var save: (Standing.Persistence) async throws -> Void = { try await persistence.save($0) }
+    var stream: () -> AsyncThrowingStream<Standing.State, Error> = { stream }
+    var load: () async throws -> Standing.State = { try await persistence.load() }
+    var save: (Standing.State) async throws -> Void = { try await persistence.save($0) }
 }
 
 extension Standing.State {
@@ -43,16 +43,12 @@ extension Standing.State {
               let joseID = UUID(uuidString: "C0F0266B-FFF1-47B0-8A2C-CC90BC36CF15")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        return .loaded(players: [
-            Player.State(id: ameliaID, name: "Amelia", image: .amelie, color: .aluminium, isStanding: true),
-            Player.State(id: joseID, name: "José", image: .santa, color: .aluminium, isStanding: true),
-        ])
-    }
-}
-
-extension Standing.Persistence {
-    static var example: Self {
-        guard case let .loaded(players) = Standing.State.example else { return Self(playerIDs: []) }
-        return Self(playerIDs: players.map(\.id))
+        return Self(
+            playerIDs: [ameliaID, joseID],
+            players: .loaded([
+                Player.State(id: ameliaID, name: "Amelia", image: .amelie, color: .aluminium, isStanding: true),
+                Player.State(id: joseID, name: "José", image: .santa, color: .aluminium, isStanding: true),
+            ])
+        )
     }
 }

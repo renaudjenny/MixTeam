@@ -8,20 +8,7 @@ struct StandingView: View {
         WithViewStore(store.stateless) { viewStore in
             Section {
                 header
-                SwitchStore(store) {
-                    CaseLet(state: /Standing.State.loading, action: Standing.Action.player) { _ in
-                        loadingView
-                            .task { @MainActor in viewStore.send(.load) }
-                    }
-                    CaseLet(state: /Standing.State.loaded, action: Standing.Action.player) { loadedStore in
-                        ForEachStore(loadedStore, content: PlayerRow.init)
-                    }
-                    CaseLet(state: /Standing.State.error, action: Standing.Action.player) { error in
-                        WithViewStore(error.actionless) { viewStore in
-                            Text(viewStore.state)
-                        }
-                    }
-                }
+                playersView
             }
         }
     }
@@ -49,19 +36,44 @@ struct StandingView: View {
         }
     }
 
-    private var loadingView: some View {
-        ForEach(0..<3) { _ in
-            HStack {
-                Image(mtImage: .unknown)
-                    .resizable()
-                    .frame(width: 48, height: 48)
-                    .redacted(reason: .placeholder)
-                Text("Placeholder name")
-                    .fontWeight(.medium)
-                    .redacted(reason: .placeholder)
+    private typealias PlayerAction = (Player.State.ID, Player.Action)
+    private typealias PlayersState = IdentifiedArrayOf<Player.State>
+
+    private var playersView: some View {
+        WithViewStore(store.stateless) { viewStore in
+            SwitchStore(store.scope(state: \.players, action: Standing.Action.player(id:action:))) {
+                CaseLet(state: /Standing.Players.loading) { (_: Store<Void, PlayerAction>) in
+                    loadingView
+                        .task { @MainActor in viewStore.send(.load) }
+                }
+                CaseLet(state: /Standing.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
+                    ForEachStore(store, content: PlayerRow.init)
+                }
+                CaseLet(state: /Standing.Players.error) { (store: Store<String, PlayerAction>) in
+                    WithViewStore(store.actionless) { viewStore in
+                        Text(viewStore.state)
+                    }
+                }
             }
-            .backgroundAndForeground(color: .aluminium)
-            .padding(.leading, 24)
+        }
+    }
+
+    private var loadingView: some View {
+        WithViewStore(store) { viewStore in
+            let playersCount = viewStore.playerIDs.count > 0 ? viewStore.playerIDs.count : 1
+            ForEach(0..<playersCount, id: \.self) { _ in
+                HStack {
+                    Image(mtImage: .unknown)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                        .redacted(reason: .placeholder)
+                    Text("Placeholder name")
+                        .fontWeight(.medium)
+                        .redacted(reason: .placeholder)
+                }
+                .backgroundAndForeground(color: .aluminium)
+                .padding(.leading, 24)
+            }
         }
     }
 }
@@ -85,9 +97,13 @@ extension Store where State == Standing.State, Action == Standing.Action {
 
 private extension Standing.State {
     static var preview: Self {
-        .loaded(
-            players: [Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .aluminium, isStanding: true)]
-        )
+        let teams: IdentifiedArrayOf<Team.State> = .example
+        guard case var .loaded(players) = teams[0].players
+        else { fatalError("Cannot load Example first team players") }
+        var player = players[0]
+        player.isStanding = true
+        return Self(playerIDs: [player.id], players: .loaded([player]))
+
     }
 }
 #endif

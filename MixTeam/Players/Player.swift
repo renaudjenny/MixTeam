@@ -18,20 +18,32 @@ struct Player: ReducerProtocol {
         case moveBack
     }
 
-    @Dependency(\.appPersistence.player) var playerPersistence
+    @Dependency(\.appPersistence) var appPersistence
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
             case .binding:
-                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state) }
+                return .fireAndForget { [state] in try await appPersistence.player.updateOrAppend(state) }
             case .setEdit:
                 return .none
             case .delete:
-                return .fireAndForget { [state] in try await playerPersistence.remove(state.id) }
+                return .fireAndForget { [state] in try await appPersistence.player.remove(state.id) }
             case .moveBack:
-                return .none
+                return .fireAndForget { [state] in
+                    var teams = try await appPersistence.team.load()
+                    var standing = try await appPersistence.standing.load()
+                    guard var team = teams.first(where: { $0.playerIDs.contains(state.id) }),
+                          case var .loaded(players) = team.players
+                    else { return }
+                    players.remove(state)
+                    team.players = .loaded(players)
+                    // TODO: fix Standing
+//                    standing.playerIDs.append(state.id)
+                    teams.updateOrAppend(team)
+                    try await appPersistence.team.save(teams)
+                }
             }
         }
     }

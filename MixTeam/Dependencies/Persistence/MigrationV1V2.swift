@@ -21,6 +21,7 @@ var migratedData: App.State? {
                 name: name,
                 color: colorIdentifier.mtColor,
                 image: imageIdentifier.mtImage,
+                playerIDs: players.map(\.id),
                 players: .loaded(IdentifiedArrayOf(uniqueElements: players.map { Player.State(
                     id: $0.id,
                     name: $0.name,
@@ -32,13 +33,16 @@ var migratedData: App.State? {
         }
 
         var standing: Standing.State {
-            .loaded(players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
-                id: $0.id,
-                name: $0.name,
-                image: $0.imageIdentifier.mtImage,
-                color: colorIdentifier.mtColor,
-                isStanding: true
-            )}))
+            Standing.State(
+                playerIDs: players.map(\.id),
+                players: .loaded(IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+                    id: $0.id,
+                    name: $0.name,
+                    image: $0.imageIdentifier.mtImage,
+                    color: colorIdentifier.mtColor,
+                    isStanding: true
+                )}))
+            )
         }
     }
 
