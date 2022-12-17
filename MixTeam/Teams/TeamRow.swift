@@ -5,9 +5,12 @@ struct TeamRow: View {
     let store: StoreOf<Team>
 
     var body: some View {
-        Section {
-            header
-            playersView
+        WithViewStore(store.stateless) { viewStore in
+            Section {
+                header
+                playersView
+            }
+            .task { @MainActor in viewStore.send(.load) }
         }
     }
 
@@ -36,19 +39,16 @@ struct TeamRow: View {
     private typealias PlayersState = IdentifiedArrayOf<Player.State>
 
     private var playersView: some View {
-        WithViewStore(store.stateless) { viewStore in
-            SwitchStore(store.scope(state: \.players, action: Team.Action.player(id:action:))) {
-                CaseLet(state: /Team.Players.loading) { (_: Store<Void, PlayerAction>) in
-                    loadingView
-                        .task { @MainActor in viewStore.send(.load) }
-                }
-                CaseLet(state: /Team.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
-                    ForEachStore(store, content: PlayerRow.init)
-                }
-                CaseLet(state: /Team.Players.error) { (store: Store<String, PlayerAction>) in
-                    WithViewStore(store.actionless) { viewStore in
-                        Text(viewStore.state)
-                    }
+        SwitchStore(store.scope(state: \.players, action: Team.Action.player(id:action:))) {
+            CaseLet(state: /Team.Players.loading) { (_: Store<Void, PlayerAction>) in
+                loadingView
+            }
+            CaseLet(state: /Team.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
+                ForEachStore(store, content: PlayerRow.init)
+            }
+            CaseLet(state: /Team.Players.error) { (store: Store<String, PlayerAction>) in
+                WithViewStore(store.actionless) { viewStore in
+                    Text(viewStore.state)
                 }
             }
         }

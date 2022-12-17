@@ -1,4 +1,3 @@
-import AsyncAlgorithms
 import ComposableArchitecture
 import SwiftUI
 
@@ -176,7 +175,7 @@ struct App: ReducerProtocol {
                 }
                 teams.remove(atOffsets: indexSet)
                 state.teams = .loaded(teams)
-                return .fireAndForget { [state, standingPlayers, teams] in
+                return .fireAndForget { [state, teams] in
                     try await appPersistence.save(state)
                     try await appPersistence.standing.save(state.standing)
                     try await appPersistence.team.save(teams)

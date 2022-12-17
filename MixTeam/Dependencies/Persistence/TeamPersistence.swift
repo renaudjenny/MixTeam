@@ -1,14 +1,14 @@
+import Combine
 import Foundation
 import IdentifiedCollections
 
-private struct Persistence {
+private final class Persistence {
     private let teamFileName = "MixTeamTeamV2_0_0"
 
-    var saveHandler: ((IdentifiedArrayOf<Team.State>) -> Void)?
-    private var cache: IdentifiedArrayOf<Team.State>?
+    @Published var teams: IdentifiedArrayOf<Team.State>?
 
     func load() async throws -> IdentifiedArrayOf<Team.State> {
-        if let cache { return cache }
+        if let teams { return teams }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(teamFileName, conformingTo: .json))
@@ -17,21 +17,20 @@ private struct Persistence {
         return try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
     }
 
-    mutating func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
-        cache = states
-        saveHandler?(states)
+    func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
+        teams = states
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
-    mutating func updateOrAppend(state: Team.State) async throws {
+    func updateOrAppend(state: Team.State) async throws {
         var states = try await load()
         states.updateOrAppend(state)
         try await save(states)
     }
-    mutating func remove(state: Team.State) async throws {
+    func remove(state: Team.State) async throws {
         var states = try await load()
         states.remove(state)
         try await save(states)
@@ -40,11 +39,10 @@ private struct Persistence {
 
 struct TeamPersistence {
     private static var persistence = Persistence()
-    private static var stream: AsyncThrowingStream<IdentifiedArrayOf<Team.State>, Error> {
-        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
-    }
 
-    var stream: () -> AsyncThrowingStream<IdentifiedArrayOf<Team.State>, Error> = { stream }
+    var publisher: () -> AnyPublisher<IdentifiedArrayOf<Team.State>, Never> = {
+        persistence.$teams.compactMap { $0 }.eraseToAnyPublisher()
+    }
     var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Team.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
@@ -58,17 +56,21 @@ extension IdentifiedArrayOf<Team.State> {
               let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
+        let playersExample: IdentifiedArrayOf<Player.State> = .example
+        let players = IdentifiedArrayOf<Player.State>(uniqueElements: playersExample.suffix(1).map {
+            var last = $0
+            last.color = .strawberry
+            return last
+        })
+
         return [
             Team.State(
                 id: koalaTeamId,
                 name: "Strawberry Koala",
                 color: .strawberry,
                 image: .koala,
-                players: .loaded(IdentifiedArrayOf<Player.State>.example.last.map {
-                    var last = $0
-                    last.color = .strawberry
-                    return [last]
-                } ?? [])
+                playerIDs: players.map(\.id),
+                players: .loaded(players)
             ),
             Team.State(
                 id: purpleElephantId,

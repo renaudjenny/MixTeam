@@ -53,31 +53,42 @@ struct Team: ReducerProtocol {
             case .binding:
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .load:
-                let state = state
+                print("team \(state.name) load action received")
                 @Sendable func taskResult(
+                    playerIDs: [Player.State.ID],
                     players: IdentifiedArrayOf<Player.State>
                 ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
                     await TaskResult {
-                        IdentifiedArrayOf(uniqueElements: players
-                            .filter { state.playerIDs.contains($0.id) }
-                            .map {
-                                var player = $0
-                                player.color = state.color
-                                return player
-                            })
+                        IdentifiedArrayOf(uniqueElements: players.filter { playerIDs.contains($0.id) })
                     }
                 }
                 return .merge(
-                    .task {
+                    .task { [state] in
                         let players = try await playerPersistence.load()
-                        return .loaded(await taskResult(players: players))
+                        return .loaded(await taskResult(playerIDs: state.playerIDs, players: players))
+                    },
+                    .run { [state] send in
+                        for try await players in playerPersistence.stream() {
+                            await send(.loaded(await taskResult(playerIDs: state.playerIDs, players: players)))
+                        }
+                    },
+                    .run { [state] send in
+                        for try await teams in teamPersistence.publisher().values {
+                            guard let team = teams[id: state.id], team != state else { return }
+                            let players = try await playerPersistence.load()
+                            await send(.loaded(await taskResult(playerIDs: team.playerIDs, players: players)))
+                        }
                     }
-                    // TODO: add .run with subscription to the playerPersistence stream
                 )
+                .animation(.default)
             case let .loaded(result):
                 switch result {
                 case let .success(players):
-                    state.players = .loaded(players)
+                    state.players = .loaded(IdentifiedArrayOf(uniqueElements: players.map {
+                        var player = $0
+                        player.color = state.color
+                        return player
+                    }))
                     return .none
                 case let .failure(error):
                     state.players = .error(error.localizedDescription)

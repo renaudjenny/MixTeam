@@ -32,17 +32,22 @@ struct Player: ReducerProtocol {
                 return .fireAndForget { [state] in try await appPersistence.player.remove(state.id) }
             case .moveBack:
                 return .fireAndForget { [state] in
+                    let players = try await appPersistence.player.load()
+
                     var teams = try await appPersistence.team.load()
-                    var standing = try await appPersistence.standing.load()
-                    guard var team = teams.first(where: { $0.playerIDs.contains(state.id) }),
-                          case var .loaded(players) = team.players
-                    else { return }
-                    players.remove(state)
-                    team.players = .loaded(players)
-                    // TODO: fix Standing
-//                    standing.playerIDs.append(state.id)
+                    guard var team = teams.first(where: { $0.playerIDs.contains(state.id) }) else { return }
+                    var teamPlayers = players.filter { team.playerIDs.contains($0.id) }
+                    teamPlayers.remove(state)
+                    team.players = .loaded(teamPlayers)
                     teams.updateOrAppend(team)
+
+                    var standing = try await appPersistence.standing.load()
+                    var standingPlayers = players.filter { standing.playerIDs.contains($0.id) }
+                    standingPlayers.updateOrAppend(state)
+                    standing.players = .loaded(standingPlayers)
+
                     try await appPersistence.team.save(teams)
+                    try await appPersistence.standing.save(standing)
                 }
             }
         }

@@ -50,14 +50,7 @@ struct Standing: ReducerProtocol {
                     players: IdentifiedArrayOf<Player.State>
                 ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
                     await TaskResult {
-                        IdentifiedArrayOf(uniqueElements: players
-                            .filter { standingPlayerIDs.contains($0.id) }
-                            .map {
-                                var player = $0
-                                player.isStanding = true
-                                return player
-                            }
-                        )
+                        IdentifiedArrayOf(uniqueElements: players.filter { standingPlayerIDs.contains($0.id) })
                     }
                 }
                 return .merge(
@@ -84,7 +77,11 @@ struct Standing: ReducerProtocol {
             case let .loaded(result):
                 switch result {
                 case let .success(players):
-                    state.players = .loaded(players)
+                    state.players = .loaded(IdentifiedArrayOf(uniqueElements: players.map {
+                        var player = $0
+                        player.isStanding = true
+                        return player
+                    }))
                     return .none
                 case let .failure(error):
                     state.players = .error(error.localizedDescription)

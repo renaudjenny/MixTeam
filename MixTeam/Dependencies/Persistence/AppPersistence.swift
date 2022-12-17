@@ -93,7 +93,7 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.stream = unimplemented("App Persistence stream unimplemented")
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
-        appPersistence.team.stream = unimplemented("Team Persistence stream unimplemented")
+        appPersistence.team.publisher = unimplemented("Team Persistence publisher unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
         appPersistence.standing.load = unimplemented("Standing Persistence load unimplemented")
