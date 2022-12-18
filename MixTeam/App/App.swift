@@ -135,27 +135,6 @@ struct App: ReducerProtocol {
                 return .none
             case .standing:
                 return .none
-
-                // TODO: check if it's well managed by the Player reduced itself
-//            case let .team(teamID, .player(playerID, .moveBack)):
-//                guard
-//                    case var .loaded(teams) = state.teams,
-//                    case var .loaded(players) = teams[id: teamID]?.players,
-//                    var player = players[id: playerID],
-//                    case var .loaded(standingPlayers) = state.standing
-//                else { return .none }
-//                players.remove(id: playerID)
-//                teams[id: teamID]?.players = .loaded(players)
-//                state.teams = .loaded(teams)
-//                player.isStanding = true
-//                player.color = .aluminium
-//                standingPlayers.updateOrAppend(player)
-//                state.standing = .loaded(players: standingPlayers)
-//                return .fireAndForget { [state, standingPlayers, teams] in
-//                    try await appPersistence.save(state)
-//                    try await appPersistence.standing.save(Standing.Persistence(playerIDs: standingPlayers.map(\.id)))
-//                    try await appPersistence.team.save(teams)
-//                }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):

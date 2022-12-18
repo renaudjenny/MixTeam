@@ -10,48 +10,51 @@ struct AppView: View {
     private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
-        NavigationView {
-            List {
-                Group {
-                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                    mixTeamButton
-                    teams
-                    addTeamButton
+        WithViewStore(store.stateless) { viewStore in
+            NavigationView {
+                List {
+                    Group {
+                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                        mixTeamButton
+                        teams
+                        addTeamButton
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
-            }
-            .backgroundAndForeground(color: .aluminium)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Mix Team")
-                        .font(.largeTitle)
-                        .fontWeight(.black)
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button { isScoreboardPresented = true } label: {
-                        Label { Text("Display scoreboard") } icon: {
-                            Image(systemName: "list.bullet.rectangle")
+                .backgroundAndForeground(color: .aluminium)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Mix Team")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button { isScoreboardPresented = true } label: {
+                            Label { Text("Display scoreboard") } icon: {
+                                Image(systemName: "list.bullet.rectangle")
+                                    .resizable()
+                            }
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button { isAboutPresented = true } label: {
+                            Image(systemName: "cube.box")
                                 .resizable()
                         }
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { isAboutPresented = true } label: {
-                        Image(systemName: "cube.box")
-                            .resizable()
-                    }
-                }
             }
-        }
-        .listStyle(.plain)
-        .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
-        .sheet(isPresented: $isScoreboardPresented) {
-            ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
-        }
-        .sheet(isPresented: $isAboutPresented) {
-            aboutView
+            .listStyle(.plain)
+            .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
+            .sheet(isPresented: $isScoreboardPresented) {
+                ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
+            }
+            .sheet(isPresented: $isAboutPresented) {
+                aboutView
+            }
+            .task { @MainActor in viewStore.send(.load) }
         }
     }
 
@@ -73,7 +76,6 @@ struct AppView: View {
             SwitchStore(store.scope(state: \.teams, action: App.Action.team(id:action:))) {
                 CaseLet(state: /App.Teams.loading) { (_: Store<Void, TeamAction>) in
                     loadingView
-                        .task { @MainActor in viewStore.send(.load) }
                 }
                 CaseLet(state: /App.Teams.loaded) { (store: Store<TeamsState, TeamAction>) in
                     ForEachStore(store, content: TeamRow.init)

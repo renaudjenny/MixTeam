@@ -87,14 +87,6 @@ struct Standing: ReducerProtocol {
                     state.players = .error(error.localizedDescription)
                     return .none
                 }
-                // TODO: this should be managed by the Player reduced in theory
-//            case let .player(id, action: .delete):
-//                guard case var .loaded(players) = state.players else { return .none }
-//                players.remove(id: id)
-//
-//                return .fireAndForget { [players] in
-//                    try await standingPersistence.save(state)
-//                }
             case .player:
                 return .none
             }

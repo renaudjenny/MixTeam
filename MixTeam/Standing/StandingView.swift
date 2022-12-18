@@ -10,6 +10,7 @@ struct StandingView: View {
                 header
                 playersView
             }
+            .task { @MainActor in viewStore.send(.load) }
         }
     }
 
@@ -40,19 +41,16 @@ struct StandingView: View {
     private typealias PlayersState = IdentifiedArrayOf<Player.State>
 
     private var playersView: some View {
-        WithViewStore(store.stateless) { viewStore in
-            SwitchStore(store.scope(state: \.players, action: Standing.Action.player(id:action:))) {
-                CaseLet(state: /Standing.Players.loading) { (_: Store<Void, PlayerAction>) in
-                    loadingView
-                        .task { @MainActor in viewStore.send(.load) }
-                }
-                CaseLet(state: /Standing.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
-                    ForEachStore(store, content: PlayerRow.init)
-                }
-                CaseLet(state: /Standing.Players.error) { (store: Store<String, PlayerAction>) in
-                    WithViewStore(store.actionless) { viewStore in
-                        Text(viewStore.state)
-                    }
+        SwitchStore(store.scope(state: \.players, action: Standing.Action.player(id:action:))) {
+            CaseLet(state: /Standing.Players.loading) { (_: Store<Void, PlayerAction>) in
+                loadingView
+            }
+            CaseLet(state: /Standing.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
+                ForEachStore(store, content: PlayerRow.init)
+            }
+            CaseLet(state: /Standing.Players.error) { (store: Store<String, PlayerAction>) in
+                WithViewStore(store.actionless) { viewStore in
+                    Text(viewStore.state)
                 }
             }
         }
@@ -98,7 +96,7 @@ extension Store where State == Standing.State, Action == Standing.Action {
 private extension Standing.State {
     static var preview: Self {
         let teams: IdentifiedArrayOf<Team.State> = .example
-        guard case var .loaded(players) = teams[0].players
+        guard case let .loaded(players) = teams[0].players
         else { fatalError("Cannot load Example first team players") }
         var player = players[0]
         player.isStanding = true

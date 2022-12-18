@@ -53,7 +53,6 @@ struct Team: ReducerProtocol {
             case .binding:
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .load:
-                print("team \(state.name) load action received")
                 @Sendable func taskResult(
                     playerIDs: [Player.State.ID],
                     players: IdentifiedArrayOf<Player.State>
