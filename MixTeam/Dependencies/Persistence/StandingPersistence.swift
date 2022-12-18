@@ -1,13 +1,13 @@
+import Combine
 import Foundation
 
-private struct Persistence {
+private final class Persistence {
     private let standingFileName = "MixTeamStandingV2_0_0"
 
-    var saveHandler: ((Standing.State) -> Void)?
-    private var cache: Standing.State?
+    @Published var standing: Standing.State?
 
     func load() async throws -> Standing.State {
-        if let cache { return cache }
+        if let standing { return standing }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(standingFileName, conformingTo: .json))
@@ -16,9 +16,8 @@ private struct Persistence {
         return try JSONDecoder().decode(Standing.State.self, from: data)
     }
 
-    mutating func save(_ state: Standing.State) async throws {
-        cache = state
-        saveHandler?(state)
+    func save(_ state: Standing.State) async throws {
+        standing = state
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
@@ -28,11 +27,10 @@ private struct Persistence {
 
 struct StandingPersistence {
     private static var persistence = Persistence()
-    private static var stream: AsyncThrowingStream<Standing.State, Error> {
-        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
-    }
 
-    var stream: () -> AsyncThrowingStream<Standing.State, Error> = { stream }
+    var publisher: () -> AnyPublisher<Standing.State, Never> = {
+        persistence.$standing.compactMap { $0 }.eraseToAnyPublisher()
+    }
     var load: () async throws -> Standing.State = { try await persistence.load() }
     var save: (Standing.State) async throws -> Void = { try await persistence.save($0) }
 }

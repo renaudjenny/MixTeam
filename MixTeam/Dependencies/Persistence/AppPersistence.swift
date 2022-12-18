@@ -1,20 +1,21 @@
+import Combine
 import Dependencies
 import Foundation
 import IdentifiedCollections
 import XCTestDynamicOverlay
 
-private struct Persistence {
+private final class Persistence {
     private let appFileName = "MixTeamAppV2_0_0"
 
     var team = TeamPersistence()
     var standing = StandingPersistence()
     var player = PlayerPersistence()
 
-    var saveHandler: ((App.State) -> Void)?
-    private var cache: App.State?
+    @Published var app: App.State?
 
-    mutating func load() async throws -> App.State {
+    func load() async throws -> App.State {
         if let migratedData = try await migrateIfNeeded() { return migratedData }
+        if let app { return app }
 
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
@@ -28,24 +29,24 @@ private struct Persistence {
         return try JSONDecoder().decode(App.State.self, from: data)
     }
 
-    mutating func save(_ state: App.State) async throws {
-        cache = state
-        saveHandler?(state)
+    func save(_ state: App.State) async throws {
+        app = state
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(appFileName, conformingTo: .json))
     }
 
-    private mutating func persistAndReturnExample() async throws -> App.State {
+    private func persistAndReturnExample() async throws -> App.State {
         try await save(.example)
         try await team.save(.example)
         try await standing.save(.example)
         try await player.save(.example)
+        app = .example
         return .example
     }
 
-    private mutating func migrateIfNeeded() async throws -> App.State? {
+    private func migrateIfNeeded() async throws -> App.State? {
         guard let migratedData,
               case let .loaded(standingPlayers) = migratedData.standing.players,
               case let .loaded(teams) = migratedData.teams
@@ -60,21 +61,18 @@ private struct Persistence {
         try await player.save(teamsPlayers + standingPlayers)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
+        app = migratedData
         return migratedData
     }
 }
 
 struct AppPersistence {
     private static var persistence = Persistence()
-    private static var stream: AsyncThrowingStream<App.State, Error> {
-        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
-    }
 
     var team = persistence.team
     var standing = persistence.standing
     var player = persistence.player
 
-    var stream: () -> AsyncThrowingStream<App.State, Error> = { stream }
     var load: () async throws -> App.State = { try await persistence.load() }
     var save: (App.State) async throws -> Void = { try await persistence.save($0) }
 }
@@ -90,15 +88,15 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
     static var liveValue = AppPersistence()
     static var testValue: AppPersistence = {
         var appPersistence = AppPersistence()
-        appPersistence.stream = unimplemented("App Persistence stream unimplemented")
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.team.publisher = unimplemented("Team Persistence publisher unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
+        appPersistence.team.publisher = unimplemented("Standing Persistence publisher unimplemented")
         appPersistence.standing.load = unimplemented("Standing Persistence load unimplemented")
         appPersistence.standing.save = unimplemented("Standing Persistence save unimplemented")
-        appPersistence.player.stream = unimplemented("Standing Persistence stream unimplemented")
+        appPersistence.player.publisher = unimplemented("Player Persistence publisher unimplemented")
         appPersistence.player.load = unimplemented("Player Persistence load unimplemented")
         appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence

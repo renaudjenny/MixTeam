@@ -67,7 +67,7 @@ struct Team: ReducerProtocol {
                         return .loaded(await taskResult(playerIDs: state.playerIDs, players: players))
                     },
                     .run { [state] send in
-                        for try await players in playerPersistence.stream() {
+                        for try await players in playerPersistence.publisher().values {
                             await send(.loaded(await taskResult(playerIDs: state.playerIDs, players: players)))
                         }
                     },

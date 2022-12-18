@@ -60,14 +60,14 @@ struct Standing: ReducerProtocol {
                         return .loaded(await taskResult(standingPlayerIDs: ids, players: players))
                     },
                     .run { send in
-                        for try await standing in standingPersistence.stream() {
+                        for try await standing in standingPersistence.publisher().values {
                             let ids = standing.playerIDs
                             let players = try await playerPersistence.load()
                             await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
                         }
                     },
                     .run { send in
-                        for try await players in playerPersistence.stream() {
+                        for try await players in playerPersistence.publisher().values {
                             let ids = try await standingPersistence.load().playerIDs
                             await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
                         }

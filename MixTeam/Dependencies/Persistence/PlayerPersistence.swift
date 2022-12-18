@@ -1,14 +1,14 @@
+import Combine
 import Foundation
 import IdentifiedCollections
 
-private struct Persistence {
+private final class Persistence {
     private let playerFileName = "MixTeamPlayerV2_0_0"
 
-    var saveHandler: ((IdentifiedArrayOf<Player.State>) -> Void)?
-    private var cache: IdentifiedArrayOf<Player.State>?
+    @Published var players: IdentifiedArrayOf<Player.State>?
 
     func load() async throws -> IdentifiedArrayOf<Player.State> {
-        if let cache { return cache }
+        if let players { return players }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(playerFileName, conformingTo: .json))
@@ -17,21 +17,20 @@ private struct Persistence {
         return try JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: data)
     }
 
-    mutating func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
-        cache = states
-        saveHandler?(states)
+    func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
+        players = states
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
 
-    mutating func updateOrAppend(state: Player.State) async throws {
+    func updateOrAppend(state: Player.State) async throws {
         var states = try await load()
         states.updateOrAppend(state)
         try await save(states)
     }
-    mutating func remove(id: Player.State.ID) async throws {
+    func remove(id: Player.State.ID) async throws {
         var states = try await load()
         states.remove(id: id)
         try await save(states)
@@ -40,11 +39,10 @@ private struct Persistence {
 
 struct PlayerPersistence {
     private static var persistence = Persistence()
-    private static var stream: AsyncThrowingStream<IdentifiedArrayOf<Player.State>, Error> {
-        AsyncThrowingStream { continuation in persistence.saveHandler = { continuation.yield($0) } }
-    }
 
-    var stream: () -> AsyncThrowingStream<IdentifiedArrayOf<Player.State>, Error> = { stream }
+    var publisher: () -> AnyPublisher<IdentifiedArrayOf<Player.State>, Never> = {
+        persistence.$players.compactMap { $0 }.eraseToAnyPublisher()
+    }
     var load: () async throws -> IdentifiedArrayOf<Player.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Player.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Player.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
