@@ -14,16 +14,16 @@ extension DependencyValues {
 }
 
 struct ShufflePlayers {
-    private let shuffle: ([Player.State]) -> [Player.State]
+    private let shuffle: ([Player.State.ID]) -> [Player.State.ID]
 
     static let live = Self { $0.shuffled() }
     static let test = Self {
         XCTFail(#"Unimplemented: @Dependency(\.shufflePlayers)"#)
         return $0.shuffled()
     }
-    static let alphabeticallySorted = Self { $0.sorted(by: { $0.name > $1.name }) }
+    static let alphabeticallySorted = Self { $0.sorted(by: { $0.uuidString > $1.uuidString }) }
 
-    func callAsFunction(players: [Player.State]) -> [Player.State] {
-        shuffle(players)
+    func callAsFunction(playerIDs: [Player.State.ID]) -> [Player.State.ID] {
+        shuffle(playerIDs)
     }
 }

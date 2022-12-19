@@ -1,3 +1,4 @@
+import AsyncAlgorithms
 import ComposableArchitecture
 import SwiftUI
 
@@ -22,14 +23,14 @@ struct App: ReducerProtocol {
         case error(String)
     }
 
-    struct LoadResult: Equatable {
+    struct UpdateResult: Equatable {
         let state: State
         let teams: IdentifiedArrayOf<Team.State>
     }
 
     enum Action: Equatable {
-        case load
-        case loaded(TaskResult<LoadResult>)
+        case bind
+        case update(TaskResult<UpdateResult>)
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
@@ -53,80 +54,66 @@ struct App: ReducerProtocol {
         }
         Reduce { state, action in
             switch action {
-            case .load:
-                return .task {
-                    await .loaded(TaskResult {
-                        let state = try await appPersistence.load()
-                        let teams = try await appPersistence.team.load().filter { state.teamIDs.contains($0.id) }
-                        return LoadResult(state: state, teams: teams)
-                    })
+            case .bind:
+                return .run { send in
+                    let state = try await appPersistence.load()
+                    let teams = try await appPersistence.team.load()
+                    await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
+
+                    let appChannel = appPersistence.channel()
+                    let teamChannel = appPersistence.team.channel()
+                    for await (state, teams) in combineLatest(appChannel, teamChannel) {
+                        await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
+                    }
                 }
-            case let .loaded(result):
+                .animation(.default)
+            case let .update(result):
                 switch result {
                 case let .success(result):
                     state = result.state
-                    state.teams = .loaded(result.teams)
+                    state.teams = .loaded(result.teams.filter { state.teamIDs.contains($0.id) })
                     return .none
                 case let .failure(error):
                     state.teams = .error(error.localizedDescription)
                     return .none
                 }
             case .addTeam:
-                guard case var .loaded(teams) = state.teams else { return .none }
                 let image = MTImage.teams.randomElement() ?? .koala
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
                 let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
-                teams.updateOrAppend(
-                    Team.State(id: uuid(), name: name, color: color, image: image)
-                )
-                state.teams = .loaded(teams)
-                return .fireAndForget { [state, teams] in
+                let team = Team.State(id: uuid(), name: name, color: color, image: image)
+                state.teamIDs.append(team.id)
+                return .fireAndForget { [state] in
+                    try await appPersistence.team.updateOrAppend(team)
                     try await appPersistence.save(state)
-                    try await appPersistence.team.save(teams)
                 }
             case .mixTeam:
                 guard state.teamIDs.count > 1,
-                      case let .loaded(standingPlayers) = state.standing.players,
                       case var .loaded(teams) = state.teams
                 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
-                let teamsPlayers = teams.flatMap { team -> IdentifiedArrayOf<Player.State> in
-                    guard case let .loaded(players) = team.players else { return [] }
-                    return players
-                }
-
-                let players: [Player.State] = standingPlayers + teamsPlayers
-                guard players.count > 0 else { return .none }
+                let playerIDs = state.standing.playerIDs + teams.flatMap(\.playerIDs)
+                guard playerIDs.count > 0 else { return .none }
 
                 teams = IdentifiedArrayOf(uniqueElements: teams.map {
                     var team = $0
-                    team.players = .loaded([])
+                    team.playerIDs = []
                     return team
                 })
 
-                teams = shufflePlayers(players: players).reduce(teams) { teams, player in
+                teams = shufflePlayers(playerIDs: playerIDs).reduce(teams) { teams, playerID in
                     var teams = teams
-                    var player = player
                     guard let lessPlayerTeam = teams
                         .sorted(by: { $0.playerIDs.count < $1.playerIDs.count })
                         .first
                     else { return teams }
-                    player.isStanding = false
-                    player.color = lessPlayerTeam.color
-                    if case var .loaded(players) = teams[id: lessPlayerTeam.id]?.players {
-                        players.updateOrAppend(player)
-                        teams[id: lessPlayerTeam.id]?.players = .loaded(players)
-                    } else {
-                        teams[id: lessPlayerTeam.id]?.players = .loaded([player])
-                    }
+                    teams[id: lessPlayerTeam.id]?.playerIDs.append(playerID)
                     return teams
                 }
-                state.teams = .loaded(teams)
-                state.standing.players = .loaded([])
+                state.standing.playerIDs = []
                 return .fireAndForget { [state, teams] in
-                    try await appPersistence.save(state)
                     try await appPersistence.team.save(teams)
                     try await appPersistence.standing.save(state.standing)
                 }
@@ -135,25 +122,21 @@ struct App: ReducerProtocol {
                 return .none
             case .standing:
                 return .none
+            case let .team(_, .player(id, .moveBack)):
+                state.standing.playerIDs.append(id)
+                return .task { [standing = state.standing] in
+                    try await appPersistence.standing.save(standing)
+                    return .standing(.load)
+                }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
-                guard case var .loaded(standingPlayers) = state.standing.players,
-                      case var .loaded(teams) = state.teams
-                else { return .none }
+                guard case var .loaded(teams) = state.teams else { return .none }
                 for index in indexSet {
-                    guard case var .loaded(players) = teams[index].players else { continue }
-                    players = IdentifiedArrayOf(uniqueElements: players.map {
-                        var player = $0
-                        player.isStanding = true
-                        player.color = .aluminium
-                        return player
-                    })
-                    standingPlayers.append(contentsOf: players)
-                    state.standing.players = .loaded(standingPlayers)
+                    state.standing.playerIDs.append(contentsOf: teams[index].playerIDs)
                 }
                 teams.remove(atOffsets: indexSet)
-                state.teams = .loaded(teams)
+                state.teamIDs.remove(atOffsets: indexSet)
                 return .fireAndForget { [state, teams] in
                     try await appPersistence.save(state)
                     try await appPersistence.standing.save(state.standing)

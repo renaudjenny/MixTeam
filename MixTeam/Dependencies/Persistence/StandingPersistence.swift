@@ -28,9 +28,6 @@ private final class Persistence {
 struct StandingPersistence {
     private static var persistence = Persistence()
 
-    var publisher: () -> AnyPublisher<Standing.State, Never> = {
-        persistence.$standing.compactMap { $0 }.eraseToAnyPublisher()
-    }
     var load: () async throws -> Standing.State = { try await persistence.load() }
     var save: (Standing.State) async throws -> Void = { try await persistence.save($0) }
 }

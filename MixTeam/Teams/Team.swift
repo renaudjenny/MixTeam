@@ -10,12 +10,7 @@ struct Team: ReducerProtocol {
         var playerIDs: [Player.State.ID] = []
         var isArchived = false
 
-        var players: Players = .loading {
-            didSet {
-                guard case let .loaded(players) = players else { return }
-                playerIDs = players.map(\.id)
-            }
-        }
+        var players: Players = .loading
 
         func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
@@ -53,32 +48,10 @@ struct Team: ReducerProtocol {
             case .binding:
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .load:
-                @Sendable func taskResult(
-                    playerIDs: [Player.State.ID],
-                    players: IdentifiedArrayOf<Player.State>
-                ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
-                    await TaskResult {
-                        IdentifiedArrayOf(uniqueElements: players.filter { playerIDs.contains($0.id) })
-                    }
+                return .task { [playerIDs = state.playerIDs] in
+                    let players = try await playerPersistence.load().filter { playerIDs.contains($0.id) }
+                    return .loaded(await TaskResult { IdentifiedArrayOf(uniqueElements: players) })
                 }
-                return .merge(
-                    .task { [state] in
-                        let players = try await playerPersistence.load()
-                        return .loaded(await taskResult(playerIDs: state.playerIDs, players: players))
-                    },
-                    .run { [state] send in
-                        for try await players in playerPersistence.publisher().values {
-                            await send(.loaded(await taskResult(playerIDs: state.playerIDs, players: players)))
-                        }
-                    },
-                    .run { [state] send in
-                        for try await teams in teamPersistence.publisher().values {
-                            guard let team = teams[id: state.id], team != state else { return }
-                            let players = try await playerPersistence.load()
-                            await send(.loaded(await taskResult(playerIDs: team.playerIDs, players: players)))
-                        }
-                    }
-                )
                 .animation(.default)
             case let .loaded(result):
                 switch result {
@@ -92,6 +65,14 @@ struct Team: ReducerProtocol {
                 case let .failure(error):
                     state.players = .error(error.localizedDescription)
                     return .none
+                }
+            case let .player(id, .moveBack):
+                state.playerIDs.removeAll { $0 == id }
+                return .task { [state] in
+                    var teams = try await teamPersistence.load()
+                    teams.updateOrAppend(state)
+                    try await teamPersistence.save(teams)
+                    return .load
                 }
             case .player:
                 return .none

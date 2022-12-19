@@ -45,34 +45,13 @@ struct Standing: ReducerProtocol {
                     try await standingPersistence.save(state)
                 }
             case .load:
-                @Sendable func taskResult(
-                    standingPlayerIDs: [Player.State.ID],
-                    players: IdentifiedArrayOf<Player.State>
-                ) async -> TaskResult<IdentifiedArrayOf<Player.State>> {
-                    await TaskResult {
-                        IdentifiedArrayOf(uniqueElements: players.filter { standingPlayerIDs.contains($0.id) })
-                    }
+                return .task {
+                    let ids = try await standingPersistence.load().playerIDs
+                    let players = try await playerPersistence.load()
+                    return .loaded(await TaskResult {
+                        IdentifiedArrayOf(uniqueElements: players.filter { ids.contains($0.id) })
+                    })
                 }
-                return .merge(
-                    .task {
-                        let ids = try await standingPersistence.load().playerIDs
-                        let players = try await playerPersistence.load()
-                        return .loaded(await taskResult(standingPlayerIDs: ids, players: players))
-                    },
-                    .run { send in
-                        for try await standing in standingPersistence.publisher().values {
-                            let ids = standing.playerIDs
-                            let players = try await playerPersistence.load()
-                            await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
-                        }
-                    },
-                    .run { send in
-                        for try await players in playerPersistence.publisher().values {
-                            let ids = try await standingPersistence.load().playerIDs
-                            await send(.loaded(await taskResult(standingPlayerIDs: ids, players: players)))
-                        }
-                    }
-                )
                 .animation(.default)
             case let .loaded(result):
                 switch result {
