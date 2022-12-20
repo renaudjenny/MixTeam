@@ -54,7 +54,7 @@ struct AppView: View {
             .sheet(isPresented: $isAboutPresented) {
                 aboutView
             }
-            .task { @MainActor in viewStore.send(.bind) }
+            .task { viewStore.send(.bind) }
         }
     }
 

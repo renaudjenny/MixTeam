@@ -10,7 +10,7 @@ struct StandingView: View {
                 header
                 playersView
             }
-            .task { @MainActor in viewStore.send(.load) }
+            .task { viewStore.send(.bind) }
         }
     }
 

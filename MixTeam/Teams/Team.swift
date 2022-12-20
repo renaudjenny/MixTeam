@@ -1,3 +1,4 @@
+import AsyncAlgorithms
 import ComposableArchitecture
 import Foundation
 
@@ -5,7 +6,7 @@ struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable, Hashable {
         let id: UUID
         @BindableState var name: String = ""
-        var color: MTColor = .aluminium
+        @BindableState var color: MTColor = .aluminium
         @BindableState var image: MTImage = .unknown
         var playerIDs: [Player.State.ID] = []
         var isArchived = false
@@ -21,11 +22,15 @@ struct Team: ReducerProtocol {
         case error(String)
     }
 
+    struct UpdateResult: Equatable {
+        let teams: IdentifiedArrayOf<Team.State>
+        let players: IdentifiedArrayOf<Player.State>
+    }
+
     enum Action: BindableAction, Equatable {
+        case bind
+        case update(TaskResult<UpdateResult>)
         case binding(BindingAction<State>)
-        case setColor(MTColor)
-        case load
-        case loaded(TaskResult<IdentifiedArrayOf<Player.State>>)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -37,42 +42,45 @@ struct Team: ReducerProtocol {
         BindingReducer()
         Reduce { state, action in
             switch action {
-            case let .setColor(color):
-                state.color = color
-                guard case var .loaded(players) = state.players else { return .none }
-                for id in players.map(\.id) {
-                    players[id: id]?.color = color
-                }
-                state.players = .loaded(players)
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
-            case .binding:
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
-            case .load:
-                return .task { [playerIDs = state.playerIDs] in
-                    let players = try await playerPersistence.load().filter { playerIDs.contains($0.id) }
-                    return .loaded(await TaskResult { IdentifiedArrayOf(uniqueElements: players) })
+            case .bind:
+                return .run { send in
+                    let teams = try await teamPersistence.load()
+                    let players = try await playerPersistence.load()
+                    await send(.update(TaskResult { @MainActor in UpdateResult(teams: teams, players: players) }))
+
+                    let teamChannel = teamPersistence.channel()
+                    let playerChannel = playerPersistence.channel()
+                    for await (teams, players) in combineLatest(teamChannel, playerChannel) {
+                        await send(.update(TaskResult { @MainActor in UpdateResult(teams: teams, players: players) }))
+                    }
+
                 }
                 .animation(.default)
-            case let .loaded(result):
+            case let .update(result):
                 switch result {
-                case let .success(players):
-                    state.players = .loaded(IdentifiedArrayOf(uniqueElements: players.map {
-                        var player = $0
-                        player.color = state.color
-                        return player
-                    }))
+                case let .success(result):
+                    guard let team = result.teams.first(where: { $0.id == state.id }) else { return .none }
+                    state = team
+                    let players = result.players
+                        .filter { team.playerIDs.contains($0.id) }
+                        .map {
+                            var player = $0
+                            player.color = state.color
+                            player.isStanding = false
+                            return player
+                        }
+                    state.players = .loaded(IdentifiedArrayOf(uniqueElements: players))
                     return .none
                 case let .failure(error):
                     state.players = .error(error.localizedDescription)
                     return .none
                 }
+            case .binding:
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case let .player(id, .moveBack):
                 state.playerIDs.removeAll { $0 == id }
-                return .task { [state] in
-                    var teams = try await teamPersistence.load()
-                    teams.updateOrAppend(state)
-                    try await teamPersistence.save(teams)
-                    return .load
+                return .fireAndForget { [state] in
+                    try await teamPersistence.updateOrAppend(state)
                 }
             case .player:
                 return .none

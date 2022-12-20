@@ -28,29 +28,10 @@ struct Player: ReducerProtocol {
                 return .fireAndForget { [state] in try await appPersistence.player.updateOrAppend(state) }
             case .setEdit:
                 return .none
-            // TODO: remove delete and moveBack from player Action, it should be rather done by Team/Standing
             case .delete:
-                return .fireAndForget { [state] in try await appPersistence.player.remove(state.id) }
+                return .none
             case .moveBack:
                 return .none
-//                return .fireAndForget { [state] in
-//                    let players = try await appPersistence.player.load()
-//
-//                    var teams = try await appPersistence.team.load()
-//                    guard var team = teams.first(where: { $0.playerIDs.contains(state.id) }) else { return }
-//                    var teamPlayers = players.filter { team.playerIDs.contains($0.id) }
-//                    teamPlayers.remove(state)
-//                    team.players = .loaded(teamPlayers)
-//                    teams.updateOrAppend(team)
-//
-//                    var standing = try await appPersistence.standing.load()
-//                    var standingPlayers = players.filter { standing.playerIDs.contains($0.id) }
-//                    standingPlayers.updateOrAppend(state)
-//                    standing.players = .loaded(standingPlayers)
-//
-//                    try await appPersistence.team.save(teams)
-//                    try await appPersistence.standing.save(standing)
-//                }
             }
         }
     }

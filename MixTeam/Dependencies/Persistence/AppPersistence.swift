@@ -102,9 +102,10 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.team.channel = unimplemented("Team Persistence channel unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
+        appPersistence.standing.channel = unimplemented("Standing Persistence channel unimplemented")
         appPersistence.standing.load = unimplemented("Standing Persistence load unimplemented")
         appPersistence.standing.save = unimplemented("Standing Persistence save unimplemented")
-        appPersistence.player.publisher = unimplemented("Player Persistence publisher unimplemented")
+        appPersistence.player.channel = unimplemented("Player Persistence channel unimplemented")
         appPersistence.player.load = unimplemented("Player Persistence load unimplemented")
         appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence

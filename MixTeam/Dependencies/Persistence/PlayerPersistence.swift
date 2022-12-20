@@ -1,36 +1,45 @@
-import Combine
+import AsyncAlgorithms
 import Foundation
 import IdentifiedCollections
 
-private final class Persistence {
+private struct Persistence {
     private let playerFileName = "MixTeamPlayerV2_0_0"
 
-    @Published var players: IdentifiedArrayOf<Player.State>?
+    let channel = AsyncChannel<IdentifiedArrayOf<Player.State>>()
+    var value: IdentifiedArrayOf<Player.State>? {
+        didSet {
+            if let value {
+                Task { [channel, value] in await channel.send(value) }
+            }
+        }
+    }
 
-    func load() async throws -> IdentifiedArrayOf<Player.State> {
-        if let players { return players }
+    mutating func load() async throws -> IdentifiedArrayOf<Player.State> {
+        if let value { return value }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(playerFileName, conformingTo: .json))
         else { return .example }
 
-        return try JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: data)
+        let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: data)
+        value = decodedValue
+        return decodedValue
     }
 
-    func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
-        players = states
+    mutating func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
+        value = states
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
 
-    func updateOrAppend(state: Player.State) async throws {
+    mutating func updateOrAppend(state: Player.State) async throws {
         var states = try await load()
         states.updateOrAppend(state)
         try await save(states)
     }
-    func remove(id: Player.State.ID) async throws {
+    mutating func remove(id: Player.State.ID) async throws {
         var states = try await load()
         states.remove(id: id)
         try await save(states)
@@ -40,9 +49,7 @@ private final class Persistence {
 struct PlayerPersistence {
     private static var persistence = Persistence()
 
-    var publisher: () -> AnyPublisher<IdentifiedArrayOf<Player.State>, Never> = {
-        persistence.$players.compactMap { $0 }.eraseToAnyPublisher()
-    }
+    var channel: () -> AsyncChannel<IdentifiedArrayOf<Player.State>> = { persistence.channel }
     var load: () async throws -> IdentifiedArrayOf<Player.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Player.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Player.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }

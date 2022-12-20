@@ -1,13 +1,20 @@
-import Combine
+import AsyncAlgorithms
 import Foundation
 
-private final class Persistence {
+private struct Persistence {
     private let standingFileName = "MixTeamStandingV2_0_0"
 
-    @Published var standing: Standing.State?
+    let channel = AsyncChannel<Standing.State>()
+    var value: Standing.State? {
+        didSet {
+            if let value {
+                Task { [channel, value] in await channel.send(value) }
+            }
+        }
+    }
 
-    func load() async throws -> Standing.State {
-        if let standing { return standing }
+    mutating func load() async throws -> Standing.State {
+        if let value { return value }
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(standingFileName, conformingTo: .json))
@@ -16,8 +23,8 @@ private final class Persistence {
         return try JSONDecoder().decode(Standing.State.self, from: data)
     }
 
-    func save(_ state: Standing.State) async throws {
-        standing = state
+    mutating func save(_ state: Standing.State) async throws {
+        value = state
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
@@ -28,6 +35,7 @@ private final class Persistence {
 struct StandingPersistence {
     private static var persistence = Persistence()
 
+    var channel: () -> AsyncChannel<Standing.State> = { persistence.channel }
     var load: () async throws -> Standing.State = { try await persistence.load() }
     var save: (Standing.State) async throws -> Void = { try await persistence.save($0) }
 }

@@ -81,7 +81,7 @@ struct EditTeamView: View {
 
     private func color(_ color: MTColor) -> some View {
         WithViewStore(store) { viewStore in
-            Button { viewStore.send(.setColor(color)) } label: {
+            Button { viewStore.send(.set(\.$color, color)) } label: {
                 Color.clear
                     .frame(width: 48, height: 48)
                     .overlay(Splash(animatableData: viewStore.color == color ? 1 : 0).stroke(lineWidth: 2.5))

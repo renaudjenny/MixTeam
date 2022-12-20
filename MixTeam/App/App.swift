@@ -58,12 +58,12 @@ struct App: ReducerProtocol {
                 return .run { send in
                     let state = try await appPersistence.load()
                     let teams = try await appPersistence.team.load()
-                    await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
+                    await send(.update(TaskResult { @MainActor in UpdateResult(state: state, teams: teams) }))
 
                     let appChannel = appPersistence.channel()
                     let teamChannel = appPersistence.team.channel()
                     for await (state, teams) in combineLatest(appChannel, teamChannel) {
-                        await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
+                        await send(.update(TaskResult { @MainActor in UpdateResult(state: state, teams: teams) }))
                     }
                 }
                 .animation(.default)
@@ -124,9 +124,8 @@ struct App: ReducerProtocol {
                 return .none
             case let .team(_, .player(id, .moveBack)):
                 state.standing.playerIDs.append(id)
-                return .task { [standing = state.standing] in
+                return .fireAndForget { [standing = state.standing] in
                     try await appPersistence.standing.save(standing)
-                    return .standing(.load)
                 }
             case .team:
                 return .none
