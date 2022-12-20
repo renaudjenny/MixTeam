@@ -3,7 +3,7 @@ import ComposableArchitecture
 import Foundation
 
 struct Team: ReducerProtocol {
-    struct State: Equatable, Identifiable, Hashable {
+    struct State: Equatable, Identifiable {
         let id: UUID
         @BindableState var name: String = ""
         @BindableState var color: MTColor = .aluminium
@@ -12,8 +12,6 @@ struct Team: ReducerProtocol {
         var isArchived = false
 
         var players: Players = .loading
-
-        func hash(into hasher: inout Hasher) { hasher.combine(id) }
     }
 
     enum Players: Equatable {
@@ -43,15 +41,15 @@ struct Team: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .bind:
-                return .run { send in
+                return .run { @MainActor send in
                     let teams = try await teamPersistence.load()
                     let players = try await playerPersistence.load()
-                    await send(.update(TaskResult { @MainActor in UpdateResult(teams: teams, players: players) }))
+                    await send(.update(TaskResult { UpdateResult(teams: teams, players: players) }))
 
                     let teamChannel = teamPersistence.channel()
                     let playerChannel = playerPersistence.channel()
                     for await (teams, players) in combineLatest(teamChannel, playerChannel) {
-                        await send(.update(TaskResult { @MainActor in UpdateResult(teams: teams, players: players) }))
+                        await send(.update(TaskResult { UpdateResult(teams: teams, players: players) }))
                     }
 
                 }
@@ -62,7 +60,7 @@ struct Team: ReducerProtocol {
                     guard let team = result.teams.first(where: { $0.id == state.id }) else { return .none }
                     state = team
                     let players = result.players
-                        .filter { team.playerIDs.contains($0.id) }
+                        .filter { state.playerIDs.contains($0.id) }
                         .map {
                             var player = $0
                             player.color = state.color

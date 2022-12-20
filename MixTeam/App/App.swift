@@ -7,13 +7,8 @@ struct App: ReducerProtocol {
         var teamIDs: [Team.State.ID] = []
         var _scores = Scores.State()
 
-        var standing = Standing.State(playerIDs: [])
-        var teams: Teams = .loading {
-            didSet {
-                guard case let .loaded(teams) = teams else { return }
-                teamIDs = teams.map(\.id)
-            }
-        }
+        var standing = Standing.State()
+        var teams: Teams = .loading
         var notEnoughTeamsAlert: AlertState<Action>?
     }
 
@@ -55,15 +50,15 @@ struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .bind:
-                return .run { send in
+                return .run { @MainActor send in
                     let state = try await appPersistence.load()
                     let teams = try await appPersistence.team.load()
-                    await send(.update(TaskResult { @MainActor in UpdateResult(state: state, teams: teams) }))
+                    await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
 
                     let appChannel = appPersistence.channel()
                     let teamChannel = appPersistence.team.channel()
                     for await (state, teams) in combineLatest(appChannel, teamChannel) {
-                        await send(.update(TaskResult { @MainActor in UpdateResult(state: state, teams: teams) }))
+                        await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
                     }
                 }
                 .animation(.default)

@@ -3,14 +3,9 @@ import ComposableArchitecture
 
 struct Standing: ReducerProtocol {
     struct State: Equatable {
-        var playerIDs: [Player.State.ID]
+        var playerIDs: [Player.State.ID] = []
 
-        var players: Players = .loading {
-            didSet {
-                guard case let .loaded(players) = players else { return }
-                playerIDs = players.map(\.id)
-            }
-        }
+        var players: Players = .loading
     }
 
     enum Players: Equatable {
@@ -39,15 +34,15 @@ struct Standing: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .bind:
-                return .run { send in
+                return .run { @MainActor send in
                     let state = try await standingPersistence.load()
                     let players = try await playerPersistence.load()
-                    await send(.updated(TaskResult { @MainActor in UpdatedResult(state: state, players: players) }))
+                    await send(.updated(TaskResult { UpdatedResult(state: state, players: players) }))
 
                     let standingChannel = standingPersistence.channel()
                     let playerChannel = playerPersistence.channel()
                     for await (state, players) in combineLatest(standingChannel, playerChannel) {
-                        await send(.updated(TaskResult { @MainActor in UpdatedResult(state: state, players: players) }))
+                        await send(.updated(TaskResult { UpdatedResult(state: state, players: players) }))
                     }
                 }
                 .animation(.default)
@@ -80,6 +75,10 @@ struct Standing: ReducerProtocol {
                 return .fireAndForget { [state] in
                     try await playerPersistence.updateOrAppend(player)
                     try await standingPersistence.save(state)
+                }
+            case let .player(id, .delete):
+                return .fireAndForget {
+                    try await playerPersistence.remove(id)
                 }
             case .player:
                 return .none
