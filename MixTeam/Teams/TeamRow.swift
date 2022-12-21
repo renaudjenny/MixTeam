@@ -112,12 +112,10 @@ struct TeamRowUX_Previews: PreviewProvider {
             WithViewStore(store) { viewStore in
                 NavigationView {
                     List {
-                        SwitchStore(store.scope(state: \.teams, action: App.Action.team(id:action:))) {
-                            CaseLet(state: /App.Teams.loaded) { (store: Store<TeamsState, TeamAction>) in
-                                ForEachStore(store, content: TeamRow.init)
-                                    .listRowSeparator(.hidden)
-                            }
-                        }
+                        ForEachStore(
+                            store.scope(state: \.teamRows, action: App.Action.teamRow),
+                            content: TeamRowView.init
+                        )
                         Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                             Text("Add Team")
                         }

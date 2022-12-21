@@ -101,11 +101,10 @@ extension Store where State == Scores.State, Action == Scores.Action {
 
 extension Scores.State {
     static var preview: Self {
-        guard case let .loaded(teams) = App.State.example.teams else { return Self() }
-        return Self(teams: teams)
+        return Self(teams: .example)
     }
     static func previewWithScores(count: Int) -> Self {
-        guard case let .loaded(teams) = App.State.example.teams else { return Self() }
+        let teams: IdentifiedArrayOf<Team.State> = .example
         let uuid = UUIDGenerator.incrementing
         return Scores.State(teams: teams, rounds: IdentifiedArrayOf(uniqueElements: (1...count).map { i in
             Round.State(

@@ -15,7 +15,6 @@ struct Standing: ReducerProtocol {
     }
 
     struct UpdatedResult: Equatable {
-        let state: Standing.State
         let players: IdentifiedArrayOf<Player.State>
     }
 
@@ -27,29 +26,26 @@ struct Standing: ReducerProtocol {
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence) var appPersistence
     @Dependency(\.appPersistence.player) var playerPersistence
-    @Dependency(\.appPersistence.standing) var standingPersistence
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .bind:
                 return .run { @MainActor send in
-                    let state = try await standingPersistence.load()
                     let players = try await playerPersistence.load()
-                    await send(.updated(TaskResult { UpdatedResult(state: state, players: players) }))
+                    await send(.updated(TaskResult { UpdatedResult(players: players) }))
 
-                    let standingChannel = standingPersistence.channel()
                     let playerChannel = playerPersistence.channel()
-                    for await (state, players) in combineLatest(standingChannel, playerChannel) {
-                        await send(.updated(TaskResult { UpdatedResult(state: state, players: players) }))
+                    for await players in playerChannel {
+                        await send(.updated(TaskResult { UpdatedResult(players: players) }))
                     }
                 }
                 .animation(.default)
             case let .updated(result):
                 switch result {
                 case let .success(result):
-                    state = result.state
                     let players = result.players
                         .filter { state.playerIDs.contains($0.id) }
                         .map {
@@ -65,19 +61,19 @@ struct Standing: ReducerProtocol {
                     return .none
                 }
             case .createPlayer:
-                guard case var .loaded(players) = state.players else { return .none }
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
                 let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
-                players.updateOrAppend(player)
-                state.players = .loaded(players)
+                state.playerIDs.append(player.id)
 
                 return .fireAndForget { [state] in
+                    try await appPersistence.saveStanding(state)
                     try await playerPersistence.updateOrAppend(player)
-                    try await standingPersistence.save(state)
                 }
             case let .player(id, .delete):
-                return .fireAndForget {
+                state.playerIDs.removeAll(where: { $0 == id })
+                return .fireAndForget { [state] in
+                    try await appPersistence.saveStanding(state)
                     try await playerPersistence.remove(id)
                 }
             case .player:

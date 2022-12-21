@@ -32,6 +32,10 @@ var migratedData: App.State? {
             )
         }
 
+        var rowState: TeamRow1.State {
+            TeamRow1.State(id: id, row: .loaded(team: state))
+        }
+
         var standing: Standing.State {
             Standing.State(
                 playerIDs: players.map(\.id),
@@ -84,18 +88,19 @@ var migratedData: App.State? {
     let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
     if let teams, let rounds, let standing = teams.first?.standing {
-        let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+        let teamRows = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.rowState))
         let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
+        let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
         let scores = Scores.State(teams: teams, rounds: rounds)
 
         return App.State(
-            _scores: scores,
+            teamRows: teamRows,
             standing: standing,
-            teams: .loaded(teams)
+            _scores: scores
         )
     } else if let teams, let standing = teams.first?.standing {
-        let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
-        return App.State(standing: standing, teams: .loaded(teams))
+        let teamRows = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.rowState))
+        return App.State(teamRows: teamRows, standing: standing)
     } else if let rounds {
         let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
         return App.State(_scores: Scores.State(teams: [], rounds: rounds))

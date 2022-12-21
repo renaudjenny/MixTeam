@@ -54,7 +54,7 @@ struct AppView: View {
             .sheet(isPresented: $isAboutPresented) {
                 aboutView
             }
-            .task { viewStore.send(.bind) }
+            .task { viewStore.send(.task) }
         }
     }
 
@@ -72,45 +72,7 @@ struct AppView: View {
     private typealias TeamsState = IdentifiedArrayOf<Team.State>
 
     private var teams: some View {
-        WithViewStore(store.stateless) { viewStore in
-            SwitchStore(store.scope(state: \.teams, action: App.Action.team(id:action:))) {
-                CaseLet(state: /App.Teams.loading) { (_: Store<Void, TeamAction>) in
-                    loadingView
-                }
-                CaseLet(state: /App.Teams.loaded) { (store: Store<TeamsState, TeamAction>) in
-                    ForEachStore(store, content: TeamRow.init)
-                        .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
-                }
-                CaseLet(state: /App.Teams.error) { (store: Store<String, TeamAction>) in
-                    WithViewStore(store.actionless) { viewStore in
-                        Text(viewStore.state)
-                    }
-                }
-            }
-        }
-    }
-
-    private var loadingView: some View {
-        WithViewStore(store) { viewStore in
-            let teamsCount = viewStore.teamIDs.count > 0 ? viewStore.teamIDs.count : 1
-            ForEach(0..<teamsCount, id: \.self) { _ in
-                HStack {
-                    Image(mtImage: .unknown)
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                        .redacted(reason: .placeholder)
-                    Text("Placeholder name")
-                        .font(.title2)
-                        .fontWeight(.black)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 16)
-                        .redacted(reason: .placeholder)
-                }
-                .dashedCardStyle(color: .aluminium)
-                .backgroundAndForeground(color: .aluminium)
-            }
-        }
+        ForEachStore(store.scope(state: \.teamRows, action: App.Action.teamRow), content: TeamRowView.init)
     }
 
     private var addTeamButton: some View {

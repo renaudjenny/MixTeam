@@ -89,8 +89,9 @@ extension App.State {
     var scores: Scores.State {
         get {
             // TODO: it's not correct, address that later
-            guard case let .loaded(teams) = teams
-            else { return Scores.State(teams: [], rounds: _scores.rounds) }
+            let teams = IdentifiedArrayOf(uniqueElements: teamRows.compactMap { teamRow -> Team.State? in
+                if case let .loaded(team) = teamRow.row { return team } else { return nil }
+            })
             return Scores.State(
                 teams: teams,
                 rounds: _scores.rounds

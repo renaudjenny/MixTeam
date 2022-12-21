@@ -4,33 +4,21 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var teamIDs: [Team.State.ID] = []
+        var teamRows: IdentifiedArrayOf<TeamRow1.State> = []
+        var standing = Standing.State()
         var _scores = Scores.State()
 
-        var standing = Standing.State()
-        var teams: Teams = .loading
         var notEnoughTeamsAlert: AlertState<Action>?
     }
 
-    enum Teams: Equatable {
-        case loading
-        case loaded(IdentifiedArrayOf<Team.State>)
-        case error(String)
-    }
-
-    struct UpdateResult: Equatable {
-        let state: State
-        let teams: IdentifiedArrayOf<Team.State>
-    }
-
     enum Action: Equatable {
-        case bind
-        case update(TaskResult<UpdateResult>)
+        case task
+        case update(TaskResult<State>)
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
-        case team(id: Team.State.ID, action: Team.Action)
+        case teamRow(id: Team.State.ID, action: TeamRow1.Action)
         case deleteTeams(IndexSet)
         case scores(Scores.Action)
     }
@@ -39,7 +27,6 @@ struct App: ReducerProtocol {
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
-    private enum LoadTaskID {}
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
@@ -49,27 +36,18 @@ struct App: ReducerProtocol {
         }
         Reduce { state, action in
             switch action {
-            case .bind:
-                return .run { @MainActor send in
-                    let state = try await appPersistence.load()
-                    let teams = try await appPersistence.team.load()
-                    await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
-
-                    let appChannel = appPersistence.channel()
-                    let teamChannel = appPersistence.team.channel()
-                    for await (state, teams) in combineLatest(appChannel, teamChannel) {
-                        await send(.update(TaskResult { UpdateResult(state: state, teams: teams) }))
-                    }
+            case .task:
+                return .task {
+                    return await .update(TaskResult { try await appPersistence.load() })
                 }
                 .animation(.default)
             case let .update(result):
                 switch result {
                 case let .success(result):
-                    state = result.state
-                    state.teams = .loaded(result.teams.filter { state.teamIDs.contains($0.id) })
+                    state = result
                     return .none
                 case let .failure(error):
-                    state.teams = .error(error.localizedDescription)
+                    // TODO: do something to show an error screen
                     return .none
                 }
             case .addTeam:
@@ -77,18 +55,19 @@ struct App: ReducerProtocol {
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
                 let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 let team = Team.State(id: uuid(), name: name, color: color, image: image)
-                state.teamIDs.append(team.id)
+                state.teamRows.append(TeamRow1.State(id: team.id))
                 return .fireAndForget { [state] in
-                    try await appPersistence.team.updateOrAppend(team)
                     try await appPersistence.save(state)
+                    try await appPersistence.team.updateOrAppend(team)
                 }
             case .mixTeam:
-                guard state.teamIDs.count > 1,
-                      case var .loaded(teams) = state.teams
-                else {
+                guard state.teamRows.count > 1 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
+                var teams = IdentifiedArrayOf(uniqueElements: state.teamRows.compactMap { teamRow -> Team.State? in
+                    if case let .loaded(team) = teamRow.row { return team } else { return nil }
+                })
                 let playerIDs = state.standing.playerIDs + teams.flatMap(\.playerIDs)
                 guard playerIDs.count > 0 else { return .none }
 
@@ -110,51 +89,48 @@ struct App: ReducerProtocol {
                 state.standing.playerIDs = []
                 return .fireAndForget { [state, teams] in
                     try await appPersistence.team.save(teams)
-                    try await appPersistence.standing.save(state.standing)
+                    try await appPersistence.save(state)
                 }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
             case .standing:
                 return .none
-            case let .team(_, .player(id, .moveBack)):
+            case let .teamRow(_,.team(.player(id, .moveBack))):
                 state.standing.playerIDs.append(id)
-                return .fireAndForget { [standing = state.standing] in
-                    try await appPersistence.standing.save(standing)
+                return .fireAndForget { [state] in
+                    try await appPersistence.save(state)
                 }
-            case .team:
+            case .teamRow:
                 return .none
             case let .deleteTeams(indexSet):
-                guard case var .loaded(teams) = state.teams else { return .none }
+                var teams = IdentifiedArrayOf(uniqueElements: state.teamRows.compactMap { teamRow -> Team.State? in
+                    if case let .loaded(team) = teamRow.row { return team } else { return nil }
+                })
                 for index in indexSet {
                     state.standing.playerIDs.append(contentsOf: teams[index].playerIDs)
                 }
                 teams.remove(atOffsets: indexSet)
-                state.teamIDs.remove(atOffsets: indexSet)
+                state.teamRows.remove(atOffsets: indexSet)
                 return .fireAndForget { [state, teams] in
                     try await appPersistence.save(state)
-                    try await appPersistence.standing.save(state.standing)
                     try await appPersistence.team.save(teams)
                 }
             case .scores:
                 return .none
             }
         }
-        Scope(state: \.teams, action: /Action.team) {
-            EmptyReducer()
-                .ifCaseLet(/Teams.loaded, action: /.self) {
-                    EmptyReducer()
-                        .forEach(\.self, action: /.self) {
-                            Team()
-                        }
-                }
+        .forEach(\.teamRows, action: /Action.teamRow) {
+            TeamRow1()
         }
+//        ._printChanges()
     }
 }
 
 extension App.State: Codable {
     enum CodingKeys: CodingKey {
-        case teamIDs
+        case teamRows
+        case standing
         case _scores
     }
 }
