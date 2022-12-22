@@ -5,12 +5,9 @@ struct StandingView: View {
     let store: StoreOf<Standing>
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Section {
-                header
-                playersView
-            }
-            .task { viewStore.send(.bind) }
+        Section {
+            header
+            ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
         }
     }
 
@@ -36,44 +33,6 @@ struct StandingView: View {
             .backgroundAndForeground(color: .aluminium)
         }
     }
-
-    private typealias PlayerAction = (Player.State.ID, Player.Action)
-    private typealias PlayersState = IdentifiedArrayOf<Player.State>
-
-    private var playersView: some View {
-        SwitchStore(store.scope(state: \.players, action: Standing.Action.player(id:action:))) {
-            CaseLet(state: /Standing.Players.loading) { (_: Store<Void, PlayerAction>) in
-                loadingView
-            }
-            CaseLet(state: /Standing.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
-                ForEachStore(store, content: PlayerRow.init)
-            }
-            CaseLet(state: /Standing.Players.error) { (store: Store<String, PlayerAction>) in
-                WithViewStore(store.actionless) { viewStore in
-                    Text(viewStore.state)
-                }
-            }
-        }
-    }
-
-    private var loadingView: some View {
-        WithViewStore(store) { viewStore in
-            let playersCount = viewStore.playerIDs.count > 0 ? viewStore.playerIDs.count : 1
-            ForEach(0..<playersCount, id: \.self) { _ in
-                HStack {
-                    Image(mtImage: .unknown)
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                        .redacted(reason: .placeholder)
-                    Text("Placeholder name")
-                        .fontWeight(.medium)
-                        .redacted(reason: .placeholder)
-                }
-                .backgroundAndForeground(color: .aluminium)
-                .padding(.leading, 24)
-            }
-        }
-    }
 }
 
 #if DEBUG
@@ -96,11 +55,10 @@ extension Store where State == Standing.State, Action == Standing.Action {
 private extension Standing.State {
     static var preview: Self {
         let teams: IdentifiedArrayOf<Team.State> = .example
-        guard case let .loaded(players) = teams[0].players
+        guard var player = teams.first?.players[0]
         else { fatalError("Cannot load Example first team players") }
-        var player = players[0]
         player.isStanding = true
-        return Self(playerIDs: [player.id], players: .loaded([player]))
+        return Self(players: [player])
 
     }
 }

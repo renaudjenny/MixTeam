@@ -101,7 +101,7 @@ extension Store where State == Scores.State, Action == Scores.Action {
 
 extension Scores.State {
     static var preview: Self {
-        return Self(teams: .example)
+        Self(teams: .example)
     }
     static func previewWithScores(count: Int) -> Self {
         let teams: IdentifiedArrayOf<Team.State> = .example

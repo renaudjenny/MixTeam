@@ -16,7 +16,7 @@ struct AppView: View {
                     Group {
                         StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                         mixTeamButton
-                        teams
+                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                         addTeamButton
                     }
                     .listRowBackground(Color.clear)
@@ -66,13 +66,6 @@ struct AppView: View {
             .buttonStyle(.dashed(color: .aluminium))
             .frame(maxWidth: .infinity)
         }
-    }
-
-    private typealias TeamAction = (Team.State.ID, Team.Action)
-    private typealias TeamsState = IdentifiedArrayOf<Team.State>
-
-    private var teams: some View {
-        ForEachStore(store.scope(state: \.teamRows, action: App.Action.teamRow), content: TeamRowView.init)
     }
 
     private var addTeamButton: some View {

@@ -60,18 +60,11 @@ private struct Persistence {
     }
 
     private mutating func migrateIfNeeded() async throws {
-        guard let migratedData, case let .loaded(standingPlayers) = migratedData.standing.players else { return }
-        let teams = IdentifiedArrayOf(uniqueElements: migratedData.teamRows.compactMap { teamRow -> Team.State? in
-            if case let .loaded(team) = teamRow.row { return team } else { return nil }
-        })
-        
+        guard let migratedData else { return }
         try await save(migratedData)
-        try await team.save(teams)
-        let teamsPlayers: [Player.State] = teams.map(\.players).flatMap {
-            guard case let .loaded(players) = $0 else { return IdentifiedArrayOf<Player.State>(uniqueElements: []) }
-            return players
-        }
-        try await player.save(teamsPlayers + standingPlayers)
+        try await team.save(migratedData.teams)
+        let teamsPlayers: [Player.State] = migratedData.teams.flatMap(\.players)
+        try await player.save(teamsPlayers + migratedData.standing.players)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
         value = migratedData
@@ -92,9 +85,30 @@ struct AppPersistence {
 
 extension App.State {
     static var example: Self {
-        let teams: IdentifiedArrayOf<Team.State> = .example
-        let teamRows = IdentifiedArrayOf(uniqueElements: teams.map(\.id).map { TeamRow1.State(id: $0) })
-        return Self(teamRows: teamRows, standing: .example)
+        Self(teams: .example, standing: .example)
+    }
+}
+
+extension App.State: Codable {
+    enum CodingKeys: CodingKey {
+        case teamIDs
+        case standing
+        case _scores
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let teamIDs = try container.decode([Team.State.ID].self, forKey: .teamIDs)
+        teams = IdentifiedArrayOf(uniqueElements: teamIDs.map { Team.State(id: $0) })
+        standing = try container.decode(Standing.State.self, forKey: .standing)
+        _scores = try container.decode(Scores.State.self, forKey: ._scores)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(teams.map(\.id), forKey: .teamIDs)
+        try container.encode(standing, forKey: .standing)
+        try container.encode(_scores, forKey: ._scores)
     }
 }
 
@@ -105,7 +119,24 @@ extension Standing.State {
             player.isStanding = true
             return player
         })
-        return Self(playerIDs: players.map(\.id), players: .loaded(players))
+        return Self(players: players)
+    }
+}
+
+extension Standing.State: Codable {
+    enum CodingKeys: CodingKey {
+        case playerIDs
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let playerIDs = try container.decode([Player.State.ID].self, forKey: .playerIDs)
+        players = IdentifiedArrayOf(uniqueElements: playerIDs.map { Player.State(id: $0) })
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(players.map(\.id), forKey: .playerIDs)
     }
 }
 

@@ -56,6 +56,38 @@ struct TeamPersistence {
     var remove: (Team.State) async throws -> Void = { try await persistence.remove(state: $0) }
 }
 
+extension Team.State: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case name
+        case color
+        case image
+        case playerIDs
+        case isArchived
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let playerIDs = try container.decode([Player.State.ID].self, forKey: .playerIDs)
+        players = IdentifiedArrayOf(uniqueElements: playerIDs.map { Player.State(id: $0) })
+        id = try container.decode(Player.State.ID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        color = try container.decode(MTColor.self, forKey: .color)
+        image = try container.decode(MTImage.self, forKey: .image)
+        isArchived = try container.decode(Bool.self, forKey: .isArchived)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(players.map(\.id), forKey: .playerIDs)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(color, forKey: .color)
+        try container.encode(image, forKey: .image)
+        try container.encode(isArchived, forKey: .isArchived)
+    }
+}
+
 extension IdentifiedArrayOf<Team.State> {
     static var example: Self {
         guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
@@ -76,8 +108,7 @@ extension IdentifiedArrayOf<Team.State> {
                 name: "Strawberry Koala",
                 color: .strawberry,
                 image: .koala,
-                playerIDs: players.map(\.id),
-                players: .loaded(players)
+                players: players
             ),
             Team.State(
                 id: purpleElephantId,

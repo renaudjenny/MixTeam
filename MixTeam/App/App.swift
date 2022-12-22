@@ -4,7 +4,7 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var teamRows: IdentifiedArrayOf<TeamRow1.State> = []
+        var teams: IdentifiedArrayOf<Team.State> = []
         var standing = Standing.State()
         var _scores = Scores.State()
 
@@ -18,7 +18,7 @@ struct App: ReducerProtocol {
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
-        case teamRow(id: Team.State.ID, action: TeamRow1.Action)
+        case team(id: Team.State.ID, action: Team.Action)
         case deleteTeams(IndexSet)
         case scores(Scores.Action)
     }
@@ -38,7 +38,7 @@ struct App: ReducerProtocol {
             switch action {
             case .task:
                 return .task {
-                    return await .update(TaskResult { try await appPersistence.load() })
+                    await .update(TaskResult { try await appPersistence.load() })
                 }
                 .animation(.default)
             case let .update(result):
@@ -55,40 +55,39 @@ struct App: ReducerProtocol {
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
                 let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 let team = Team.State(id: uuid(), name: name, color: color, image: image)
-                state.teamRows.append(TeamRow1.State(id: team.id))
+                state.teams.append(team)
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                     try await appPersistence.team.updateOrAppend(team)
                 }
             case .mixTeam:
-                guard state.teamRows.count > 1 else {
+                guard state.teams.count > 1 else {
                     state.notEnoughTeamsAlert = .notEnoughTeams
                     return .none
                 }
-                var teams = IdentifiedArrayOf(uniqueElements: state.teamRows.compactMap { teamRow -> Team.State? in
-                    if case let .loaded(team) = teamRow.row { return team } else { return nil }
-                })
-                let playerIDs = state.standing.playerIDs + teams.flatMap(\.playerIDs)
-                guard playerIDs.count > 0 else { return .none }
+                let players = state.standing.players + state.teams.flatMap(\.players)
+                guard players.count > 0 else { return .none }
 
-                teams = IdentifiedArrayOf(uniqueElements: teams.map {
+                state.teams = IdentifiedArrayOf(uniqueElements: state.teams.map {
                     var team = $0
-                    team.playerIDs = []
+                    team.players = []
                     return team
                 })
 
-                teams = shufflePlayers(playerIDs: playerIDs).reduce(teams) { teams, playerID in
-                    var teams = teams
-                    guard let lessPlayerTeam = teams
-                        .sorted(by: { $0.playerIDs.count < $1.playerIDs.count })
-                        .first
-                    else { return teams }
-                    teams[id: lessPlayerTeam.id]?.playerIDs.append(playerID)
-                    return teams
-                }
-                state.standing.playerIDs = []
-                return .fireAndForget { [state, teams] in
-                    try await appPersistence.team.save(teams)
+                state.teams = IdentifiedArrayOf(
+                    uniqueElements: shufflePlayers(players: players.elements).reduce(state.teams) { teams, player in
+                        var teams = teams
+                        guard let lessPlayerTeam = teams
+                            .sorted(by: { $0.players.count < $1.players.count })
+                            .first
+                        else { return teams }
+                        teams[id: lessPlayerTeam.id]?.players.append(player)
+                        return teams
+                    }
+                )
+                state.standing.players = []
+                return .fireAndForget { [state] in
+                    try await appPersistence.team.save(state.teams)
                     try await appPersistence.save(state)
                 }
             case .dismissNotEnoughTeamsAlert:
@@ -96,41 +95,29 @@ struct App: ReducerProtocol {
                 return .none
             case .standing:
                 return .none
-            case let .teamRow(_,.team(.player(id, .moveBack))):
-                state.standing.playerIDs.append(id)
+            case let .team(teamID, .player(playerID, .moveBack)):
+                guard let player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
+                state.standing.players.append(player)
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                 }
-            case .teamRow:
+            case .team:
                 return .none
             case let .deleteTeams(indexSet):
-                var teams = IdentifiedArrayOf(uniqueElements: state.teamRows.compactMap { teamRow -> Team.State? in
-                    if case let .loaded(team) = teamRow.row { return team } else { return nil }
-                })
                 for index in indexSet {
-                    state.standing.playerIDs.append(contentsOf: teams[index].playerIDs)
+                    state.standing.players.append(contentsOf: state.teams[index].players)
                 }
-                teams.remove(atOffsets: indexSet)
-                state.teamRows.remove(atOffsets: indexSet)
-                return .fireAndForget { [state, teams] in
+                state.teams.remove(atOffsets: indexSet)
+                return .fireAndForget { [state] in
                     try await appPersistence.save(state)
-                    try await appPersistence.team.save(teams)
+                    try await appPersistence.team.save(state.teams)
                 }
             case .scores:
                 return .none
             }
         }
-        .forEach(\.teamRows, action: /Action.teamRow) {
-            TeamRow1()
+        .forEach(\.teams, action: /Action.team) {
+            Team()
         }
-//        ._printChanges()
-    }
-}
-
-extension App.State: Codable {
-    enum CodingKeys: CodingKey {
-        case teamRows
-        case standing
-        case _scores
     }
 }

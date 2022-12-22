@@ -88,11 +88,7 @@ extension Scores.State: Codable {
 extension App.State {
     var scores: Scores.State {
         get {
-            // TODO: it's not correct, address that later
-            let teams = IdentifiedArrayOf(uniqueElements: teamRows.compactMap { teamRow -> Team.State? in
-                if case let .loaded(team) = teamRow.row { return team } else { return nil }
-            })
-            return Scores.State(
+            Scores.State(
                 teams: teams,
                 rounds: _scores.rounds
             )

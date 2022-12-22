@@ -32,7 +32,6 @@
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
-		4CB984012953AAD600512E98 /* TeamRow2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB984002953AAD600512E98 /* TeamRow2.swift */; };
 		4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */; };
 		4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA6B21249E166500CA3851 /* EditPlayerView.swift */; };
 		4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5934268B016A00BF23F7 /* RoundRow.swift */; };
@@ -95,7 +94,6 @@
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
-		4CB984002953AAD600512E98 /* TeamRow2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow2.swift; sourceTree = "<group>"; };
 		4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixTeamTests.swift; sourceTree = "<group>"; };
 		4CBA6B21249E166500CA3851 /* EditPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlayerView.swift; sourceTree = "<group>"; };
 		4CBF5934268B016A00BF23F7 /* RoundRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundRow.swift; sourceTree = "<group>"; };
@@ -279,7 +277,6 @@
 				4C38973D2495016900D6D182 /* EditTeamView.swift */,
 				4C40AE151ECCD51E0079E964 /* Team.swift */,
 				4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */,
-				4CB984002953AAD600512E98 /* TeamRow2.swift */,
 			);
 			path = Teams;
 			sourceTree = "<group>";
@@ -484,7 +481,6 @@
 				4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */,
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4CF35535294284E200366084 /* PersistenceError.swift in Sources */,
-				4CB984012953AAD600512E98 /* TeamRow2.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
 				4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */,

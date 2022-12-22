@@ -5,12 +5,9 @@ struct TeamRow: View {
     let store: StoreOf<Team>
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
-            Section {
-                header
-                playersView
-            }
-            .task { viewStore.send(.bind) }
+        Section {
+            header
+            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
         }
     }
 
@@ -32,43 +29,6 @@ struct TeamRow: View {
             }
             .dashedCardStyle(color: viewStore.color)
             .backgroundAndForeground(color: viewStore.color)
-        }
-    }
-
-    private typealias PlayerAction = (Player.State.ID, Player.Action)
-    private typealias PlayersState = IdentifiedArrayOf<Player.State>
-
-    private var playersView: some View {
-        SwitchStore(store.scope(state: \.players, action: Team.Action.player(id:action:))) {
-            CaseLet(state: /Team.Players.loading) { (_: Store<Void, PlayerAction>) in
-                loadingView
-            }
-            CaseLet(state: /Team.Players.loaded) { (store: Store<PlayersState, PlayerAction>) in
-                ForEachStore(store, content: PlayerRow.init)
-            }
-            CaseLet(state: /Team.Players.error) { (store: Store<String, PlayerAction>) in
-                WithViewStore(store.actionless) { viewStore in
-                    Text(viewStore.state)
-                }
-            }
-        }
-    }
-
-    private var loadingView: some View {
-        WithViewStore(store) { viewStore in
-            ForEach(0..<viewStore.playerIDs.count, id: \.self) { _ in
-                HStack {
-                    Image(mtImage: .unknown)
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                        .redacted(reason: .placeholder)
-                    Text("Placeholder name")
-                        .fontWeight(.medium)
-                        .redacted(reason: .placeholder)
-                }
-                .backgroundAndForeground(color: .aluminium)
-                .padding(.leading, 24)
-            }
         }
     }
 }
@@ -112,10 +72,7 @@ struct TeamRowUX_Previews: PreviewProvider {
             WithViewStore(store) { viewStore in
                 NavigationView {
                     List {
-                        ForEachStore(
-                            store.scope(state: \.teamRows, action: App.Action.teamRow),
-                            content: TeamRowView.init
-                        )
+                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
                         Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
                             Text("Add Team")
                         }
@@ -157,10 +114,10 @@ extension Team.State {
             name: "Team test",
             color: .bluejeans,
             image: .octopus,
-            players: .loaded([
+            players: [
                 Player.State(id: UUID(), name: "Player 1", image: .amelie, color: .bluejeans),
                 Player.State(id: UUID(), name: "Player 2", image: .santa, color: .bluejeans),
-            ])
+            ]
         )
     }
 }
