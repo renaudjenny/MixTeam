@@ -17,6 +17,7 @@ struct AppView: View {
                         StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                         mixTeamButton
                         ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                            .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
                         addTeamButton
                     }
                     .listRowBackground(Color.clear)

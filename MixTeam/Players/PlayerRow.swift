@@ -19,12 +19,12 @@ struct PlayerRow: View {
             .padding(.leading, 24)
             .swipeActions(allowsFullSwipe: true) {
                 if viewStore.isStanding {
-                    Button(role: .destructive) { viewStore.send(.delete, animation: .easeInOut) } label: {
+                    Button(role: .destructive) { viewStore.send(.delete, animation: .default) } label: {
                         Image(systemName: "trash")
                     }
                     .buttonStyle(.plain)
                 } else {
-                    Button { viewStore.send(.moveBack, animation: .easeInOut) } label: {
+                    Button { viewStore.send(.moveBack, animation: .default) } label: {
                         Image(systemName: "gobackward")
                     }
                     .buttonStyle(.plain)

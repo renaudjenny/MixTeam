@@ -77,11 +77,16 @@ struct App: ReducerProtocol {
                 state.teams = IdentifiedArrayOf(
                     uniqueElements: shufflePlayers(players: players.elements).reduce(state.teams) { teams, player in
                         var teams = teams
+                        var player = player
                         guard let lessPlayerTeam = teams
                             .sorted(by: { $0.players.count < $1.players.count })
                             .first
                         else { return teams }
-                        teams[id: lessPlayerTeam.id]?.players.append(player)
+                        guard var team = teams[id: lessPlayerTeam.id] else { return teams }
+                        player.color = team.color
+                        player.isStanding = false
+                        team.players.updateOrAppend(player)
+                        teams.updateOrAppend(team)
                         return teams
                     }
                 )
@@ -96,16 +101,30 @@ struct App: ReducerProtocol {
             case .standing:
                 return .none
             case let .team(teamID, .player(playerID, .moveBack)):
-                guard let player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
+                guard
+                    var team = state.teams[id: teamID],
+                    var player = team.players[id: playerID]
+                else { return .none }
+                team.players.remove(id: player.id)
+                player.isStanding = true
+                player.color = .aluminium
                 state.standing.players.append(player)
+                state.teams.updateOrAppend(team)
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
+                    try await appPersistence.team.save(state.teams)
                 }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
                 for index in indexSet {
-                    state.standing.players.append(contentsOf: state.teams[index].players)
+                    let players = state.teams[index].players.map {
+                        var player = $0
+                        player.isStanding = true
+                        player.color = .aluminium
+                        return player
+                    }
+                    state.standing.players.append(contentsOf: players)
                 }
                 state.teams.remove(atOffsets: indexSet)
                 return .fireAndForget { [state] in

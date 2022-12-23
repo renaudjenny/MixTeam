@@ -26,11 +26,6 @@ struct Team: ReducerProtocol {
             switch action {
             case .binding:
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
-            case let .player(id, .moveBack):
-                state.players.remove(id: id)
-                return .fireAndForget { [state] in
-                    try await teamPersistence.updateOrAppend(state)
-                }
             case .player:
                 return .none
             }
