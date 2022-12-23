@@ -10,18 +10,11 @@ private struct Persistence {
     var team = TeamPersistence()
     var player = PlayerPersistence()
 
-    let channel = AsyncChannel<App.State>()
-    var value: App.State? {
-        didSet {
-            if let value {
-                Task { [channel, value] in await channel.send(value) }
-            }
-        }
-    }
+    var value: App.State?
 
     mutating func load() async throws -> App.State {
         try await migrateIfNeeded()
-        if let value { return value }
+        if let value { return try await inflated(value: value) }
 
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
@@ -33,8 +26,9 @@ private struct Persistence {
         #endif
 
         let decodedValue = try JSONDecoder().decode(App.State.self, from: data)
-        value = decodedValue
-        return decodedValue
+        let inflatedValue = try await inflated(value: decodedValue)
+        value = inflatedValue
+        return inflatedValue
     }
 
     mutating func save(_ state: App.State) async throws {
@@ -69,6 +63,28 @@ private struct Persistence {
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
         value = migratedData
     }
+
+    private func inflated(value: App.State) async throws -> App.State {
+        var value = value
+        let teams = try await team.load()
+        let players = try await player.load()
+        value.teams = IdentifiedArrayOf(uniqueElements: value.teams.compactMap {
+            guard var team = teams[id: $0.id] else { return nil }
+            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
+                var player = players[id: $0.id]
+                player?.isStanding = false
+                player?.color = team.color
+                return  player
+            })
+            return team
+        })
+        value.standing.players = IdentifiedArrayOf(uniqueElements: value.standing.players.compactMap {
+            var player = players[id: $0.id]
+            player?.isStanding = true
+            return player
+        })
+        return value
+    }
 }
 
 struct AppPersistence {
@@ -77,7 +93,6 @@ struct AppPersistence {
     var team = persistence.team
     var player = persistence.player
 
-    var channel: () -> AsyncChannel<App.State> = { persistence.channel }
     var load: () async throws -> App.State = { try await persistence.load() }
     var save: (App.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
@@ -144,7 +159,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
     static var liveValue = AppPersistence()
     static var testValue: AppPersistence = {
         var appPersistence = AppPersistence()
-        appPersistence.channel = unimplemented("App Persistence channel unimplemented")
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.saveStanding = unimplemented("App Persistence save standing unimplemented")
