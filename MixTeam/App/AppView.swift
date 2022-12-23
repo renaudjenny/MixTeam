@@ -14,6 +14,7 @@ struct AppView: View {
             NavigationView {
                 List {
                     Group {
+                        errorDescription
                         StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
                         mixTeamButton
                         ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
@@ -91,12 +92,38 @@ struct AppView: View {
                 .dashedCardStyle(color: MTColor.aluminium)
         }
     }
+
+    private var errorDescription: some View {
+        WithViewStore(store) { $0.errorDescription } content: { viewStore in
+            if let errorDescription = viewStore.state {
+                VStack {
+                    Text(errorDescription)
+                    Button { viewStore.send(.task, animation: .default) } label: {
+                        Text("Retry")
+                    }
+                    .buttonStyle(.dashed(color: MTColor.strawberry))
+                }
+                .padding()
+                .backgroundAndForeground(color: .strawberry)
+
+            }
+        }
+    }
 }
 
 #if DEBUG
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView(store: .preview)
+        AppView(store: Store(
+            initialState: App.State(),
+            reducer: App()
+                .dependency(\.appPersistence.load, {
+                    try await Task.sleep(nanoseconds: 500_000_000)
+                    throw PersistenceError.notFound
+                })
+        ))
+        .previewDisplayName("App View With Error")
     }
 }
 

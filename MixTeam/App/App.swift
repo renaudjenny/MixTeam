@@ -9,6 +9,7 @@ struct App: ReducerProtocol {
         var _scores = Scores.State()
 
         var notEnoughTeamsAlert: AlertState<Action>?
+        var errorDescription: String?
     }
 
     enum Action: Equatable {
@@ -37,6 +38,7 @@ struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .task:
+                state.errorDescription = nil
                 return .task {
                     await .update(TaskResult { try await appPersistence.load() })
                 }
@@ -47,7 +49,7 @@ struct App: ReducerProtocol {
                     state = result
                     return .none
                 case let .failure(error):
-                    // TODO: do something to show an error screen
+                    state.errorDescription = error.localizedDescription
                     return .none
                 }
             case .addTeam:
