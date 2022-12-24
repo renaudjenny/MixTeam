@@ -10,43 +10,32 @@ struct AppView: View {
     private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
-        WithViewStore(store.stateless) { viewStore in
+        WithViewStore(store) { $0.status } content: { viewStore in
             NavigationView {
-                List {
-                    Group {
-                        errorDescription
-                        StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
-                        mixTeamButton
-                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                            .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
-                        addTeamButton
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                }
-                .backgroundAndForeground(color: .aluminium)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("Mix Team")
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                    }
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button { isScoreboardPresented = true } label: {
-                            Label { Text("Display scoreboard") } icon: {
-                                Image(systemName: "list.bullet.rectangle")
+                content
+                    .backgroundAndForeground(color: .aluminium)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text("Mix Team")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                        }
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button { isScoreboardPresented = true } label: {
+                                Label { Text("Display scoreboard") } icon: {
+                                    Image(systemName: "list.bullet.rectangle")
+                                        .resizable()
+                                }
+                            }
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button { isAboutPresented = true } label: {
+                                Image(systemName: "cube.box")
                                     .resizable()
                             }
                         }
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { isAboutPresented = true } label: {
-                            Image(systemName: "cube.box")
-                                .resizable()
-                        }
-                    }
-                }
             }
             .listStyle(.plain)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
@@ -57,6 +46,36 @@ struct AppView: View {
                 aboutView
             }
             .task { viewStore.send(.task) }
+        }
+    }
+
+    private var content: some View {
+        WithViewStore(store) { $0.status } content: { viewStore in
+            switch viewStore.state {
+            case .loading:
+                ProgressView("Loading content from saved data")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            case .loaded:
+                mainContent
+            case let .error(description):
+                errorCardView(description: description)
+            }
+        }
+    }
+
+    private var mainContent: some View {
+        WithViewStore(store.stateless) { viewStore in
+            List {
+                Group {
+                    StandingView(store: store.scope(state: \.standing, action: App.Action.standing))
+                    mixTeamButton
+                    ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
+                        .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
+                    addTeamButton
+                }
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            }
         }
     }
 
@@ -93,20 +112,17 @@ struct AppView: View {
         }
     }
 
-    private var errorDescription: some View {
-        WithViewStore(store) { $0.errorDescription } content: { viewStore in
-            if let errorDescription = viewStore.state {
-                VStack {
-                    Text(errorDescription)
-                    Button { viewStore.send(.task, animation: .default) } label: {
-                        Text("Retry")
-                    }
-                    .buttonStyle(.dashed(color: MTColor.strawberry))
+    private func errorCardView(description: String) -> some View {
+        WithViewStore(store) { viewStore in
+            VStack {
+                Text(description)
+                Button { viewStore.send(.task, animation: .default) } label: {
+                    Text("Retry")
                 }
-                .padding()
-                .backgroundAndForeground(color: .strawberry)
-
+                .buttonStyle(.dashed(color: MTColor.strawberry))
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .backgroundAndForeground(color: .strawberry)
         }
     }
 }
