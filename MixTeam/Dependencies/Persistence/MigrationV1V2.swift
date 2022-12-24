@@ -63,10 +63,10 @@ var migratedData: App.State? {
                 name: round.name,
                 scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
                     id: UUID(),
-                    teamID: score.team.state.id,
+                    team: score.team.state,
                     points: score.points,
                     accumulatedPoints: score.points + result.reduce(0) { result, round in
-                        result + round.scores.filter { $0.teamID == score.team.id }.map(\.points).reduce(0, +)
+                        result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
                     }
                 ) })
             )
@@ -89,14 +89,11 @@ var migratedData: App.State? {
         return App.State(
             teams: teams,
             standing: standing,
-            _scores: scores
+            scores: scores
         )
     } else if let teams, let standing = teams.first?.standing {
         let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
         return App.State(teams: teams, standing: standing)
-    } else if let rounds {
-        let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(uniqueElements: roundStates(rounds: rounds))
-        return App.State(_scores: Scores.State(teams: [], rounds: rounds))
     } else {
         return nil
     }

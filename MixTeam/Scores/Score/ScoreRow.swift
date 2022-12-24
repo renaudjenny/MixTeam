@@ -7,27 +7,33 @@ struct ScoreRow: View {
 
     var body: some View {
         WithViewStore(store) { viewStore in
-            Group {
-                switch viewStore.teamStatus {
-                case .loading:
-                    content(team: nil)
-                        .task { viewStore.send(.loadTeam) }
-                case let .loaded(team):
-                    content(team: team)
-                        .swipeActions {
-                            Button(role: .destructive) { viewStore.send(.remove, animation: .default) } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                case .error:
-                    Text("ERROR!")
-                        .frame(maxWidth: .infinity)
+            HStack {
+                Image(mtImage: viewStore.team.image)
+                    .resizable()
+                    .frame(maxWidth: 24, maxHeight: 24)
+                Text(viewStore.team.name)
+                    .lineLimit(1)
+                    .frame(maxWidth: 120, alignment: .leading)
+
+                TextField("", text: viewStore.binding(\.$points).string, prompt: Text("123"))
+                    .frame(maxWidth: 70)
+                    .focused($focusedField, equals: viewStore.state)
+                    .keyboardType(.numberPad)
+
+                Spacer()
+
+                Text("\(viewStore.accumulatedPoints)")
+                    .bold()
+                    .frame(maxWidth: 50, alignment: .trailing)
+            }
+            .swipeActions {
+                Button(role: .destructive) { viewStore.send(.remove, animation: .default) } label: {
+                    Label("Delete", systemImage: "trash")
                 }
             }
             .listRowSeparator(.hidden)
-            .backgroundAndForeground(color: viewStore.teamStatus.color)
+            .backgroundAndForeground(color: viewStore.team.color)
             .textFieldStyle(.roundedBorder)
-            .redacted(reason: viewStore.teamStatus == .loading ? .placeholder : [])
         }
     }
 
@@ -52,16 +58,6 @@ struct ScoreRow: View {
                     .bold()
                     .frame(maxWidth: 50, alignment: .trailing)
             }
-        }
-    }
-}
-
-private extension Score.TeamStatus {
-    var color: MTColor {
-        if case let .loaded(team) = self {
-            return team.color
-        } else {
-            return .aluminium
         }
     }
 }
@@ -91,22 +87,19 @@ extension Score.State {
         guard let id = UUID(uuidString: "8A74A892-2C3F-4BB4-A8B3-19C5B1E0AD84") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        let teamID = Team.State.preview.id
-        return Score.State(id: id, teamID: teamID, points: 15, accumulatedPoints: 35, teamStatus: .loaded(.preview))
+        return Score.State(id: id, team: .preview, points: 15, accumulatedPoints: 35)
     }
     static var secondPreview: Self {
         guard let id = UUID(uuidString: "7C3E9E9F-31CE-462B-9894-08C699B13AD0") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        let teamID = Team.State.preview.id
-        return Score.State(id: id, teamID: teamID, points: 25, accumulatedPoints: 350, teamStatus: .loaded(.preview))
+        return Score.State(id: id, team: .preview, points: 25, accumulatedPoints: 35)
     }
     static var loadingPreview: Self {
         guard let id = UUID(uuidString: "19DD415A-8769-473D-9F5C-308861274655") else {
             fatalError("Cannot generate UUID from a defined UUID String")
         }
-        let teamID = Team.State.preview.id
-        return Score.State(id: id, teamID: teamID, points: 1, accumulatedPoints: 10, teamStatus: .loading)
+        return Score.State(id: id, team: .preview, points: 1, accumulatedPoints: 10)
     }
 }
 

@@ -66,9 +66,10 @@ private struct Persistence {
 
     private func inflated(value: App.State) async throws -> App.State {
         var value = value
-        let teams = try await team.load()
+        var teams = try await team.load()
         let players = try await player.load()
-        value.teams = IdentifiedArrayOf(uniqueElements: value.teams.compactMap {
+
+        teams = IdentifiedArrayOf(uniqueElements: value.teams.compactMap {
             guard var team = teams[id: $0.id] else { return nil }
             team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
                 var player = players[id: $0.id]
@@ -78,10 +79,25 @@ private struct Persistence {
             })
             return team
         })
+
+        let appTeamIDs = value.teams.map(\.id)
+        value.teams = teams.filter { appTeamIDs.contains($0.id) }
         value.standing.players = IdentifiedArrayOf(uniqueElements: value.standing.players.compactMap {
             var player = players[id: $0.id]
             player?.isStanding = true
             return player
+        })
+
+        value.scores.teams = teams
+        value.scores.rounds = IdentifiedArrayOf(uniqueElements: value.scores.rounds.map {
+            var round = $0
+            round.scores = IdentifiedArray(uniqueElements: round.scores.compactMap {
+                guard let team = teams[id: $0.team.id] else { return nil }
+                var score = $0
+                score.team = team
+                return score
+            })
+            return round
         })
         return value
     }
@@ -108,7 +124,7 @@ extension App.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
         case standing
-        case _scores
+        case scores
     }
 
     init(from decoder: Decoder) throws {
@@ -116,14 +132,14 @@ extension App.State: Codable {
         let teamIDs = try container.decode([Team.State.ID].self, forKey: .teamIDs)
         teams = IdentifiedArrayOf(uniqueElements: teamIDs.map { Team.State(id: $0) })
         standing = try container.decode(Standing.State.self, forKey: .standing)
-        _scores = try container.decode(Scores.State.self, forKey: ._scores)
+        scores = try container.decode(Scores.State.self, forKey: .scores)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(teams.map(\.id), forKey: .teamIDs)
         try container.encode(standing, forKey: .standing)
-        try container.encode(_scores, forKey: ._scores)
+        try container.encode(scores, forKey: .scores)
     }
 }
 

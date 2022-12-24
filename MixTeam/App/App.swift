@@ -6,7 +6,7 @@ struct App: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var standing = Standing.State()
-        var _scores = Scores.State()
+        var scores = Scores.State()
 
         var notEnoughTeamsAlert: AlertState<Action>?
         var status: Status = .loading
