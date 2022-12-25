@@ -1,4 +1,3 @@
-import AsyncAlgorithms
 import Dependencies
 import Foundation
 import IdentifiedCollections
@@ -186,10 +185,8 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.saveStanding = unimplemented("App Persistence save standing unimplemented")
-        appPersistence.team.channel = unimplemented("Team Persistence channel unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
-        appPersistence.player.channel = unimplemented("Player Persistence channel unimplemented")
         appPersistence.player.load = unimplemented("Player Persistence load unimplemented")
         appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence

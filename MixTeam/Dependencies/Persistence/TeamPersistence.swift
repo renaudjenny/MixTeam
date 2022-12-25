@@ -1,18 +1,10 @@
-import AsyncAlgorithms
 import Foundation
 import IdentifiedCollections
 
 private struct Persistence {
     private let teamFileName = "MixTeamTeamV2_0_0"
 
-    let channel = AsyncChannel<IdentifiedArrayOf<Team.State>>()
-    var value: IdentifiedArrayOf<Team.State>? {
-        didSet {
-            if let value {
-                Task { [channel, value] in await channel.send(value) }
-            }
-        }
-    }
+    var value: IdentifiedArrayOf<Team.State>?
 
     mutating func load() async throws -> IdentifiedArrayOf<Team.State> {
         if let value { return value }
@@ -49,7 +41,6 @@ private struct Persistence {
 struct TeamPersistence {
     private static var persistence = Persistence()
 
-    var channel: () -> AsyncChannel<IdentifiedArrayOf<Team.State>> = { persistence.channel }
     var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Team.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
