@@ -46,6 +46,13 @@ private struct Persistence {
         }
     }
 
+    mutating func save(scores: Scores.State) async throws {
+        value?.scores = scores
+        if let value {
+            try await save(value)
+        }
+    }
+
     private mutating func persistAndReturnExample() async throws -> App.State {
         try await save(.example)
         try await team.save(.example)
@@ -112,6 +119,7 @@ struct AppPersistence {
     var load: () async throws -> App.State = { try await persistence.load() }
     var save: (App.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
+    var saveScores: (Scores.State) async throws -> Void = { try await persistence.save(scores: $0) }
 }
 
 extension App.State {

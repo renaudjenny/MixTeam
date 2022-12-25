@@ -65,6 +65,7 @@ struct App: ReducerProtocol {
                 let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 let team = Team.State(id: uuid(), name: name, color: color, image: image)
                 state.teams.append(team)
+                state.scores.teams.append(team)
                 return .fireAndForget { [state] in
                     try await appPersistence.save(state)
                     try await appPersistence.team.updateOrAppend(team)
@@ -123,6 +124,21 @@ struct App: ReducerProtocol {
                     try await appPersistence.save(state)
                     try await appPersistence.team.save(state.teams)
                 }
+            case let .team(id, .binding):
+                guard let team = state.teams[id: id] else { return .none }
+                state.scores.teams.updateOrAppend(team)
+                state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
+                    var round = $0
+                    round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+                        var score = $0
+                        if team.id == score.team.id {
+                            score.team = team
+                        }
+                        return score
+                    })
+                    return round
+                })
+                return .none
             case .team:
                 return .none
             case let .deleteTeams(indexSet):

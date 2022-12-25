@@ -18,6 +18,7 @@ struct Scores: ReducerProtocol {
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence.saveScores) var save
     private enum RecalculateTaskID {}
 
     var body: some ReducerProtocol<State, Action> {
@@ -35,7 +36,9 @@ struct Scores: ReducerProtocol {
                     )
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
-                return .none
+                return .fireAndForget { [state] in
+                    try await save(state)
+                }
             case .recalculateAccumulatedPoints:
                 return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
                     var rounds = rounds
@@ -57,9 +60,15 @@ struct Scores: ReducerProtocol {
                 if state.rounds[id: id]?.scores.isEmpty == true {
                     state.rounds.remove(id: id)
                 }
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .round(_, .score(_, .binding)):
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .round:
                 return .none
             case let .minusScore(score):
@@ -68,7 +77,10 @@ struct Scores: ReducerProtocol {
                 else { return .none }
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .binding:
                 return .none
             }
