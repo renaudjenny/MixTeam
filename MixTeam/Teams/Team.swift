@@ -23,6 +23,13 @@ struct Team: ReducerProtocol {
         BindingReducer()
         Reduce { state, action in
             switch action {
+            case let .binding(action) where action.keyPath == \.$color:
+                state.players = IdentifiedArrayOf(uniqueElements: state.players.map {
+                    var player = $0
+                    player.color = state.color
+                    return player
+                })
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .binding:
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .player:
