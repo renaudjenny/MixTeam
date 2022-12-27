@@ -57,32 +57,6 @@ struct TeamRow_Previews: PreviewProvider {
     }
 }
 
-struct TeamRowUX_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview(store: .preview)
-    }
-
-    private typealias TeamAction = (Team.State.ID, Team.Action)
-    private typealias TeamsState = IdentifiedArrayOf<Team.State>
-
-    private struct Preview: View {
-        let store: StoreOf<App>
-
-        var body: some View {
-            WithViewStore(store) { viewStore in
-                NavigationView {
-                    List {
-                        ForEachStore(store.scope(state: \.teams, action: App.Action.team), content: TeamRow.init)
-                        Button { viewStore.send(.addTeam, animation: .easeInOut) } label: {
-                            Text("Add Team")
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 extension Store where State == Team.State, Action == Team.Action {
     static var preview: Self {
         Self(initialState: .preview, reducer: Team())

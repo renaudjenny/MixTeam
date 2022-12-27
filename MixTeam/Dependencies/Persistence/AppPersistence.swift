@@ -39,7 +39,7 @@ private struct Persistence {
     }
 
     mutating func save(standing: Standing.State) async throws {
-        value?.standing = standing
+        value?.composition.standing = standing
         if let value {
             try await save(value)
         }
@@ -71,7 +71,7 @@ private struct Persistence {
         try await save(migratedData)
         try await team.save(migratedData.teams)
         let teamsPlayers: [Player.State] = migratedData.teams.flatMap(\.players)
-        try await player.save(teamsPlayers + migratedData.standing.players)
+        try await player.save(teamsPlayers + migratedData.composition.standing.players)
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
         value = migratedData
@@ -96,11 +96,13 @@ private struct Persistence {
         value.composition.teams = IdentifiedArrayOf(
             uniqueElements: value.composition.teams.compactMap { value.teams[id: $0.id] }
         )
-        value.composition.standing.players = IdentifiedArrayOf(uniqueElements: value.standing.players.compactMap {
-            var player = players[id: $0.id]
-            player?.isStanding = true
-            return player
-        })
+        value.composition.standing.players = IdentifiedArrayOf(
+            uniqueElements: value.composition.standing.players.compactMap {
+                var player = players[id: $0.id]
+                player?.isStanding = true
+                return player
+            }
+        )
 
         value.scores.teams = teams
         value.scores.rounds = IdentifiedArrayOf(uniqueElements: value.scores.rounds.map {

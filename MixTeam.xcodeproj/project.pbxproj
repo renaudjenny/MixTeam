@@ -234,7 +234,6 @@
 		4C75738328F0ADFF00A6E1EF /* App */ = {
 			isa = PBXGroup;
 			children = (
-				4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */,
 				4C75738428F0AE1200A6E1EF /* App.swift */,
 				4C7FE786245A166A0011E8AB /* AppView.swift */,
 				4C765300292799D200A591C4 /* ColorDuo.swift */,
@@ -262,6 +261,7 @@
 			children = (
 				4CB98405295A28F000512E98 /* Composition.swift */,
 				4CB98407295B048600512E98 /* CompositionView.swift */,
+				4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */,
 			);
 			path = Composition;
 			sourceTree = "<group>";

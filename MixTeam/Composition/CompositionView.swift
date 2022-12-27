@@ -17,6 +17,7 @@ struct CompositionView: View {
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             }
+            .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
         }
     }
 
@@ -40,3 +41,27 @@ struct CompositionView: View {
         }
     }
 }
+
+#if DEBUG
+struct CompositionView_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview(store: .preview)
+    }
+
+    private struct Preview: View {
+        let store: StoreOf<Composition>
+
+        var body: some View {
+            NavigationView {
+                CompositionView(store: store)
+            }
+        }
+    }
+}
+
+extension Store where State == Composition.State, Action == Composition.Action {
+    static var preview: Self {
+        Self(initialState: .example, reducer: Composition())
+    }
+}
+#endif

@@ -38,7 +38,6 @@ struct AppView: View {
                     }
             }
             .listStyle(.plain)
-            .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
             .sheet(isPresented: $isScoreboardPresented) {
                 ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
             }
