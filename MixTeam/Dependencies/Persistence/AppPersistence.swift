@@ -230,6 +230,8 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.saveStanding = unimplemented("App Persistence save standing unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
+        appPersistence.team.updateOrAppend = unimplemented("Team Persistence updateOrAppend unimplemented")
+        appPersistence.team.updateValues = unimplemented("Team Persistence updateValues unimplemented")
         appPersistence.player.load = unimplemented("Player Persistence load unimplemented")
         appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence

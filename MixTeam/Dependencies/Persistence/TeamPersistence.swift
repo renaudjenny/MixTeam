@@ -27,14 +27,24 @@ private struct Persistence {
     }
 
     mutating func updateOrAppend(state: Team.State) async throws {
-        var states = try await load()
-        states.updateOrAppend(state)
-        try await save(states)
+        value?.updateOrAppend(state)
+        if let value {
+            try await save(value)
+        }
+    }
+    mutating func update(values: IdentifiedArrayOf<Team.State>) async throws {
+        for value in values {
+            self.value?.updateOrAppend(value)
+        }
+        if let value {
+            try await save(value)
+        }
     }
     mutating func remove(state: Team.State) async throws {
-        var states = try await load()
-        states.remove(state)
-        try await save(states)
+        value?.remove(state)
+        if let value {
+            try await save(value)
+        }
     }
 }
 
@@ -44,6 +54,9 @@ struct TeamPersistence {
     var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
     var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
     var updateOrAppend: (Team.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
+    var updateValues: (IdentifiedArrayOf<Team.State>) async throws -> Void = {
+        try await persistence.update(values: $0)
+    }
     var remove: (Team.State) async throws -> Void = { try await persistence.remove(state: $0) }
 }
 

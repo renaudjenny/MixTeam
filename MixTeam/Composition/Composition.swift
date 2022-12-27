@@ -71,7 +71,7 @@ struct Composition: ReducerProtocol {
                 )
                 state.standing.players = []
                 return .fireAndForget { [state] in
-                    try await teamPersistance.save(state.teams)
+                    try await teamPersistance.updateValues(state.teams)
                     try await save(state)
                 }
             case .dismissNotEnoughTeamsAlert:
@@ -89,15 +89,16 @@ struct Composition: ReducerProtocol {
                 player.color = .aluminium
                 state.standing.players.append(player)
                 state.teams.updateOrAppend(team)
-                return .fireAndForget { [state] in
+                return .fireAndForget { [state, team] in
                     try await save(state)
-                    try await teamPersistance.save(state.teams)
+                    try await teamPersistance.updateOrAppend(team)
                 }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
+                var archivedTeams: IdentifiedArrayOf<Team.State> = []
                 for index in indexSet {
-                    state.teams[index].isArchived = true
+                    archivedTeams.append(state.teams[index])
                     let players = state.teams[index].players.map {
                         var player = $0
                         player.isStanding = true
@@ -106,9 +107,15 @@ struct Composition: ReducerProtocol {
                     }
                     state.standing.players.append(contentsOf: players)
                 }
-                return .fireAndForget { [state] in
+                state.teams.remove(atOffsets: indexSet)
+                return .fireAndForget { [state, archivedTeams] in
                     try await save(state)
-                    try await teamPersistance.save(state.teams)
+                    let archivedTeams = IdentifiedArrayOf(uniqueElements: archivedTeams.map {
+                        var team = $0
+                        team.isArchived = true
+                        return team
+                    })
+                    try await teamPersistance.updateValues(archivedTeams)
                 }
             }
         }

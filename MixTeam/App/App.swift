@@ -52,6 +52,9 @@ struct App: ReducerProtocol {
                     state.status = .error(error.localizedDescription)
                     return .none
                 }
+            case .composition(.addTeam):
+                state.teams.append(contentsOf: state.composition.teams)
+                return .fireAndForget { [state] in try await appPersistence.save(state) }
             case let .composition(.team(id, .binding)):
                 guard let team = state.teams[id: id] else { return .none }
                 state.scores.teams.updateOrAppend(team)
