@@ -52,6 +52,13 @@ private struct Persistence {
         }
     }
 
+    mutating func save(composition: Composition.State) async throws {
+        value?.composition = composition
+        if let value {
+            try await save(value)
+        }
+    }
+
     private mutating func persistAndReturnExample() async throws -> App.State {
         try await save(.example)
         try await team.save(.example)
@@ -72,10 +79,10 @@ private struct Persistence {
 
     private func inflated(value: App.State) async throws -> App.State {
         var value = value
-        var teams = try await team.load()
+        let teams = try await team.load()
         let players = try await player.load()
 
-        teams = IdentifiedArrayOf(uniqueElements: value.teams.compactMap {
+        value.teams = IdentifiedArrayOf(uniqueElements: value.teams.compactMap {
             guard var team = teams[id: $0.id] else { return nil }
             team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
                 var player = players[id: $0.id]
@@ -86,9 +93,10 @@ private struct Persistence {
             return team
         })
 
-        let appTeamIDs = value.teams.map(\.id)
-        value.teams = teams.filter { appTeamIDs.contains($0.id) }
-        value.standing.players = IdentifiedArrayOf(uniqueElements: value.standing.players.compactMap {
+        value.composition.teams = IdentifiedArrayOf(
+            uniqueElements: value.composition.teams.compactMap { value.teams[id: $0.id] }
+        )
+        value.composition.standing.players = IdentifiedArrayOf(uniqueElements: value.standing.players.compactMap {
             var player = players[id: $0.id]
             player?.isStanding = true
             return player
@@ -119,18 +127,19 @@ struct AppPersistence {
     var save: (App.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
     var saveScores: (Scores.State) async throws -> Void = { try await persistence.save(scores: $0) }
+    var saveComposition: (Composition.State) async throws -> Void = { try await persistence.save(composition: $0) }
 }
 
 extension App.State {
     static var example: Self {
-        Self(teams: .example, standing: .example)
+        Self(teams: .example, composition: .example, scores: .example)
     }
 }
 
 extension App.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
-        case standing
+        case composition
         case scores
     }
 
@@ -138,14 +147,14 @@ extension App.State: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let teamIDs = try container.decode([Team.State.ID].self, forKey: .teamIDs)
         teams = IdentifiedArrayOf(uniqueElements: teamIDs.map { Team.State(id: $0) })
-        standing = try container.decode(Standing.State.self, forKey: .standing)
+        composition = try container.decode(Composition.State.self, forKey: .composition)
         scores = try container.decode(Scores.State.self, forKey: .scores)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(teams.map(\.id), forKey: .teamIDs)
-        try container.encode(standing, forKey: .standing)
+        try container.encode(composition, forKey: .composition)
         try container.encode(scores, forKey: .scores)
     }
 }
@@ -175,6 +184,38 @@ extension Standing.State: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(players.map(\.id), forKey: .playerIDs)
+    }
+}
+
+extension Scores.State {
+    static var example: Self {
+        Self(teams: .example)
+    }
+}
+
+extension Composition.State: Codable {
+    enum CodingKeys: CodingKey {
+        case teamIDs
+        case standing
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let teamIDs = try container.decode([Team.State.ID].self, forKey: .teamIDs)
+        teams = IdentifiedArrayOf(uniqueElements: teamIDs.map { Team.State(id: $0) })
+        standing = try container.decode(Standing.State.self, forKey: .standing)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(teams.map(\.id), forKey: .teamIDs)
+        try container.encode(standing, forKey: .standing)
+    }
+}
+
+extension Composition.State {
+    static var example: Self {
+        Self(teams: .example, standing: .example)
     }
 }
 

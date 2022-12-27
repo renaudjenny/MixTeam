@@ -1,75 +1,43 @@
 import ComposableArchitecture
-import SwiftUI
+import Foundation
 
-struct App: ReducerProtocol {
+struct Composition: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var standing = Standing.State()
-        var composition = Composition.State()
-        var scores = Scores.State()
 
         var notEnoughTeamsAlert: AlertState<Action>?
-        var status: Status = .loading
-    }
-
-    enum Status: Equatable {
-        case loading
-        case loaded
-        case error(String)
     }
 
     enum Action: Equatable {
-        case task
-        case update(TaskResult<State>)
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
         case deleteTeams(IndexSet)
-        case composition(Composition.Action)
-        case scores(Scores.Action)
     }
 
-    @Dependency(\.appPersistence) var appPersistence
+    @Dependency(\.appPersistence.saveComposition) var save
+    @Dependency(\.appPersistence.team) var teamPersistance
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
     var body: some ReducerProtocol<State, Action> {
-        Scope(state: \.composition, action: /Action.composition) {
-            Composition()
-        }
-        Scope(state: \.scores, action: /Action.scores) {
-            Scores()
+        Scope(state: \.standing, action: /Action.standing) {
+            Standing()
         }
         Reduce { state, action in
             switch action {
-            case .task:
-                state.status = .loading
-                return .task {
-                    await .update(TaskResult { try await appPersistence.load() })
-                }
-                .animation(.default)
-            case let .update(result):
-                switch result {
-                case let .success(result):
-                    state = result
-                    state.status = .loaded
-                    return .none
-                case let .failure(error):
-                    state.status = .error(error.localizedDescription)
-                    return .none
-                }
             case .addTeam:
                 let image = MTImage.teams.randomElement() ?? .koala
                 let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
                 let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
                 let team = Team.State(id: uuid(), name: name, color: color, image: image)
                 state.teams.append(team)
-                state.scores.teams.append(team)
                 return .fireAndForget { [state] in
-                    try await appPersistence.save(state)
-                    try await appPersistence.team.updateOrAppend(team)
+                    try await save(state)
+                    try await teamPersistance.updateOrAppend(team)
                 }
             case .mixTeam:
                 guard state.teams.count > 1 else {
@@ -103,8 +71,8 @@ struct App: ReducerProtocol {
                 )
                 state.standing.players = []
                 return .fireAndForget { [state] in
-                    try await appPersistence.team.save(state.teams)
-                    try await appPersistence.save(state)
+                    try await teamPersistance.save(state.teams)
+                    try await save(state)
                 }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
@@ -122,24 +90,9 @@ struct App: ReducerProtocol {
                 state.standing.players.append(player)
                 state.teams.updateOrAppend(team)
                 return .fireAndForget { [state] in
-                    try await appPersistence.save(state)
-                    try await appPersistence.team.save(state.teams)
+                    try await save(state)
+                    try await teamPersistance.save(state.teams)
                 }
-            case let .team(id, .binding):
-                guard let team = state.teams[id: id] else { return .none }
-                state.scores.teams.updateOrAppend(team)
-                state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
-                    var round = $0
-                    round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
-                        var score = $0
-                        if team.id == score.team.id {
-                            score.team = team
-                        }
-                        return score
-                    })
-                    return round
-                })
-                return .none
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
@@ -154,13 +107,9 @@ struct App: ReducerProtocol {
                     state.standing.players.append(contentsOf: players)
                 }
                 return .fireAndForget { [state] in
-                    try await appPersistence.save(state)
-                    try await appPersistence.team.save(state.teams)
+                    try await save(state)
+                    try await teamPersistance.save(state.teams)
                 }
-            case .composition:
-                return .none
-            case .scores:
-                return .none
             }
         }
         .forEach(\.teams, action: /Action.team) {
