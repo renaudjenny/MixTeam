@@ -4,7 +4,7 @@ import IdentifiedCollections
 import XCTestDynamicOverlay
 
 private struct Persistence {
-    private let appFileName = "MixTeamAppV2_0_0"
+    private let appFileName = "MixTeamAppV3_0_0"
 
     var team = TeamPersistence()
     var player = PlayerPersistence()

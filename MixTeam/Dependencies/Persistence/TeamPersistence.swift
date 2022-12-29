@@ -2,7 +2,7 @@ import Foundation
 import IdentifiedCollections
 
 private struct Persistence {
-    private let teamFileName = "MixTeamTeamV2_0_0"
+    private let teamFileName = "MixTeamTeamV3_0_0"
 
     var value: IdentifiedArrayOf<Team.State>?
 
