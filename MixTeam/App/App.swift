@@ -57,7 +57,8 @@ struct App: ReducerProtocol {
                 state.scores.teams.append(contentsOf: state.composition.teams)
                 return .fireAndForget { [state] in try await appPersistence.save(state) }
             case let .composition(.team(id, .binding)):
-                guard let team = state.teams[id: id] else { return .none }
+                guard let team = state.composition.teams[id: id] else { return .none }
+                state.teams.updateOrAppend(team)
                 state.scores.teams.updateOrAppend(team)
                 state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
                     var round = $0
