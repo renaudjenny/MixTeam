@@ -71,6 +71,19 @@ struct App: ReducerProtocol {
                     return round
                 })
                 return .none
+            case .composition(.deleteTeams):
+                let deletedTeams = state.teams
+                    .filter { !$0.isArchived && !state.composition.teams.contains($0) }
+                    .map {
+                        var team = $0
+                        team.isArchived = true
+                        return team
+                    }
+                for deletedTeam in deletedTeams {
+                    state.teams.updateOrAppend(deletedTeam)
+                    state.scores.teams.updateOrAppend(deletedTeam)
+                }
+                return .none
             case .composition:
                 return .none
             case .scores:

@@ -27,7 +27,7 @@ struct Scores: ReducerProtocol {
             switch action {
             case .addRound:
                 let roundCount = state.rounds.count
-                let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
+                let scores = IdentifiedArrayOf(uniqueElements: state.teams.filter { !$0.isArchived }.map { team in
                     Score.State(
                         id: uuid(),
                         team: team,
