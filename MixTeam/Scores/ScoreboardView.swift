@@ -6,6 +6,7 @@ struct ScoreboardView: View {
     let store: StoreOf<Scores>
     @Environment(\.presentationMode) private var presentationMode
     @FocusState private var focusedField: Score.State?
+    @FocusState private var focusedHeader: Round.State?
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -16,12 +17,17 @@ struct ScoreboardView: View {
                             .bind(viewStore.binding(\.$focusedField), to: $focusedField)
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
-                                    Button { viewStore.send(.minusScore(score: focusedField)) } label: {
-                                        Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
-                                    }
+                                    if focusedHeader == nil {
+                                        Button { viewStore.send(.minusScore(score: focusedField)) } label: {
+                                            Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
+                                        }
 
-                                    Button { focusedField = nil } label: {
-                                        Label("Done", systemImage: "checkmark")
+                                        Button {
+                                            focusedField = nil
+                                            focusedHeader = nil
+                                        } label: {
+                                            Label("Done", systemImage: "checkmark")
+                                        }
                                     }
                                 }
                             }
@@ -59,7 +65,10 @@ struct ScoreboardView: View {
         List {
             ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
                 WithViewStore(store) { viewStore in
-                    Section(header: Text(viewStore.name)) {
+                    Section(
+                        header: TextField("Round name", text: viewStore.binding(\.$name))
+                            .focused($focusedHeader, equals: viewStore.state)
+                    ) {
                         ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
                             ScoreRow(store: store, focusedField: _focusedField)
                         }

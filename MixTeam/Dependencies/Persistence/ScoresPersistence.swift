@@ -17,28 +17,6 @@ extension Scores.State: Codable {
     }
 }
 
-extension Round.State: Codable {
-    enum CodingKeys: CodingKey {
-        case id
-        case name
-        case scores
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(Round.State.ID.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        scores = try container.decode(IdentifiedArrayOf<Score.State>.self, forKey: .scores)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(scores, forKey: .scores)
-    }
-}
-
 extension Score.State: Codable {
     enum CodingKeys: CodingKey {
         case id

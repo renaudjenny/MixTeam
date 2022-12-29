@@ -52,6 +52,13 @@ private struct Persistence {
         }
     }
 
+    mutating func update(round: Round.State) async throws {
+        value?.scores.rounds.updateOrAppend(round)
+        if let value {
+            try await save(value)
+        }
+    }
+
     mutating func save(composition: Composition.State) async throws {
         value?.composition = composition
         if let value {
@@ -129,6 +136,7 @@ struct AppPersistence {
     var save: (App.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
     var saveScores: (Scores.State) async throws -> Void = { try await persistence.save(scores: $0) }
+    var updateRound: (Round.State) async throws -> Void = { try await persistence.update(round: $0) }
     var saveComposition: (Composition.State) async throws -> Void = { try await persistence.save(composition: $0) }
 }
 
@@ -228,6 +236,9 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.saveStanding = unimplemented("App Persistence save standing unimplemented")
+        appPersistence.saveScores = unimplemented("App Persistence saveScores unimplemented")
+        appPersistence.updateRound = unimplemented("App Persistence updateRound unimplemented")
+        appPersistence.saveComposition = unimplemented("App Persistence saveComposition unimplemented")
         appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
         appPersistence.team.updateOrAppend = unimplemented("Team Persistence updateOrAppend unimplemented")

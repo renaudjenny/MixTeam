@@ -6,7 +6,7 @@ struct MixTeamApp: SwiftUI.App {
 
     #if DEBUG
     init() {
-        addV2PersistedData()
+//        addV2PersistedData()
     }
     #endif
 
