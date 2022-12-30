@@ -15,6 +15,7 @@ struct Scores: ReducerProtocol {
         case round(id: Round.State.ID, action: Round.Action)
         case minusScore(score: Score.State?)
         case binding(BindingAction<State>)
+        case task
     }
 
     @Dependency(\.uuid) var uuid
@@ -83,6 +84,8 @@ struct Scores: ReducerProtocol {
                 }
             case .binding:
                 return .none
+            case .task:
+                return .task { .recalculateAccumulatedPoints }
             }
         }
         .forEach(\.rounds, action: /Action.round) {

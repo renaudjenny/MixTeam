@@ -58,6 +58,7 @@ struct ScoreboardView: View {
                 }
             }
             .backgroundAndForeground(color: .aluminium)
+            .task { viewStore.send(.task) }
         }
     }
 
