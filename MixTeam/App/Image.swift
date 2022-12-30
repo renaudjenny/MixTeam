@@ -7,13 +7,29 @@ enum MTImage: String, Identifiable, Codable {
     case octopus = "octopus"
     case lion = "lion"
     case hippo = "hippo"
+    case starfish = "starfish"
+    case whale = "whale"
+    case otter = "otter"
+    case penguin = "penguin"
+    case butterfly = "butterfly"
+    case bunny = "bunny"
 
-    case girl = "girl"
-    case woman = "woman"
+    case amelie = "amelie"
+    case lara = "lara"
     case jack = "jack"
     case santa = "santa"
     case clown = "clown"
     case pirate = "pirate"
+    case lolita = "lolita"
+    case dandy = "dandy"
+    case heroin = "heroin"
+    case mentor = "mentor"
+    case pierrot = "pierrot"
+    case nymph = "nymph"
+    case vampire = "vampire"
+    case robot = "robot"
+    case warrior = "warrior"
+    case king = "king"
 
     case unknown = ""
 
@@ -22,10 +38,13 @@ enum MTImage: String, Identifiable, Codable {
 
 extension MTImage {
     static var players: [Self] {
-        [.girl, santa, .jack, .woman, .clown, .pirate]
+        [
+            .amelie, .santa, .jack, .lara, .clown, .pirate, .lolita, .dandy, .heroin, .mentor, .pierrot, .nymph,
+            .vampire, .robot, .warrior, .king,
+        ]
     }
     static var teams: [Self] {
-        [.elephant, .koala, .panda, .octopus, .lion, .hippo]
+        [.elephant, .koala, .panda, .octopus, .lion, .hippo, .starfish, .whale, .otter, .penguin, .butterfly, .bunny]
     }
 }
 

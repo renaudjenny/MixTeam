@@ -71,7 +71,7 @@ struct PlayerImagePicker_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var selection: MTImage = .girl
+        @State private var selection: MTImage = .amelie
 
         var body: some View {
             VStack {

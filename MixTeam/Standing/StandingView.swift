@@ -12,12 +12,12 @@ struct StandingView: View {
     }
 
     private var header: some View {
-        WithViewStore(store.stateless) { ViewStore in
+        WithViewStore(store) { viewStore in
             VStack {
                 Text("Players standing for a team")
                     .font(.title3)
                     .fontWeight(.semibold)
-                Button { ViewStore.send(.createPlayer, animation: .easeInOut) } label: {
+                Button { viewStore.send(.createPlayer, animation: .easeInOut) } label: {
                     Label { Text("Add Player") } icon: {
                         HStack {
                             Image(systemName: "person.3")
@@ -54,9 +54,12 @@ extension Store where State == Standing.State, Action == Standing.Action {
 
 private extension Standing.State {
     static var preview: Self {
-        Standing.State(
-            players: [Player.State(id: UUID(), name: "Player 1", image: .girl, color: .aluminium, isStanding: true)]
-        )
+        let teams: IdentifiedArrayOf<Team.State> = .example
+        guard var player = teams.first?.players[0]
+        else { fatalError("Cannot load Example first team players") }
+        player.isStanding = true
+        return Self(players: [player])
+
     }
 }
 #endif

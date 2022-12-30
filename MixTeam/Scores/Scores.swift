@@ -3,7 +3,7 @@ import SwiftUI
 
 struct Scores: ReducerProtocol {
     struct State: Equatable {
-        private(set) var teams: IdentifiedArrayOf<Team.State> = []
+        var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
         @BindableState var focusedField: Score.State?
     }
@@ -15,9 +15,11 @@ struct Scores: ReducerProtocol {
         case round(id: Round.State.ID, action: Round.Action)
         case minusScore(score: Score.State?)
         case binding(BindingAction<State>)
+        case task
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence.saveScores) var save
     private enum RecalculateTaskID {}
 
     var body: some ReducerProtocol<State, Action> {
@@ -26,7 +28,7 @@ struct Scores: ReducerProtocol {
             switch action {
             case .addRound:
                 let roundCount = state.rounds.count
-                let scores = IdentifiedArrayOf(uniqueElements: state.teams.map { team in
+                let scores = IdentifiedArrayOf(uniqueElements: state.teams.filter { !$0.isArchived }.map { team in
                     Score.State(
                         id: uuid(),
                         team: team,
@@ -35,7 +37,9 @@ struct Scores: ReducerProtocol {
                     )
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
-                return .none
+                return .fireAndForget { [state] in
+                    try await save(state)
+                }
             case .recalculateAccumulatedPoints:
                 return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
                     var rounds = rounds
@@ -57,9 +61,15 @@ struct Scores: ReducerProtocol {
                 if state.rounds[id: id]?.scores.isEmpty == true {
                     state.rounds.remove(id: id)
                 }
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .round(_, .score(_, .binding)):
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .round:
                 return .none
             case let .minusScore(score):
@@ -68,44 +78,18 @@ struct Scores: ReducerProtocol {
                 else { return .none }
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
-                return Effect(value: .recalculateAccumulatedPoints)
+                return .task { [state] in
+                    try await save(state)
+                    return .recalculateAccumulatedPoints
+                }
             case .binding:
                 return .none
+            case .task:
+                return .task { .recalculateAccumulatedPoints }
             }
         }
         .forEach(\.rounds, action: /Action.round) {
             Round()
-        }
-    }
-}
-
-extension Scores.State: Codable {
-    enum CodingKeys: CodingKey {
-        case rounds
-    }
-}
-
-extension Scores.State {
-    var archivedTeams: IdentifiedArrayOf<Team.State> {
-        let roundTeams = Set(rounds.map(\.scores).flatMap(\.elements).map(\.team))
-        return IdentifiedArrayOf(uniqueElements: roundTeams.subtracting(teams))
-    }
-}
-
-extension App.State {
-    var scores: Scores.State {
-        get {
-            Scores.State(
-                teams: teams,
-                rounds: _scores.rounds
-            )
-        }
-        set {
-            (
-                _scores.rounds
-            ) = (
-                newValue.rounds
-            )
         }
     }
 }

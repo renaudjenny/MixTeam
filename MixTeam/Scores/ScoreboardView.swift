@@ -1,10 +1,12 @@
 import ComposableArchitecture
 import SwiftUI
+import SwiftUINavigation
 
 struct ScoreboardView: View {
     let store: StoreOf<Scores>
     @Environment(\.presentationMode) private var presentationMode
     @FocusState private var focusedField: Score.State?
+    @FocusState private var focusedHeader: Round.State?
 
     var body: some View {
         WithViewStore(store) { viewStore in
@@ -12,15 +14,20 @@ struct ScoreboardView: View {
                 ZStack {
                     if viewStore.rounds.count > 0 {
                         list
-                            .synchronize(viewStore.binding(\.$focusedField), $focusedField)
+                            .bind(viewStore.binding(\.$focusedField), to: $focusedField)
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
-                                    Button { viewStore.send(.minusScore(score: focusedField)) } label: {
-                                        Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
-                                    }
+                                    if focusedHeader == nil {
+                                        Button { viewStore.send(.minusScore(score: focusedField)) } label: {
+                                            Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
+                                        }
 
-                                    Button { focusedField = nil } label: {
-                                        Label("Done", systemImage: "checkmark")
+                                        Button {
+                                            focusedField = nil
+                                            focusedHeader = nil
+                                        } label: {
+                                            Label("Done", systemImage: "checkmark")
+                                        }
                                     }
                                 }
                             }
@@ -51,6 +58,7 @@ struct ScoreboardView: View {
                 }
             }
             .backgroundAndForeground(color: .aluminium)
+            .task { viewStore.send(.task) }
         }
     }
 
@@ -58,7 +66,10 @@ struct ScoreboardView: View {
         List {
             ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
                 WithViewStore(store) { viewStore in
-                    Section(header: Text(viewStore.name)) {
+                    Section(
+                        header: TextField("Round name", text: viewStore.binding(\.$name))
+                            .focused($focusedHeader, equals: viewStore.state)
+                    ) {
                         ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
                             ScoreRow(store: store, focusedField: _focusedField)
                         }
@@ -68,17 +79,6 @@ struct ScoreboardView: View {
 
             TotalScoresView(store: store)
         }
-    }
-}
-
-extension View {
-    func synchronize<Value>(
-        _ first: Binding<Value>,
-        _ second: FocusState<Value>.Binding
-    ) -> some View {
-        self
-            .onChange(of: first.wrappedValue) { second.wrappedValue = $0 }
-            .onChange(of: second.wrappedValue) { first.wrappedValue = $0 }
     }
 }
 
@@ -111,10 +111,10 @@ extension Store where State == Scores.State, Action == Scores.Action {
 
 extension Scores.State {
     static var preview: Self {
-        Scores.State(teams: App.State.example.teams)
+        Self(teams: .example)
     }
     static func previewWithScores(count: Int) -> Self {
-        let teams = App.State.example.teams
+        let teams: IdentifiedArrayOf<Team.State> = .example
         let uuid = UUIDGenerator.incrementing
         return Scores.State(teams: teams, rounds: IdentifiedArrayOf(uniqueElements: (1...count).map { i in
             Round.State(

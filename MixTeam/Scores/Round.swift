@@ -2,25 +2,26 @@ import ComposableArchitecture
 import Foundation
 
 struct Round: ReducerProtocol {
-    struct State: Identifiable, Equatable {
+    struct State: Identifiable, Equatable, Hashable {
         let id: UUID
-        var name: String
+        @BindableState var name: String
         var scores: IdentifiedArrayOf<Score.State> = []
     }
 
-    enum Action: Equatable {
-        case nameUpdated(String)
+    enum Action: BindableAction, Equatable {
+        case binding(BindingAction<State>)
         case score(id: Score.State.ID, action: Score.Action)
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence.updateRound) var updateRound
 
     var body: some ReducerProtocol<State, Action> {
+        BindingReducer()
         Reduce { state, action in
             switch action {
-            case let .nameUpdated(name):
-                state.name = name
-                return .none
+            case .binding:
+                return .fireAndForget { [state] in try await updateRound(state) }
             case let .score(id: id, action: .remove):
                 state.scores.remove(id: id)
                 return .none
@@ -43,16 +44,6 @@ extension Round.State: Codable {
 }
 
 extension Array where Element == Round.State {
-    var teams: [Team.State] {
-        flatMap(\.scores)
-            .map(\.team)
-            .reduce([], {
-                guard !$0.contains($1)
-                else { return $0 }
-                return $0 + [$1]
-            })
-    }
-
     #if DEBUG
     static let mock: Self = {
         guard let thirdTeamID = UUID(uuidString: "21E5DDC4-7EDD-4F54-8DFA-B20BC396A12B"),
@@ -71,15 +62,9 @@ extension Array where Element == Round.State {
               let score9ID = UUID(uuidString: "3623C100-C8B9-4DA4-9D56-2FDE37601B8E")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        let team1: Team.State = App.State.example.teams[1]
-        let team2: Team.State = App.State.example.teams[2]
-        let team3 = Team.State(
-            id: thirdTeamID,
-            name: "The team who had no name",
-            color: .strawberry,
-            image: .hippo,
-            players: []
-        )
+        let team1 = App.State.example.teams[0]
+        let team2 = App.State.example.teams[1]
+        let team3 = App.State.example.teams[2]
 
         return [
             Round.State(

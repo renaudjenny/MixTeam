@@ -4,9 +4,10 @@ import Foundation
 struct Score: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: UUID
-        let team: Team.State
-        @BindableState var points: Int
-        var accumulatedPoints: Int
+        var team: Team.State
+        @BindableState var points: Int = 0
+
+        var accumulatedPoints = 0
     }
 
     enum Action: BindableAction, Equatable {
@@ -16,14 +17,5 @@ struct Score: ReducerProtocol {
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
-    }
-}
-
-extension Score.State: Codable {
-    enum CodingKeys: CodingKey {
-        case id
-        case team
-        case points
-        case accumulatedPoints
     }
 }

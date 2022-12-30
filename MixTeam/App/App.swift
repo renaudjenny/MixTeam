@@ -3,122 +3,93 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var standing = Standing.State()
         var teams: IdentifiedArrayOf<Team.State> = []
-        var _scores = Scores.State()
-        var notEnoughTeamsAlert: AlertState<Action>?
+        var composition = Composition.State()
+        var scores = Scores.State()
+
+        var status: Status = .loading
+    }
+
+    enum Status: Equatable {
+        case loading
+        case loaded
+        case error(String)
     }
 
     enum Action: Equatable {
-        case saveState
-        case loadState
-        case addTeam
-        case mixTeam
-        case dismissNotEnoughTeamsAlert
-        case standing(Standing.Action)
-        case team(id: Team.State.ID, action: Team.Action)
-        case deleteTeams(IndexSet)
+        case task
+        case update(TaskResult<State>)
+        case composition(Composition.Action)
         case scores(Scores.Action)
     }
 
-    @Dependency(\.save) var save
-    @Dependency(\.loaded) var loaded
+    @Dependency(\.appPersistence) var appPersistence
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
     var body: some ReducerProtocol<State, Action> {
-        Scope(state: \.standing, action: /Action.standing) {
-            Standing()
+        Scope(state: \.composition, action: /Action.composition) {
+            Composition()
         }
         Scope(state: \.scores, action: /Action.scores) {
             Scores()
         }
         Reduce { state, action in
             switch action {
-            case .saveState:
-                save(state)
-                return .none
-            case .loadState:
-                state = loaded
-                return .none
-            case .addTeam:
-                let image = MTImage.teams.randomElement() ?? .koala
-                let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
-                let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
-                state.teams.updateOrAppend(
-                    Team.State(id: uuid(), name: name, color: color, image: image)
-                )
-                return Effect(value: .saveState)
-            case .mixTeam:
-                guard state.teams.count > 1 else {
-                    state.notEnoughTeamsAlert = .notEnoughTeams
+            case .task:
+                state.status = .loading
+                return .task {
+                    await .update(TaskResult { try await appPersistence.load() })
+                }
+                .animation(.default)
+            case let .update(result):
+                switch result {
+                case let .success(result):
+                    state = result
+                    state.status = .loaded
+                    return .none
+                case let .failure(error):
+                    state.status = .error(error.localizedDescription)
                     return .none
                 }
-
-                let players: [Player.State] = state.standing.players + state.teams.flatMap(\.players)
-                guard players.count > 0 else { return .none }
-
-                state.teams = IdentifiedArrayOf(uniqueElements: state.teams.map {
-                    var newTeam = $0
-                    newTeam.players = []
-                    return newTeam
-                })
-
-                state.teams = shufflePlayers(players: players).reduce(state.teams) { teams, player in
-                    var teams = teams
-                    var player = player
-                    guard let lessPlayerTeam = teams
-                        .sorted(by: { $0.players.count < $1.players.count  })
-                        .first
-                    else { return teams }
-                    player.isStanding = false
-                    player.color = lessPlayerTeam.color
-                    teams[id: lessPlayerTeam.id]?.players.updateOrAppend(player)
-                    return teams
-                }
-                state.standing.players = []
-                return Effect(value: .saveState)
-            case .dismissNotEnoughTeamsAlert:
-                state.notEnoughTeamsAlert = nil
-                return .none
-            case .standing:
-                return Effect(value: .saveState)
-            case let .team(teamID, .player(playerID, .moveBack)):
-                guard var player = state.teams[id: teamID]?.players[id: playerID] else { return .none }
-                state.teams[id: teamID]?.players.remove(id: playerID)
-                player.isStanding = true
-                player.color = .aluminium
-                state.standing.players.updateOrAppend(player)
-                return Effect(value: .saveState)
-            case .team:
-                return Effect(value: .saveState)
-            case let .deleteTeams(indexSet):
-                for index in indexSet {
-                    var players = state.teams[index].players
-                    players = IdentifiedArrayOf(uniqueElements: players.map {
-                        var player = $0
-                        player.isStanding = true
-                        player.color = .aluminium
-                        return player
+            case .composition(.addTeam):
+                state.teams.append(contentsOf: state.composition.teams)
+                state.scores.teams.append(contentsOf: state.composition.teams)
+                return .fireAndForget { [state] in try await appPersistence.save(state) }
+            case let .composition(.team(id, .binding)):
+                guard let team = state.composition.teams[id: id] else { return .none }
+                state.teams.updateOrAppend(team)
+                state.scores.teams.updateOrAppend(team)
+                state.scores.rounds = IdentifiedArrayOf(uniqueElements: state.scores.rounds.map {
+                    var round = $0
+                    round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+                        var score = $0
+                        if team.id == score.team.id {
+                            score.team = team
+                        }
+                        return score
                     })
-                    state.standing.players.append(contentsOf: players)
+                    return round
+                })
+                return .none
+            case .composition(.deleteTeams):
+                let deletedTeams = state.teams
+                    .filter { !$0.isArchived && !state.composition.teams.contains($0) }
+                    .map {
+                        var team = $0
+                        team.isArchived = true
+                        return team
+                    }
+                for deletedTeam in deletedTeams {
+                    state.teams.updateOrAppend(deletedTeam)
+                    state.scores.teams.updateOrAppend(deletedTeam)
                 }
-                state.teams.remove(atOffsets: indexSet)
-                return Effect(value: .saveState)
+                return .none
+            case .composition:
+                return .none
             case .scores:
-                return Effect(value: .saveState)
+                return .none
             }
         }
-        .forEach(\.teams, action: /Action.team(id:action:)) {
-            Team()
-        }
-    }
-}
-
-extension App.State: Codable {
-    enum CodingKeys: CodingKey {
-        case standing
-        case teams
-        case _scores
     }
 }

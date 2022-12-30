@@ -8,6 +8,7 @@ struct Player: ReducerProtocol {
         @BindableState var image: MTImage = .unknown
         var color: MTColor = .aluminium
         var isStanding = false
+        var isArchived = false
     }
 
     enum Action: BindableAction, Equatable {
@@ -17,8 +18,22 @@ struct Player: ReducerProtocol {
         case moveBack
     }
 
+    @Dependency(\.appPersistence) var appPersistence
+
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
+        Reduce { state, action in
+            switch action {
+            case .binding:
+                return .fireAndForget { [state] in try await appPersistence.player.updateOrAppend(state) }
+            case .setEdit:
+                return .none
+            case .delete:
+                return .none
+            case .moveBack:
+                return .none
+            }
+        }
     }
 }
 
@@ -27,7 +42,5 @@ extension Player.State: Codable {
         case id
         case name
         case image
-        case color
-        case isStanding
     }
 }

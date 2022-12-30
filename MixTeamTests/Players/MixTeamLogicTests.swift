@@ -4,10 +4,11 @@ import XCTest
 import SwiftUI
 
 class MixTeamLogicTests: XCTestCase {
-    func testMixTeamWhenThereIsMoreThan2TeamsAvailableAndMixTeamThenNoAlertIsPresentedAndPlayersAreMixed() throws {
+    @MainActor
+    func testMixTeam() async throws {
         let store = TestStore(initialState: .example, reducer: App())
 
-        let allPlayers = store.state.standing.players + store.state.teams.flatMap(\.players)
+        let allPlayers = store.state.composition.standing.players + store.state.composition.teams.flatMap(\.players)
         guard
             var amelia = allPlayers.first(where: { $0.name == "Amelia" }),
             var jack = allPlayers.first(where: { $0.name == "Jack" }),
@@ -21,22 +22,25 @@ class MixTeamLogicTests: XCTestCase {
         amelia.color = store.state.teams[2].color
 
         store.dependencies.shufflePlayers = .alphabeticallySorted
-        store.dependencies.save = { _ in }
-        store.send(.mixTeam) {
-            $0.notEnoughTeamsAlert = nil
-            $0.standing.players = []
-            $0.teams[id: $0.teams[0].id]?.players = [jose]
-            $0.teams[id: $0.teams[1].id]?.players = [jack]
-            $0.teams[id: $0.teams[2].id]?.players = [amelia]
+        store.dependencies.appPersistence.save = { _ in }
+        store.dependencies.appPersistence.team.updateValues = { _ in }
+        store.dependencies.appPersistence.saveComposition = { _ in }
+        await store.send(.composition(.mixTeam)) {
+            $0.composition.notEnoughTeamsAlert = nil
+            $0.composition.standing.players = []
+            $0.composition.teams[id: $0.teams[0].id]?.players = [jose]
+            $0.composition.teams[id: $0.teams[1].id]?.players = [jack]
+            $0.composition.teams[id: $0.teams[2].id]?.players = [amelia]
         }
-        store.receive(.saveState)
+
+        await store.finish(timeout: 1)
     }
 
-    func testMixTeamWhenThereIsLessThan2TeamsAvailableAndMixTeamThenAlertIsPresented() throws {
+    func testMixTeamAndAlertIsPresented() throws {
         let store = TestStore(initialState: App.State(), reducer: App())
 
-        store.send(.mixTeam) {
-            $0.notEnoughTeamsAlert = .notEnoughTeams
+        store.send(.composition(.mixTeam)) {
+            $0.composition.notEnoughTeamsAlert = .notEnoughTeams
         }
     }
 }

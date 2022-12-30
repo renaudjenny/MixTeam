@@ -5,13 +5,18 @@ struct Standing: ReducerProtocol {
         var players: IdentifiedArrayOf<Player.State> = []
     }
 
+    struct UpdatedResult: Equatable {
+        let players: IdentifiedArrayOf<Player.State>
+    }
+
     enum Action: Equatable {
         case createPlayer
-        case updatePlayer(Player.State)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
     @Dependency(\.uuid) var uuid
+    @Dependency(\.appPersistence) var appPersistence
+    @Dependency(\.appPersistence.player) var playerPersistence
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -20,26 +25,24 @@ struct Standing: ReducerProtocol {
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
                 let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
-                state.players.updateOrAppend(player)
-                return .none
-            case let .updatePlayer(player):
-                state.players.updateOrAppend(player)
-                return .none
-            case let .player(id, action: .delete):
+                state.players.append(player)
+
+                return .fireAndForget { [state] in
+                    try await appPersistence.saveStanding(state)
+                    try await playerPersistence.updateOrAppend(player)
+                }
+            case let .player(id, .delete):
                 state.players.remove(id: id)
-                return .none
+                return .fireAndForget { [state] in
+                    try await appPersistence.saveStanding(state)
+                    try await playerPersistence.remove(id)
+                }
             case .player:
                 return .none
             }
         }
-        .forEach(\.players, action: /Standing.Action.player) {
+        .forEach(\.players, action: /Action.player) {
             Player()
         }
-    }
-}
-
-extension Standing.State: Codable {
-    enum CodingKeys: CodingKey {
-        case players
     }
 }
