@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4C1ED55824C82196005D6749 /* StandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* StandingView.swift */; };
 		4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED56024D0B6F8005D6749 /* Splash.swift */; };
-		4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C31071F24E1941D0006FDC4 /* Splash2.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
@@ -73,7 +72,6 @@
 /* Begin PBXFileReference section */
 		4C1ED55724C82196005D6749 /* StandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingView.swift; sourceTree = "<group>"; };
 		4C1ED56024D0B6F8005D6749 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
-		4C31071F24E1941D0006FDC4 /* Splash2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash2.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,7 +272,6 @@
 			children = (
 				4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */,
 				4C1ED56024D0B6F8005D6749 /* Splash.swift */,
-				4C31071F24E1941D0006FDC4 /* Splash2.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -519,7 +516,6 @@
 				4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* DashedStyles.swift in Sources */,
 				4CFDCADF28F2BD8C002DBF2D /* ShufflePlayers.swift in Sources */,
-				4C31072024E1941D0006FDC4 /* Splash2.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
 				4CBF5935268B016A00BF23F7 /* RoundRow.swift in Sources */,
 				4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */,

@@ -28,7 +28,7 @@ class MixTeamUITests: XCTestCase {
             yourTeamNameTextField.typeText(XCUIKeyboardKey.delete.rawValue)
         }
 
-        yourTeamNameTextField.typeText("Strawberry Koalas\n")
+        yourTeamNameTextField.typeText("Strawberry Koala\n")
         app.buttons["Back"].tap()
     }
 }
