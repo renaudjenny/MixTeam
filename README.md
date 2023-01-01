@@ -18,7 +18,7 @@ MixTeam will help you organise your boardgames or team sport match.
 
 ## Screenshots
 
-![Screenshots of the application from an iPhone](docs/assets/iPhoneScreenshots.png)
+![Screenshots of the application from an iPhone](docs/assets/iPhoneScreenshots.jpeg)
 
 ## Icons and illustrations
 
