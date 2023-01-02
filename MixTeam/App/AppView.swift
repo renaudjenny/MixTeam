@@ -46,6 +46,7 @@ struct AppView: View {
             }
             .task { viewStore.send(.task) }
         }
+        .navigationViewStyle(.stack)
     }
 
     private var content: some View {
