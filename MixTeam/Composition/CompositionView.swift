@@ -17,6 +17,7 @@ struct CompositionView: View {
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             }
+            .backgroundAndForeground(color: .aluminium)
             .alert(store.scope(state: \.notEnoughTeamsAlert), dismiss: .dismissNotEnoughTeamsAlert)
         }
     }

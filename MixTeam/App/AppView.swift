@@ -10,6 +10,28 @@ struct AppView: View {
     private let buttonSize = CGSize(width: 60, height: 60)
 
     var body: some View {
+        WithViewStore(store, observe: \.selectedTab) { viewStore in
+            TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
+                // TODO: content should be replaced with a subview with its own store
+                NavigationView {
+                    content
+                        .listStyle(.plain)
+                        .tag(App.Tab.composition)
+                }
+                .tabItem {
+                    Label("Composition", systemImage: "person.2.crop.square.stack")
+                }
+                ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
+                    .tag(App.Tab.scoreboard)
+                SettingsView(store: store.scope(state: \.settings, action: App.Action.settings))
+                    .tag(App.Tab.settings)
+            }
+            .task { viewStore.send(.task) }
+        }
+        .navigationViewStyle(.stack)
+    }
+
+    private var legacyBody: some View {
         WithViewStore(store) { $0.status } content: { viewStore in
             NavigationView {
                 content
@@ -50,7 +72,7 @@ struct AppView: View {
     }
 
     private var content: some View {
-        WithViewStore(store) { $0.status } content: { viewStore in
+        WithViewStore(store, observe: \.status) { viewStore in
             switch viewStore.state {
             case .loading:
                 ProgressView("Loading content from saved data")

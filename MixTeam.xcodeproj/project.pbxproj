@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4C1ED55824C82196005D6749 /* StandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* StandingView.swift */; };
 		4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED56024D0B6F8005D6749 /* Splash.swift */; };
+		4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3733161EBFAA8700A5785E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733151EBFAA8700A5785E /* Player.swift */; };
@@ -72,6 +73,7 @@
 /* Begin PBXFileReference section */
 		4C1ED55724C82196005D6749 /* StandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingView.swift; sourceTree = "<group>"; };
 		4C1ED56024D0B6F8005D6749 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
+		4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,6 +147,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C2B6C4B296A0B4000B960C3 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		4C3732D41EBF8E8100A5785E = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +178,7 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
+				4C2B6C4B296A0B4000B960C3 /* Settings */,
 				4CB98404295A27BE00512E98 /* Composition */,
 				4CFDCAD928F224D4002DBF2D /* Standing */,
 				4CFDCAD228F0B624002DBF2D /* Dependencies */,
@@ -512,6 +523,7 @@
 				4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,
+				4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */,
 				4CB98408295B048600512E98 /* CompositionView.swift in Sources */,
 				4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* DashedStyles.swift in Sources */,

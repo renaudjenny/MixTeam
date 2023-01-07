@@ -3,8 +3,9 @@ trailing_comma:
 disabled_rules:
   - identifier_name
 opt_in_rules:
-  - explicit_self
   - force_unwrapping
   - implicitly_unwrapped_optional
   - implicit_return
+analyzer_rules:
+  - explicit_self
   - unused_import

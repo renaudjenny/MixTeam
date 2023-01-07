@@ -58,6 +58,9 @@ struct ScoreboardView: View {
                 }
             }
             .backgroundAndForeground(color: .aluminium)
+            .tabItem {
+                Label("Scoreboard", systemImage: "list.bullet.clipboard")
+            }
             .task { viewStore.send(.task) }
         }
     }

@@ -6,8 +6,10 @@ struct App: ReducerProtocol {
         var teams: IdentifiedArrayOf<Team.State> = []
         var composition = Composition.State()
         var scores = Scores.State()
+        var settings = Settings.State()
 
         var status: Status = .loading
+        var selectedTab: Tab = .composition
     }
 
     enum Status: Equatable {
@@ -16,11 +18,19 @@ struct App: ReducerProtocol {
         case error(String)
     }
 
+    enum Tab: Equatable {
+        case composition
+        case scoreboard
+        case settings
+    }
+
     enum Action: Equatable {
         case task
+        case tabSelected(Tab)
         case update(TaskResult<State>)
         case composition(Composition.Action)
         case scores(Scores.Action)
+        case settings(Settings.Action)
     }
 
     @Dependency(\.appPersistence) var appPersistence
@@ -52,6 +62,9 @@ struct App: ReducerProtocol {
                     state.status = .error(error.localizedDescription)
                     return .none
                 }
+            case let .tabSelected(tab):
+                state.selectedTab = tab
+                return .none
             case .composition(.addTeam):
                 state.teams.append(contentsOf: state.composition.teams)
                 state.scores.teams.append(contentsOf: state.composition.teams)
