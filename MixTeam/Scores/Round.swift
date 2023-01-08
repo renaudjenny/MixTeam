@@ -62,9 +62,9 @@ extension Array where Element == Round.State {
               let score9ID = UUID(uuidString: "3623C100-C8B9-4DA4-9D56-2FDE37601B8E")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        let team1 = App.State.example.teams[0]
-        let team2 = App.State.example.teams[1]
-        let team3 = App.State.example.teams[2]
+        let team1 = AppData.State.example.teams[0]
+        let team2 = AppData.State.example.teams[1]
+        let team3 = AppData.State.example.teams[2]
 
         return [
             Round.State(

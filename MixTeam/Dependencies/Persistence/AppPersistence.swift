@@ -9,9 +9,9 @@ private struct Persistence {
     var team = TeamPersistence()
     var player = PlayerPersistence()
 
-    var value: App.State?
+    var value: AppData.State?
 
-    mutating func load() async throws -> App.State {
+    mutating func load() async throws -> AppData.State {
         try await migrateIfNeeded()
         if let value { return try await inflated(value: value) }
 
@@ -24,13 +24,13 @@ private struct Persistence {
         print("Document folder: \(url)")
         #endif
 
-        let decodedValue = try JSONDecoder().decode(App.State.self, from: data)
+        let decodedValue = try JSONDecoder().decode(AppData.State.self, from: data)
         let inflatedValue = try await inflated(value: decodedValue)
         value = inflatedValue
         return inflatedValue
     }
 
-    mutating func save(_ state: App.State) async throws {
+    mutating func save(_ state: AppData.State) async throws {
         value = state
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -66,7 +66,7 @@ private struct Persistence {
         }
     }
 
-    private mutating func persistAndReturnExample() async throws -> App.State {
+    private mutating func persistAndReturnExample() async throws -> AppData.State {
         try await save(.example)
         try await team.save(.example)
         try await player.save(.example)
@@ -84,7 +84,7 @@ private struct Persistence {
         value = migratedData
     }
 
-    private func inflated(value: App.State) async throws -> App.State {
+    private func inflated(value: AppData.State) async throws -> AppData.State {
         var value = value
         let teams = try await team.load()
         let players = try await player.load()
@@ -132,21 +132,21 @@ struct AppPersistence {
     var team = persistence.team
     var player = persistence.player
 
-    var load: () async throws -> App.State = { try await persistence.load() }
-    var save: (App.State) async throws -> Void = { try await persistence.save($0) }
+    var load: () async throws -> AppData.State = { try await persistence.load() }
+    var save: (AppData.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
     var saveScores: (Scores.State) async throws -> Void = { try await persistence.save(scores: $0) }
     var updateRound: (Round.State) async throws -> Void = { try await persistence.update(round: $0) }
     var saveComposition: (Composition.State) async throws -> Void = { try await persistence.save(composition: $0) }
 }
 
-extension App.State {
+extension AppData.State {
     static var example: Self {
         Self(teams: .example, composition: .example, scores: .example)
     }
 }
 
-extension App.State: Codable {
+extension AppData.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
         case composition

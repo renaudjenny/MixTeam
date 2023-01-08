@@ -1,7 +1,7 @@
 import IdentifiedCollections
 import Foundation
 
-var migratedData: App.State? {
+var migratedData: AppData.State? {
     struct DprPlayer: Codable, Identifiable, Hashable {
         var id = UUID()
         var name: String = ""
@@ -87,11 +87,11 @@ var migratedData: App.State? {
         let scores = Scores.State(teams: teams, rounds: rounds)
         let composition = Composition.State(teams: teams, standing: standing)
 
-        return App.State(teams: teams, composition: composition, scores: scores)
+        return AppData.State(teams: teams, composition: composition, scores: scores)
     } else if let teams, let standing = teams.first?.standing {
         let teams = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
         let composition = Composition.State(teams: teams, standing: standing)
-        return App.State(teams: teams, composition: composition)
+        return AppData.State(teams: teams, composition: composition)
     } else {
         return nil
     }
