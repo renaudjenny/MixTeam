@@ -14,6 +14,7 @@ struct AppData: ReducerProtocol {
         case task
         case update(TaskResult<State>)
         case composition(Composition.Action)
+        case scores(Scores.Action)
     }
 
     @Dependency(\.appPersistence) var appPersistence
@@ -23,6 +24,9 @@ struct AppData: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.composition, action: /Action.composition) {
             Composition()
+        }
+        Scope(state: \.scores, action: /Action.scores) {
+            Scores()
         }
         Reduce { state, action in
             switch action {
@@ -80,12 +84,14 @@ struct AppData: ReducerProtocol {
                 return .none
             case .composition:
                 return .none
+            case .scores:
+                return .none
             }
         }
     }
 }
 
-struct AppLoadView: View {
+struct AppDataView: View {
     let store: StoreOf<AppData>
 
     struct ViewState: Equatable {

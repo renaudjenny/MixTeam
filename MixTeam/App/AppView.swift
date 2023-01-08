@@ -12,9 +12,9 @@ struct AppView: View {
     var body: some View {
         WithViewStore(store, observe: \.selectedTab) { viewStore in
             TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
-                AppLoadView(store: store.scope(state: \.appLoad, action: App.Action.appLoad))
+                AppDataView(store: store.scope(state: \.data, action: App.Action.data))
                     .tag(App.Tab.composition)
-                ScoreboardView(store: store.scope(state: \.appLoad.scores, action: App.Action.scores))
+                ScoreboardView(store: store.scope(state: \.data.scores, action: { App.Action.data(.scores($0)) }))
                     .tag(App.Tab.scoreboard)
                 SettingsView(store: store.scope(state: \.settings, action: App.Action.settings))
                     .tag(App.Tab.settings)
@@ -48,7 +48,7 @@ extension Store where State == App.State, Action == App.Action {
 
 extension App.State {
     static var example: Self {
-        Self(appLoad: .example)
+        Self(data: .example)
     }
 }
 #endif
