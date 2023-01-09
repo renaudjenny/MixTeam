@@ -122,6 +122,7 @@ struct AppDataView: View {
             .tabItem {
                 Label("Composition", systemImage: "person.2.crop.square.stack")
             }
+            .navigationViewStyle(.stack)
         }
     }
 

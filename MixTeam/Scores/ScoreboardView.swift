@@ -61,6 +61,7 @@ struct ScoreboardView: View {
             .tabItem {
                 Label("Scoreboard", systemImage: "list.bullet.clipboard")
             }
+            .navigationViewStyle(.stack)
             .task { viewStore.send(.task) }
         }
     }

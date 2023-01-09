@@ -23,22 +23,24 @@ struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        aboutView
-            .tabItem {
-                Label("Settings", systemImage: "gear")
+        NavigationView {
+            List {
+                NavigationLink { aboutView } label: { Text("About") }
             }
+        }
+        .tabItem {
+            Label("Settings", systemImage: "gear")
+        }
+        .navigationViewStyle(.stack)
     }
 
     private var aboutView: some View {
-        RenaudJennyAboutView.AboutView(appId: "id1526493495", isInModal: true) {
+        RenaudJennyAboutView.AboutView(appId: "id1526493495") {
             Image(uiImage: #imageLiteral(resourceName: "Logo"))
                 .cornerRadius(16)
                 .padding()
                 .padding(.top)
                 .shadow(radius: 5)
-        } background: {
-            MTColor.aluminium.backgroundColor(scheme: colorScheme)
-                .dashedCardStyle(color: MTColor.aluminium)
         }
     }
 }

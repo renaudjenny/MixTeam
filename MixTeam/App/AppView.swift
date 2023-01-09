@@ -19,7 +19,6 @@ struct AppView: View {
                 SettingsView(store: store.scope(state: \.settings, action: App.Action.settings))
                     .tag(App.Tab.settings)
             }
-            .navigationViewStyle(.stack)
         }
     }
 }
