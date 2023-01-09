@@ -4,16 +4,16 @@ import SwiftUI
 
 struct Settings: ReducerProtocol {
     struct State: Equatable {
-
+        var archives = Archives.State()
     }
 
     enum Action: Equatable {
-
+        case archives(Archives.Action)
     }
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-
+    var body: some ReducerProtocol<State, Action> {
+        Scope(state: \.archives, action: /Action.archives) {
+            Archives()
         }
     }
 }
@@ -26,6 +26,11 @@ struct SettingsView: View {
         NavigationView {
             List {
                 NavigationLink { aboutView } label: { Text("About") }
+                NavigationLink {
+                    ArchivesView(store: store.scope(state: \.archives, action: Settings.Action.archives))
+                } label: {
+                    Text("Archives")
+                }
             }
         }
         .tabItem {
