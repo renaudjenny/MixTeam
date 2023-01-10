@@ -73,7 +73,7 @@ struct ArchivesView: View {
     }
 
     private func errorCardView(description: String) -> some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store.stateless) { viewStore in
             VStack {
                 Text(description)
                 Button { viewStore.send(.task, animation: .default) } label: {
@@ -86,3 +86,66 @@ struct ArchivesView: View {
         }
     }
 }
+
+#if DEBUG
+struct ArchivesView_Previews: PreviewProvider {
+    static var previews: some View {
+        ArchivesView(store: .preview)
+
+        ArchivesView(store: Store(
+            initialState: .previewWithTeamsAndPlayers,
+            reducer: Archives()
+        ))
+        .previewDisplayName("Archives With Teams and Players")
+
+        ArchivesView(store: Store(
+            initialState: .preview,
+            reducer: Archives()
+                .dependency(\.appPersistence.player.load, { throw PersistenceError.notFound })
+        ))
+        .previewDisplayName("Archives With Error")
+    }
+}
+
+extension Archives.State {
+    static var preview: Self { Archives.State() }
+    static var previewWithTeamsAndPlayers: Self {
+        Archives.State(
+            teams: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+                var team = $0
+                team.isArchived = true
+                return team
+            }),
+            players: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
+                var player = $0
+                player.isArchived = true
+                return player
+            }),
+            isLoading: false
+        )
+    }
+}
+
+extension StoreOf<Archives> {
+    static var preview: StoreOf<Archives> {
+        StoreOf<Archives>(
+            initialState: .preview,
+            reducer: Archives()
+                .dependency(\.appPersistence.team.load, {
+                    IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+                        var team = $0
+                        team.isArchived = true
+                        return team
+                    })
+                })
+                .dependency(\.appPersistence.player.load, {
+                    IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
+                        var player = $0
+                        player.isArchived = true
+                        return player
+                    })
+                })
+        )
+    }
+}
+#endif

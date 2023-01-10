@@ -247,6 +247,24 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence
     }()
+    #if DEBUG
+    static var previewValue: AppPersistence = { () -> AppPersistence in
+        var appPersistence = AppPersistence()
+        appPersistence.load = { .example }
+        appPersistence.save = { _ in print("##### AppData saved") }
+        appPersistence.saveStanding = { _ in print("##### Standing saved") }
+        appPersistence.saveScores = { _ in print("##### Scores saved") }
+        appPersistence.updateRound = { _ in print("##### Update round") }
+        appPersistence.saveComposition = { _ in print("##### Composition saved") }
+        appPersistence.team.load = { .example }
+        appPersistence.team.save = { _ in print("##### Team saved") }
+        appPersistence.team.updateOrAppend = { _ in print("##### Team Updated or Appeneded") }
+        appPersistence.team.updateValues = { _ in print("##### Team Values Updated") }
+        appPersistence.player.load = { .example }
+        appPersistence.player.save = { _ in print("##### Players saved") }
+        return appPersistence
+    }()
+    #endif
 }
 
 extension DependencyValues {

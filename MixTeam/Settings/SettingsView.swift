@@ -49,3 +49,17 @@ struct SettingsView: View {
         }
     }
 }
+
+#if DEBUG
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView(store: .preview)
+    }
+}
+
+extension StoreOf<Settings> {
+    static var preview: StoreOf<Settings> {
+        StoreOf<Settings>(initialState: Settings.State(), reducer: Settings())
+    }
+}
+#endif
