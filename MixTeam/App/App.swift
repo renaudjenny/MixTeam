@@ -35,6 +35,11 @@ struct App: ReducerProtocol {
                 return .none
             case .data:
                 return .none
+
+            // TODO: check if this can be replaced by listening to persistence changes
+            case let .settings(.archives(.unarchiveTeam(id))):
+                guard let team = state.data.teams[id: id] else { return .none }
+                return .task { .data(.composition(.unarchiveTeam(team))) }
             case .settings:
                 return .none
             }

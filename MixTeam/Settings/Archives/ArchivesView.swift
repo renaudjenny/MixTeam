@@ -12,6 +12,7 @@ struct Archives: ReducerProtocol {
     enum Action: Equatable {
         case task
         case update(TaskResult<State>)
+        case unarchiveTeam(id: Team.State.ID)
     }
 
     @Dependency(\.appPersistence.team) var teamPersistence
@@ -40,6 +41,12 @@ struct Archives: ReducerProtocol {
                 state.error = error.localizedDescription
                 return .none
             }
+        case let .unarchiveTeam(id):
+            state.teams[id: id]?.isArchived = false
+            return .fireAndForget { [team = state.teams[id: id]] in
+                guard let team else { return }
+                try await teamPersistence.updateOrAppend(team)
+            }
         }
     }
 }
@@ -59,7 +66,19 @@ struct ArchivesView: View {
                 List {
                     Section("Teams") {
                         ForEach(viewStore.teams.filter(\.isArchived)) { team in
-                            Text(team.name)
+                            HStack {
+                                Text(team.name)
+                                Spacer()
+                                Menu("Edit") {
+                                    Button { viewStore.send(.unarchiveTeam(id: team.id)) } label: {
+                                        Label("Unarchive", systemImage: "tray.and.arrow.up")
+                                    }
+                                    Button(role: .destructive) { } label: {
+                                        Label("Delete...", systemImage: "trash")
+                                    }
+                                }
+                            }
+
                         }
                     }
                     Section("Players") {

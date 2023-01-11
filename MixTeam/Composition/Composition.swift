@@ -13,6 +13,7 @@ struct Composition: ReducerProtocol {
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
+        case unarchiveTeam(Team.State)
         case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
         case deleteTeams(IndexSet)
@@ -77,6 +78,9 @@ struct Composition: ReducerProtocol {
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsAlert = nil
                 return .none
+            case let .unarchiveTeam(team):
+                state.teams.updateOrAppend(team)
+                return .fireAndForget { [state] in try await save(state) }
             case .standing:
                 return .none
             case let .team(teamID, .player(playerID, .moveBack)):
