@@ -4,15 +4,14 @@ import SwiftUI
 struct Archives: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
-        var players: IdentifiedArrayOf<Player.State> = []
         var isLoading = true
         var error: String?
     }
 
     enum Action: Equatable {
         case task
-        case update(TaskResult<State>)
-        case unarchiveTeam(id: Team.State.ID)
+        case update(TaskResult<IdentifiedArrayOf<Team.State>>)
+        case unarchive(id: Team.State.ID)
         case remove(id: Team.State.ID)
     }
 
@@ -24,25 +23,18 @@ struct Archives: ReducerProtocol {
         case .task:
             state.isLoading = true
             state.error = nil
-            return .task {
-                await .update(TaskResult {
-                    async let teams = teamPersistence.load()
-                    async let players = playerPersistence.load()
-                    return try await State(teams: teams, players: players)
-                })
-            }
+            return .task { await .update(TaskResult { try await teamPersistence.load() }) }
         case let .update(result):
             state.isLoading = false
             switch result {
             case let .success(result):
-                state.teams = result.teams
-                state.players = result.players
+                state.teams = result
                 return .none
             case let .failure(error):
                 state.error = error.localizedDescription
                 return .none
             }
-        case let .unarchiveTeam(id):
+        case let .unarchive(id):
             state.teams[id: id]?.isArchived = false
             return .fireAndForget { [team = state.teams[id: id]] in
                 guard let team else { return }
@@ -78,7 +70,7 @@ struct ArchivesView: View {
                                 Text(team.name)
                                 Spacer()
                                 Menu("Edit") {
-                                    Button { viewStore.send(.unarchiveTeam(id: team.id)) } label: {
+                                    Button { viewStore.send(.unarchive(id: team.id)) } label: {
                                         Label("Unarchive", systemImage: "tray.and.arrow.up")
                                     }
                                     Button(role: .destructive) { viewStore.send(.remove(id: team.id)) } label: {
@@ -87,11 +79,6 @@ struct ArchivesView: View {
                                 }
                             }
 
-                        }
-                    }
-                    Section("Players") {
-                        ForEach(viewStore.players.filter(\.isArchived)) { player in
-                            Text(player.name)
                         }
                     }
                 }
@@ -142,11 +129,6 @@ extension Archives.State {
                 var team = $0
                 team.isArchived = true
                 return team
-            }),
-            players: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
-                var player = $0
-                player.isArchived = true
-                return player
             }),
             isLoading: false
         )
