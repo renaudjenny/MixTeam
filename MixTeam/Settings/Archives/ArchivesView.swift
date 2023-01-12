@@ -13,6 +13,7 @@ struct Archives: ReducerProtocol {
         case task
         case update(TaskResult<State>)
         case unarchiveTeam(id: Team.State.ID)
+        case remove(id: Team.State.ID)
     }
 
     @Dependency(\.appPersistence.team) var teamPersistence
@@ -47,6 +48,13 @@ struct Archives: ReducerProtocol {
                 guard let team else { return }
                 try await teamPersistence.updateOrAppend(team)
             }
+        case let .remove(id):
+            let team = state.teams[id: id]
+            state.teams.remove(id: id)
+            return .fireAndForget { [team] in
+                guard let team else { return }
+                try await teamPersistence.remove(team)
+            }
         }
     }
 }
@@ -73,7 +81,7 @@ struct ArchivesView: View {
                                     Button { viewStore.send(.unarchiveTeam(id: team.id)) } label: {
                                         Label("Unarchive", systemImage: "tray.and.arrow.up")
                                     }
-                                    Button(role: .destructive) { } label: {
+                                    Button(role: .destructive) { viewStore.send(.remove(id: team.id)) } label: {
                                         Label("Delete...", systemImage: "trash")
                                     }
                                 }
