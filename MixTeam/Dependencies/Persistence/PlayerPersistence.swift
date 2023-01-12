@@ -1,50 +1,85 @@
+import Combine
 import Foundation
+import Dependencies
 import IdentifiedCollections
+import XCTestDynamicOverlay
 
-private struct Persistence {
+private final class Persistence {
     private let playerFileName = "MixTeamPlayerV3_0_0"
 
-    var value: IdentifiedArrayOf<Player.State>?
+    @Dependency(\.mainQueue) var mainQueue
 
-    mutating func load() async throws -> IdentifiedArrayOf<Player.State> {
-        if let value { return value }
+    @Published var value: IdentifiedArrayOf<Player.State>
+    private var cancellables = Set<AnyCancellable>()
+
+    init() throws {
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(playerFileName, conformingTo: .json))
-        else { return .example }
+        else {
+            value = .example
+            return
+        }
 
         let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: data)
         value = decodedValue
-        return decodedValue
     }
 
-    mutating func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
-        value = states
+    func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
 
-    mutating func updateOrAppend(state: Player.State) async throws {
-        var states = try await load()
-        states.updateOrAppend(state)
-        try await save(states)
+    func updateOrAppend(state: Player.State) async throws {
+        value.updateOrAppend(state)
+        try await save(value)
     }
-    mutating func remove(id: Player.State.ID) async throws {
-        var states = try await load()
-        states.remove(id: id)
-        try await save(states)
+    func remove(id: Player.State.ID) async throws {
+        value.remove(id: id)
+        try await save(value)
     }
 }
 
 struct PlayerPersistence {
-    private static var persistence = Persistence()
+    var load: () async throws -> IdentifiedArrayOf<Player.State>
+    var save: (IdentifiedArrayOf<Player.State>) async throws -> Void
+    var updateOrAppend: (Player.State) async throws -> Void
+    var remove: (Player.State.ID) async throws -> Void
+}
 
-    var load: () async throws -> IdentifiedArrayOf<Player.State> = { try await persistence.load() }
-    var save: (IdentifiedArrayOf<Player.State>) async throws -> Void = { try await persistence.save($0) }
-    var updateOrAppend: (Player.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
-    var remove: (Player.State.ID) async throws -> Void = { try await persistence.remove(id: $0) }
+extension PlayerPersistence {
+    static let live = {
+        do {
+            let persistence = try Persistence()
+            return Self(
+                load: { persistence.value },
+                save: { try await persistence.save($0) },
+                updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
+                remove: { try await persistence.remove(id: $0) }
+            )
+        } catch {
+            return Self(
+                load: { throw error },
+                save: { _ in throw error },
+                updateOrAppend: { _ in throw error },
+                remove: { _ in throw error }
+            )
+        }
+    }()
+    static let test = Self(
+        load: unimplemented("PlayerPersistence.load"),
+        save: unimplemented("PlayerPersistence.save"),
+        updateOrAppend: unimplemented("PlayerPersistence.updateOrAppend"),
+        remove: unimplemented("PlayerPersistence.remove")
+    )
+    static let preview = Self(
+        load: { .example },
+        save: { _ in print("PlayerPersistence.save called") },
+        updateOrAppend: { _ in print("PlayerPersistence.updateOrAppend called") },
+        remove: { _ in print("PlayerPersistence.remove called") }
+    )
 }
 
 extension IdentifiedArrayOf<Player.State> {
@@ -59,5 +94,18 @@ extension IdentifiedArrayOf<Player.State> {
             Player.State(id: joseID, name: "José", image: .santa),
             Player.State(id: jackID, name: "Jack", image: .jack),
         ]
+    }
+}
+
+private enum PlayerPersistenceDependencyKey: DependencyKey {
+    static let liveValue = PlayerPersistence.live
+    static let testValue = PlayerPersistence.test
+    static let previewValue = PlayerPersistence.test
+}
+
+extension DependencyValues {
+    var playerPersistence: PlayerPersistence {
+        get { self[PlayerPersistenceDependencyKey.self] }
+        set { self[PlayerPersistenceDependencyKey.self] = newValue }
     }
 }

@@ -39,12 +39,6 @@ struct AppView_Previews: PreviewProvider {
     }
 }
 
-extension Store where State == App.State, Action == App.Action {
-    static var preview: Self {
-        Self(initialState: .example, reducer: App())
-    }
-}
-
 extension App.State {
     static var example: Self {
         Self(data: .example)

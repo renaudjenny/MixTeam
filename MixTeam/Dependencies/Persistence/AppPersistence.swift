@@ -7,7 +7,7 @@ private struct Persistence {
     private let appFileName = "MixTeamAppV3_0_0"
 
     var team = TeamPersistence()
-    var player = PlayerPersistence()
+    @Dependency(\.playerPersistence) var player
 
     var value: AppData.State?
 
@@ -243,8 +243,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
         appPersistence.team.updateOrAppend = unimplemented("Team Persistence updateOrAppend unimplemented")
         appPersistence.team.updateValues = unimplemented("Team Persistence updateValues unimplemented")
-        appPersistence.player.load = unimplemented("Player Persistence load unimplemented")
-        appPersistence.player.save = unimplemented("Player Persistence save unimplemented")
         return appPersistence
     }()
     #if DEBUG
@@ -260,8 +258,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.team.save = { _ in print("##### Team saved") }
         appPersistence.team.updateOrAppend = { _ in print("##### Team Updated or Appeneded") }
         appPersistence.team.updateValues = { _ in print("##### Team Values Updated") }
-        appPersistence.player.load = { .example }
-        appPersistence.player.save = { _ in print("##### Players saved") }
         return appPersistence
     }()
     #endif
