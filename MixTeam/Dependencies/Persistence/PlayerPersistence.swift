@@ -43,6 +43,7 @@ private final class Persistence {
 }
 
 struct PlayerPersistence {
+    var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Player.State>, Error>>
     var load: () async throws -> IdentifiedArrayOf<Player.State>
     var save: (IdentifiedArrayOf<Player.State>) async throws -> Void
     var updateOrAppend: (Player.State) async throws -> Void
@@ -54,6 +55,7 @@ extension PlayerPersistence {
         do {
             let persistence = try Persistence()
             return Self(
+                publisher: { persistence.$value.tryMap { $0 }.eraseToAnyPublisher().values },
                 load: { persistence.value },
                 save: { try await persistence.save($0) },
                 updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
@@ -61,6 +63,7 @@ extension PlayerPersistence {
             )
         } catch {
             return Self(
+                publisher: { .with(error: error) },
                 load: { throw error },
                 save: { _ in throw error },
                 updateOrAppend: { _ in throw error },
@@ -69,12 +72,14 @@ extension PlayerPersistence {
         }
     }()
     static let test = Self(
+        publisher: unimplemented("PlayerPersistence.load"),
         load: unimplemented("PlayerPersistence.load"),
         save: unimplemented("PlayerPersistence.save"),
         updateOrAppend: unimplemented("PlayerPersistence.updateOrAppend"),
         remove: unimplemented("PlayerPersistence.remove")
     )
     static let preview = Self(
+        publisher: { Result.Publisher(.example).eraseToAnyPublisher().values },
         load: { .example },
         save: { _ in print("PlayerPersistence.save called") },
         updateOrAppend: { _ in print("PlayerPersistence.updateOrAppend called") },
@@ -109,3 +114,16 @@ extension DependencyValues {
         set { self[PlayerPersistenceDependencyKey.self] = newValue }
     }
 }
+
+#if DEBUG
+extension AsyncThrowingPublisher where P == AnyPublisher<IdentifiedArrayOf<Player.State>, Error> {
+
+    static func with(value: Element) -> Self {
+        Result.Publisher(value).eraseToAnyPublisher().values
+    }
+
+    static func with(error: Error) -> Self {
+        Fail(error: error).eraseToAnyPublisher().values
+    }
+}
+#endif

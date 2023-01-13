@@ -115,7 +115,7 @@ struct ArchivesView_Previews: PreviewProvider {
         ArchivesView(store: Store(
             initialState: .preview,
             reducer: Archives()
-                .dependency(\.appPersistence.player.load, { throw PersistenceError.notFound })
+                .dependency(\.appPersistence.player.publisher, { .with(error: PersistenceError.notFound) })
         ))
         .previewDisplayName("Archives With Error")
     }
@@ -147,12 +147,12 @@ extension StoreOf<Archives> {
                         return team
                     })
                 })
-                .dependency(\.appPersistence.player.load, {
-                    IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
+                .dependency(\.appPersistence.player.publisher, {
+                    .with(value: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
                         var player = $0
                         player.isArchived = true
                         return player
-                    })
+                    }))
                 })
         )
     }
