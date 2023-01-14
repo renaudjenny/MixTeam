@@ -71,12 +71,12 @@ struct ScoreRow_Previews: PreviewProvider {
             ScoreRow(store: Store(
                 initialState: .loadingPreview,
                 reducer: Score()
-                    .dependency(\.appPersistence.team, .previewWithDelay)
+                    .dependency(\.appPersistence.team.load, TeamPersistence.previewWithDelay)
             ))
             ScoreRow(store: Store(
                 initialState: .loadingPreview,
                 reducer: Score()
-                    .dependency(\.appPersistence.team, .previewWithError)
+                    .dependency(\.appPersistence.team.load, TeamPersistence.previewWithError)
             ))
         }
     }
@@ -104,14 +104,14 @@ extension Score.State {
 }
 
 private extension TeamPersistence {
-    static let previewWithDelay = Self(load: {
+    static let previewWithDelay: () async throws -> IdentifiedArrayOf<Team.State> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
         return [.preview]
-    })
-    static let previewWithError = Self(load: {
+    }
+    static let previewWithError: () async throws -> IdentifiedArrayOf<Team.State> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
         struct PreviewError: Error {}
         throw PreviewError()
-    })
+    }
 }
 #endif

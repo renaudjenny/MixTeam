@@ -10,7 +10,6 @@ private final class Persistence {
     @Dependency(\.mainQueue) var mainQueue
 
     @Published var value: IdentifiedArrayOf<Player.State>
-    private var cancellables = Set<AnyCancellable>()
 
     init() throws {
         guard
@@ -30,6 +29,7 @@ private final class Persistence {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
+        value = states
     }
 
     func updateOrAppend(state: Player.State) async throws {
@@ -72,7 +72,7 @@ extension PlayerPersistence {
         }
     }()
     static let test = Self(
-        publisher: unimplemented("PlayerPersistence.load"),
+        publisher: unimplemented("PlayerPersistence.publisher"),
         load: unimplemented("PlayerPersistence.load"),
         save: unimplemented("PlayerPersistence.save"),
         updateOrAppend: unimplemented("PlayerPersistence.updateOrAppend"),

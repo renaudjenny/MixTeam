@@ -1,63 +1,110 @@
+import Combine
+import Dependencies
 import Foundation
 import IdentifiedCollections
+import XCTestDynamicOverlay
 
-private struct Persistence {
+private final class Persistence {
     private let teamFileName = "MixTeamTeamV3_0_0"
 
-    var value: IdentifiedArrayOf<Team.State>?
+    @Dependency(\.mainQueue) var mainQueue
 
-    mutating func load() async throws -> IdentifiedArrayOf<Team.State> {
-        if let value { return value }
+    let subject = PassthroughSubject<IdentifiedArrayOf<Team.State>, Error>()
+    var value: IdentifiedArrayOf<Team.State> {
+        didSet { Task { try await presist(value) } }
+    }
+
+    init() throws {
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(teamFileName, conformingTo: .json))
-        else { return .example }
+        else {
+            value = .example
+            subject.send(value)
+            return
+        }
 
         let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
         value = decodedValue
-        return decodedValue
+        subject.send(value)
     }
 
-    mutating func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
+    func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
         value = states
+    }
+
+    private func presist(_ states: IdentifiedArrayOf<Team.State>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
-    mutating func updateOrAppend(state: Team.State) async throws {
-        value?.updateOrAppend(state)
-        if let value {
-            try await save(value)
-        }
+    func updateOrAppend(state: Team.State) async throws {
+        value.updateOrAppend(state)
+        subject.send(value)
     }
-    mutating func update(values: IdentifiedArrayOf<Team.State>) async throws {
+    func update(values: IdentifiedArrayOf<Team.State>) async throws {
         for value in values {
-            self.value?.updateOrAppend(value)
+            self.value.updateOrAppend(value)
         }
-        if let value {
-            try await save(value)
-        }
+        subject.send(value)
     }
-    mutating func remove(state: Team.State) async throws {
-        value?.remove(state)
-        if let value {
-            try await save(value)
-        }
+    func remove(state: Team.State) async throws {
+        value.remove(state)
+        subject.send(value)
     }
 }
 
 struct TeamPersistence {
-    private static var persistence = Persistence()
+    var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team.State>, Error>>
+    var load: () async throws -> IdentifiedArrayOf<Team.State>
+    var save: (IdentifiedArrayOf<Team.State>) async throws -> Void
+    var updateOrAppend: (Team.State) async throws -> Void
+    var updateValues: (IdentifiedArrayOf<Team.State>) async throws -> Void
+    var remove: (Team.State) async throws -> Void
+}
 
-    var load: () async throws -> IdentifiedArrayOf<Team.State> = { try await persistence.load() }
-    var save: (IdentifiedArrayOf<Team.State>) async throws -> Void = { try await persistence.save($0) }
-    var updateOrAppend: (Team.State) async throws -> Void = { try await persistence.updateOrAppend(state: $0) }
-    var updateValues: (IdentifiedArrayOf<Team.State>) async throws -> Void = {
-        try await persistence.update(values: $0)
-    }
-    var remove: (Team.State) async throws -> Void = { try await persistence.remove(state: $0) }
+extension TeamPersistence {
+    static let live =  {
+        do {
+            let persistence = try Persistence()
+            return Self(
+                publisher: { persistence.subject.eraseToAnyPublisher().values },
+                load: { persistence.value },
+                save: { try await persistence.save($0) },
+                updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
+                updateValues: { try await persistence.update(values: $0) },
+                remove: { try await persistence.remove(state: $0) }
+            )
+        } catch {
+            return Self(
+                publisher: { Fail(error: error).eraseToAnyPublisher().values },
+                load: { throw error },
+                save: { _ in throw error },
+                updateOrAppend: { _ in throw error },
+                updateValues: { _ in throw error },
+                remove: { _ in throw error }
+            )
+        }
+
+    }()
+    static let test = Self(
+        publisher: unimplemented("TeamPersistence.publisher"),
+        load: unimplemented("TeamPersistence.load"),
+        save: unimplemented("TeamPersistence.save"),
+        updateOrAppend: unimplemented("TeamPersistence.updateOrAppend"),
+        updateValues: unimplemented("TeamPersistence.updateValues"),
+        remove: unimplemented("TeamPersistence.remove")
+    )
+    static let preview = Self(
+        publisher: { Result.Publisher(.example).eraseToAnyPublisher().values },
+        load: { .example },
+        save: { _ in print("TeamPersistence.save called") },
+        updateOrAppend: { _ in print("TeamPersistence.updateOrAppend called") },
+        updateValues: { _ in print("TeamPersistence.updateValues called") },
+        remove: { _ in print("TeamPersistence.remove called") }
+    )
 }
 
 extension Team.State: Codable {
@@ -127,5 +174,18 @@ extension IdentifiedArrayOf<Team.State> {
                 image: .lion
             ),
         ]
+    }
+}
+
+private enum TeamPersistenceDependencyKey: DependencyKey {
+    static let liveValue = TeamPersistence.live
+    static let testValue = TeamPersistence.test
+    static let previewValue = TeamPersistence.test
+}
+
+extension DependencyValues {
+    var teamPersistence: TeamPersistence {
+        get { self[TeamPersistenceDependencyKey.self] }
+        set { self[TeamPersistenceDependencyKey.self] = newValue }
     }
 }

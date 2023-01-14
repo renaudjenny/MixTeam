@@ -6,7 +6,7 @@ import XCTestDynamicOverlay
 private struct Persistence {
     private let appFileName = "MixTeamAppV3_0_0"
 
-    var team = TeamPersistence()
+    @Dependency(\.teamPersistence) var team
     @Dependency(\.playerPersistence) var player
 
     var value: AppData.State?
@@ -239,10 +239,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.saveScores = unimplemented("App Persistence saveScores unimplemented")
         appPersistence.updateRound = unimplemented("App Persistence updateRound unimplemented")
         appPersistence.saveComposition = unimplemented("App Persistence saveComposition unimplemented")
-        appPersistence.team.load = unimplemented("Team Persistence load unimplemented")
-        appPersistence.team.save = unimplemented("Team Persistence save unimplemented")
-        appPersistence.team.updateOrAppend = unimplemented("Team Persistence updateOrAppend unimplemented")
-        appPersistence.team.updateValues = unimplemented("Team Persistence updateValues unimplemented")
         return appPersistence
     }()
     #if DEBUG
@@ -254,10 +250,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.saveScores = { _ in print("##### Scores saved") }
         appPersistence.updateRound = { _ in print("##### Update round") }
         appPersistence.saveComposition = { _ in print("##### Composition saved") }
-        appPersistence.team.load = { .example }
-        appPersistence.team.save = { _ in print("##### Team saved") }
-        appPersistence.team.updateOrAppend = { _ in print("##### Team Updated or Appeneded") }
-        appPersistence.team.updateValues = { _ in print("##### Team Values Updated") }
         return appPersistence
     }()
     #endif
