@@ -22,19 +22,6 @@ struct App: ReducerProtocol {
     }
 
     var body: some ReducerProtocol<State, Action> {
-
-        // TODO: check if this can be replaced by listening to persistence changes
-        Reduce { state, action in
-            if case let .data(.composition(.deleteTeams(indexSet))) = action {
-                for index in indexSet {
-                    var team = state.data.composition.teams[index]
-                    team.isArchived = true
-                    state.settings.archives.teams.updateOrAppend(team)
-                }
-            }
-            return .none
-        }
-
         Scope(state: \.data, action: /Action.data) {
             AppData()
         }
@@ -48,11 +35,6 @@ struct App: ReducerProtocol {
                 return .none
             case .data:
                 return .none
-
-            // TODO: check if this can be replaced by listening to persistence changes
-            case let .settings(.archives(.unarchive(id))):
-                guard let team = state.data.teams[id: id] else { return .none }
-                return .task { .data(.composition(.unarchiveTeam(team))) }
             case .settings:
                 return .none
             }

@@ -13,11 +13,13 @@ struct AppData: ReducerProtocol {
     enum Action: Equatable {
         case task
         case update(TaskResult<State>)
+        case updateTeams(TaskResult<IdentifiedArrayOf<Team.State>>)
         case composition(Composition.Action)
         case scores(Scores.Action)
     }
 
     @Dependency(\.appPersistence) var appPersistence
+    @Dependency(\.teamPersistence) var teamPersistence
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.uuid) var uuid
 
@@ -33,8 +35,12 @@ struct AppData: ReducerProtocol {
             case .task:
                 state.isLoading = true
                 state.error = nil
-                return .task {
-                    await .update(TaskResult { try await appPersistence.load() })
+                return .run { send in
+                    await send(.update(TaskResult { try await appPersistence.load() }))
+
+                    for try await teams in teamPersistence.publisher() {
+                        await send(.updateTeams(TaskResult { teams }))
+                    }
                 }
                 .animation(.default)
             case let .update(result):
@@ -45,6 +51,16 @@ struct AppData: ReducerProtocol {
                     state.composition = result.composition
                     state.scores = result.scores
                     return .none
+                case let .failure(error):
+                    state.error = error.localizedDescription
+                    return .none
+                }
+            case let .updateTeams(result):
+                switch result {
+                case let .success(teams):
+                    state.teams = teams
+                    state.composition.teams = teams.filter { !$0.isArchived }
+                    return .fireAndForget { [state] in try await appPersistence.save(state) }
                 case let .failure(error):
                     state.error = error.localizedDescription
                     return .none

@@ -15,15 +15,20 @@ struct Archives: ReducerProtocol {
         case remove(id: Team.State.ID)
     }
 
-    @Dependency(\.appPersistence.team) var teamPersistence
-    @Dependency(\.appPersistence.player) var playerPersistence
+    @Dependency(\.teamPersistence) var teamPersistence
 
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
         case .task:
             state.isLoading = true
             state.error = nil
-            return .task { await .update(TaskResult { try await teamPersistence.load() }) }
+            return .run { send in
+                await send(.update(TaskResult { try await teamPersistence.load() }))
+
+                for try await teams in teamPersistence.publisher() {
+                    await send(.update(TaskResult { teams }))
+                }
+            }
         case let .update(result):
             state.isLoading = false
             switch result {

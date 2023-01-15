@@ -8,6 +8,7 @@ private final class Persistence {
     private let teamFileName = "MixTeamTeamV3_0_0"
 
     @Dependency(\.mainQueue) var mainQueue
+    @Dependency(\.playerPersistence) var player
 
     let subject = PassthroughSubject<IdentifiedArrayOf<Team.State>, Error>()
     var value: IdentifiedArrayOf<Team.State> {
@@ -26,7 +27,6 @@ private final class Persistence {
 
         let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
         value = decodedValue
-        subject.send(value)
     }
 
     func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
@@ -40,19 +40,34 @@ private final class Persistence {
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
+    func inflated(value: IdentifiedArrayOf<Team.State>) async throws -> IdentifiedArrayOf<Team.State> {
+        let players = try await player.load()
+
+        return IdentifiedArrayOf(uniqueElements: value.compactMap {
+            guard var team = value[id: $0.id] else { return nil }
+            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
+                var player = players[id: $0.id]
+                player?.isStanding = false
+                player?.color = team.color
+                return  player
+            })
+            return team
+        })
+    }
+
     func updateOrAppend(state: Team.State) async throws {
         value.updateOrAppend(state)
-        subject.send(value)
+        subject.send(try await inflated(value: value))
     }
     func update(values: IdentifiedArrayOf<Team.State>) async throws {
         for value in values {
             self.value.updateOrAppend(value)
         }
-        subject.send(value)
+        subject.send(try await inflated(value: value))
     }
     func remove(state: Team.State) async throws {
         value.remove(state)
-        subject.send(value)
+        subject.send(try await inflated(value: value))
     }
 }
 
@@ -71,7 +86,7 @@ extension TeamPersistence {
             let persistence = try Persistence()
             return Self(
                 publisher: { persistence.subject.eraseToAnyPublisher().values },
-                load: { persistence.value },
+                load: { try await persistence.inflated(value: persistence.value) },
                 save: { try await persistence.save($0) },
                 updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
                 updateValues: { try await persistence.update(values: $0) },
