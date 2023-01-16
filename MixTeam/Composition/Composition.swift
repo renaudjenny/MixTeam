@@ -116,6 +116,7 @@ struct Composition: ReducerProtocol {
                     try await save(state)
                     let archivedTeams = IdentifiedArrayOf(uniqueElements: archivedTeams.map {
                         var team = $0
+                        team.players = []
                         team.isArchived = true
                         return team
                     })

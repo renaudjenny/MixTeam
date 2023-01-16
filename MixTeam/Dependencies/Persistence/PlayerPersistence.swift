@@ -7,9 +7,10 @@ import XCTestDynamicOverlay
 private final class Persistence {
     private let playerFileName = "MixTeamPlayerV3_0_0"
 
-    @Dependency(\.mainQueue) var mainQueue
-
-    @Published var value: IdentifiedArrayOf<Player.State>
+    let subject = PassthroughSubject<IdentifiedArrayOf<Player.State>, Error>()
+    var value: IdentifiedArrayOf<Player.State> {
+        didSet { Task { try await presist(value) } }
+    }
 
     init() throws {
         guard
@@ -17,28 +18,34 @@ private final class Persistence {
             let data = try? Data(contentsOf: url.appendingPathComponent(playerFileName, conformingTo: .json))
         else {
             value = .example
+            subject.send(value)
             return
         }
 
         let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: data)
         value = decodedValue
+        subject.send(value)
     }
 
     func save(_ states: IdentifiedArrayOf<Player.State>) async throws {
+        value = states
+        subject.send(value)
+    }
+
+    func presist(_ states: IdentifiedArrayOf<Player.State>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
-        value = states
     }
 
     func updateOrAppend(state: Player.State) async throws {
         value.updateOrAppend(state)
-        try await save(value)
+        subject.send(value)
     }
     func remove(id: Player.State.ID) async throws {
         value.remove(id: id)
-        try await save(value)
+        subject.send(value)
     }
 }
 
@@ -55,7 +62,7 @@ extension PlayerPersistence {
         do {
             let persistence = try Persistence()
             return Self(
-                publisher: { persistence.$value.tryMap { $0 }.eraseToAnyPublisher().values },
+                publisher: { persistence.subject.eraseToAnyPublisher().values },
                 load: { persistence.value },
                 save: { try await persistence.save($0) },
                 updateOrAppend: { try await persistence.updateOrAppend(state: $0) },

@@ -7,7 +7,6 @@ import XCTestDynamicOverlay
 private final class Persistence {
     private let teamFileName = "MixTeamTeamV3_0_0"
 
-    @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.playerPersistence) var player
 
     let subject = PassthroughSubject<IdentifiedArrayOf<Team.State>, Error>()
@@ -27,10 +26,12 @@ private final class Persistence {
 
         let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
         value = decodedValue
+        subject.send(value)
     }
 
     func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
         value = states
+        subject.send(value)
     }
 
     private func presist(_ states: IdentifiedArrayOf<Team.State>) async throws {
