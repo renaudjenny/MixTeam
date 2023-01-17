@@ -1,5 +1,89 @@
 import ComposableArchitecture
+import Dependencies
 import Foundation
+import IdentifiedCollections
+import XCTestDynamicOverlay
+
+private final class Persistence {
+    private let scoresFileName = "MixTeamScoresV3_1_0"
+
+    @Dependency(\.teamPersistence) var team
+
+    var value: Scores.State {
+        didSet { Task { try await persist(value) } }
+    }
+
+    init() throws {
+        guard
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+            let data = try? Data(contentsOf: url.appendingPathComponent(scoresFileName, conformingTo: .json))
+        else {
+            value = .example
+            return
+        }
+
+        let decodedValue = try JSONDecoder().decode(Scores.State.self, from: data)
+        value = decodedValue
+    }
+
+    func save(_ state: Scores.State) async throws {
+        value = state
+    }
+
+    private func persist(_ state: Scores.State) async throws {
+        let data = try JSONEncoder().encode(state)
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
+        try data.write(to: url.appendingPathComponent(scoresFileName, conformingTo: .json))
+    }
+
+    func inflated(value: Scores.State) async throws -> Scores.State {
+        let teams = try await team.load()
+
+        return Scores.State(
+            teams: IdentifiedArrayOf(uniqueElements: value.teams.compactMap { teams[id: $0.id] }),
+            rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
+                var round = $0
+                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+                    var score = $0
+                    score.team = teams[id: score.team.id] ?? score.team
+                    return score
+                })
+                return round
+            })
+        )
+    }
+}
+
+struct ScoresPersistence {
+    var load: () async throws -> Scores.State
+    var save: (Scores.State) async throws -> Void
+}
+
+extension ScoresPersistence {
+    static let live = {
+        do {
+            let persistence = try Persistence()
+            return Self(
+                load: { try await persistence.inflated(value: persistence.value) },
+                save: { try await persistence.save($0) }
+            )
+        } catch {
+            return Self(
+                load: { throw error },
+                save: { _ in throw error }
+            )
+        }
+    }()
+    static let test = Self(
+        load: unimplemented("ScoresPersistence.load"),
+        save: unimplemented("ScoresPersistence.save")
+    )
+    static let preview = Self(
+        load: { .example },
+        save: { _ in print("ScoresPersistence.save called") }
+    )
+}
 
 extension Scores.State: Codable {
     enum CodingKeys: CodingKey {
@@ -38,5 +122,18 @@ extension Score.State: Codable {
         try container.encode(id, forKey: .id)
         try container.encode(team.id, forKey: .teamID)
         try container.encode(points, forKey: .points)
+    }
+}
+
+private enum ScoresPersistenceDependencyKey: DependencyKey {
+    static let liveValue = ScoresPersistence.live
+    static let testValue = ScoresPersistence.test
+    static let previewValue = ScoresPersistence.preview
+}
+
+extension DependencyValues {
+    var scoresPersistence: ScoresPersistence {
+        get { self[ScoresPersistenceDependencyKey.self] }
+        set { self[ScoresPersistenceDependencyKey.self] = newValue }
     }
 }

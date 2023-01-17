@@ -103,7 +103,6 @@ extension TeamPersistence {
                 remove: { _ in throw error }
             )
         }
-
     }()
     static let test = Self(
         publisher: unimplemented("TeamPersistence.publisher"),
@@ -196,7 +195,7 @@ extension IdentifiedArrayOf<Team.State> {
 private enum TeamPersistenceDependencyKey: DependencyKey {
     static let liveValue = TeamPersistence.live
     static let testValue = TeamPersistence.test
-    static let previewValue = TeamPersistence.test
+    static let previewValue = TeamPersistence.preview
 }
 
 extension DependencyValues {

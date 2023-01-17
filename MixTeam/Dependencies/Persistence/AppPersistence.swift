@@ -45,6 +45,7 @@ private struct Persistence {
         }
     }
 
+    // TODO: extract Scores into its own @Dependency with its own file
     mutating func save(scores: Scores.State) async throws {
         value?.scores = scores
         if let value {
