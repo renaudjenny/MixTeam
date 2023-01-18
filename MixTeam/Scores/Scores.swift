@@ -1,31 +1,53 @@
 import ComposableArchitecture
 import SwiftUI
 
+// TODO: Split Scores in two ReducerProtocol, one to load the data and manage errors, the other with the logic of Scores
 struct Scores: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
         @BindableState var focusedField: Score.State?
+        var isLoading = true
+        var error: String?
     }
 
     enum Action: BindableAction, Equatable {
+        case task
+        case update(TaskResult<Scores.State>)
         case addRound
         case recalculateAccumulatedPoints
         case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
         case round(id: Round.State.ID, action: Round.Action)
         case minusScore(score: Score.State?)
         case binding(BindingAction<State>)
-        case task
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.appPersistence.saveScores) var save
+    @Dependency(\.scoresPersistence) var scoresPersistence
     private enum RecalculateTaskID {}
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
+            case .task:
+                state.isLoading = true
+                return .run { @MainActor send in
+                    await send(.update(TaskResult { try await scoresPersistence.load() }))
+                    send(.recalculateAccumulatedPoints)
+                    // Listen to Team changes
+                }
+            case let .update(result):
+                state.isLoading = false
+                switch result {
+                case let .success(result):
+                    state.teams = result.teams
+                    state.rounds = result.rounds
+                    return .none
+                case let .failure(error):
+                    state.error = error.localizedDescription
+                    return .none
+                }
             case .addRound:
                 let roundCount = state.rounds.count
                 let scores = IdentifiedArrayOf(uniqueElements: state.teams.filter { !$0.isArchived }.map { team in
@@ -38,9 +60,12 @@ struct Scores: ReducerProtocol {
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
                 return .fireAndForget { [state] in
-                    try await save(state)
+                    try await scoresPersistence.save(state)
                 }
+
             case .recalculateAccumulatedPoints:
+                // swiftlint:disable:next line_length
+                // TODO: should extract this action into a function in the feature, see: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance#Sharing-logic-with-actions
                 return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
                     var rounds = rounds
                     for (index, round) in rounds.enumerated() {
@@ -62,12 +87,12 @@ struct Scores: ReducerProtocol {
                     state.rounds.remove(id: id)
                 }
                 return .task { [state] in
-                    try await save(state)
+                    try await scoresPersistence.save(state)
                     return .recalculateAccumulatedPoints
                 }
             case .round(_, .score(_, .binding)):
                 return .task { [state] in
-                    try await save(state)
+                    try await scoresPersistence.save(state)
                     return .recalculateAccumulatedPoints
                 }
             case .round:
@@ -79,13 +104,11 @@ struct Scores: ReducerProtocol {
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
                 return .task { [state] in
-                    try await save(state)
+                    try await scoresPersistence.save(state)
                     return .recalculateAccumulatedPoints
                 }
             case .binding:
                 return .none
-            case .task:
-                return .task { .recalculateAccumulatedPoints }
             }
         }
         .forEach(\.rounds, action: /Action.round) {

@@ -4,11 +4,39 @@ import SwiftUINavigation
 
 struct ScoreboardView: View {
     let store: StoreOf<Scores>
-    @Environment(\.presentationMode) private var presentationMode
     @FocusState private var focusedField: Score.State?
     @FocusState private var focusedHeader: Round.State?
 
+    struct ViewState: Equatable {
+        let isLoading: Bool
+        let error: String?
+
+        init(state: Scores.State) {
+            isLoading = state.isLoading
+            error = state.error
+        }
+    }
+
     var body: some View {
+        WithViewStore(store, observe: ViewState.init) { viewStore in
+            Group {
+                if viewStore.isLoading {
+                    ProgressView("Loading content from saved data")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .task { viewStore.send(.task) }
+                } else if let error = viewStore.error {
+                    errorCardView(description: error)
+                } else {
+                    loadedContent
+                }
+            }
+            .tabItem {
+                Label("Scoreboard", systemImage: "list.bullet.clipboard")
+            }
+        }
+    }
+
+    private var loadedContent: some View {
         WithViewStore(store) { viewStore in
             NavigationView {
                 ZStack {
@@ -50,19 +78,10 @@ struct ScoreboardView: View {
                             Label("Add a new round", systemImage: "plus")
                         }
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { presentationMode.wrappedValue.dismiss() } label: {
-                            Label("Done", systemImage: "checkmark")
-                        }
-                    }
                 }
             }
             .backgroundAndForeground(color: .aluminium)
-            .tabItem {
-                Label("Scoreboard", systemImage: "list.bullet.clipboard")
-            }
             .navigationViewStyle(.stack)
-            .task { viewStore.send(.task) }
         }
     }
 
@@ -82,6 +101,22 @@ struct ScoreboardView: View {
             }
 
             TotalScoresView(store: store)
+        }
+    }
+
+    // TODO: Some duplication here with AppData and ArchivesView
+    // We should have an ErrorCardView with its own helper store à la ConfirmationDialogState
+    private func errorCardView(description: String) -> some View {
+        WithViewStore(store) { viewStore in
+            VStack {
+                Text(description)
+                Button { viewStore.send(.task, animation: .default) } label: {
+                    Text("Retry")
+                }
+                .buttonStyle(.dashed(color: MTColor.strawberry))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .backgroundAndForeground(color: .strawberry)
         }
     }
 }

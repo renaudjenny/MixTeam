@@ -14,7 +14,7 @@ struct AppView: View {
             TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
                 AppDataView(store: store.scope(state: \.data, action: App.Action.data))
                     .tag(App.Tab.composition)
-                ScoreboardView(store: store.scope(state: \.data.scores, action: { App.Action.data(.scores($0)) }))
+                ScoreboardView(store: store.scope(state: \.scores, action: App.Action.scores))
                     .tag(App.Tab.scoreboard)
                 SettingsView(store: store.scope(state: \.settings, action: App.Action.settings))
                     .tag(App.Tab.settings)

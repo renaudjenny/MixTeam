@@ -45,21 +45,6 @@ private struct Persistence {
         }
     }
 
-    // TODO: extract Scores into its own @Dependency with its own file
-    mutating func save(scores: Scores.State) async throws {
-        value?.scores = scores
-        if let value {
-            try await save(value)
-        }
-    }
-
-    mutating func update(round: Round.State) async throws {
-        value?.scores.rounds.updateOrAppend(round)
-        if let value {
-            try await save(value)
-        }
-    }
-
     mutating func save(composition: Composition.State) async throws {
         value?.composition = composition
         if let value {
@@ -112,17 +97,6 @@ private struct Persistence {
             }
         )
 
-        value.scores.teams = teams
-        value.scores.rounds = IdentifiedArrayOf(uniqueElements: value.scores.rounds.map {
-            var round = $0
-            round.scores = IdentifiedArray(uniqueElements: round.scores.compactMap {
-                guard let team = teams[id: $0.team.id] else { return nil }
-                var score = $0
-                score.team = team
-                return score
-            })
-            return round
-        })
         return value
     }
 }
@@ -136,14 +110,12 @@ struct AppPersistence {
     var load: () async throws -> AppData.State = { try await persistence.load() }
     var save: (AppData.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
-    var saveScores: (Scores.State) async throws -> Void = { try await persistence.save(scores: $0) }
-    var updateRound: (Round.State) async throws -> Void = { try await persistence.update(round: $0) }
     var saveComposition: (Composition.State) async throws -> Void = { try await persistence.save(composition: $0) }
 }
 
 extension AppData.State {
     static var example: Self {
-        Self(teams: .example, composition: .example, scores: .example)
+        Self(teams: .example, composition: .example)
     }
 }
 
@@ -151,7 +123,6 @@ extension AppData.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
         case composition
-        case scores
     }
 
     init(from decoder: Decoder) throws {
@@ -159,14 +130,12 @@ extension AppData.State: Codable {
         let teamIDs = try container.decode([Team.State.ID].self, forKey: .teamIDs)
         teams = IdentifiedArrayOf(uniqueElements: teamIDs.map { Team.State(id: $0) })
         composition = try container.decode(Composition.State.self, forKey: .composition)
-        scores = try container.decode(Scores.State.self, forKey: .scores)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(teams.map(\.id), forKey: .teamIDs)
         try container.encode(composition, forKey: .composition)
-        try container.encode(scores, forKey: .scores)
     }
 }
 
@@ -237,8 +206,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.load = unimplemented("App Persistence load unimplemented")
         appPersistence.save = unimplemented("App Persistence save unimplemented")
         appPersistence.saveStanding = unimplemented("App Persistence save standing unimplemented")
-        appPersistence.saveScores = unimplemented("App Persistence saveScores unimplemented")
-        appPersistence.updateRound = unimplemented("App Persistence updateRound unimplemented")
         appPersistence.saveComposition = unimplemented("App Persistence saveComposition unimplemented")
         return appPersistence
     }()
@@ -248,8 +215,6 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
         appPersistence.load = { .example }
         appPersistence.save = { _ in print("##### AppData saved") }
         appPersistence.saveStanding = { _ in print("##### Standing saved") }
-        appPersistence.saveScores = { _ in print("##### Scores saved") }
-        appPersistence.updateRound = { _ in print("##### Update round") }
         appPersistence.saveComposition = { _ in print("##### Composition saved") }
         return appPersistence
     }()

@@ -14,6 +14,7 @@ private final class Persistence {
     }
 
     init() throws {
+        // TODO: migration from V2 & V3.0
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(scoresFileName, conformingTo: .json))
@@ -41,7 +42,7 @@ private final class Persistence {
         let teams = try await team.load()
 
         return Scores.State(
-            teams: IdentifiedArrayOf(uniqueElements: value.teams.compactMap { teams[id: $0.id] }),
+            teams: teams.filter { !$0.isArchived },
             rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
                 var round = $0
                 round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
@@ -53,11 +54,16 @@ private final class Persistence {
             })
         )
     }
+
+    func update(round: Round.State) async throws {
+        value.rounds.updateOrAppend(round)
+    }
 }
 
 struct ScoresPersistence {
     var load: () async throws -> Scores.State
     var save: (Scores.State) async throws -> Void
+    var updateRound: (Round.State) async throws -> Void
 }
 
 extension ScoresPersistence {
@@ -66,22 +72,26 @@ extension ScoresPersistence {
             let persistence = try Persistence()
             return Self(
                 load: { try await persistence.inflated(value: persistence.value) },
-                save: { try await persistence.save($0) }
+                save: { try await persistence.save($0) },
+                updateRound: { try await persistence.update(round: $0) }
             )
         } catch {
             return Self(
                 load: { throw error },
-                save: { _ in throw error }
+                save: { _ in throw error },
+                updateRound: { _ in throw error }
             )
         }
     }()
     static let test = Self(
         load: unimplemented("ScoresPersistence.load"),
-        save: unimplemented("ScoresPersistence.save")
+        save: unimplemented("ScoresPersistence.save"),
+        updateRound: unimplemented("ScoresPersistence.updateRound")
     )
     static let preview = Self(
         load: { .example },
-        save: { _ in print("ScoresPersistence.save called") }
+        save: { _ in print("ScoresPersistence.save called") },
+        updateRound: { _ in print("ScoresPersistence.updateRound called") }
     )
 }
 

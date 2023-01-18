@@ -4,6 +4,7 @@ import SwiftUI
 struct App: ReducerProtocol {
     struct State: Equatable {
         var data = AppData.State()
+        var scores = Scores.State()
         var settings = Settings.State()
 
         var selectedTab: Tab = .composition
@@ -18,6 +19,7 @@ struct App: ReducerProtocol {
     enum Action: Equatable {
         case tabSelected(Tab)
         case data(AppData.Action)
+        case scores(Scores.Action)
         case settings(Settings.Action)
     }
 
@@ -25,19 +27,18 @@ struct App: ReducerProtocol {
         Scope(state: \.data, action: /Action.data) {
             AppData()
         }
+        Scope(state: \.scores, action: /Action.scores) {
+            Scores()
+        }
         Scope(state: \.settings, action: /Action.settings) {
             Settings()
         }
         Reduce { state, action in
-            switch action {
-            case let .tabSelected(tab):
+            if case let .tabSelected(tab) = action {
                 state.selectedTab = tab
                 return .none
-            case .data:
-                return .none
-            case .settings:
-                return .none
             }
+            return .none
         }
     }
 }

@@ -14,7 +14,7 @@ struct Round: ReducerProtocol {
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.appPersistence.updateRound) var updateRound
+    @Dependency(\.scoresPersistence.updateRound) var updateRound
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
