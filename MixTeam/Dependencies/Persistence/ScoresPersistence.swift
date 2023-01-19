@@ -58,12 +58,19 @@ private final class Persistence {
     func update(round: Round.State) async throws {
         value.rounds.updateOrAppend(round)
     }
+
+    func update(score: Score.State) async throws {
+        guard var round = value.rounds.first(where: { $0.scores.contains(score) }) else { return }
+        round.scores.updateOrAppend(score)
+        try await update(round: round)
+    }
 }
 
 struct ScoresPersistence {
     var load: () async throws -> Scores.State
     var save: (Scores.State) async throws -> Void
     var updateRound: (Round.State) async throws -> Void
+    var updateScore: (Score.State) async throws -> Void
 }
 
 extension ScoresPersistence {
@@ -73,25 +80,29 @@ extension ScoresPersistence {
             return Self(
                 load: { try await persistence.inflated(value: persistence.value) },
                 save: { try await persistence.save($0) },
-                updateRound: { try await persistence.update(round: $0) }
+                updateRound: { try await persistence.update(round: $0) },
+                updateScore: { try await persistence.update(score: $0) }
             )
         } catch {
             return Self(
                 load: { throw error },
                 save: { _ in throw error },
-                updateRound: { _ in throw error }
+                updateRound: { _ in throw error },
+                updateScore: { _ in throw error }
             )
         }
     }()
     static let test = Self(
         load: unimplemented("ScoresPersistence.load"),
         save: unimplemented("ScoresPersistence.save"),
-        updateRound: unimplemented("ScoresPersistence.updateRound")
+        updateRound: unimplemented("ScoresPersistence.updateRound"),
+        updateScore: unimplemented("ScoresPersistence.updateScpre")
     )
     static let preview = Self(
         load: { .example },
         save: { _ in print("ScoresPersistence.save called") },
-        updateRound: { _ in print("ScoresPersistence.updateRound called") }
+        updateRound: { _ in print("ScoresPersistence.updateRound called") },
+        updateScore: unimplemented("ScoresPersistence.updateScore called")
     )
 }
 

@@ -15,7 +15,6 @@ struct Scores: ReducerProtocol {
         case task
         case update(TaskResult<Scores.State>)
         case addRound
-        case recalculateAccumulatedPoints
         case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
         case round(id: Round.State.ID, action: Round.Action)
         case minusScore(score: Score.State?)
@@ -24,6 +23,7 @@ struct Scores: ReducerProtocol {
 
     @Dependency(\.uuid) var uuid
     @Dependency(\.scoresPersistence) var scoresPersistence
+    @Dependency(\.teamPersistence) var teamPersistence
     private enum RecalculateTaskID {}
 
     var body: some ReducerProtocol<State, Action> {
@@ -32,10 +32,11 @@ struct Scores: ReducerProtocol {
             switch action {
             case .task:
                 state.isLoading = true
-                return .run { @MainActor send in
+                return .run { send in
                     await send(.update(TaskResult { try await scoresPersistence.load() }))
-                    send(.recalculateAccumulatedPoints)
-                    // Listen to Team changes
+                    for try await _ in teamPersistence.publisher() {
+                        await send(.update(TaskResult { try await scoresPersistence.load() }))
+                    }
                 }
             case let .update(result):
                 state.isLoading = false
@@ -43,7 +44,7 @@ struct Scores: ReducerProtocol {
                 case let .success(result):
                     state.teams = result.teams
                     state.rounds = result.rounds
-                    return .none
+                    return recalculateAccumulatedPoints(state: &state)
                 case let .failure(error):
                     state.error = error.localizedDescription
                     return .none
@@ -62,23 +63,6 @@ struct Scores: ReducerProtocol {
                 return .fireAndForget { [state] in
                     try await scoresPersistence.save(state)
                 }
-
-            case .recalculateAccumulatedPoints:
-                // swiftlint:disable:next line_length
-                // TODO: should extract this action into a function in the feature, see: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/performance#Sharing-logic-with-actions
-                return .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
-                    var rounds = rounds
-                    for (index, round) in rounds.enumerated() {
-                        for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
-                            let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
-                            guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
-                            else { continue }
-                            rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
-                        }
-                    }
-                    return .updateAccumulatedPoints(rounds)
-                })
-                .cancellable(id: RecalculateTaskID.self)
             case let .updateAccumulatedPoints(rounds):
                 state.rounds = rounds
                 return .none
@@ -86,15 +70,12 @@ struct Scores: ReducerProtocol {
                 if state.rounds[id: id]?.scores.isEmpty == true {
                     state.rounds.remove(id: id)
                 }
-                return .task { [state] in
-                    try await scoresPersistence.save(state)
-                    return .recalculateAccumulatedPoints
-                }
-            case .round(_, .score(_, .binding)):
-                return .task { [state] in
-                    try await scoresPersistence.save(state)
-                    return .recalculateAccumulatedPoints
-                }
+                return .merge(
+                    .fireAndForget { [state] in try await scoresPersistence.save(state) },
+                    recalculateAccumulatedPoints(state: &state)
+                )
+            case let .round(_, .score(_, .binding(binding))) where binding.keyPath == \.$points:
+                return recalculateAccumulatedPoints(state: &state)
             case .round:
                 return .none
             case let .minusScore(score):
@@ -103,10 +84,10 @@ struct Scores: ReducerProtocol {
                 else { return .none }
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
-                return .task { [state] in
-                    try await scoresPersistence.save(state)
-                    return .recalculateAccumulatedPoints
-                }
+                return .merge(
+                    .fireAndForget { [state] in try await scoresPersistence.save(state) },
+                    recalculateAccumulatedPoints(state: &state)
+                )
             case .binding:
                 return .none
             }
@@ -114,6 +95,22 @@ struct Scores: ReducerProtocol {
         .forEach(\.rounds, action: /Action.round) {
             Round()
         }
+    }
+
+    private func recalculateAccumulatedPoints(state: inout State) -> EffectTask<Action> {
+        .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
+            var rounds = rounds
+            for (index, round) in rounds.enumerated() {
+                for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
+                    let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
+                    guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+                    else { continue }
+                    rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
+                }
+            }
+            return .updateAccumulatedPoints(rounds)
+        })
+        .cancellable(id: RecalculateTaskID.self)
     }
 }
 

@@ -15,7 +15,15 @@ struct Score: ReducerProtocol {
         case remove
     }
 
+    @Dependency(\.scoresPersistence) var scorePersistence
+
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
+        Reduce { state, action in
+            if case let .binding(binding) = action, binding.keyPath == \.$points {
+                return .fireAndForget { [state] in try await scorePersistence.updateScore(state) }
+            }
+            return .none
+        }
     }
 }
