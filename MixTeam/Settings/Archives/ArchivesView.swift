@@ -3,7 +3,7 @@ import SwiftUI
 
 struct Archives: ReducerProtocol {
     struct State: Equatable {
-        var teams: IdentifiedArrayOf<Team.State> = []
+        var rows: IdentifiedArrayOf<ArchiveRow.State> = []
         var isLoading = true
         var error: String?
     }
@@ -11,47 +11,42 @@ struct Archives: ReducerProtocol {
     enum Action: Equatable {
         case task
         case update(TaskResult<IdentifiedArrayOf<Team.State>>)
-        case unarchive(id: Team.State.ID)
-        case remove(id: Team.State.ID)
+        case archiveRow(id: Team.State.ID, action: ArchiveRow.Action)
     }
 
     @Dependency(\.teamPersistence) var teamPersistence
 
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .task:
-            state.isLoading = true
-            state.error = nil
-            return .run { send in
-                await send(.update(TaskResult { try await teamPersistence.load() }))
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case .task:
+                state.isLoading = true
+                state.error = nil
+                return .run { send in
+                    await send(.update(TaskResult { try await teamPersistence.load() }))
 
-                for try await teams in teamPersistence.publisher() {
-                    await send(.update(TaskResult { teams }))
+                    for try await teams in teamPersistence.publisher() {
+                        await send(.update(TaskResult { teams }))
+                    }
                 }
-            }
-        case let .update(result):
-            state.isLoading = false
-            switch result {
-            case let .success(result):
-                state.teams = result
+            case let .update(result):
+                state.isLoading = false
+                switch result {
+                case let .success(result):
+                    state.rows = IdentifiedArrayOf(
+                        uniqueElements: result.filter(\.isArchived).map(ArchiveRow.State.init)
+                    )
+                    return .none
+                case let .failure(error):
+                    state.error = error.localizedDescription
+                    return .none
+                }
+            case .archiveRow:
                 return .none
-            case let .failure(error):
-                state.error = error.localizedDescription
-                return .none
             }
-        case let .unarchive(id):
-            state.teams[id: id]?.isArchived = false
-            return .fireAndForget { [team = state.teams[id: id]] in
-                guard let team else { return }
-                try await teamPersistence.updateOrAppend(team)
-            }
-        case let .remove(id):
-            let team = state.teams[id: id]
-            state.teams.remove(id: id)
-            return .fireAndForget { [team] in
-                guard let team else { return }
-                try await teamPersistence.remove(team)
-            }
+        }
+        .forEach(\.rows, action: /Action.archiveRow) {
+            ArchiveRow()
         }
     }
 }
@@ -68,25 +63,15 @@ struct ArchivesView: View {
             } else if let error = viewStore.error {
                 errorCardView(description: error)
             } else {
-                if viewStore.teams.filter(\.isArchived).isEmpty {
+                if viewStore.rows.isEmpty {
                     Text("No archived teams")
                 } else {
                     List {
                         Section("Teams") {
-                            ForEach(viewStore.teams.filter(\.isArchived)) { team in
-                                HStack {
-                                    Text(team.name)
-                                    Spacer()
-                                    Menu("Edit") {
-                                        Button { viewStore.send(.unarchive(id: team.id)) } label: {
-                                            Label("Unarchive", systemImage: "tray.and.arrow.up")
-                                        }
-                                        Button(role: .destructive) { viewStore.send(.remove(id: team.id)) } label: {
-                                            Label("Delete...", systemImage: "trash")
-                                        }
-                                    }
-                                }
-                            }
+                            ForEachStore(
+                                store.scope(state: \.rows, action: Archives.Action.archiveRow),
+                                content: ArchiveRowView.init
+                            )
                         }
                     }
                 }
@@ -133,10 +118,10 @@ extension Archives.State {
     static var preview: Self { Archives.State() }
     static var previewWithTeamsAndPlayers: Self {
         Archives.State(
-            teams: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+            rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
                 var team = $0
                 team.isArchived = true
-                return team
+                return ArchiveRow.State(team: team)
             }),
             isLoading: false
         )
