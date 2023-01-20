@@ -68,22 +68,25 @@ struct ArchivesView: View {
             } else if let error = viewStore.error {
                 errorCardView(description: error)
             } else {
-                List {
-                    Section("Teams") {
-                        ForEach(viewStore.teams.filter(\.isArchived)) { team in
-                            HStack {
-                                Text(team.name)
-                                Spacer()
-                                Menu("Edit") {
-                                    Button { viewStore.send(.unarchive(id: team.id)) } label: {
-                                        Label("Unarchive", systemImage: "tray.and.arrow.up")
-                                    }
-                                    Button(role: .destructive) { viewStore.send(.remove(id: team.id)) } label: {
-                                        Label("Delete...", systemImage: "trash")
+                if viewStore.teams.filter(\.isArchived).isEmpty {
+                    Text("No archived teams")
+                } else {
+                    List {
+                        Section("Teams") {
+                            ForEach(viewStore.teams.filter(\.isArchived)) { team in
+                                HStack {
+                                    Text(team.name)
+                                    Spacer()
+                                    Menu("Edit") {
+                                        Button { viewStore.send(.unarchive(id: team.id)) } label: {
+                                            Label("Unarchive", systemImage: "tray.and.arrow.up")
+                                        }
+                                        Button(role: .destructive) { viewStore.send(.remove(id: team.id)) } label: {
+                                            Label("Delete...", systemImage: "trash")
+                                        }
                                     }
                                 }
                             }
-
                         }
                     }
                 }
