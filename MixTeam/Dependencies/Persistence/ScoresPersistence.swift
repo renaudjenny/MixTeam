@@ -45,7 +45,8 @@ private final class Persistence {
             teams: teams.filter { !$0.isArchived },
             rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
                 var round = $0
-                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map {
+                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.compactMap {
+                    guard teams.contains($0.team) else { return nil }
                     var score = $0
                     score.team = teams[id: score.team.id] ?? score.team
                     return score
