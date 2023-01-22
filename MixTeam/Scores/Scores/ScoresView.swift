@@ -1,42 +1,12 @@
 import ComposableArchitecture
 import SwiftUI
-import SwiftUINavigation
 
-struct ScoreboardView: View {
+struct ScoresView: View {
     let store: StoreOf<Scores>
     @FocusState private var focusedField: Score.State?
     @FocusState private var focusedHeader: Round.State?
 
-    struct ViewState: Equatable {
-        let isLoading: Bool
-        let error: String?
-
-        init(state: Scores.State) {
-            isLoading = state.isLoading
-            error = state.error
-        }
-    }
-
     var body: some View {
-        WithViewStore(store, observe: ViewState.init) { viewStore in
-            Group {
-                if viewStore.isLoading {
-                    ProgressView("Loading content from saved data")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .task { viewStore.send(.task) }
-                } else if let error = viewStore.error {
-                    errorCardView(description: error)
-                } else {
-                    loadedContent
-                }
-            }
-            .tabItem {
-                Label("Scoreboard", systemImage: "list.bullet.clipboard")
-            }
-        }
-    }
-
-    private var loadedContent: some View {
         WithViewStore(store) { viewStore in
             NavigationView {
                 ZStack {
@@ -82,6 +52,7 @@ struct ScoreboardView: View {
             }
             .backgroundAndForeground(color: .aluminium)
             .navigationViewStyle(.stack)
+            .task { viewStore.send(.task) }
         }
     }
 
@@ -103,22 +74,6 @@ struct ScoreboardView: View {
             TotalScoresView(store: store)
         }
     }
-
-    // TODO: Some duplication here with AppData and ArchivesView
-    // We should have an ErrorCardView with its own helper store à la ConfirmationDialogState
-    private func errorCardView(description: String) -> some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                Text(description)
-                Button { viewStore.send(.task, animation: .default) } label: {
-                    Text("Retry")
-                }
-                .buttonStyle(.dashed(color: MTColor.strawberry))
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .backgroundAndForeground(color: .strawberry)
-        }
-    }
 }
 
 extension Score.State: Hashable {
@@ -128,11 +83,11 @@ extension Score.State: Hashable {
 }
 
 #if DEBUG
-struct ScoreboardView_Previews: PreviewProvider {
+struct ScoresView_Previews: PreviewProvider {
     static var previews: some View {
-        ScoreboardView(store: .preview)
-        ScoreboardView(store: .previewWithScores)
-        ScoreboardView(store: .previewWithManyScores)
+        ScoresView(store: .preview)
+        ScoresView(store: .previewWithScores)
+        ScoresView(store: .previewWithManyScores)
     }
 }
 

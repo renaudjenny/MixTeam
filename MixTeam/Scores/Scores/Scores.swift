@@ -1,19 +1,15 @@
 import ComposableArchitecture
 import SwiftUI
 
-// TODO: Split Scores in two ReducerProtocol, one to load the data and manage errors, the other with the logic of Scores
 struct Scores: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
         @BindableState var focusedField: Score.State?
-        var isLoading = true
-        var error: String?
     }
 
     enum Action: BindableAction, Equatable {
         case task
-        case update(TaskResult<Scores.State>)
         case addRound
         case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
         case round(id: Round.State.ID, action: Round.Action)
@@ -31,24 +27,7 @@ struct Scores: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .task:
-                state.isLoading = true
-                return .run { send in
-                    await send(.update(TaskResult { try await scoresPersistence.load() }))
-                    for try await _ in teamPersistence.publisher() {
-                        await send(.update(TaskResult { try await scoresPersistence.load() }))
-                    }
-                }
-            case let .update(result):
-                state.isLoading = false
-                switch result {
-                case let .success(result):
-                    state.teams = result.teams
-                    state.rounds = result.rounds
-                    return recalculateAccumulatedPoints(state: &state)
-                case let .failure(error):
-                    state.error = error.localizedDescription
-                    return .none
-                }
+                return recalculateAccumulatedPoints(state: &state)
             case .addRound:
                 let roundCount = state.rounds.count
                 let scores = IdentifiedArrayOf(uniqueElements: state.teams.filter { !$0.isArchived }.map { team in
