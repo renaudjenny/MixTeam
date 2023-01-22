@@ -79,6 +79,7 @@ struct ArchivesView: View {
         }
     }
 
+    // TODO: Some duplication here with AppData and ArchivesView
     private func errorCardView(description: String) -> some View {
         WithViewStore(store.stateless) { viewStore in
             VStack {

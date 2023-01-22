@@ -120,7 +120,8 @@ struct AppDataView: View {
         }
     }
 
-    private func errorCardView(description: String) -> some View {
+    // TODO: Some duplication here with AppData and ArchivesView
+   private func errorCardView(description: String) -> some View {
         WithViewStore(store) { viewStore in
             VStack {
                 Text(description)

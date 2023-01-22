@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import SwiftUINavigation
 
 struct ScoresView: View {
     let store: StoreOf<Scores>

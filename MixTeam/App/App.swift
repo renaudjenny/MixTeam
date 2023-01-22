@@ -4,7 +4,7 @@ import SwiftUI
 struct App: ReducerProtocol {
     struct State: Equatable {
         var data = AppData.State()
-        var scoreboard = Scoreboard.State()
+        var scoreboard: Scoreboard.State = .loadingCard
         var settings = Settings.State()
 
         var selectedTab: Tab = .composition

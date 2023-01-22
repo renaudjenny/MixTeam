@@ -34,6 +34,8 @@
 		4CA5BC91297B302500A3B960 /* ArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC90297B302500A3B960 /* ArchiveRow.swift */; };
 		4CA5BC93297D408F00A3B960 /* ScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC92297D408F00A3B960 /* ScoresView.swift */; };
 		4CA5BC98297D410000A3B960 /* Scoreboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC97297D410000A3B960 /* Scoreboard.swift */; };
+		4CA5BC9A297DA5A500A3B960 /* ErrorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */; };
+		4CA5BC9C297DAC2E00A3B960 /* LoadingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
 		4CB98403295714EB00512E98 /* ScoresPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB98402295714EB00512E98 /* ScoresPersistence.swift */; };
@@ -105,6 +107,8 @@
 		4CA5BC90297B302500A3B960 /* ArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRow.swift; sourceTree = "<group>"; };
 		4CA5BC92297D408F00A3B960 /* ScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresView.swift; sourceTree = "<group>"; };
 		4CA5BC97297D410000A3B960 /* Scoreboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scoreboard.swift; sourceTree = "<group>"; };
+		4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCard.swift; sourceTree = "<group>"; };
+		4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCard.swift; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
 		4CB98402295714EB00512E98 /* ScoresPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresPersistence.swift; sourceTree = "<group>"; };
@@ -330,6 +334,8 @@
 			children = (
 				4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */,
 				4C1ED56024D0B6F8005D6749 /* Splash.swift */,
+				4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */,
+				4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -555,10 +561,12 @@
 				4CF35535294284E200366084 /* PersistenceError.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
 				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
+				4CA5BC9C297DAC2E00A3B960 /* LoadingCard.swift in Sources */,
 				4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */,
 				4C9E7D95296B12BB008728A7 /* AppData.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
+				4CA5BC9A297DA5A500A3B960 /* ErrorCard.swift in Sources */,
 				4CF355332942847100366084 /* MigrationV2V3.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
