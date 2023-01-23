@@ -2,16 +2,17 @@ import ComposableArchitecture
 import SwiftUI
 
 struct Archives: ReducerProtocol {
-    struct State: Equatable {
-        var rows: IdentifiedArrayOf<ArchiveRow.State> = []
-        var isLoading = true
-        var error: String?
+    enum State: Equatable {
+        case loadingCard
+        case loaded(rows: IdentifiedArrayOf<ArchiveRow.State>)
+        case errorCard(ErrorCard.State)
     }
 
     enum Action: Equatable {
-        case task
         case update(TaskResult<IdentifiedArrayOf<Team.State>>)
+        case loadingCard(LoadingCard.Action)
         case archiveRow(id: Team.State.ID, action: ArchiveRow.Action)
+        case errorCard(ErrorCard.Action)
     }
 
     @Dependency(\.teamPersistence) var teamPersistence
@@ -19,35 +20,48 @@ struct Archives: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
-            case .task:
-                state.isLoading = true
-                state.error = nil
-                return .run { send in
-                    await send(.update(TaskResult { try await teamPersistence.load() }))
-
+            case let .update(result):
+                switch result {
+                case let .success(result):
+                    state = .loaded(rows: IdentifiedArrayOf(
+                        uniqueElements: result.filter(\.isArchived).map(ArchiveRow.State.init)
+                    ))
+                    return .none
+                case let .failure(error):
+                    state = .errorCard(ErrorCard.State(description: error.localizedDescription))
+                    return .none
+                }
+            case .loadingCard:
+                return load(state: &state).concatenate(with: .run { send in
                     for try await teams in teamPersistence.publisher() {
                         await send(.update(TaskResult { teams }))
                     }
-                }
-            case let .update(result):
-                state.isLoading = false
-                switch result {
-                case let .success(result):
-                    state.rows = IdentifiedArrayOf(
-                        uniqueElements: result.filter(\.isArchived).map(ArchiveRow.State.init)
-                    )
-                    return .none
-                case let .failure(error):
-                    state.error = error.localizedDescription
-                    return .none
-                }
+                } catch: { error, send in
+                    await send(.update(TaskResult { throw error }))
+                })
             case .archiveRow:
                 return .none
+            case .errorCard(.reload):
+                return load(state: &state)
             }
         }
-        .forEach(\.rows, action: /Action.archiveRow) {
-            ArchiveRow()
+        .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
+            LoadingCard()
         }
+        .ifCaseLet(/State.loaded(rows:), action: /Action.archiveRow(id:action:)) {
+            EmptyReducer()
+                .forEach(\.self, action: /.self) {
+                    ArchiveRow()
+                }
+        }
+        .ifCaseLet(/State.errorCard, action: /Action.errorCard) {
+            ErrorCard()
+        }
+    }
+
+    private func load(state: inout State) -> EffectTask<Action> {
+        state = .loadingCard
+        return .task { await .update(TaskResult { try await teamPersistence.load() }) }
     }
 }
 
@@ -55,47 +69,37 @@ struct ArchivesView: View {
     let store: StoreOf<Archives>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
-            if viewStore.isLoading {
-                ProgressView("Loading content from saved data")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .task { viewStore.send(.task) }
-            } else if let error = viewStore.error {
-                errorCardView(description: error)
-            } else {
-                if viewStore.rows.isEmpty {
-                    Text("No archived teams")
-                } else {
-                    List {
-                        Section("Teams") {
-                            ForEachStore(
-                                store.scope(state: \.rows, action: Archives.Action.archiveRow),
-                                content: ArchiveRowView.init
-                            )
+        SwitchStore(store) {
+            CaseLet(
+                state: /Archives.State.loadingCard,
+                action: Archives.Action.loadingCard,
+                then: LoadingCardView.init
+            )
+            CaseLet(state: /Archives.State.loaded(rows:), action: Archives.Action.archiveRow(id:action:)) { store in
+                WithViewStore(store, observe: { $0 }) { viewStore in
+                    if viewStore.isEmpty {
+                        Text("No archived teams")
+                    } else {
+                        List {
+                            Section("Teams") {
+                                ForEachStore(store, content: ArchiveRowView.init)
+                            }
                         }
                     }
                 }
             }
-        }
-    }
-
-    // TODO: Some duplication here with AppData and ArchivesView
-    private func errorCardView(description: String) -> some View {
-        WithViewStore(store.stateless) { viewStore in
-            VStack {
-                Text(description)
-                Button { viewStore.send(.task, animation: .default) } label: {
-                    Text("Retry")
-                }
-                .buttonStyle(.dashed(color: MTColor.strawberry))
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .backgroundAndForeground(color: .strawberry)
+            CaseLet(
+                state: /Archives.State.errorCard,
+                action: Archives.Action.errorCard,
+                then: ErrorCardView.init
+            )
         }
     }
 }
 
 #if DEBUG
+import Combine
+
 struct ArchivesView_Previews: PreviewProvider {
     static var previews: some View {
         ArchivesView(store: .preview)
@@ -107,25 +111,28 @@ struct ArchivesView_Previews: PreviewProvider {
         .previewDisplayName("Archives With Teams and Players")
 
         ArchivesView(store: Store(
-            initialState: .preview,
+            initialState: .loadingCard,
             reducer: Archives()
-                .dependency(\.appPersistence.player.publisher, { .with(error: PersistenceError.notFound) })
+                .dependency(\.teamPersistence.load, {
+                    try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
+                    throw PersistenceError.notFound
+                })
+                .dependency(\.teamPersistence.publisher, {
+                    Fail(error: PersistenceError.notFound).eraseToAnyPublisher().values
+                })
         ))
         .previewDisplayName("Archives With Error")
     }
 }
 
 extension Archives.State {
-    static var preview: Self { Archives.State() }
+    static var preview: Self { .loaded(rows: []) }
     static var previewWithTeamsAndPlayers: Self {
-        Archives.State(
-            rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
-                var team = $0
-                team.isArchived = true
-                return ArchiveRow.State(team: team)
-            }),
-            isLoading: false
-        )
+        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+            var team = $0
+            team.isArchived = true
+            return ArchiveRow.State(team: team)
+        }))
     }
 }
 

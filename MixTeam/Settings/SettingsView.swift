@@ -4,7 +4,7 @@ import SwiftUI
 
 struct Settings: ReducerProtocol {
     struct State: Equatable {
-        var archives = Archives.State()
+        var archives: Archives.State = .loadingCard
     }
 
     enum Action: Equatable {
