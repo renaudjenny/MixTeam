@@ -147,6 +147,12 @@ extension Score.State: Codable {
     }
 }
 
+extension Scores.State {
+    static var example: Self {
+        Self(teams: .example)
+    }
+}
+
 private enum ScoresPersistenceDependencyKey: DependencyKey {
     static let liveValue = ScoresPersistence.live
     static let testValue = ScoresPersistence.test

@@ -4,7 +4,7 @@ import SwiftUI
 struct AppData: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
-        var composition = Composition.State()
+        var composition = CompositionLegacy.State()
         var isLoading = true
         var error: String?
     }
@@ -13,7 +13,7 @@ struct AppData: ReducerProtocol {
         case task
         case update(TaskResult<State>)
         case updateTeams(TaskResult<IdentifiedArrayOf<Team.State>>)
-        case composition(Composition.Action)
+        case composition(CompositionLegacy.Action)
     }
 
     @Dependency(\.appPersistence) var appPersistence
@@ -23,7 +23,7 @@ struct AppData: ReducerProtocol {
 
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.composition, action: /Action.composition) {
-            Composition()
+            CompositionLegacy()
         }
         Reduce { state, action in
             switch action {
@@ -108,7 +108,7 @@ struct AppDataView: View {
                 } else if let error = viewStore.error {
                     errorCardView(description: error)
                 } else {
-                    CompositionView(store: store.scope(state: \.composition, action: AppData.Action.composition))
+                    CompositionLegacyView(store: store.scope(state: \.composition, action: AppData.Action.composition))
                 }
 
             }
@@ -120,7 +120,7 @@ struct AppDataView: View {
         }
     }
 
-    // TODO: Some duplication here with AppData and ArchivesView
+    // TODO: Use ErrorCard ReducerProtocol instead
    private func errorCardView(description: String) -> some View {
         WithViewStore(store) { viewStore in
             VStack {

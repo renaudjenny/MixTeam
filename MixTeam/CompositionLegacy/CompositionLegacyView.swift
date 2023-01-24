@@ -1,16 +1,16 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct CompositionView: View {
-    let store: StoreOf<Composition>
+struct CompositionLegacyView: View {
+    let store: StoreOf<CompositionLegacy>
 
     var body: some View {
         WithViewStore(store.stateless) { viewStore in
             List {
                 Group {
-                    StandingView(store: store.scope(state: \.standing, action: Composition.Action.standing))
+                    StandingView(store: store.scope(state: \.standing, action: CompositionLegacy.Action.standing))
                     mixTeamButton
-                    ForEachStore(store.scope(state: \.teams, action: Composition.Action.team), content: TeamRow.init)
+                    ForEachStore(store.scope(state: \.teams, action: CompositionLegacy.Action.team), content: TeamRow.init)
                         .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
                     addTeamButton
                 }
@@ -44,25 +44,25 @@ struct CompositionView: View {
 }
 
 #if DEBUG
-struct CompositionView_Previews: PreviewProvider {
+struct CompositionLegacyView_Previews: PreviewProvider {
     static var previews: some View {
         Preview(store: .preview)
     }
 
     private struct Preview: View {
-        let store: StoreOf<Composition>
+        let store: StoreOf<CompositionLegacy>
 
         var body: some View {
             NavigationView {
-                CompositionView(store: store)
+                CompositionLegacyView(store: store)
             }
         }
     }
 }
 
-extension Store where State == Composition.State, Action == Composition.Action {
+extension Store where State == CompositionLegacy.State, Action == CompositionLegacy.Action {
     static var preview: Self {
-        Self(initialState: .example, reducer: Composition())
+        Self(initialState: .example, reducer: CompositionLegacy())
     }
 }
 #endif
