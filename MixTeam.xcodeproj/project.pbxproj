@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4C12BE2229807749003BB002 /* CompositionPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2129807749003BB002 /* CompositionPersistence.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
+		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
+		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
 		4C1ED55824C82196005D6749 /* StandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* StandingView.swift */; };
 		4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED56024D0B6F8005D6749 /* Splash.swift */; };
 		4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */; };
@@ -82,6 +84,8 @@
 /* Begin PBXFileReference section */
 		4C12BE2129807749003BB002 /* CompositionPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionPersistence.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
+		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
+		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
 		4C1ED55724C82196005D6749 /* StandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingView.swift; sourceTree = "<group>"; };
 		4C1ED56024D0B6F8005D6749 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
 		4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				4C12BE2429807B9E003BB002 /* Composition.swift */,
+				4C12BE262981BF88003BB002 /* CompositionLoader.swift */,
+				4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */,
 			);
 			path = Composition;
 			sourceTree = "<group>";
@@ -584,6 +590,7 @@
 				4CF355332942847100366084 /* MigrationV2V3.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
+				4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */,
 				4CA5BC93297D408F00A3B960 /* ScoresView.swift in Sources */,
 				4CA5BC91297B302500A3B960 /* ArchiveRow.swift in Sources */,
 				4C765303292B7A6500A591C4 /* Image.swift in Sources */,
@@ -610,6 +617,7 @@
 				4CFDCAE328F44107002DBF2D /* Score.swift in Sources */,
 				4CB98403295714EB00512E98 /* ScoresPersistence.swift in Sources */,
 				4C9E7D98296CAA26008728A7 /* ArchivesView.swift in Sources */,
+				4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */,
 				4C5F63C1293D3A7A006FBE85 /* AppPersistence.swift in Sources */,
 				4CECF623295F87D400B22A34 /* MigrationV2V3+Sample.swift in Sources */,
 				4C5F63BF293D2FBF006FBE85 /* TeamPersistence.swift in Sources */,
