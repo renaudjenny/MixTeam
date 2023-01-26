@@ -3,29 +3,29 @@ import SwiftUI
 
 struct App: ReducerProtocol {
     struct State: Equatable {
-        var data = AppData.State()
+        var compositionLoader: CompositionLoader.State = .loadingCard
         var scoreboard: Scoreboard.State = .loadingCard
         var settings = Settings.State()
 
-        var selectedTab: Tab = .composition
+        var selectedTab: Tab = .compositionLoader
     }
 
     enum Tab: Equatable {
-        case composition
+        case compositionLoader
         case scoreboard
         case settings
     }
 
     enum Action: Equatable {
         case tabSelected(Tab)
-        case data(AppData.Action)
+        case compositionLoader(CompositionLoader.Action)
         case scoreboard(Scoreboard.Action)
         case settings(Settings.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
-        Scope(state: \.data, action: /Action.data) {
-            AppData()
+        Scope(state: \.compositionLoader, action: /Action.compositionLoader) {
+            CompositionLoader()
         }
         Scope(state: \.scoreboard, action: /Action.scoreboard) {
             Scoreboard()

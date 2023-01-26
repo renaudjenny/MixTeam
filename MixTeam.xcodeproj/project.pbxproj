@@ -11,6 +11,7 @@
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
+		4C12BE2B29832769003BB002 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2A29832769003BB002 /* CompositionView.swift */; };
 		4C1ED55824C82196005D6749 /* StandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* StandingView.swift */; };
 		4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED56024D0B6F8005D6749 /* Splash.swift */; };
 		4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */; };
@@ -86,6 +87,7 @@
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
+		4C12BE2A29832769003BB002 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		4C1ED55724C82196005D6749 /* StandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingView.swift; sourceTree = "<group>"; };
 		4C1ED56024D0B6F8005D6749 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
 		4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				4C12BE2429807B9E003BB002 /* Composition.swift */,
 				4C12BE262981BF88003BB002 /* CompositionLoader.swift */,
 				4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */,
+				4C12BE2A29832769003BB002 /* CompositionView.swift */,
 			);
 			path = Composition;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,
 				4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */,
 				4C12BE2229807749003BB002 /* CompositionPersistence.swift in Sources */,
+				4C12BE2B29832769003BB002 /* CompositionView.swift in Sources */,
 				4CB98408295B048600512E98 /* CompositionLegacyView.swift in Sources */,
 				4CFDCADD28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift in Sources */,
 				4C5F13322472F88C007B9F3E /* DashedStyles.swift in Sources */,

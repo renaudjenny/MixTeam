@@ -12,12 +12,18 @@ struct AppView: View {
     var body: some View {
         WithViewStore(store, observe: \.selectedTab) { viewStore in
             TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
-                AppDataView(store: store.scope(state: \.data, action: App.Action.data))
-                    .tag(App.Tab.composition)
-                ScoreboardView(store: store.scope(state: \.scoreboard, action: App.Action.scoreboard))
-                    .tag(App.Tab.scoreboard)
-                SettingsView(store: store.scope(state: \.settings, action: App.Action.settings))
-                    .tag(App.Tab.settings)
+                CompositionLoaderView(
+                    store: store.scope(state: \.compositionLoader, action: App.Action.compositionLoader)
+                )
+                .tag(App.Tab.compositionLoader)
+                ScoreboardView(
+                    store: store.scope(state: \.scoreboard, action: App.Action.scoreboard)
+                )
+                .tag(App.Tab.scoreboard)
+                SettingsView(
+                    store: store.scope(state: \.settings, action: App.Action.settings)
+                )
+                .tag(App.Tab.settings)
             }
         }
     }
@@ -41,7 +47,7 @@ struct AppView_Previews: PreviewProvider {
 
 extension App.State {
     static var example: Self {
-        Self(data: .example)
+        Self(compositionLoader: .loaded(.example))
     }
 }
 #endif

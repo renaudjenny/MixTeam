@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import SwiftUI
 
 struct CompositionLoader: ReducerProtocol {
     enum State: Equatable {
@@ -61,5 +62,34 @@ struct CompositionLoader: ReducerProtocol {
                 standing: Standing.State(players: standingPlayers)
             )
         }) }
+    }
+}
+
+struct CompositionLoaderView: View {
+    let store: StoreOf<CompositionLoader>
+
+    var body: some View {
+        SwitchStore(store) {
+            CaseLet(
+                state: /CompositionLoader.State.loadingCard,
+                action: CompositionLoader.Action.loadingCard,
+                then: LoadingCardView.init
+            )
+            CaseLet(
+                state: /CompositionLoader.State.loaded,
+                action: CompositionLoader.Action.composition,
+                then: CompositionView.init
+            )
+            CaseLet(
+                state: /CompositionLoader.State.errorCard,
+                action: CompositionLoader.Action.errorCard,
+                then: ErrorCardView.init
+            )
+        }
+        .listStyle(.plain)
+        .tabItem {
+            Label("Composition", systemImage: "person.2.crop.square.stack")
+        }
+        .navigationViewStyle(.stack)
     }
 }
