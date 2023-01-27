@@ -31,8 +31,18 @@ struct CompositionLoader: ReducerProtocol {
                     return .none
                 }
             case .loadingCard:
-                // TODO: implement something keeping update from team & player persistence update
-                return load(state: &state)
+                return load(state: &state).concatenate(with: .merge(
+                    .run { send in
+                        for try await _ in teamPersistence.publisher() {
+                            await send(.update(await loadTaskResult))
+                        }
+                    },
+                    .run { send in
+                        for try await _ in playerPersistence.publisher() {
+                            await send(.update(await loadTaskResult))
+                        }
+                    }
+                ))
             case .composition:
                 return .none
             case .errorCard(.reload):
@@ -52,16 +62,24 @@ struct CompositionLoader: ReducerProtocol {
 
     private func load(state: inout State) -> EffectTask<Action> {
         state = .loadingCard
-        return .task { await .update(TaskResult {
-            let teams = try await teamPersistence.load().filter { !$0.isArchived }
-            let playersInTeams = teams.flatMap(\.players)
-            let standingPlayers = try await playerPersistence.load().filter { !playersInTeams.contains($0) }
+        return .task { await .update(loadTaskResult) }
+    }
 
-            return Composition.State(
-                teams: teams,
-                standing: Standing.State(players: standingPlayers)
-            )
-        }) }
+    private var loadTaskResult: TaskResult<Composition.State> {
+        get async {
+            await TaskResult {
+                let teams = try await teamPersistence.load().filter { !$0.isArchived }
+                let playersInTeams = teams.flatMap(\.players)
+                let standingPlayers = try await playerPersistence.load().filter {
+                    !playersInTeams.map(\.id).contains($0.id)
+                }
+
+                return Composition.State(
+                    teams: teams,
+                    standing: Standing.State(players: standingPlayers)
+                )
+            }
+        }
     }
 }
 

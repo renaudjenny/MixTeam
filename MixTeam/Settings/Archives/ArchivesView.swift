@@ -149,11 +149,7 @@ extension StoreOf<Archives> {
                     })
                 })
                 .dependency(\.appPersistence.player.publisher, {
-                    .with(value: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.map {
-                        var player = $0
-                        player.isArchived = true
-                        return player
-                    }))
+                    .with(value: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example))
                 })
         )
     }

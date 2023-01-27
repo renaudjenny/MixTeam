@@ -5,9 +5,23 @@ struct StandingView: View {
     let store: StoreOf<Standing>
 
     var body: some View {
-        Section {
-            header
-            ForEachStore(store.scope(state: \.players, action: Standing.Action.player), content: PlayerRow.init)
+        WithViewStore(store.stateless) { viewStore in
+            Section {
+                header
+                ForEachStore(store.scope(state: \.players, action: Standing.Action.player)) { store in
+                    WithViewStore(store, observe: { $0.id }) { playerViewStore in
+                        PlayerRow(store: store)
+                            .swipeActions(allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    viewStore.send(.deletePlayer(id: playerViewStore.state), animation: .default)
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                                .buttonStyle(.plain)
+                            }
+                    }
+                }
+            }
         }
     }
 
@@ -57,7 +71,6 @@ private extension Standing.State {
         let teams: IdentifiedArrayOf<Team.State> = .example
         guard var player = teams.first?.players[0]
         else { fatalError("Cannot load Example first team players") }
-        player.isStanding = true
         return Self(players: [player])
 
     }

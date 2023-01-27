@@ -79,7 +79,6 @@ private struct Persistence {
             guard var team = teams[id: $0.id] else { return nil }
             team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
                 var player = players[id: $0.id]
-                player?.isStanding = false
                 player?.color = team.color
                 return  player
             })
@@ -90,11 +89,7 @@ private struct Persistence {
             uniqueElements: value.composition.teams.compactMap { value.teams[id: $0.id] }
         )
         value.composition.standing.players = IdentifiedArrayOf(
-            uniqueElements: value.composition.standing.players.compactMap {
-                var player = players[id: $0.id]
-                player?.isStanding = true
-                return player
-            }
+            uniqueElements: value.composition.standing.players.compactMap { players[id: $0.id] }
         )
 
         return value

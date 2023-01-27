@@ -13,6 +13,7 @@ struct Team: ReducerProtocol {
 
     enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
+        case moveBackPlayer(id: Player.State.ID)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
@@ -31,6 +32,9 @@ struct Team: ReducerProtocol {
                 })
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .binding:
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
+            case let .moveBackPlayer(id):
+                state.players.remove(id: id)
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .player:
                 return .none

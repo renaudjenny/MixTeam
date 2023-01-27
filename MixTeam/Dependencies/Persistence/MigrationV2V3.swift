@@ -25,8 +25,7 @@ var migratedData: AppData.State? {
                     id: $0.id,
                     name: $0.name,
                     image: $0.imageIdentifier.mtImage,
-                    color: colorIdentifier.mtColor,
-                    isStanding: false
+                    color: colorIdentifier.mtColor
                 ) })
             )
         }
@@ -37,8 +36,7 @@ var migratedData: AppData.State? {
                     id: $0.id,
                     name: $0.name,
                     image: $0.imageIdentifier.mtImage,
-                    color: colorIdentifier.mtColor,
-                    isStanding: true
+                    color: colorIdentifier.mtColor
                 )})
             )
         }

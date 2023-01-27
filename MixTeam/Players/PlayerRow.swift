@@ -17,19 +17,6 @@ struct PlayerRow: View {
             }
             .backgroundAndForeground(color: viewStore.color)
             .padding(.leading, 24)
-            .swipeActions(allowsFullSwipe: true) {
-                if viewStore.isStanding {
-                    Button(role: .destructive) { viewStore.send(.delete, animation: .default) } label: {
-                        Image(systemName: "trash")
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    Button { viewStore.send(.moveBack, animation: .default) } label: {
-                        Image(systemName: "gobackward")
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
         }
     }
 }
@@ -66,8 +53,7 @@ extension Player.State {
             id: UUIDGenerator.incrementing(),
             name: "Test Player",
             image: image,
-            color: isStanding ? .aluminium : color,
-            isStanding: isStanding
+            color: isStanding ? .aluminium : color
         )
     }
     static var preview: Self {

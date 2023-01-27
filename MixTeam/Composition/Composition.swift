@@ -58,7 +58,6 @@ struct Composition: ReducerProtocol {
                         else { return teams }
                         guard var team = teams[id: lessPlayerTeam.id] else { return teams }
                         player.color = team.color
-                        player.isStanding = false
                         team.players.updateOrAppend(player)
                         teams.updateOrAppend(team)
                         return teams
@@ -71,19 +70,6 @@ struct Composition: ReducerProtocol {
                 return .none
             case .standing:
                 return .none
-
-            // TODO: This action should be removed, teams shall be sync with the publisher. Double check it's working well
-            case let .team(teamID, .player(playerID, .moveBack)):
-                guard
-                    var team = state.teams[id: teamID],
-                    var player = team.players[id: playerID]
-                else { return .none }
-                team.players.remove(id: player.id)
-                player.isStanding = true
-                player.color = .aluminium
-                state.standing.players.append(player)
-                state.teams.updateOrAppend(team)
-                return .fireAndForget { [team] in try await teamPersistance.updateOrAppend(team) }
             case .team:
                 return .none
             // TODO: check if we can optimise this function as it's sync with Team persistance via the publisher.
@@ -93,7 +79,6 @@ struct Composition: ReducerProtocol {
                     archivedTeams.append(state.teams[index])
                     let players = state.teams[index].players.map {
                         var player = $0
-                        player.isStanding = true
                         player.color = .aluminium
                         return player
                     }

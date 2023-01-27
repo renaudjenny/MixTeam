@@ -52,11 +52,7 @@ private final class Persistence {
 
 extension Standing.State {
     static var example: Self {
-        let players = IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.prefix(2).map {
-            var player = $0
-            player.isStanding = true
-            return player
-        })
+        let players = IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.prefix(2))
         return Self(players: players)
     }
 }

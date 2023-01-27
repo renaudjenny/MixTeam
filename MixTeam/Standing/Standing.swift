@@ -11,12 +11,12 @@ struct Standing: ReducerProtocol {
 
     enum Action: Equatable {
         case createPlayer
+        case deletePlayer(id: Player.State.ID)
         case player(id: Player.State.ID, action: Player.Action)
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.appPersistence) var appPersistence
-    @Dependency(\.appPersistence.player) var playerPersistence
+    @Dependency(\.playerPersistence) var playerPersistence
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -24,19 +24,13 @@ struct Standing: ReducerProtocol {
             case .createPlayer:
                 let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
                 let image = MTImage.players.randomElement() ?? .unknown
-                let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium, isStanding: true)
+                let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium)
                 state.players.append(player)
 
-                return .fireAndForget { [state] in
-                    try await appPersistence.saveStanding(state)
-                    try await playerPersistence.updateOrAppend(player)
-                }
-            case let .player(id, .delete):
+                return .fireAndForget { try await playerPersistence.updateOrAppend(player) }
+            case let .deletePlayer(id):
                 state.players.remove(id: id)
-                return .fireAndForget { [state] in
-                    try await appPersistence.saveStanding(state)
-                    try await playerPersistence.remove(id)
-                }
+                return .fireAndForget { try await playerPersistence.remove(id) }
             case .player:
                 return .none
             }

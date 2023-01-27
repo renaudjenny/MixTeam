@@ -48,7 +48,6 @@ private final class Persistence {
             guard var team = value[id: $0.id] else { return nil }
             team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
                 var player = players[id: $0.id]
-                player?.isStanding = false
                 player?.color = team.color
                 return  player
             })

@@ -64,7 +64,6 @@ struct CompositionLegacy: ReducerProtocol {
                         else { return teams }
                         guard var team = teams[id: lessPlayerTeam.id] else { return teams }
                         player.color = team.color
-                        player.isStanding = false
                         team.players.updateOrAppend(player)
                         teams.updateOrAppend(team)
                         return teams
@@ -83,20 +82,19 @@ struct CompositionLegacy: ReducerProtocol {
                 return .fireAndForget { [state] in try await save(state) }
             case .standing:
                 return .none
-            case let .team(teamID, .player(playerID, .moveBack)):
-                guard
-                    var team = state.teams[id: teamID],
-                    var player = team.players[id: playerID]
-                else { return .none }
-                team.players.remove(id: player.id)
-                player.isStanding = true
-                player.color = .aluminium
-                state.standing.players.append(player)
-                state.teams.updateOrAppend(team)
-                return .fireAndForget { [state, team] in
-                    try await save(state)
-                    try await teamPersistance.updateOrAppend(team)
-                }
+//            case let .team(teamID, .player(playerID, .moveBack)):
+//                guard
+//                    var team = state.teams[id: teamID],
+//                    var player = team.players[id: playerID]
+//                else { return .none }
+//                team.players.remove(id: player.id)
+//                player.color = .aluminium
+//                state.standing.players.append(player)
+//                state.teams.updateOrAppend(team)
+//                return .fireAndForget { [state, team] in
+//                    try await save(state)
+//                    try await teamPersistance.updateOrAppend(team)
+//                }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):
@@ -105,7 +103,6 @@ struct CompositionLegacy: ReducerProtocol {
                     archivedTeams.append(state.teams[index])
                     let players = state.teams[index].players.map {
                         var player = $0
-                        player.isStanding = true
                         player.color = .aluminium
                         return player
                     }

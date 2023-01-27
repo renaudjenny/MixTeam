@@ -5,9 +5,23 @@ struct TeamRow: View {
     let store: StoreOf<Team>
 
     var body: some View {
-        Section {
-            header
-            ForEachStore(store.scope(state: \.players, action: Team.Action.player), content: PlayerRow.init)
+        WithViewStore(store.stateless) { viewStore in
+            Section {
+                header
+                ForEachStore(store.scope(state: \.players, action: Team.Action.player)) { store in
+                    WithViewStore(store, observe: { $0.id }) { playerViewStore in
+                        PlayerRow(store: store)
+                            .swipeActions(allowsFullSwipe: true) {
+                                Button {
+                                    viewStore.send(.moveBackPlayer(id: playerViewStore.state), animation: .default)
+                                } label: {
+                                    Image(systemName: "gobackward")
+                                }
+                                .buttonStyle(.plain)
+                            }
+                    }
+                }
+            }
         }
     }
 
