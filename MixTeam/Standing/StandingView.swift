@@ -68,10 +68,7 @@ extension Store where State == Standing.State, Action == Standing.Action {
 
 private extension Standing.State {
     static var preview: Self {
-        let teams: IdentifiedArrayOf<Team.State> = .example
-        guard var player = teams.first?.players[0]
-        else { fatalError("Cannot load Example first team players") }
-        return Self(players: [player])
+        Self(players: (IdentifiedArrayOf<Team.State>.example.first?.players[0]).map { [$0] } ?? [])
 
     }
 }

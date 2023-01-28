@@ -72,20 +72,12 @@ struct Composition: ReducerProtocol {
                 return .none
             case .team:
                 return .none
-            // TODO: check if we can optimise this function as it's sync with Team persistance via the publisher.
             case let .deleteTeams(indexSet):
-                var archivedTeams: IdentifiedArrayOf<Team.State> = []
-                for index in indexSet {
-                    archivedTeams.append(state.teams[index])
-                    let players = state.teams[index].players.map {
-                        var player = $0
-                        player.color = .aluminium
-                        return player
-                    }
-                    state.standing.players.append(contentsOf: players)
-                }
+                let archivedTeams: IdentifiedArrayOf<Team.State> = IdentifiedArrayOf(
+                    uniqueElements: indexSet.map { state.teams[$0] }
+                )
                 state.teams.remove(atOffsets: indexSet)
-                return .fireAndForget { [archivedTeams] in
+                return .fireAndForget {
                     let archivedTeams = IdentifiedArrayOf(uniqueElements: archivedTeams.map {
                         var team = $0
                         team.players = []
