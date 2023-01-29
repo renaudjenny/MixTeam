@@ -1,6 +1,7 @@
 import IdentifiedCollections
 import Foundation
 
+@available(*, deprecated, message: "TODO: create a new migration, makes the AppData private to this file")
 var migratedData: AppData.State? {
     struct DprPlayer: Codable, Identifiable, Hashable {
         var id = UUID()

@@ -3,6 +3,7 @@ import Foundation
 import IdentifiedCollections
 import XCTestDynamicOverlay
 
+@available(*, deprecated, message: "Legacy: use TeamPersistence and PlayerPersistence instead")
 private struct Persistence {
     private let appFileName = "MixTeamAppV3_0_0"
 
@@ -96,6 +97,7 @@ private struct Persistence {
     }
 }
 
+@available(*, deprecated, message: "Legacy: use TeamPersistence and PlayerPersistence instead")
 struct AppPersistence {
     private static var persistence = Persistence()
 
@@ -105,15 +107,19 @@ struct AppPersistence {
     var load: () async throws -> AppData.State = { try await persistence.load() }
     var save: (AppData.State) async throws -> Void = { try await persistence.save($0) }
     var saveStanding: (Standing.State) async throws -> Void = { try await persistence.save(standing: $0) }
-    var saveComposition: (CompositionLegacy.State) async throws -> Void = { try await persistence.save(composition: $0) }
+    var saveComposition: (CompositionLegacy.State) async throws -> Void = {
+        try await persistence.save(composition: $0)
+    }
 }
 
+@available(*, deprecated, message: "Legacy: use Composition.State instead")
 extension AppData.State {
     static var example: Self {
         Self(teams: .example, composition: .example)
     }
 }
 
+@available(*, deprecated, message: "Legacy: use Composition.State instead")
 extension AppData.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
@@ -134,6 +140,7 @@ extension AppData.State: Codable {
     }
 }
 
+@available(*, deprecated, message: "Legacy: use TeamPersistence and PlayerPersistence instead")
 private struct AppPersistenceDepedencyKey: DependencyKey {
     static var liveValue = AppPersistence()
     static var testValue: AppPersistence = {
@@ -156,6 +163,7 @@ private struct AppPersistenceDepedencyKey: DependencyKey {
     #endif
 }
 
+@available(*, deprecated, message: "Legacy: use TeamPersistence and PlayerPersistence instead")
 extension DependencyValues {
     var appPersistence: AppPersistence {
         get { self[AppPersistenceDepedencyKey.self] }

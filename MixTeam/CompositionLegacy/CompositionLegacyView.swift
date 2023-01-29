@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
+@available(*, deprecated, message: "Legacy: use CompositionView instead")
 struct CompositionLegacyView: View {
     let store: StoreOf<CompositionLegacy>
 
@@ -10,8 +11,11 @@ struct CompositionLegacyView: View {
                 Group {
                     StandingView(store: store.scope(state: \.standing, action: CompositionLegacy.Action.standing))
                     mixTeamButton
-                    ForEachStore(store.scope(state: \.teams, action: CompositionLegacy.Action.team), content: TeamRow.init)
-                        .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
+                    ForEachStore(
+                        store.scope(state: \.teams, action: CompositionLegacy.Action.team),
+                        content: TeamRow.init
+                    )
+                    .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
                     addTeamButton
                 }
                 .listRowBackground(Color.clear)
@@ -42,27 +46,3 @@ struct CompositionLegacyView: View {
         }
     }
 }
-
-#if DEBUG
-struct CompositionLegacyView_Previews: PreviewProvider {
-    static var previews: some View {
-        Preview(store: .preview)
-    }
-
-    private struct Preview: View {
-        let store: StoreOf<CompositionLegacy>
-
-        var body: some View {
-            NavigationView {
-                CompositionLegacyView(store: store)
-            }
-        }
-    }
-}
-
-extension Store where State == CompositionLegacy.State, Action == CompositionLegacy.Action {
-    static var preview: Self {
-        Self(initialState: .example, reducer: CompositionLegacy())
-    }
-}
-#endif

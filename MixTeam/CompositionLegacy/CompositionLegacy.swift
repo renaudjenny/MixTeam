@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import Foundation
 
-// TODO: remove this file
+@available(*, deprecated, message: "Legacy use Composition instead")
 struct CompositionLegacy: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
@@ -83,19 +83,6 @@ struct CompositionLegacy: ReducerProtocol {
                 return .fireAndForget { [state] in try await save(state) }
             case .standing:
                 return .none
-//            case let .team(teamID, .player(playerID, .moveBack)):
-//                guard
-//                    var team = state.teams[id: teamID],
-//                    var player = team.players[id: playerID]
-//                else { return .none }
-//                team.players.remove(id: player.id)
-//                player.color = .aluminium
-//                state.standing.players.append(player)
-//                state.teams.updateOrAppend(team)
-//                return .fireAndForget { [state, team] in
-//                    try await save(state)
-//                    try await teamPersistance.updateOrAppend(team)
-//                }
             case .team:
                 return .none
             case let .deleteTeams(indexSet):

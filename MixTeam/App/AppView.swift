@@ -36,8 +36,9 @@ struct AppView_Previews: PreviewProvider {
         AppView(store: Store(
             initialState: App.State(),
             reducer: App()
-                .dependency(\.appPersistence.load, {
+                .dependency(\.teamPersistence.load, {
                     try await Task.sleep(nanoseconds: 500_000_000)
+                    // TODO: preview crash, certainly not catched error! Should be fixed
                     throw PersistenceError.notFound
                 })
         ))

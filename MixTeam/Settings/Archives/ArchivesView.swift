@@ -138,18 +138,18 @@ extension Archives.State {
 
 extension StoreOf<Archives> {
     static var preview: StoreOf<Archives> {
-        StoreOf<Archives>(
+        let example: IdentifiedArrayOf<Team.State> = .example
+        let archiveExample: IdentifiedArrayOf<Team.State> = IdentifiedArrayOf(uniqueElements: example.map {
+            var team = $0
+            team.isArchived = true
+            return team
+        })
+        return StoreOf<Archives>(
             initialState: .preview,
             reducer: Archives()
-                .dependency(\.appPersistence.team.load, {
-                    IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
-                        var team = $0
-                        team.isArchived = true
-                        return team
-                    })
-                })
-                .dependency(\.appPersistence.player.publisher, {
-                    .with(value: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example))
+                .dependency(\.teamPersistence.load, { archiveExample })
+                .dependency(\.teamPersistence.publisher, {
+                    Result.Publisher(archiveExample).eraseToAnyPublisher().values
                 })
         )
     }

@@ -2,7 +2,7 @@ import Dependencies
 import Foundation
 import IdentifiedCollections
 
-// TODO: remove this file?
+@available(*, deprecated, message: "Legacy: use TeamPersistence and PlayerPersistence instead")
 private final class Persistence {
     private let compositionFileName = "MixTeamCompositionV3_1_0"
 
@@ -14,7 +14,6 @@ private final class Persistence {
     }
 
     init() throws {
-        // TODO: migration from V2 & V3.0
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(compositionFileName, conformingTo: .json))
@@ -74,6 +73,7 @@ extension Standing.State: Codable {
     }
 }
 
+@available(*, deprecated, message: "Legacy: use Composition.State instead")
 extension CompositionLegacy.State: Codable {
     enum CodingKeys: CodingKey {
         case teamIDs
@@ -94,6 +94,7 @@ extension CompositionLegacy.State: Codable {
     }
 }
 
+@available(*, deprecated, message: "Legacy: use Composition.State instead")
 extension CompositionLegacy.State {
     static var example: Self {
         Self(teams: .example, standing: .example)

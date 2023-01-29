@@ -18,7 +18,7 @@ struct Team: ReducerProtocol {
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.appPersistence.team) var teamPersistence
+    @Dependency(\.teamPersistence) var teamPersistence
 
     var body: some ReducerProtocol<State, Action> {
         BindingReducer()
