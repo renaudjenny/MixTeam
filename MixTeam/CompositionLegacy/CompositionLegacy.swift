@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Foundation
 
+// TODO: remove this file
 struct CompositionLegacy: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []

@@ -66,18 +66,6 @@ struct AppData: ReducerProtocol {
                 guard let team = state.composition.teams[id: id] else { return .none }
                 state.teams.updateOrAppend(team)
                 return .none
-            case .composition(.deleteTeams):
-                let deletedTeams = state.teams
-                    .filter { !$0.isArchived && !state.composition.teams.contains($0) }
-                    .map {
-                        var team = $0
-                        team.isArchived = true
-                        return team
-                    }
-                for deletedTeam in deletedTeams {
-                    state.teams.updateOrAppend(deletedTeam)
-                }
-                return .none
             case .composition:
                 return .none
             }

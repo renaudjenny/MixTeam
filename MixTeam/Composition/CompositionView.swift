@@ -15,7 +15,7 @@ struct CompositionView: View {
                             store.scope(state: \.teams, action: Composition.Action.team),
                             content: TeamRow.init
                         )
-                        .onDelete { viewStore.send(.deleteTeams($0), animation: .default) }
+                        .onDelete { viewStore.send(.archiveTeams($0), animation: .default) }
                         addTeamButton
                     }
                     .listRowBackground(Color.clear)

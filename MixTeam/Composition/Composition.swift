@@ -14,7 +14,7 @@ struct Composition: ReducerProtocol {
         case dismissNotEnoughTeamsAlert
         case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
-        case deleteTeams(IndexSet)
+        case archiveTeams(IndexSet)
     }
 
     @Dependency(\.teamPersistence) var teamPersistance
@@ -72,7 +72,7 @@ struct Composition: ReducerProtocol {
                 return .none
             case .team:
                 return .none
-            case let .deleteTeams(indexSet):
+            case let .archiveTeams(indexSet):
                 let archivedTeams: IdentifiedArrayOf<Team.State> = IdentifiedArrayOf(
                     uniqueElements: indexSet.map { state.teams[$0] }
                 )
