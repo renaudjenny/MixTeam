@@ -54,7 +54,8 @@
 		4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF593A268E502700BF23F7 /* TotalScoresView.swift */; };
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CECF623295F87D400B22A34 /* MigrationV2V3+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */; };
-		4CF355332942847100366084 /* MigrationV2V3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF355322942847100366084 /* MigrationV2V3.swift */; };
+		4CF2BE9E29884A9D00EC1539 /* MigrationV2toV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */; };
+		4CF355332942847100366084 /* LegacyMigrationV2V3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF355322942847100366084 /* LegacyMigrationV2V3.swift */; };
 		4CF35535294284E200366084 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF35534294284E200366084 /* PersistenceError.swift */; };
 		4CF355382946909000366084 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 4CF355372946909000366084 /* SwiftUINavigation */; };
 		4CFDCADB28F224E1002DBF2D /* Standing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFDCADA28F224E1002DBF2D /* Standing.swift */; };
@@ -132,7 +133,8 @@
 		4CBF593A268E502700BF23F7 /* TotalScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalScoresView.swift; sourceTree = "<group>"; };
 		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationV2V3+Sample.swift"; sourceTree = "<group>"; };
-		4CF355322942847100366084 /* MigrationV2V3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationV2V3.swift; sourceTree = "<group>"; };
+		4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationV2toV3.swift; sourceTree = "<group>"; };
+		4CF355322942847100366084 /* LegacyMigrationV2V3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyMigrationV2V3.swift; sourceTree = "<group>"; };
 		4CF35534294284E200366084 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 		4CFDCADA28F224E1002DBF2D /* Standing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standing.swift; sourceTree = "<group>"; };
 		4CFDCADC28F2BAE3002DBF2D /* AlertState+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertState+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -272,11 +274,12 @@
 				4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */,
 				4C5F63C0293D3A7A006FBE85 /* AppPersistence.swift */,
 				4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */,
-				4CF355322942847100366084 /* MigrationV2V3.swift */,
+				4CF355322942847100366084 /* LegacyMigrationV2V3.swift */,
 				4CF35534294284E200366084 /* PersistenceError.swift */,
 				4CB98402295714EB00512E98 /* ScoresPersistence.swift */,
 				4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */,
 				4C12BE2129807749003BB002 /* CompositionPersistence.swift */,
+				4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -589,8 +592,9 @@
 				4C9E7D95296B12BB008728A7 /* AppData.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
+				4CF2BE9E29884A9D00EC1539 /* MigrationV2toV3.swift in Sources */,
 				4CA5BC9A297DA5A500A3B960 /* ErrorCard.swift in Sources */,
-				4CF355332942847100366084 /* MigrationV2V3.swift in Sources */,
+				4CF355332942847100366084 /* LegacyMigrationV2V3.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */,
