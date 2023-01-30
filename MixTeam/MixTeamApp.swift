@@ -12,7 +12,7 @@ struct MixTeamApp: SwiftUI.App {
 
     var body: some Scene {
         WindowGroup {
-            AppView(store: .live)
+            AppView(store: .withError)
         }
     }
 }
@@ -27,6 +27,18 @@ extension StoreOf<App> {
             initialState: .example,
             reducer: App()
                 .dependency(\.playerPersistence, .preview)
+        )
+    }
+
+    static var withError: StoreOf<App> {
+        Store(
+            initialState: App.State(),
+            reducer: App()
+                .dependency(\.playerPersistence, .preview)
+                .dependency(\.teamPersistence.load, {
+                    try await Task.sleep(nanoseconds: 500_000_000)
+                    throw PersistenceError.notFound
+                })
         )
     }
     #endif

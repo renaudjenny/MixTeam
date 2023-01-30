@@ -36,11 +36,15 @@ struct CompositionLoader: ReducerProtocol {
                         for try await _ in teamPersistence.publisher() {
                             await send(.update(await loadTaskResult))
                         }
+                    } catch: { error, send in
+                        await send(.update(.failure(error)))
                     },
                     .run { send in
                         for try await _ in playerPersistence.publisher() {
                             await send(.update(await loadTaskResult))
                         }
+                    } catch: { error, send in
+                        await send(.update(.failure(error)))
                     }
                 ))
             case .composition:

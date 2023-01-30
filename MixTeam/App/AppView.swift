@@ -33,15 +33,7 @@ struct AppView: View {
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView(store: .preview)
-        AppView(store: Store(
-            initialState: App.State(),
-            reducer: App()
-                .dependency(\.teamPersistence.load, {
-                    try await Task.sleep(nanoseconds: 500_000_000)
-                    // TODO: preview crash, certainly not catched error! Should be fixed
-                    throw PersistenceError.notFound
-                })
-        ))
+        AppView(store: .withError)
         .previewDisplayName("App View With Error")
     }
 }
