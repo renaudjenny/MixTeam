@@ -33,8 +33,9 @@ struct AppView: View {
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {
         AppView(store: .preview)
+        .previewDisplayName("Happy path")
         AppView(store: .withError)
-        .previewDisplayName("App View With Error")
+        .previewDisplayName("With Error")
     }
 }
 

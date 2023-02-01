@@ -24,3 +24,17 @@ struct LoadingCardView: View {
         }
     }
 }
+
+#if DEBUG
+struct LoadingCard_Previews: PreviewProvider {
+    static var previews: some View {
+        LoadingCardView(store: .preview)
+    }
+}
+
+extension Store where State == Void, Action == LoadingCard.Action {
+    static var preview: Store<State, Action> {
+        Store(initialState: (), reducer: LoadingCard())
+    }
+}
+#endif

@@ -12,7 +12,7 @@ struct MixTeamApp: SwiftUI.App {
 
     var body: some Scene {
         WindowGroup {
-            AppView(store: .withError)
+            AppView(store: .live)
         }
     }
 }

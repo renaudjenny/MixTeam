@@ -32,3 +32,17 @@ struct ErrorCardView: View {
         }
     }
 }
+
+#if DEBUG
+struct ErrorCard_Previews: PreviewProvider {
+    static var previews: some View {
+        ErrorCardView(store: .preview)
+    }
+}
+
+extension StoreOf where State == ErrorCard.State, Action == ErrorCard.Action {
+    static var preview: StoreOf<ErrorCard> {
+        Store(initialState: ErrorCard.State(description: "Preview Error"), reducer: ErrorCard())
+    }
+}
+#endif
