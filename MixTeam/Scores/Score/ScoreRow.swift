@@ -71,12 +71,12 @@ struct ScoreRow_Previews: PreviewProvider {
             ScoreRow(store: Store(
                 initialState: .loadingPreview,
                 reducer: Score()
-                    .dependency(\.appPersistence.team.load, TeamPersistence.previewWithDelay)
+                    .dependency(\.teamPersistence.load, TeamPersistence.previewWithDelay)
             ))
             ScoreRow(store: Store(
                 initialState: .loadingPreview,
                 reducer: Score()
-                    .dependency(\.appPersistence.team.load, TeamPersistence.previewWithError)
+                    .dependency(\.teamPersistence.load, TeamPersistence.previewWithError)
             ))
         }
     }

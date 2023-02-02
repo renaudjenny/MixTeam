@@ -9,7 +9,7 @@ private final class Persistence {
 
     let subject = PassthroughSubject<IdentifiedArrayOf<Player.State>, Error>()
     var value: IdentifiedArrayOf<Player.State> {
-        didSet { Task { try await presist(value) } }
+        didSet { Task { try await persist(value) } }
     }
 
     init() throws {
@@ -32,7 +32,7 @@ private final class Persistence {
         subject.send(value)
     }
 
-    func presist(_ states: IdentifiedArrayOf<Player.State>) async throws {
+    func persist(_ states: IdentifiedArrayOf<Player.State>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }

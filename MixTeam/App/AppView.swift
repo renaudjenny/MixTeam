@@ -25,6 +25,7 @@ struct AppView: View {
                 )
                 .tag(App.Tab.settings)
             }
+            .task { viewStore.send(.task) }
         }
     }
 }

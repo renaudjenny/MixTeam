@@ -17,11 +17,14 @@ struct App: ReducerProtocol {
     }
 
     enum Action: Equatable {
+        case task
         case tabSelected(Tab)
         case compositionLoader(CompositionLoader.Action)
         case scoreboard(Scoreboard.Action)
         case settings(Settings.Action)
     }
+
+    @Dependency(\.migration) var migration
 
     var body: some ReducerProtocol<State, Action> {
         Scope(state: \.compositionLoader, action: /Action.compositionLoader) {
@@ -34,11 +37,19 @@ struct App: ReducerProtocol {
             Settings()
         }
         Reduce { state, action in
-            if case let .tabSelected(tab) = action {
+            switch action {
+            case .task:
+                return .fireAndForget { try await migration.v2toV3() }
+            case let .tabSelected(tab):
                 state.selectedTab = tab
                 return .none
+            case .compositionLoader:
+                return .none
+            case .scoreboard:
+                return .none
+            case .settings:
+                return .none
             }
-            return .none
         }
     }
 }

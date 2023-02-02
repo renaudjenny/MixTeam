@@ -14,7 +14,6 @@ private final class Persistence {
     }
 
     init() throws {
-        // TODO: migration from V2 & V3.0
         guard
             let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let data = try? Data(contentsOf: url.appendingPathComponent(scoresFileName, conformingTo: .json))

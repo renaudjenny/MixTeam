@@ -1,18 +1,18 @@
+import Dependencies
 import Foundation
 import IdentifiedCollections
+import XCTestDynamicOverlay
 
-struct MigrationV2toV3 {
-    let team: IdentifiedArrayOf<Team.State>
-    let player: IdentifiedArrayOf<Player.State>
-    let scores: Scores.State
+private struct MigrationV2toV3 {
+    private let team: IdentifiedArrayOf<Team.State>
+    private let player: IdentifiedArrayOf<Player.State>
+    private let scores: Scores.State
 
-    var isTeamMigrated = false { didSet { removeLocalStorageIfAllMigrated() } }
-    var isPlayerMigrated = false { didSet { removeLocalStorageIfAllMigrated() } }
-    var isScoresMigrated = false { didSet { removeLocalStorageIfAllMigrated() } }
+    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.playerPersistence) var playerPersistence
+    @Dependency(\.scoresPersistence) var scoresPersistence
 
-    static var shared: MigrationV2toV3? = MigrationV2toV3()
-
-    private init?() {
+    init?() {
         let teamsData = UserDefaults.standard.data(forKey: "teams")
         let teams = teamsData.flatMap { (try? JSONDecoder().decode([DprTeam].self, from: $0)) }
 
@@ -35,8 +35,11 @@ struct MigrationV2toV3 {
         }
     }
 
-    private func removeLocalStorageIfAllMigrated() {
-        guard isTeamMigrated, isPlayerMigrated, isScoresMigrated else { return }
+    func migrate() async throws {
+        try await teamPersistence.save(team)
+        try await playerPersistence.save(player)
+        try await scoresPersistence.save(scores)
+
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")
     }
@@ -172,5 +175,28 @@ private enum ImageIdentifier: String, Codable {
         case .pirate: return .pirate
         case .unknown: return .unknown
         }
+    }
+}
+
+struct Migration {
+    var v2toV3: () async throws -> Void
+}
+
+extension Migration {
+    static let live = Self(v2toV3: { try await MigrationV2toV3()?.migrate() })
+    static let test = Self(v2toV3: unimplemented("TeamPersistence.publisher"))
+    static let preview = Self(v2toV3: {})
+}
+
+private enum MigrationDependencyKey: DependencyKey {
+    static let liveValue = Migration.live
+    static let testValue = Migration.test
+    static let previewValue = Migration.preview
+}
+
+extension DependencyValues {
+    var migration: Migration {
+        get { self[MigrationDependencyKey.self] }
+        set { self[MigrationDependencyKey.self] = newValue }
     }
 }
