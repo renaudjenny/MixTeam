@@ -5,7 +5,7 @@ import IdentifiedCollections
 import XCTestDynamicOverlay
 
 private final class Persistence {
-    private let teamFileName = "MixTeamTeamV3_0_0"
+    private let teamFileName = "MixTeamTeamV3_1_0"
 
     @Dependency(\.playerPersistence) var player
 

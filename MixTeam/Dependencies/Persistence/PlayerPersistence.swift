@@ -5,7 +5,7 @@ import IdentifiedCollections
 import XCTestDynamicOverlay
 
 private final class Persistence {
-    private let playerFileName = "MixTeamPlayerV3_0_0"
+    private let playerFileName = "MixTeamPlayerV3_1_0"
 
     let subject = PassthroughSubject<IdentifiedArrayOf<Player.State>, Error>()
     var value: IdentifiedArrayOf<Player.State> {

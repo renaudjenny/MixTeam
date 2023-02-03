@@ -180,12 +180,22 @@ private enum ImageIdentifier: String, Codable {
 
 struct Migration {
     var v2toV3: () async throws -> Void
+    var v3_0toV3_1: () async throws -> Void
 }
 
 extension Migration {
-    static let live = Self(v2toV3: { try await MigrationV2toV3()?.migrate() })
-    static let test = Self(v2toV3: unimplemented("TeamPersistence.publisher"))
-    static let preview = Self(v2toV3: {})
+    static let live = Self(
+        v2toV3: { try await MigrationV2toV3()?.migrate() },
+        v3_0toV3_1: { try await MigrationV3_0toV3_1()?.migrate() }
+    )
+    static let test = Self(
+        v2toV3: unimplemented("Migration.v2toV3"),
+        v3_0toV3_1: unimplemented("Migration.v3_0toV3_1")
+    )
+    static let preview = Self(
+        v2toV3: {},
+        v3_0toV3_1: {}
+    )
 }
 
 private enum MigrationDependencyKey: DependencyKey {
