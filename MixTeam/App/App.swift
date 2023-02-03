@@ -39,7 +39,10 @@ struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .task:
-                return .fireAndForget { try await migration.v2toV3() }
+                return .fireAndForget {
+                    try await migration.v2toV3()
+                    try await migration.v3_0toV3_1()
+                }
             case let .tabSelected(tab):
                 state.selectedTab = tab
                 return .none

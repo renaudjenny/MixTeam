@@ -51,13 +51,6 @@ struct MigrationV3_0toV3_1 {
 
 private extension MigrationV3_0toV3_1 {
     struct AppDataState: Decodable {
-        var teams: IdentifiedArrayOf<Team.State>
-        var composition: CompositionState
         var scores: Scores.State
-    }
-
-    struct CompositionState: Decodable {
-        var teams: IdentifiedArrayOf<Team.State>
-        var standing: Standing.State
     }
 }
