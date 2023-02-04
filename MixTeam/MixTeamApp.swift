@@ -5,9 +5,14 @@ import SwiftUI
 struct MixTeamApp: SwiftUI.App {
 
     #if DEBUG
-    init() {
-//        addV2PersistedData()
-    }
+//    init() {
+//        do {
+//            addV2PersistedData()
+//            try addV3_0toV3_1PersistedData()
+//        } catch {
+//            print(error)
+//        }
+//    }
     #endif
 
     var body: some Scene {

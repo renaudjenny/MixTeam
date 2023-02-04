@@ -35,6 +35,7 @@
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
 		4C900FFE298D9E9200C4B75E /* MigrationV3_0toV3_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C900FFD298D9E9200C4B75E /* MigrationV3_0toV3_1.swift */; };
+		4C901000298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C900FFF298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift */; };
 		4C9E7D95296B12BB008728A7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9E7D94296B12BB008728A7 /* AppData.swift */; };
 		4C9E7D98296CAA26008728A7 /* ArchivesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9E7D97296CAA26008728A7 /* ArchivesView.swift */; };
 		4CA5BC91297B302500A3B960 /* ArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC90297B302500A3B960 /* ArchiveRow.swift */; };
@@ -115,6 +116,7 @@
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4C8E60FF2679399E00010C8B /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		4C900FFD298D9E9200C4B75E /* MigrationV3_0toV3_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationV3_0toV3_1.swift; sourceTree = "<group>"; };
+		4C900FFF298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationV3_0toV3_1+Sample.swift"; sourceTree = "<group>"; };
 		4C9E7D94296B12BB008728A7 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		4C9E7D97296CAA26008728A7 /* ArchivesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivesView.swift; sourceTree = "<group>"; };
 		4CA5BC90297B302500A3B960 /* ArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRow.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */,
 				4C12BE2129807749003BB002 /* CompositionPersistence.swift */,
 				4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */,
+				4C900FFF298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift */,
 				4C900FFD298D9E9200C4B75E /* MigrationV3_0toV3_1.swift */,
 			);
 			path = Persistence;
@@ -612,6 +615,7 @@
 				4C1ED56124D0B6F8005D6749 /* Splash.swift in Sources */,
 				4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */,
 				4C12BE2529807B9E003BB002 /* Composition.swift in Sources */,
+				4C901000298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift in Sources */,
 				4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */,
 				4CA5BC98297D410000A3B960 /* Scoreboard.swift in Sources */,
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,

@@ -4,7 +4,7 @@ import Foundation
 struct Composition: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
-        var standing: Standing.State
+        var standing = Standing.State()
         var notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>?
     }
 
