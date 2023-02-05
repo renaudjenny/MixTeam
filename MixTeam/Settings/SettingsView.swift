@@ -32,6 +32,7 @@ struct SettingsView: View {
                     Text("Archives")
                 }
             }
+            .navigationTitle("Settings")
         }
         .tabItem {
             Label("Settings", systemImage: "gear")

@@ -6,27 +6,25 @@ struct CompositionView: View {
 
     var body: some View {
         WithViewStore(store.stateless) { viewStore in
-            NavigationView {
-                List {
-                    Group {
-                        StandingView(store: store.scope(state: \.standing, action: Composition.Action.standing))
-                        mixTeamButton
-                        ForEachStore(
-                            store.scope(state: \.teams, action: Composition.Action.team),
-                            content: TeamRow.init
-                        )
-                        .onDelete { viewStore.send(.archiveTeams($0), animation: .default) }
-                        addTeamButton
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+            List {
+                Group {
+                    StandingView(store: store.scope(state: \.standing, action: Composition.Action.standing))
+                    mixTeamButton
+                    ForEachStore(
+                        store.scope(state: \.teams, action: Composition.Action.team),
+                        content: TeamRow.init
+                    )
+                    .onDelete { viewStore.send(.archiveTeams($0), animation: .default) }
+                    addTeamButton
                 }
-                .backgroundAndForeground(color: .aluminium)
-                .confirmationDialog(
-                    store.scope(state: \.notEnoughTeamsConfirmationDialog),
-                    dismiss: .dismissNotEnoughTeamsAlert
-                )
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
             }
+            .backgroundAndForeground(color: .aluminium)
+            .confirmationDialog(
+                store.scope(state: \.notEnoughTeamsConfirmationDialog),
+                dismiss: .dismissNotEnoughTeamsAlert
+            )
         }
     }
 
