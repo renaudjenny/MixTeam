@@ -19,8 +19,16 @@ private struct MigrationV2toV3 {
         let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
         let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
+        let archivedTeams: [Team.State] = (rounds?.flatMap(\.scores).map(\.team) ?? [])
+            .filter { !(teams?.map(\.id).contains($0.id) ?? false) }
+            .map {
+                var team = $0.state
+                team.isArchived = true
+                return team
+            }
+
         if let teams, let rounds, let standing = teams.first?.standing {
-            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
+            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state)) + archivedTeams
             player = IdentifiedArrayOf(uniqueElements: team.flatMap(\.players) + standing.players)
             let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(
                 uniqueElements: Self.roundStates(rounds: rounds)
