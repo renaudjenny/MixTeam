@@ -52,7 +52,6 @@ struct ScoresView: View {
                 }
             }
             .backgroundAndForeground(color: .aluminium)
-            .navigationViewStyle(.stack)
             .task { viewStore.send(.task) }
         }
     }

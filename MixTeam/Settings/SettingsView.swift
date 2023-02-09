@@ -37,7 +37,6 @@ struct SettingsView: View {
         .tabItem {
             Label("Settings", systemImage: "gear")
         }
-        .navigationViewStyle(.stack)
     }
 
     private var aboutView: some View {

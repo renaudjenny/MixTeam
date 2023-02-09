@@ -110,7 +110,6 @@ struct CompositionLoaderView: View {
                 )
             }
             .listStyle(.plain)
-            .navigationViewStyle(.stack)
             .navigationTitle("MixTeam")
             .navigationBarTitleDisplayMode(.inline)
         }
