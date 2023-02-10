@@ -69,4 +69,11 @@ extension Composition.State {
         Self(teams: .example, standing: .example)
     }
 }
+
+extension Standing.State {
+    static var example: Self {
+        let players = IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.prefix(2))
+        return Self(players: players)
+    }
+}
 #endif
