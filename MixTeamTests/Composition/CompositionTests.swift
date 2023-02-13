@@ -3,7 +3,7 @@ import XCTest
 @testable import MixTeam
 import SwiftUI
 
-class MixTeamLogicTests: XCTestCase {
+class CompositionTests: XCTestCase {
     @MainActor
     func testMixTeam() async throws {
         let store = TestStore(initialState: .example, reducer: Composition())
@@ -33,7 +33,7 @@ class MixTeamLogicTests: XCTestCase {
         await store.finish(timeout: 1)
     }
 
-    func testMixTeamAndAlertIsPresented() throws {
+    func testMixTeamAndConfirmationIsPresented() throws {
         let store = TestStore(initialState: Composition.State(), reducer: Composition())
 
         store.send(.mixTeam) {
