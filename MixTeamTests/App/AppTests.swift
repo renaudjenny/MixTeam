@@ -2,8 +2,8 @@ import ComposableArchitecture
 import XCTest
 @testable import MixTeam
 
+@MainActor
 class AppTests: XCTestCase {
-    @MainActor
     func testSelectTab() async throws {
         let store = TestStore(initialState: .example, reducer: App())
 
@@ -20,7 +20,6 @@ class AppTests: XCTestCase {
         }
     }
 
-    @MainActor
     func testTask() async throws {
         let store = TestStore(initialState: .example, reducer: App())
 

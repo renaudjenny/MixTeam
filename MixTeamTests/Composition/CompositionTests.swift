@@ -3,8 +3,8 @@ import XCTest
 @testable import MixTeam
 import SwiftUI
 
+@MainActor
 class CompositionTests: XCTestCase {
-    @MainActor
     func testMixTeam() async throws {
         let store = TestStore(initialState: .example, reducer: Composition())
 
@@ -39,5 +39,21 @@ class CompositionTests: XCTestCase {
         store.send(.mixTeam) {
             $0.notEnoughTeamsConfirmationDialog = .notEnoughTeams
         }
+    }
+
+    func testAddTeam() async throws {
+        let store = TestStore(initialState: Composition.State(), reducer: Composition())
+
+        store.dependencies.uuid = .incrementing
+        store.dependencies.randomTeam = .strawberryBunny
+        let addTeamToPersistenceExpectation = expectation(description: "Persist team after adding it")
+        store.dependencies.teamPersistence.updateOrAppend = { _ in addTeamToPersistenceExpectation.fulfill() }
+
+        guard let id = UUID(uuidString: "00000000-0000-0000-0000-000000000000") else { return XCTFail("UUID missing") }
+
+        await store.send(.addTeam) {
+            $0.teams = [Team.State(id: id, name: "Strawberry Bunny", color: .strawberry, image: .bunny)]
+        }
+        wait(for: [addTeamToPersistenceExpectation], timeout: 0.1)
     }
 }

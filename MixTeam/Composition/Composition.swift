@@ -19,6 +19,7 @@ struct Composition: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistance
     @Dependency(\.shufflePlayers) var shufflePlayers
+    @Dependency(\.randomTeam) var randomTeam
     @Dependency(\.uuid) var uuid
 
     var body: some ReducerProtocol<State, Action> {
@@ -28,10 +29,7 @@ struct Composition: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .addTeam:
-                let image = MTImage.teams.randomElement() ?? .koala
-                let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement() ?? .aluminium
-                let name = "\(color.rawValue) \(image.rawValue)".localizedCapitalized
-                let team = Team.State(id: uuid(), name: name, color: color, image: image)
+                let team = randomTeam()
                 state.teams.append(team)
                 return .fireAndForget { try await teamPersistance.updateOrAppend(team) }
             case .mixTeam:

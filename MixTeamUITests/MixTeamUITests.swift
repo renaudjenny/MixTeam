@@ -29,6 +29,6 @@ class MixTeamUITests: XCTestCase {
         }
 
         yourTeamNameTextField.typeText("Strawberry Koala\n")
-        app.buttons["Back"].tap()
+        app.buttons["MixTeam"].tap()
     }
 }
