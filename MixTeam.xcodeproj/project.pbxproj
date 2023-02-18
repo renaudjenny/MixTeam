@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4C03CF05299D61DE003C3584 /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF04299D61DE003C3584 /* ShufflePlayers.swift */; };
 		4C03CF0829A00671003C3584 /* PlayersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0729A00671003C3584 /* PlayersTests.swift */; };
+		4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
@@ -84,6 +85,7 @@
 /* Begin PBXFileReference section */
 		4C03CF04299D61DE003C3584 /* ShufflePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShufflePlayers.swift; sourceTree = "<group>"; };
 		4C03CF0729A00671003C3584 /* PlayersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersTests.swift; sourceTree = "<group>"; };
+		4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -177,6 +179,14 @@
 			path = Players;
 			sourceTree = "<group>";
 		};
+		4C03CF0929A0F4B0003C3584 /* Teams */ = {
+			isa = PBXGroup;
+			children = (
+				4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */,
+			);
+			path = Teams;
+			sourceTree = "<group>";
+		};
 		4C12BE2329807B8F003BB002 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,11 +249,12 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
-				4C03CF0629A00665003C3584 /* Players */,
 				4C78F78A299C2415003A2DDD /* App */,
 				4C3763C324A3DF3300FA040B /* Composition */,
-				4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
+				4CBA6B1F249D278700CA3851 /* MixTeamTests.swift */,
+				4C03CF0629A00665003C3584 /* Players */,
+				4C03CF0929A0F4B0003C3584 /* Teams */,
 			);
 			path = MixTeamTests;
 			sourceTree = "<group>";
@@ -639,6 +650,7 @@
 				4CBA6B20249D278700CA3851 /* MixTeamTests.swift in Sources */,
 				4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */,
 				4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */,
+				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

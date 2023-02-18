@@ -17,7 +17,6 @@ struct Team: ReducerProtocol {
         case player(id: Player.State.ID, action: Player.Action)
     }
 
-    @Dependency(\.uuid) var uuid
     @Dependency(\.teamPersistence) var teamPersistence
 
     var body: some ReducerProtocol<State, Action> {
