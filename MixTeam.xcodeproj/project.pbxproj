@@ -11,6 +11,7 @@
 		4C03CF0829A00671003C3584 /* PlayersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0729A00671003C3584 /* PlayersTests.swift */; };
 		4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */; };
 		4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C05209F29A3911E007A12A8 /* SettingsTests.swift */; };
+		4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
@@ -87,6 +88,7 @@
 		4C03CF0729A00671003C3584 /* PlayersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersTests.swift; sourceTree = "<group>"; };
 		4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
 		4C05209F29A3911E007A12A8 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
+		4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRowTests.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 		4C0520A129A3925D007A12A8 /* Archives */ = {
 			isa = PBXGroup;
 			children = (
+				4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */,
 			);
 			path = Archives;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 				4C03CF0829A00671003C3584 /* PlayersTests.swift in Sources */,
 				4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */,
 				4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */,
+				4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */,
 				4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */,
 				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
 			);

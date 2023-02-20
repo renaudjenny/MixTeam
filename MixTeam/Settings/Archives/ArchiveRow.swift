@@ -75,3 +75,21 @@ struct ArchiveRowView: View {
         }
     }
 }
+
+#if DEBUG
+struct ArchiveRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        List {
+            ArchiveRowView(store: Store(initialState: ArchiveRow.State(team: .previewArchived), reducer: ArchiveRow()))
+        }
+    }
+}
+
+extension Team.State {
+    static var previewArchived: Self {
+        var team: Self = .preview
+        team.isArchived = true
+        return team
+    }
+}
+#endif
