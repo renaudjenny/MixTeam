@@ -5,10 +5,6 @@ struct Standing: ReducerProtocol {
         var players: IdentifiedArrayOf<Player.State> = []
     }
 
-    struct UpdatedResult: Equatable {
-        let players: IdentifiedArrayOf<Player.State>
-    }
-
     enum Action: Equatable {
         case createPlayer
         case deletePlayer(id: Player.State.ID)
@@ -17,16 +13,14 @@ struct Standing: ReducerProtocol {
 
     @Dependency(\.uuid) var uuid
     @Dependency(\.playerPersistence) var playerPersistence
+    @Dependency(\.randomPlayer) var randomPlayer
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .createPlayer:
-                let name = ["Mathilde", "Renaud", "John", "Alice", "Bob", "CJ"].randomElement() ?? ""
-                let image = MTImage.players.randomElement() ?? .unknown
-                let player = Player.State(id: uuid(), name: name, image: image, color: .aluminium)
+                let player = randomPlayer()
                 state.players.append(player)
-
                 return .fireAndForget { try await playerPersistence.updateOrAppend(player) }
             case let .deletePlayer(id):
                 state.players.remove(id: id)

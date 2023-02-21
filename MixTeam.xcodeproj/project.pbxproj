@@ -12,6 +12,8 @@
 		4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */; };
 		4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C05209F29A3911E007A12A8 /* SettingsTests.swift */; };
 		4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */; };
+		4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A529A573ED007A12A8 /* StandingTests.swift */; };
+		4C0520A829A5755C007A12A8 /* RandomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A729A5755C007A12A8 /* RandomPlayer.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
@@ -89,6 +91,8 @@
 		4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
 		4C05209F29A3911E007A12A8 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRowTests.swift; sourceTree = "<group>"; };
+		4C0520A529A573ED007A12A8 /* StandingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingTests.swift; sourceTree = "<group>"; };
+		4C0520A729A5755C007A12A8 /* RandomPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPlayer.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -206,6 +210,14 @@
 			path = Archives;
 			sourceTree = "<group>";
 		};
+		4C0520A429A573C1007A12A8 /* Standing */ = {
+			isa = PBXGroup;
+			children = (
+				4C0520A529A573ED007A12A8 /* StandingTests.swift */,
+			);
+			path = Standing;
+			sourceTree = "<group>";
+		};
 		4C12BE2329807B8F003BB002 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +280,7 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
+				4C0520A429A573C1007A12A8 /* Standing */,
 				4C78F78A299C2415003A2DDD /* App */,
 				4C3763C324A3DF3300FA040B /* Composition */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
@@ -422,6 +435,7 @@
 			children = (
 				4C5F63BD293D2FA1006FBE85 /* Persistence */,
 				4C03CF04299D61DE003C3584 /* ShufflePlayers.swift */,
+				4C0520A729A5755C007A12A8 /* RandomPlayer.swift */,
 				4CFDCADE28F2BD8C002DBF2D /* RandomTeam.swift */,
 			);
 			path = Dependencies;
@@ -656,6 +670,7 @@
 				4C9E7D98296CAA26008728A7 /* ArchivesView.swift in Sources */,
 				4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */,
 				4CECF623295F87D400B22A34 /* MigrationV2V3+Sample.swift in Sources */,
+				4C0520A829A5755C007A12A8 /* RandomPlayer.swift in Sources */,
 				4C5F63BF293D2FBF006FBE85 /* TeamPersistence.swift in Sources */,
 				4C3733161EBFAA8700A5785E /* Player.swift in Sources */,
 			);
@@ -671,6 +686,7 @@
 				4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */,
 				4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */,
 				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
+				4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
