@@ -13,7 +13,6 @@ struct Round: ReducerProtocol {
         case score(id: Score.State.ID, action: Score.Action)
     }
 
-    @Dependency(\.uuid) var uuid
     @Dependency(\.scoresPersistence.updateRound) var updateRound
 
     var body: some ReducerProtocol<State, Action> {

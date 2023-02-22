@@ -19,4 +19,17 @@ final class StandingTests: XCTestCase {
         }
         wait(for: [updatePlayerExpectation], timeout: 0.1)
     }
+
+    func testDeletePlayer() async throws {
+        let removePlayerExpectation = expectation(description: "Remove Player")
+        let store = TestStore(initialState: Standing.State.example, reducer: Standing()) { dependencies in
+            dependencies.playerPersistence.remove = { _ in removePlayerExpectation.fulfill() }
+        }
+        let playerToRemove = try XCTUnwrap(store.state.players.first)
+
+        await store.send(.deletePlayer(id: playerToRemove.id)) {
+            $0.players.remove(id: playerToRemove.id)
+        }
+        wait(for: [removePlayerExpectation], timeout: 0.1)
+    }
 }

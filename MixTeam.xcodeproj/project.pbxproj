@@ -14,6 +14,7 @@
 		4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */; };
 		4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A529A573ED007A12A8 /* StandingTests.swift */; };
 		4C0520A829A5755C007A12A8 /* RandomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A729A5755C007A12A8 /* RandomPlayer.swift */; };
+		4C0520AC29A6B586007A12A8 /* RoundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520AB29A6B586007A12A8 /* RoundTests.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
@@ -93,6 +94,7 @@
 		4C0520A229A392F5007A12A8 /* ArchiveRowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRowTests.swift; sourceTree = "<group>"; };
 		4C0520A529A573ED007A12A8 /* StandingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingTests.swift; sourceTree = "<group>"; };
 		4C0520A729A5755C007A12A8 /* RandomPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPlayer.swift; sourceTree = "<group>"; };
+		4C0520AB29A6B586007A12A8 /* RoundTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundTests.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -218,6 +220,22 @@
 			path = Standing;
 			sourceTree = "<group>";
 		};
+		4C0520A929A6B522007A12A8 /* Scores */ = {
+			isa = PBXGroup;
+			children = (
+				4C0520AA29A6B572007A12A8 /* Round */,
+			);
+			path = Scores;
+			sourceTree = "<group>";
+		};
+		4C0520AA29A6B572007A12A8 /* Round */ = {
+			isa = PBXGroup;
+			children = (
+				4C0520AB29A6B586007A12A8 /* RoundTests.swift */,
+			);
+			path = Round;
+			sourceTree = "<group>";
+		};
 		4C12BE2329807B8F003BB002 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,18 +279,18 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
-				4C12BE2329807B8F003BB002 /* Composition */,
-				4C2B6C4B296A0B4000B960C3 /* Settings */,
-				4CFDCAD928F224D4002DBF2D /* Standing */,
-				4CFDCAD228F0B624002DBF2D /* Dependencies */,
 				4C75738328F0ADFF00A6E1EF /* App */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4CFCE6F024A3407F0030114B /* Common */,
+				4C12BE2329807B8F003BB002 /* Composition */,
+				4CFDCAD228F0B624002DBF2D /* Dependencies */,
+				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
 				4C8E60FE2679395000010C8B /* Scores */,
+				4C2B6C4B296A0B4000B960C3 /* Settings */,
+				4CFDCAD928F224D4002DBF2D /* Standing */,
 				4C49458224BE22EB00A7A81A /* Styles */,
 				4CFCE6F524A341EF0030114B /* Teams */,
-				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 			);
 			path = MixTeam;
 			sourceTree = "<group>";
@@ -280,12 +298,13 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
-				4C0520A429A573C1007A12A8 /* Standing */,
 				4C78F78A299C2415003A2DDD /* App */,
 				4C3763C324A3DF3300FA040B /* Composition */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
 				4C03CF0629A00665003C3584 /* Players */,
+				4C0520A929A6B522007A12A8 /* Scores */,
 				4C05209E29A39109007A12A8 /* Settings */,
+				4C0520A429A573C1007A12A8 /* Standing */,
 				4C03CF0929A0F4B0003C3584 /* Teams */,
 			);
 			path = MixTeamTests;
@@ -686,6 +705,7 @@
 				4C0520A329A392F5007A12A8 /* ArchiveRowTests.swift in Sources */,
 				4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */,
 				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
+				4C0520AC29A6B586007A12A8 /* RoundTests.swift in Sources */,
 				4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
