@@ -11,7 +11,7 @@ final class TeamsTests: XCTestCase {
         let updateExpectation = expectation(description: "Update team persistence")
         store.dependencies.teamPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.binding(.set(\.$color, .strawberry))) {
+        await store.send(.set(\.$color, .strawberry)) {
             $0.color = .strawberry
             $0.players = IdentifiedArrayOf(uniqueElements: $0.players.map {
                 var player = $0
@@ -28,7 +28,7 @@ final class TeamsTests: XCTestCase {
         let updateExpectation = expectation(description: "Update team persistence")
         store.dependencies.teamPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.binding(.set(\.$name, "Test"))) {
+        await store.send(.set(\.$name, "Test")) {
             $0.name = "Test"
         }
         wait(for: [updateExpectation], timeout: 0.1)
@@ -40,7 +40,7 @@ final class TeamsTests: XCTestCase {
         let updateExpectation = expectation(description: "Update team persistence")
         store.dependencies.teamPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.binding(.set(\.$image, .clown))) {
+        await store.send(.set(\.$image, .clown)) {
             $0.image = .clown
         }
         wait(for: [updateExpectation], timeout: 0.1)

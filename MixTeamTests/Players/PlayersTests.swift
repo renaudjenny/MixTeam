@@ -11,7 +11,7 @@ final class PlayersTests: XCTestCase {
         let updateExpectation = expectation(description: "Update player persistence")
         store.dependencies.playerPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.binding(.set(\.$name, "Test"))) {
+        await store.send(.set(\.$name, "Test")) {
             $0.name = "Test"
         }
         wait(for: [updateExpectation], timeout: 0.1)
@@ -23,7 +23,7 @@ final class PlayersTests: XCTestCase {
         let updateExpectation = expectation(description: "Update player persistence")
         store.dependencies.playerPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.binding(.set(\.$image, .nymph))) {
+        await store.send(.set(\.$image, .nymph)) {
             $0.image = .nymph
         }
         wait(for: [updateExpectation], timeout: 0.1)

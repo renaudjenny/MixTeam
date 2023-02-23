@@ -12,7 +12,7 @@ final class ScoreTests: XCTestCase {
             dependencies.scoresPersistence.updateScore = { _ in updateScoreExpectation.fulfill() }
         }
 
-        await store.send(.binding(.set(\.$points, 123))) {
+        await store.send(.set(\.$points, 123)) {
             $0.points = 123
         }
         wait(for: [updateScoreExpectation], timeout: 0.1)

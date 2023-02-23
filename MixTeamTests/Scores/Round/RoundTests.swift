@@ -12,7 +12,7 @@ final class RoundTests: XCTestCase {
             dependencies.scoresPersistence.updateRound = { _ in updateRoundExpectation.fulfill() }
         }
 
-        await store.send(.binding(.set(\.$name, "Test modified"))) {
+        await store.send(.set(\.$name, "Test modified")) {
             $0.name = "Test modified"
         }
         wait(for: [updateRoundExpectation], timeout: 0.1)
