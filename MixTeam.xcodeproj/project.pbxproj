@@ -16,6 +16,7 @@
 		4C0520A829A5755C007A12A8 /* RandomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A729A5755C007A12A8 /* RandomPlayer.swift */; };
 		4C0520AC29A6B586007A12A8 /* RoundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520AB29A6B586007A12A8 /* RoundTests.swift */; };
 		4C0520AF29A7ECD8007A12A8 /* ScoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520AE29A7EC18007A12A8 /* ScoreTests.swift */; };
+		4C0520B329A936A9007A12A8 /* ScoresTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520B229A936A9007A12A8 /* ScoresTests.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
 		4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE262981BF88003BB002 /* CompositionLoader.swift */; };
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
@@ -97,6 +98,7 @@
 		4C0520A729A5755C007A12A8 /* RandomPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPlayer.swift; sourceTree = "<group>"; };
 		4C0520AB29A6B586007A12A8 /* RoundTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundTests.swift; sourceTree = "<group>"; };
 		4C0520AE29A7EC18007A12A8 /* ScoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTests.swift; sourceTree = "<group>"; };
+		4C0520B229A936A9007A12A8 /* ScoresTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresTests.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		4C12BE262981BF88003BB002 /* CompositionLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionLoader.swift; sourceTree = "<group>"; };
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		4C0520A929A6B522007A12A8 /* Scores */ = {
 			isa = PBXGroup;
 			children = (
+				4C0520B029A9368D007A12A8 /* Scores */,
 				4C0520AA29A6B572007A12A8 /* Round */,
 				4C0520AD29A7EC0E007A12A8 /* Score */,
 			);
@@ -245,6 +248,14 @@
 				4C0520AE29A7EC18007A12A8 /* ScoreTests.swift */,
 			);
 			path = Score;
+			sourceTree = "<group>";
+		};
+		4C0520B029A9368D007A12A8 /* Scores */ = {
+			isa = PBXGroup;
+			children = (
+				4C0520B229A936A9007A12A8 /* ScoresTests.swift */,
+			);
+			path = Scores;
 			sourceTree = "<group>";
 		};
 		4C12BE2329807B8F003BB002 /* Composition */ = {
@@ -718,6 +729,7 @@
 				4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */,
 				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
 				4C0520AC29A6B586007A12A8 /* RoundTests.swift in Sources */,
+				4C0520B329A936A9007A12A8 /* ScoresTests.swift in Sources */,
 				4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
