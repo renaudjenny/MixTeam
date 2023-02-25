@@ -31,4 +31,21 @@ final class ScoresTest: XCTestCase {
         }
         wait(for: [saveScoresExpectation], timeout: 0.1)
     }
+
+    func testUpdateAccumulatedPoints() async throws {
+        let store = TestStore(initialState: .previewWithScores(count: 3), reducer: Scores())
+        let rounds = IdentifiedArrayOf(uniqueElements: store.state.rounds.map { round in
+            var round = round
+            round.scores = IdentifiedArrayOf(uniqueElements: round.scores.map { score in
+                var score = score
+                score.accumulatedPoints += 10
+                return score
+            })
+            return round
+        })
+
+        await store.send(.updateAccumulatedPoints(rounds)) {
+            $0.rounds = rounds
+        }
+    }
 }
