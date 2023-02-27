@@ -4,9 +4,9 @@ import Foundation
 struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: UUID
-        @BindableState var name: String = ""
-        @BindableState var color: MTColor = .aluminium
-        @BindableState var image: MTImage = .unknown
+        @BindingState var name: String = ""
+        @BindingState var color: MTColor = .aluminium
+        @BindingState var image: MTImage = .unknown
         var players: IdentifiedArrayOf<Player.State> = []
         var isArchived = false
     }

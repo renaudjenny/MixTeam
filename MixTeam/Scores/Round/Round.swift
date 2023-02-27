@@ -4,7 +4,7 @@ import Foundation
 struct Round: ReducerProtocol {
     struct State: Identifiable, Equatable, Hashable {
         let id: UUID
-        @BindableState var name: String
+        @BindingState var name: String
         var scores: IdentifiedArrayOf<Score.State> = []
     }
 

@@ -5,7 +5,7 @@ struct Scores: ReducerProtocol {
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
-        @BindableState var focusedField: Score.State?
+        @BindingState var focusedField: Score.State?
     }
 
     enum Action: BindableAction, Equatable {

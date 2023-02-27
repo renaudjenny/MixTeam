@@ -1,6 +1,5 @@
 import ComposableArchitecture
 import SwiftUI
-import RenaudJennyAboutView
 
 struct AppView: View {
     let store: StoreOf<App>

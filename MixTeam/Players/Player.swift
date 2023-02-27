@@ -4,8 +4,8 @@ import Foundation
 struct Player: ReducerProtocol {
     struct State: Equatable, Identifiable {
         let id: UUID
-        @BindableState var name = ""
-        @BindableState var image: MTImage = .unknown
+        @BindingState var name = ""
+        @BindingState var image: MTImage = .unknown
         var color: MTColor = .aluminium
     }
 
