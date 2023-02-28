@@ -45,15 +45,11 @@ extension Store where State == Player.State, Action == Player.Action {
 
 extension Player.State {
     static func preview(isStanding: Bool = false) -> Self {
-        guard let image = MTImage.players.randomElement(),
-              let color = MTColor.allCases.filter({ $0 != .aluminium }).randomElement()
-        else { fatalError("Cannot generate image & color as expected") }
-
-        return Player.State(
+        Player.State(
             id: UUIDGenerator.incrementing(),
             name: "Test Player",
-            image: image,
-            color: isStanding ? .aluminium : color
+            image: MTImage.amelie,
+            color: isStanding ? .aluminium : .strawberry
         )
     }
     static var preview: Self {

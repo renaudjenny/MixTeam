@@ -17,7 +17,9 @@ struct MixTeamApp: SwiftUI.App {
 
     var body: some Scene {
         WindowGroup {
-            AppView(store: .live)
+            if !_XCTIsTesting {
+                AppView(store: .live)
+            }
         }
     }
 }
