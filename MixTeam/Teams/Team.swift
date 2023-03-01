@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Foundation
+import ImagePicker
 
 struct Team: ReducerProtocol {
     struct State: Equatable, Identifiable {

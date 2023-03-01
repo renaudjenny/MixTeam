@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import ImagePicker
 import SwiftUI
 
 struct EditPlayerView: View {
@@ -12,7 +13,7 @@ struct EditPlayerView: View {
                     .font(.title)
                     .dashedCardStyle(color: viewStore.color)
                     .padding()
-                ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
+//                ImagePicker(selection: viewStore.binding(\.$image), type: .player, color: viewStore.color)
             }
             .backgroundAndForeground(color: viewStore.color)
         }

@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import ImagePicker
 import SwiftUI
 
 struct CompositionView: View {

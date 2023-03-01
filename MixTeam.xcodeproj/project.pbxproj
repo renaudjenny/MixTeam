@@ -60,6 +60,7 @@
 		4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5938268E4F2500BF23F7 /* Round.swift */; };
 		4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF593A268E502700BF23F7 /* TotalScoresView.swift */; };
 		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
+		4CCD52B629AFE6BB002B163C /* ImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4CCD52B529AFE6BB002B163C /* ImagePicker */; };
 		4CECF623295F87D400B22A34 /* MigrationV2V3+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */; };
 		4CF2BE9E29884A9D00EC1539 /* MigrationV2toV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */; };
 		4CF35535294284E200366084 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF35534294284E200366084 /* PersistenceError.swift */; };
@@ -144,6 +145,7 @@
 		4CBF5938268E4F2500BF23F7 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
 		4CBF593A268E502700BF23F7 /* TotalScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalScoresView.swift; sourceTree = "<group>"; };
 		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		4CCD52B329AFE381002B163C /* ImagePicker */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ImagePicker; sourceTree = "<group>"; };
 		4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationV2V3+Sample.swift"; sourceTree = "<group>"; };
 		4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationV2toV3.swift; sourceTree = "<group>"; };
 		4CF35534294284E200366084 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			files = (
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
+				4CCD52B629AFE6BB002B163C /* ImagePicker in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
 			);
@@ -285,6 +288,7 @@
 				4C3732F61EBF8E8100A5785E /* MixTeamTests */,
 				4C3733011EBF8E8100A5785E /* MixTeamUITests */,
 				4C3732DE1EBF8E8100A5785E /* Products */,
+				4CCD52B429AFE6BB002B163C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -306,6 +310,7 @@
 				4CFCE6F024A3407F0030114B /* Common */,
 				4C12BE2329807B8F003BB002 /* Composition */,
 				4CFDCAD228F0B624002DBF2D /* Dependencies */,
+				4CCD52B329AFE381002B163C /* ImagePicker */,
 				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 				4CFCE6F424A341D40030114B /* Players */,
 				4C8E60FE2679395000010C8B /* Scores */,
@@ -440,6 +445,13 @@
 			path = Scoreboard;
 			sourceTree = "<group>";
 		};
+		4CCD52B429AFE6BB002B163C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4CFCE6F024A3407F0030114B /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,6 +534,7 @@
 				4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */,
 				4C75738128F0ADC600A6E1EF /* Dependencies */,
 				4CF355372946909000366084 /* SwiftUINavigation */,
+				4CCD52B529AFE6BB002B163C /* ImagePicker */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -1072,6 +1085,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */;
 			productName = RenaudJennyAboutView;
+		};
+		4CCD52B529AFE6BB002B163C /* ImagePicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ImagePicker;
 		};
 		4CF355372946909000366084 /* SwiftUINavigation */ = {
 			isa = XCSwiftPackageProductDependency;

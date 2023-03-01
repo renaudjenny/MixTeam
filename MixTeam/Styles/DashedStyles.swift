@@ -1,4 +1,5 @@
 import SwiftUI
+import ImagePicker
 
 enum StandardMetrics {
     static let cornerRadius = 12.0

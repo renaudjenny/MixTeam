@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import ImagePicker
 import SwiftUI
 
 struct EditTeamView: View {
@@ -12,8 +13,8 @@ struct EditTeamView: View {
                 if verticalSizeClass == .compact {
                     GeometryReader { geometry in
                         HStack {
-                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
-                                .frame(width: geometry.size.width * 3/4)
+//                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+//                                .frame(width: geometry.size.width * 3/4)
                             colorPicker
                                 .frame(width: geometry.size.width * 1/4)
                         }
@@ -23,7 +24,7 @@ struct EditTeamView: View {
                         colorPicker
                         VStack(spacing: 0) {
                             Text("Choose a mascot")
-                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+//                            ImagePicker(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
                         }
                     }
                 }
