@@ -89,8 +89,8 @@ extension Team.State {
         return Team.State(
             id: id,
             name: "Team test",
-            color: MTColor.allCases.filter({ $0 != .aluminium}).randomElement() ?? .aluminium,
-            image: MTImage.teams.randomElement() ?? .koala
+            color: .strawberry,
+            image: .koala
         )
     }
 

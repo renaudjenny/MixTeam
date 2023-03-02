@@ -1,3 +1,4 @@
+import Assets
 import Dependencies
 import Foundation
 import IdentifiedCollections

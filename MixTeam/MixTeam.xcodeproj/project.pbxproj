@@ -37,12 +37,12 @@
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
 		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
-		4C765301292799D200A591C4 /* ColorDuo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765300292799D200A591C4 /* ColorDuo.swift */; };
 		4C765303292B7A6500A591C4 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C765302292B7A6500A591C4 /* Image.swift */; };
 		4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C78F78B299C2424003A2DDD /* AppTests.swift */; };
 		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
 		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4C8D13A429AFF11200EB68B5 /* ImagePicker */; };
+		4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */ = {isa = PBXBuildFile; productRef = 4C8D13A629AFFCEF00EB68B5 /* Assets */; };
 		4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8E60FF2679399E00010C8B /* ScoreboardView.swift */; };
 		4C900FFE298D9E9200C4B75E /* MigrationV3_0toV3_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C900FFD298D9E9200C4B75E /* MigrationV3_0toV3_1.swift */; };
 		4C901000298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C900FFF298EA41900C4B75E /* MigrationV3_0toV3_1+Sample.swift */; };
@@ -60,7 +60,6 @@
 		4CBF5937268E4ED800BF23F7 /* Binding+IntAsString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5936268E4ED800BF23F7 /* Binding+IntAsString.swift */; };
 		4CBF5939268E4F2500BF23F7 /* Round.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF5938268E4F2500BF23F7 /* Round.swift */; };
 		4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBF593A268E502700BF23F7 /* TotalScoresView.swift */; };
-		4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */; };
 		4CECF623295F87D400B22A34 /* MigrationV2V3+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */; };
 		4CF2BE9E29884A9D00EC1539 /* MigrationV2toV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */; };
 		4CF35535294284E200366084 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF35534294284E200366084 /* PersistenceError.swift */; };
@@ -123,7 +122,6 @@
 		4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPersistence.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
 		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		4C765300292799D200A591C4 /* ColorDuo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorDuo.swift; sourceTree = "<group>"; };
 		4C765302292B7A6500A591C4 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		4C78F78B299C2424003A2DDD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 		4CBF5936268E4ED800BF23F7 /* Binding+IntAsString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+IntAsString.swift"; sourceTree = "<group>"; };
 		4CBF5938268E4F2500BF23F7 /* Round.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
 		4CBF593A268E502700BF23F7 /* TotalScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalScoresView.swift; sourceTree = "<group>"; };
-		4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		4CCD52C929AFEFDA002B163C /* MixTeam */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MixTeam; path = ..; sourceTree = "<group>"; };
 		4CECF622295F87D400B22A34 /* MigrationV2V3+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MigrationV2V3+Sample.swift"; sourceTree = "<group>"; };
 		4CF2BE9D29884A9D00EC1539 /* MigrationV2toV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationV2toV3.swift; sourceTree = "<group>"; };
@@ -162,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
+				4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
@@ -382,7 +380,6 @@
 			children = (
 				4C75738428F0AE1200A6E1EF /* App.swift */,
 				4C7FE786245A166A0011E8AB /* AppView.swift */,
-				4C765300292799D200A591C4 /* ColorDuo.swift */,
 				4C765302292B7A6500A591C4 /* Image.swift */,
 			);
 			path = App;
@@ -455,7 +452,6 @@
 		4CFCE6F024A3407F0030114B /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				4CC149D524BE5E4A00FBCE0C /* ImagePicker.swift */,
 				4C1ED56024D0B6F8005D6749 /* Splash.swift */,
 				4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */,
 				4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */,
@@ -535,6 +531,7 @@
 				4C75738128F0ADC600A6E1EF /* Dependencies */,
 				4CF355372946909000366084 /* SwiftUINavigation */,
 				4C8D13A429AFF11200EB68B5 /* ImagePicker */,
+				4C8D13A629AFFCEF00EB68B5 /* Assets */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -685,7 +682,6 @@
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4CF35535294284E200366084 /* PersistenceError.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
-				4C765301292799D200A591C4 /* ColorDuo.swift in Sources */,
 				4CA5BC9C297DAC2E00A3B960 /* LoadingCard.swift in Sources */,
 				4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
@@ -698,7 +694,6 @@
 				4CA5BC93297D408F00A3B960 /* ScoresView.swift in Sources */,
 				4CA5BC91297B302500A3B960 /* ArchiveRow.swift in Sources */,
 				4C765303292B7A6500A591C4 /* Image.swift in Sources */,
-				4CC149D624BE5E4A00FBCE0C /* ImagePicker.swift in Sources */,
 				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C40AE161ECCD51E0079E964 /* Team.swift in Sources */,
 				4C1ED55824C82196005D6749 /* StandingView.swift in Sources */,
@@ -1089,6 +1084,10 @@
 		4C8D13A429AFF11200EB68B5 /* ImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ImagePicker;
+		};
+		4C8D13A629AFFCEF00EB68B5 /* Assets */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Assets;
 		};
 		4CF355372946909000366084 /* SwiftUINavigation */ = {
 			isa = XCSwiftPackageProductDependency;

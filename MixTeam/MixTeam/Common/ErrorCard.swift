@@ -26,7 +26,7 @@ struct ErrorCardView: View {
                 Button { viewStore.send(.reload, animation: .default) } label: {
                     Text("Retry")
                 }
-                .buttonStyle(.dashed(color: MTColor.strawberry))
+                .buttonStyle(.dashed(color: .strawberry))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .backgroundAndForeground(color: .strawberry)

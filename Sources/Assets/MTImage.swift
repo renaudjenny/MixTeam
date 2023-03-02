@@ -52,7 +52,7 @@ public extension Image {
     init(mtImage: MTImage) {
         switch mtImage {
         case .unknown: self = Image(systemName: "questionmark")
-        default: self = Image(mtImage.rawValue)
+        default: self = Image(mtImage.rawValue, bundle: .module)
         }
     }
 }
