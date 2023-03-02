@@ -20,6 +20,6 @@ let package = Package(
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ]),
-        .target(name: "Assets", dependencies: [], resources: [.process("Assets/Illustrations.xcassets")]),
+        .target(name: "Assets", dependencies: []),
     ]
 )

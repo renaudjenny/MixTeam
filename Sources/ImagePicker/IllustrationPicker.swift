@@ -2,14 +2,14 @@ import Assets
 import ComposableArchitecture
 import SwiftUI
 
-public struct ImagePicker: ReducerProtocol {
+public struct IllustrationPicker: ReducerProtocol {
 
     public struct State: Equatable {
         let images: IdentifiedArrayOf<MTImage>
         let color: MTColor
-        var selectedImage: MTImage
+        var selectedImage: MTImage?
 
-        init(images: IdentifiedArrayOf<MTImage>, color: MTColor, selectedImage: MTImage) {
+        public init(images: IdentifiedArrayOf<MTImage>, color: MTColor, selectedImage: MTImage?) {
             self.images = images
             self.color = color
             self.selectedImage = selectedImage
@@ -29,12 +29,12 @@ public struct ImagePicker: ReducerProtocol {
     }
 }
 
-public struct ImagePickerView: View {
-    let store: StoreOf<ImagePicker>
+public struct IllustrationPickerView: View {
+    let store: StoreOf<IllustrationPicker>
 
     let columns = [GridItem(.adaptive(minimum: 90, maximum: 100))]
 
-    public init(store: StoreOf<ImagePicker>) {
+    public init(store: StoreOf<IllustrationPicker>) {
         self.store = store
     }
 
@@ -61,7 +61,7 @@ private struct Cell: View {
     var body: some View {
         Image(mtImage: image)
             .resizable()
-            .scaleEffect(isSelected ? 10/100 : 100/100)
+            .scaleEffect(isSelected ? 105/100 : 100/100)
             .frame(width: 48, height: 48)
             .padding()
             .background {
@@ -80,19 +80,19 @@ private struct Cell: View {
 }
 
 #if DEBUG
-struct ImagePicker_Previews: PreviewProvider {
+struct IllustrationPicker_Previews: PreviewProvider {
     static var previews: some View {
-        ImagePickerView(store: Store(initialState: .preview, reducer: ImagePicker()))
+        IllustrationPickerView(store: Store(initialState: .preview, reducer: IllustrationPicker()))
             .backgroundAndForeground(color: .strawberry)
     }
 }
 
-extension ImagePicker.State {
+extension IllustrationPicker.State {
     static var preview: Self {
-        ImagePicker.State(
+        IllustrationPicker.State(
             images: IdentifiedArrayOf(uniqueElements: MTImage.players),
             color: .strawberry,
-            selectedImage: .amelie
+            selectedImage: nil
         )
     }
 }

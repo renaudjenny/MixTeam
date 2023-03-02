@@ -14,9 +14,10 @@ struct EditTeamView: View {
                 if verticalSizeClass == .compact {
                     GeometryReader { geometry in
                         HStack {
-                            ImagePickerView(store: store.scope(state: \.imagePicker, action: Team.Action.imagePicker))
-//                            ImagePickerView(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
-//                                .frame(width: geometry.size.width * 3/4)
+                            IllustrationPickerView(
+                                store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
+                            )
+                            .frame(width: geometry.size.width * 3/4)
                             colorPicker
                                 .frame(width: geometry.size.width * 1/4)
                         }
@@ -26,7 +27,9 @@ struct EditTeamView: View {
                         colorPicker
                         VStack(spacing: 0) {
                             Text("Choose a mascot")
-//                            ImagePickerView(selection: viewStore.binding(\.$image), type: .team, color: viewStore.color)
+                            IllustrationPickerView(
+                                store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
+                            )
                         }
                     }
                 }

@@ -2,7 +2,6 @@ import Assets
 import Dependencies
 import Foundation
 import IdentifiedCollections
-import ImagePicker
 import XCTestDynamicOverlay
 
 private struct MigrationV2toV3 {

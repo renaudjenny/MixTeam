@@ -1,5 +1,5 @@
+import Assets
 import ComposableArchitecture
-import ImagePicker
 import SwiftUI
 
 struct ScoreRow: View {

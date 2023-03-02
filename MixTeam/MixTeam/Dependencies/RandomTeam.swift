@@ -1,7 +1,6 @@
 import Assets
 import Dependencies
 import Foundation
-import ImagePicker
 import XCTestDynamicOverlay
 
 struct RandomTeamDepedencyKey: DependencyKey {

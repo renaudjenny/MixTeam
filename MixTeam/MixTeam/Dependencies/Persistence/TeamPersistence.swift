@@ -3,7 +3,6 @@ import Combine
 import Dependencies
 import Foundation
 import IdentifiedCollections
-import ImagePicker
 import XCTestDynamicOverlay
 
 private final class Persistence {
