@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MixTeam",
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v15), .macOS(.v13)],
     products: [
         .library(name: "ImagePicker", targets: ["ImagePicker"]),
         .library(name: "Assets", targets: ["Assets"]),
@@ -22,6 +22,6 @@ let package = Package(
             ]
         ),
         .testTarget(name: "ImagePickerTests", dependencies: ["ImagePicker"]),
-        .target(name: "Assets", dependencies: []),
+        .target(name: "Assets", dependencies: [], resources: [.process("Illustrations.xcassets")]),
     ]
 )
