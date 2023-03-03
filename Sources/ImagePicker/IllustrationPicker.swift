@@ -5,9 +5,9 @@ import SwiftUI
 public struct IllustrationPicker: ReducerProtocol {
 
     public struct State: Equatable {
-        let images: IdentifiedArrayOf<MTImage>
-        let color: MTColor
-        var selectedImage: MTImage?
+        public let images: IdentifiedArrayOf<MTImage>
+        public let color: MTColor
+        public var selectedImage: MTImage?
 
         public init(images: IdentifiedArrayOf<MTImage>, color: MTColor, selectedImage: MTImage?) {
             self.images = images
@@ -17,12 +17,14 @@ public struct IllustrationPicker: ReducerProtocol {
     }
 
     public enum Action: Equatable {
-        case didTapImage(MTImage)
+        case imageTapped(MTImage)
     }
+
+    public init() {}
 
     public func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
-        case let .didTapImage(image):
+        case let .imageTapped(image):
             state.selectedImage = image
             return .none
         }
@@ -42,7 +44,7 @@ public struct IllustrationPickerView: View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             LazyVGrid(columns: columns) {
                 ForEach(viewStore.images, id: \.id) { image in
-                    Button { viewStore.send(.didTapImage(image)) } label: {
+                    Button { viewStore.send(.imageTapped(image)) } label: {
                         Cell(image: image, color: viewStore.color, isSelected: image == viewStore.selectedImage)
                     }
                 }
@@ -87,7 +89,7 @@ struct IllustrationPicker_Previews: PreviewProvider {
     }
 }
 
-extension IllustrationPicker.State {
+public extension IllustrationPicker.State {
     static var preview: Self {
         IllustrationPicker.State(
             images: IdentifiedArrayOf(uniqueElements: MTImage.players),

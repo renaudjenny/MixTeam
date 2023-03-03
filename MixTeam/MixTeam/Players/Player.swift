@@ -32,7 +32,7 @@ struct Player: ReducerProtocol {
             switch action {
             case .binding:
                 return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state) }
-            case let .illustrationPicker(.didTapImage(image)):
+            case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
                 return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state) }
             }

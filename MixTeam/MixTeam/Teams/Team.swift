@@ -47,7 +47,7 @@ struct Team: ReducerProtocol {
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             case .player:
                 return .none
-            case let .illustrationPicker(.didTapImage(image)):
+            case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
                 return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
             }

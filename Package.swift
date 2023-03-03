@@ -19,7 +19,9 @@ let package = Package(
             dependencies: [
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
-            ]),
+            ]
+        ),
+        .testTarget(name: "ImagePickerTests", dependencies: ["ImagePicker"]),
         .target(name: "Assets", dependencies: []),
     ]
 )
