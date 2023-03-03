@@ -40,7 +40,7 @@ final class TeamsTests: XCTestCase {
         let updateExpectation = expectation(description: "Update team persistence")
         store.dependencies.teamPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.set(\.$image, .clown)) {
+        await store.send(.illustrationPicker(.imageTapped(.clown))) {
             $0.image = .clown
         }
         wait(for: [updateExpectation], timeout: 0.1)

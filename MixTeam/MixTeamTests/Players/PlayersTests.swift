@@ -23,7 +23,7 @@ final class PlayersTests: XCTestCase {
         let updateExpectation = expectation(description: "Update player persistence")
         store.dependencies.playerPersistence.updateOrAppend = { _ in updateExpectation.fulfill() }
 
-        await store.send(.set(\.$image, .nymph)) {
+        await store.send(.illustrationPicker(.imageTapped(.nymph))) {
             $0.image = .nymph
         }
         wait(for: [updateExpectation], timeout: 0.1)

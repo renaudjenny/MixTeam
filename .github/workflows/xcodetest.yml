@@ -23,4 +23,5 @@ jobs:
       run: xcrun simctl list
 
     - name: Xcode test on specific device
+      run: cd MixTeam
       run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation)'
