@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MixTeam",
-    platforms: [.iOS(.v15), .macOS(.v13)],
+    platforms: [.iOS(.v15), .macOS(.v12)],
     products: [
         .library(name: "ImagePicker", targets: ["ImagePicker"]),
         .library(name: "Assets", targets: ["Assets"]),
@@ -18,7 +18,7 @@ let package = Package(
             name: "ImagePicker",
             dependencies: [
                 "Assets",
-                .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .testTarget(name: "ImagePickerTests", dependencies: ["ImagePicker"]),
