@@ -22,6 +22,8 @@ jobs:
     - name: List available devices
       run: xcrun simctl list
 
-    - name: Xcode test on specific device
+    - name: Change Directory to the project
       run: cd MixTeam
+
+    - name: Xcode test on specific device
       run: xcodebuild clean test -scheme MixTeam -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation)'
