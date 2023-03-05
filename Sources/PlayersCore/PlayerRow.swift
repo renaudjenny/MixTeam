@@ -2,10 +2,14 @@ import Assets
 import ComposableArchitecture
 import SwiftUI
 
-struct PlayerRow: View {
+public struct PlayerRow: View {
     let store: StoreOf<Player>
 
-    var body: some View {
+    public init(store: StoreOf<Player>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store) { viewStore in
             NavigationLink(destination: EditPlayerView(store: store)) {
                 HStack {
@@ -31,7 +35,9 @@ struct PlayerRow_Previews: PreviewProvider {
             }
         }
         .listStyle(.plain)
+        #if os(iOS)
         .listRowSeparator(.hidden)
+        #endif
     }
 }
 

@@ -5,14 +5,17 @@ import ImagePicker
 import PersistenceCore
 import PlayersCore
 
-struct Team: ReducerProtocol {
-    struct State: Equatable, Identifiable {
-        let id: UUID
-        @BindingState var name: String = ""
-        @BindingState var color: MTColor = .aluminium
-        var image: MTImage = .unknown
-        var players: IdentifiedArrayOf<Player.State> = []
-        var isArchived = false
+public struct Team: ReducerProtocol {
+
+    public typealias Player = PlayersCore.Player
+
+    public struct State: Equatable, Identifiable {
+        public let id: UUID
+        @BindingState public var name: String = ""
+        @BindingState public var color: MTColor = .aluminium
+        public var image: MTImage = .unknown
+        public var players: IdentifiedArrayOf<Player.State> = []
+        public var isArchived = false
         var illustrationPicker: IllustrationPicker.State {
             IllustrationPicker.State(
                 images: IdentifiedArrayOf(uniqueElements: MTImage.teams),
@@ -22,7 +25,7 @@ struct Team: ReducerProtocol {
         }
     }
 
-    enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case moveBackPlayer(id: Player.State.ID)
         case player(id: Player.State.ID, action: Player.Action)
@@ -31,7 +34,7 @@ struct Team: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
@@ -41,21 +44,34 @@ struct Team: ReducerProtocol {
                     player.color = state.color
                     return player
                 })
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
             case .binding:
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
             case let .moveBackPlayer(id):
                 state.players.remove(id: id)
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
             case .player:
                 return .none
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
             }
         }
         .forEach(\.players, action: /Team.Action.player) {
             Player()
         }
+    }
+}
+
+extension Team.State {
+    var toPersist: PersistenceCore.Team {
+        PersistenceCore.Team(
+            id: id,
+            name: name,
+            color: color,
+            image: image,
+            playerIDs: players.map(\.id),
+            isArchived: isArchived
+        )
     }
 }

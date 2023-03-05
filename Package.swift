@@ -18,7 +18,8 @@ let package = Package(
         .library(name: "TeamsCore", targets: ["TeamsCore"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.51.0")
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.51.0"),
+        .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.6.1"),
     ],
     targets: [
         .target(
@@ -67,6 +68,8 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "PersistenceCore",
+                .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
+                "TeamsCore",
             ]
         ),
         .target(name: "StyleCore", dependencies: ["Assets"]),

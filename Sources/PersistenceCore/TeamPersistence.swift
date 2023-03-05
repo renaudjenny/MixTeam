@@ -76,12 +76,12 @@ private final class Persistence {
 }
 
 public struct TeamPersistence {
-    var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team>, Error>>
-    var load: () async throws -> IdentifiedArrayOf<Team>
-    var save: (IdentifiedArrayOf<Team>) async throws -> Void
-    var updateOrAppend: (Team) async throws -> Void
-    var updateValues: (IdentifiedArrayOf<Team>) async throws -> Void
-    var remove: (Team) async throws -> Void
+    public var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team>, Error>>
+    public var load: () async throws -> IdentifiedArrayOf<Team>
+    public var save: (IdentifiedArrayOf<Team>) async throws -> Void
+    public var updateOrAppend: (Team) async throws -> Void
+    public var updateValues: (IdentifiedArrayOf<Team>) async throws -> Void
+    public var remove: (Team) async throws -> Void
 }
 
 extension TeamPersistence {

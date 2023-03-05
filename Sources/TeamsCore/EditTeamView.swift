@@ -1,13 +1,21 @@
 import Assets
 import ComposableArchitecture
 import ImagePicker
+import StyleCore
 import SwiftUI
 
-struct EditTeamView: View {
+public struct EditTeamView: View {
     let store: StoreOf<Team>
+    #if os(iOS)
     @Environment(\.verticalSizeClass) private var verticalSizeClass
+    #endif
 
-    var body: some View {
+    public init(store: StoreOf<Team>) {
+        self.store = store
+    }
+
+    #if os(iOS)
+    public var body: some View {
         WithViewStore(store) { viewStore in
             ScrollView {
                 teamNameField
@@ -38,6 +46,26 @@ struct EditTeamView: View {
             .animation(.easeInOut, value: viewStore.color)
         }
     }
+    #else
+    public var body: some View {
+        WithViewStore(store) { viewStore in
+            ScrollView {
+                teamNameField
+                VStack(spacing: 16) {
+                    colorPicker
+                    VStack(spacing: 0) {
+                        Text("Choose a mascot")
+                        IllustrationPickerView(
+                            store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
+                        )
+                    }
+                }
+            }
+            .backgroundAndForeground(color: viewStore.color)
+            .animation(.easeInOut, value: viewStore.color)
+        }
+    }
+    #endif
 
     private var teamNameField: some View {
         WithViewStore(store) { viewStore in
@@ -52,6 +80,7 @@ struct EditTeamView: View {
     private var colorPicker: some View {
         VStack {
             Text("Choose a colour")
+            #if os(iOS)
             if verticalSizeClass == .compact {
                 HStack {
                     VStack(spacing: 20) {
@@ -81,6 +110,21 @@ struct EditTeamView: View {
                     }
                 }
             }
+            #else
+            VStack {
+                HStack(spacing: 20) {
+                    color(.leather)
+                    color(.conifer)
+                    color(.duck)
+                    color(.bluejeans)
+                }
+                HStack(spacing: 20) {
+                    color(.peach)
+                    color(.strawberry)
+                    color(.lilac)
+                }
+            }
+            #endif
         }
         .padding()
     }

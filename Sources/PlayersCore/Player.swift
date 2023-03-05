@@ -27,6 +27,8 @@ public struct Player: ReducerProtocol {
 
     @Dependency(\.playerPersistence) var playerPersistence
 
+    public init() {}
+
     public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in

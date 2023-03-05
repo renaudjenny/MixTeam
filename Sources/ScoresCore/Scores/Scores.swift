@@ -1,15 +1,19 @@
 import ComposableArchitecture
 import PersistenceCore
 import SwiftUI
+import TeamsCore
 
-struct Scores: ReducerProtocol {
-    struct State: Equatable {
+public struct Scores: ReducerProtocol {
+
+    public typealias Team = TeamsCore.Team
+
+    public struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var rounds: IdentifiedArrayOf<Round.State> = []
         @BindingState var focusedField: Score.State?
     }
 
-    enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction, Equatable {
         case task
         case addRound
         case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
@@ -23,7 +27,7 @@ struct Scores: ReducerProtocol {
     @Dependency(\.teamPersistence) var teamPersistence
     private enum RecalculateTaskID {}
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {

@@ -1,10 +1,14 @@
 import SwiftUI
 
 // swiftlint:disable function_body_length type_body_length file_length
-struct Splash: Shape {
-    var animatableData: CGFloat = 1
+public struct Splash: Shape {
+    public var animatableData: CGFloat = 1
 
-    func path(in rect: CGRect) -> Path {
+    public init(animatableData: CGFloat = 1) {
+        self.animatableData = animatableData
+    }
+
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
 
         let point1 = CGPoint(
@@ -583,6 +587,7 @@ struct Splash: Shape {
     }
 }
 
+#if DEBUG
 struct Splash_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
@@ -650,3 +655,4 @@ extension Path {
         move(to: previous)
     }
 }
+#endif
