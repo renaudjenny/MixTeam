@@ -1,18 +1,19 @@
 import ComposableArchitecture
 import SwiftUI
+import TeamsCore
 
-struct ArchiveRow: ReducerProtocol {
-    struct State: Equatable, Identifiable {
+public struct ArchiveRow: ReducerProtocol {
+    public struct State: Equatable, Identifiable {
         var team: Team.State
         var deleteConfirmationDialog: ConfirmationDialogState<Action>?
         var id: Team.State.ID { team.id }
 
-        init(team: Team.State) {
+        public init(team: Team.State) {
             self.team = team
         }
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case unarchive
         case remove
         case confirmRemove
@@ -21,7 +22,7 @@ struct ArchiveRow: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .unarchive:
@@ -54,8 +55,12 @@ extension ConfirmationDialogState where Action == ArchiveRow.Action {
     }
 }
 
-struct ArchiveRowView: View {
+public struct ArchiveRowView: View {
     let store: StoreOf<ArchiveRow>
+
+    public init(store: StoreOf<ArchiveRow>) {
+        self.store = store
+    }
 
     var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in

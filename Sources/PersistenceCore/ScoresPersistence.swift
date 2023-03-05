@@ -4,12 +4,13 @@ import Foundation
 import IdentifiedCollections
 import XCTestDynamicOverlay
 
+// TODO: change `(state: Scores)` to `(scores: Scores)`
 private final class Persistence {
     private let scoresFileName = "MixTeamScoresV3_1_0"
 
-    @Dependency(\.teamPersistence) var team
+//    @Dependency(\.teamPersistence) var team
 
-    var value: Scores.State {
+    var value: Scores {
         didSet { Task { try await persist(value) } }
     }
 
@@ -22,55 +23,56 @@ private final class Persistence {
             return
         }
 
-        let decodedValue = try JSONDecoder().decode(Scores.State.self, from: data)
+        let decodedValue = try JSONDecoder().decode(Scores.self, from: data)
         value = decodedValue
     }
 
-    func save(_ state: Scores.State) async throws {
+    func save(_ state: Scores) async throws {
         value = state
     }
 
-    private func persist(_ state: Scores.State) async throws {
+    private func persist(_ state: Scores) async throws {
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(scoresFileName, conformingTo: .json))
     }
 
-    func inflated(value: Scores.State) async throws -> Scores.State {
-        let teams = try await team.load()
+    func inflated(value: Scores) async throws -> Scores {
+//        let teams = try await team.load()
 
-        return Scores.State(
-            teams: teams.filter { !$0.isArchived },
-            rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
-                var round = $0
-                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.compactMap {
-                    guard teams.contains($0.team) else { return nil }
-                    var score = $0
-                    score.team = teams[id: score.team.id] ?? score.team
-                    return score
-                })
-                return round
-            })
-        )
+        // TODO: maybe this should be made by the feature instead
+//        return Scores(
+//            rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
+//                var round = $0
+//                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.compactMap {
+//                    guard teams.contains($0.team) else { return nil }
+//                    var score = $0
+//                    score.team = teams[id: score.team.id] ?? score.team
+//                    return score
+//                })
+//                return round
+//            })
+//        )
+        return value
     }
 
-    func update(round: Round.State) async throws {
+    func update(round: Round) async throws {
         value.rounds.updateOrAppend(round)
     }
 
-    func update(score: Score.State) async throws {
+    func update(score: Score) async throws {
         guard var round = value.rounds.first(where: { $0.scores.contains(score) }) else { return }
         round.scores.updateOrAppend(score)
         try await update(round: round)
     }
 }
 
-struct ScoresPersistence {
-    var load: () async throws -> Scores.State
-    var save: (Scores.State) async throws -> Void
-    var updateRound: (Round.State) async throws -> Void
-    var updateScore: (Score.State) async throws -> Void
+public struct ScoresPersistence {
+    var load: () async throws -> Scores
+    var save: (Scores) async throws -> Void
+    var updateRound: (Round) async throws -> Void
+    var updateScore: (Score) async throws -> Void
 }
 
 extension ScoresPersistence {
@@ -106,49 +108,9 @@ extension ScoresPersistence {
     )
 }
 
-extension Scores.State: Codable {
-    enum CodingKeys: CodingKey {
-        case rounds
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        rounds = try container.decode(IdentifiedArrayOf<Round.State>.self, forKey: .rounds)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(rounds, forKey: .rounds)
-    }
-}
-
-extension Score.State: Codable {
-    enum CodingKeys: CodingKey {
-        case id
-        case teamID
-        case points
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let teamID = try container.decode(Team.State.ID.self, forKey: .teamID)
-        team = Team.State(id: teamID)
-        id = try container.decode(Score.State.ID.self, forKey: .id)
-        points = try container.decode(Int.self, forKey: .points)
-        accumulatedPoints = 0
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(team.id, forKey: .teamID)
-        try container.encode(points, forKey: .points)
-    }
-}
-
-extension Scores.State {
+extension Scores {
     static var example: Self {
-        Self(teams: .example)
+        Self(rounds: [])
     }
 }
 
@@ -158,7 +120,7 @@ private enum ScoresPersistenceDependencyKey: DependencyKey {
     static let previewValue = ScoresPersistence.preview
 }
 
-extension DependencyValues {
+public extension DependencyValues {
     var scoresPersistence: ScoresPersistence {
         get { self[ScoresPersistenceDependencyKey.self] }
         set { self[ScoresPersistenceDependencyKey.self] = newValue }

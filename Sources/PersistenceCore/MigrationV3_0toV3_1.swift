@@ -4,9 +4,9 @@ import IdentifiedCollections
 
 // swiftlint:disable:next type_name
 struct MigrationV3_0toV3_1 {
-    private let team: IdentifiedArrayOf<Team.State>
-    private let player: IdentifiedArrayOf<Player.State>
-    private let scores: Scores.State
+    private let team: IdentifiedArrayOf<Team>
+    private let player: IdentifiedArrayOf<Player>
+    private let scores: Scores
 
     private let legacyTeamFileName = "MixTeamTeamV3_0_0"
     private let legacyPlayerFileName = "MixTeamPlayerV3_0_0"
@@ -26,8 +26,8 @@ struct MigrationV3_0toV3_1 {
               ),
               let teamData = try? Data(contentsOf: url.appendingPathComponent(legacyTeamFileName, conformingTo: .json)),
               let app = try? JSONDecoder().decode(AppDataState.self, from: appData),
-              let player = try? JSONDecoder().decode(IdentifiedArrayOf<Player.State>.self, from: playerData),
-              let team = try? JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: teamData)
+              let player = try? JSONDecoder().decode(IdentifiedArrayOf<Player>.self, from: playerData),
+              let team = try? JSONDecoder().decode(IdentifiedArrayOf<Team>.self, from: teamData)
         else { return nil }
 
         self.team = team
@@ -51,6 +51,6 @@ struct MigrationV3_0toV3_1 {
 
 private extension MigrationV3_0toV3_1 {
     struct AppDataState: Decodable {
-        var scores: Scores.State
+        var scores: Scores
     }
 }

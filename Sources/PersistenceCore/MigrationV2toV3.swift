@@ -5,9 +5,9 @@ import IdentifiedCollections
 import XCTestDynamicOverlay
 
 private struct MigrationV2toV3 {
-    private let team: IdentifiedArrayOf<Team.State>
-    private let player: IdentifiedArrayOf<Player.State>
-    private let scores: Scores.State
+    private let team: IdentifiedArrayOf<Team>
+    private let player: IdentifiedArrayOf<Player>
+    private let scores: Scores
 
     @Dependency(\.teamPersistence) var teamPersistence
     @Dependency(\.playerPersistence) var playerPersistence
@@ -20,25 +20,25 @@ private struct MigrationV2toV3 {
         let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
         let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
-        let archivedTeams: [Team.State] = (rounds?.flatMap(\.scores).map(\.team) ?? [])
+        let archivedTeams: [Team] = (rounds?.flatMap(\.scores).map(\.team) ?? [])
             .filter { !(teams?.map(\.id).contains($0.id) ?? false) }
             .map {
-                var team = $0.state
+                var team = $0.state.team
                 team.isArchived = true
                 return team
             }
 
-        if let teams, let rounds, let standing = teams.first?.standing {
-            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state)) + archivedTeams
-            player = IdentifiedArrayOf(uniqueElements: team.flatMap(\.players) + standing.players)
-            let rounds: IdentifiedArrayOf<Round.State> = IdentifiedArrayOf(
+        if let teams, let rounds {
+            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state).map(\.team)) + archivedTeams
+            player = IdentifiedArrayOf(uniqueElements: teams.map(\.state).flatMap(\.players))
+            let rounds: IdentifiedArrayOf<Round> = IdentifiedArrayOf(
                 uniqueElements: Self.roundStates(rounds: rounds)
             )
-            scores = Scores.State(teams: team, rounds: rounds)
-        } else if let teams, let standing = teams.first?.standing {
-            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state))
-            player = IdentifiedArrayOf(uniqueElements: team.flatMap(\.players) + standing.players)
-            scores = Scores.State()
+            scores = Scores(rounds: rounds)
+        } else if let teams {
+            team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state).map(\.team))
+            player = IdentifiedArrayOf(uniqueElements: teams.map(\.state).flatMap(\.players))
+            scores = Scores(rounds: [])
         } else {
             return nil
         }
@@ -68,28 +68,20 @@ extension MigrationV2toV3 {
         var imageIdentifier: ImageIdentifier = .unknown
         var players: [DprPlayer] = []
 
-        var state: Team.State {
-            Team.State(
-                id: id,
-                name: name,
-                color: colorIdentifier.mtColor,
-                image: imageIdentifier.mtImage,
-                players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
+        var state: (team: Team, players: IdentifiedArrayOf<Player>) {
+            (
+                team: Team(
+                    id: id,
+                    name: name,
+                    color: colorIdentifier.mtColor,
+                    image: imageIdentifier.mtImage,
+                    playerIDs: players.map(\.id),
+                    isArchived: false
+                ),
+                players: IdentifiedArrayOf(uniqueElements: players.map { Player(
                     id: $0.id,
                     name: $0.name,
-                    image: $0.imageIdentifier.mtImage,
-                    color: colorIdentifier.mtColor
-                ) })
-            )
-        }
-
-        var standing: Standing.State {
-            Standing.State(
-                players: IdentifiedArrayOf(uniqueElements: players.map { Player.State(
-                    id: $0.id,
-                    name: $0.name,
-                    image: $0.imageIdentifier.mtImage,
-                    color: colorIdentifier.mtColor
+                    image: $0.imageIdentifier.mtImage
                 )})
             )
         }
@@ -107,18 +99,15 @@ extension MigrationV2toV3 {
         var id: DprTeam.ID { team.id }
     }
 
-    private static func roundStates(rounds: [DprRound]) -> [Round.State] {
+    private static func roundStates(rounds: [DprRound]) -> [Round] {
         rounds.reduce([]) { result, round in
-            let state = Round.State(
+            let state = Round(
                 id: round.id,
                 name: round.name,
-                scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score.State(
+                scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score(
                     id: UUID(),
-                    team: score.team.state,
-                    points: score.points,
-                    accumulatedPoints: score.points + result.reduce(0) { result, round in
-                        result + round.scores.filter { $0.team.id == score.team.id }.map(\.points).reduce(0, +)
-                    }
+                    teamID: score.team.id,
+                    points: score.points
                 ) })
             )
 

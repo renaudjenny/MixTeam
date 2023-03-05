@@ -5,13 +5,14 @@ import Foundation
 import IdentifiedCollections
 import XCTestDynamicOverlay
 
+// TODO: change `(state: Team)` to `(team: Team)`
 private final class Persistence {
     private let teamFileName = "MixTeamTeamV3_1_0"
 
-    @Dependency(\.playerPersistence) var player
+//    @Dependency(\.playerPersistence) var player
 
-    let subject = PassthroughSubject<IdentifiedArrayOf<Team.State>, Error>()
-    var value: IdentifiedArrayOf<Team.State> {
+    let subject = PassthroughSubject<IdentifiedArrayOf<Team>, Error>()
+    var value: IdentifiedArrayOf<Team> {
         didSet { Task { try await persist(value) } }
     }
 
@@ -25,60 +26,62 @@ private final class Persistence {
             return
         }
 
-        let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Team.State>.self, from: data)
+        let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Team>.self, from: data)
         value = decodedValue
         subject.send(value)
     }
 
-    func save(_ states: IdentifiedArrayOf<Team.State>) async throws {
+    func save(_ states: IdentifiedArrayOf<Team>) async throws {
         value = states
         subject.send(value)
     }
 
-    private func persist(_ states: IdentifiedArrayOf<Team.State>) async throws {
+    private func persist(_ states: IdentifiedArrayOf<Team>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
-    func inflated(value: IdentifiedArrayOf<Team.State>) async throws -> IdentifiedArrayOf<Team.State> {
-        let players = try await player.load()
+    func inflated(value: IdentifiedArrayOf<Team>) async throws -> IdentifiedArrayOf<Team> {
+//        let players = try await player.load()
 
-        return IdentifiedArrayOf(uniqueElements: value.compactMap {
-            guard var team = value[id: $0.id] else { return nil }
-            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
-                var player = players[id: $0.id]
-                player?.color = team.color
-                return  player
-            })
-            return team
-        })
+        // TODO: This should return a IdentifiedArrayOf<InflatedTeam> with a populated `var players: IdentifiedArrayOf<Player>`
+//        return IdentifiedArrayOf(uniqueElements: value.compactMap {
+//            guard var team = value[id: $0.id] else { return nil }
+//            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
+//                var player = players[id: $0.id]
+//                player?.color = team.color
+//                return  player
+//            })
+//            return team
+//        })
+        return value
     }
 
-    func updateOrAppend(state: Team.State) async throws {
+    func updateOrAppend(state: Team) async throws {
         value.updateOrAppend(state)
         subject.send(try await inflated(value: value))
     }
-    func update(values: IdentifiedArrayOf<Team.State>) async throws {
+    func update(values: IdentifiedArrayOf<Team>) async throws {
         for value in values {
             self.value.updateOrAppend(value)
         }
         subject.send(try await inflated(value: value))
     }
-    func remove(state: Team.State) async throws {
+    func remove(state: Team) async throws {
         value.remove(state)
         subject.send(try await inflated(value: value))
     }
 }
 
-struct TeamPersistence {
-    var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team.State>, Error>>
-    var load: () async throws -> IdentifiedArrayOf<Team.State>
-    var save: (IdentifiedArrayOf<Team.State>) async throws -> Void
-    var updateOrAppend: (Team.State) async throws -> Void
-    var updateValues: (IdentifiedArrayOf<Team.State>) async throws -> Void
-    var remove: (Team.State) async throws -> Void
+public struct TeamPersistence {
+    var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team>, Error>>
+    var load: () async throws -> IdentifiedArrayOf<Team>
+    var save: (IdentifiedArrayOf<Team>) async throws -> Void
+    var updateOrAppend: (Team) async throws -> Void
+    var updateValues: (IdentifiedArrayOf<Team>) async throws -> Void
+    var remove: (Team) async throws -> Void
 }
 
 extension TeamPersistence {
@@ -122,71 +125,40 @@ extension TeamPersistence {
     )
 }
 
-extension Team.State: Codable {
-    enum CodingKeys: CodingKey {
-        case id
-        case name
-        case color
-        case image
-        case playerIDs
-        case isArchived
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let playerIDs = try container.decode([Player.State.ID].self, forKey: .playerIDs)
-        players = IdentifiedArrayOf(uniqueElements: playerIDs.map { Player.State(id: $0) })
-        id = try container.decode(Player.State.ID.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        color = try container.decode(MTColor.self, forKey: .color)
-        image = try container.decode(MTImage.self, forKey: .image)
-        isArchived = try container.decode(Bool.self, forKey: .isArchived)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(players.map(\.id), forKey: .playerIDs)
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(color, forKey: .color)
-        try container.encode(image, forKey: .image)
-        try container.encode(isArchived, forKey: .isArchived)
-    }
-}
-
-extension IdentifiedArrayOf<Team.State> {
+extension IdentifiedArrayOf<Team> {
     static var example: Self {
         guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
               let purpleElephantId = UUID(uuidString: "98DBAF6C-685D-461F-9F81-E5E1E003B9AA"),
               let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        let playersExample: IdentifiedArrayOf<Player.State> = .example
-        let players = IdentifiedArrayOf<Player.State>(uniqueElements: playersExample.suffix(1).map {
-            var last = $0
-            last.color = .strawberry
-            return last
-        })
+        let playersExample: IdentifiedArrayOf<Player> = .example
+        let players = IdentifiedArrayOf<Player>(uniqueElements: playersExample.suffix(1))
 
         return [
-            Team.State(
+            Team(
                 id: koalaTeamId,
                 name: "Strawberry Koala",
                 color: .strawberry,
                 image: .koala,
-                players: players
+                playerIDs: players.map(\.id),
+                isArchived: false
             ),
-            Team.State(
+            Team(
                 id: purpleElephantId,
                 name: "Lilac Elephant",
                 color: .lilac,
-                image: .elephant
+                image: .elephant,
+                playerIDs: [],
+                isArchived: false
             ),
-            Team.State(
+            Team(
                 id: blueLionId,
                 name: "Bluejeans Lion",
                 color: .bluejeans,
-                image: .lion
+                image: .lion,
+                playerIDs: [],
+                isArchived: false
             ),
         ]
     }
@@ -198,7 +170,7 @@ private enum TeamPersistenceDependencyKey: DependencyKey {
     static let previewValue = TeamPersistence.preview
 }
 
-extension DependencyValues {
+public extension DependencyValues {
     var teamPersistence: TeamPersistence {
         get { self[TeamPersistenceDependencyKey.self] }
         set { self[TeamPersistenceDependencyKey.self] = newValue }

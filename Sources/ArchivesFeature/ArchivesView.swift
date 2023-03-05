@@ -2,14 +2,14 @@ import ComposableArchitecture
 import LoaderCore
 import SwiftUI
 
-struct Archives: ReducerProtocol {
-    enum State: Equatable {
+public struct Archives: ReducerProtocol {
+    public enum State: Equatable {
         case loadingCard
         case loaded(rows: IdentifiedArrayOf<ArchiveRow.State>)
         case errorCard(ErrorCard.State)
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case update(TaskResult<IdentifiedArrayOf<Team.State>>)
         case loadingCard(LoadingCard.Action)
         case archiveRow(id: Team.State.ID, action: ArchiveRow.Action)
@@ -18,7 +18,7 @@ struct Archives: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -66,8 +66,12 @@ struct Archives: ReducerProtocol {
     }
 }
 
-struct ArchivesView: View {
+public struct ArchivesView: View {
     let store: StoreOf<Archives>
+
+    public init(store: StoreOf<Archives>) {
+        self.store = store
+    }
 
     var body: some View {
         SwitchStore(store) {

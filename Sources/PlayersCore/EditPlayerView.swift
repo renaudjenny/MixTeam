@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import ImagePicker
+import StyleCore
 import SwiftUI
 
 struct EditPlayerView: View {

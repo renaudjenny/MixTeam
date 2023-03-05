@@ -20,7 +20,7 @@ struct Round: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .binding:
-                return .fireAndForget { [state] in try await updateRound(state) }
+                return .fireAndForget { [state] in try await updateRound(state.toPersist) }
             case let .score(id: id, action: .remove):
                 state.scores.remove(id: id)
                 return .none
@@ -34,10 +34,8 @@ struct Round: ReducerProtocol {
     }
 }
 
-extension Round.State: Codable {
-    enum CodingKeys: CodingKey {
-        case id
-        case name
-        case scores
+extension Round.State {
+    var toPersistent: Round {
+        Round(id: id, name: name, scores: scores)
     }
 }
