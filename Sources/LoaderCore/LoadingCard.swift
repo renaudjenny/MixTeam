@@ -1,22 +1,28 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct LoadingCard: ReducerProtocol {
-    typealias State = Void
+public struct LoadingCard: ReducerProtocol {
+    public typealias State = Void
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case task
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         EmptyReducer()
     }
 }
 
-struct LoadingCardView: View {
+public struct LoadingCardView: View {
     let store: StoreOf<LoadingCard>
 
-    var body: some View {
+    public init(store: StoreOf<LoadingCard>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store.stateless) { viewStore in
             ProgressView("Loading content from saved data")
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

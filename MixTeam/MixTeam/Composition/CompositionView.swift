@@ -1,6 +1,7 @@
 import Assets
 import ComposableArchitecture
 import SwiftUI
+import StyleCore
 
 struct CompositionView: View {
     let store: StoreOf<Composition>

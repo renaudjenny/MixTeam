@@ -7,11 +7,15 @@ enum StandardMetrics {
 
 // MARK: - Dashed Button Style
 
-struct DashedButtonStyle: ButtonStyle {
+public struct DashedButtonStyle: ButtonStyle {
     let color: MTColor
     @Environment(\.colorScheme) private var colorScheme
 
-    func makeBody(configuration: Configuration) -> some View {
+    public init(color: MTColor) {
+        self.color = color
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.label
                 .foregroundColor(color.foregroundColor(scheme: colorScheme))
@@ -46,7 +50,7 @@ struct DashedButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == DashedButtonStyle {
+public extension ButtonStyle where Self == DashedButtonStyle {
     static func dashed(color: MTColor) -> Self {
         DashedButtonStyle(color: color)
     }
@@ -115,7 +119,7 @@ private struct DashedCardStyle: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
     func dashedCardStyle(color: MTColor, isShadowApplied: Bool = true) -> some View {
         modifier(DashedCardStyle(color: color, isShadowApplied: isShadowApplied))
     }

@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import LoaderCore
 
 struct Scoreboard: ReducerProtocol {
     enum State: Equatable {

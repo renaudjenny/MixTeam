@@ -30,7 +30,8 @@
 		4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* CompositionTests.swift */; };
 		4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C38973D2495016900D6D182 /* EditTeamView.swift */; };
 		4C40AE161ECCD51E0079E964 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C40AE151ECCD51E0079E964 /* Team.swift */; };
-		4C5F13322472F88C007B9F3E /* DashedStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F13312472F88C007B9F3E /* DashedStyles.swift */; };
+		4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBE829B3D66100EC6812 /* LoaderCore */; };
+		4C4CDBEB29B3D66100EC6812 /* StyleCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBEA29B3D66100EC6812 /* StyleCore */; };
 		4C5F63BF293D2FBF006FBE85 /* TeamPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */; };
 		4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
@@ -49,8 +50,6 @@
 		4CA5BC91297B302500A3B960 /* ArchiveRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC90297B302500A3B960 /* ArchiveRow.swift */; };
 		4CA5BC93297D408F00A3B960 /* ScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC92297D408F00A3B960 /* ScoresView.swift */; };
 		4CA5BC98297D410000A3B960 /* Scoreboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC97297D410000A3B960 /* Scoreboard.swift */; };
-		4CA5BC9A297DA5A500A3B960 /* ErrorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */; };
-		4CA5BC9C297DAC2E00A3B960 /* LoadingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */; };
 		4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */; };
 		4CB91CC624B7B0DA00B452D3 /* TeamRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */; };
 		4CB98403295714EB00512E98 /* ScoresPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB98402295714EB00512E98 /* ScoresPersistence.swift */; };
@@ -116,7 +115,6 @@
 		4C3763C424A3DF5E00FA040B /* CompositionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionTests.swift; sourceTree = "<group>"; };
 		4C38973D2495016900D6D182 /* EditTeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamView.swift; sourceTree = "<group>"; };
 		4C40AE151ECCD51E0079E964 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		4C5F13312472F88C007B9F3E /* DashedStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedStyles.swift; sourceTree = "<group>"; };
 		4C5F63BE293D2FBF006FBE85 /* TeamPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamPersistence.swift; sourceTree = "<group>"; };
 		4C5F63C4293D499F006FBE85 /* PlayerPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPersistence.swift; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
@@ -130,8 +128,6 @@
 		4CA5BC90297B302500A3B960 /* ArchiveRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveRow.swift; sourceTree = "<group>"; };
 		4CA5BC92297D408F00A3B960 /* ScoresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresView.swift; sourceTree = "<group>"; };
 		4CA5BC97297D410000A3B960 /* Scoreboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scoreboard.swift; sourceTree = "<group>"; };
-		4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCard.swift; sourceTree = "<group>"; };
-		4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCard.swift; sourceTree = "<group>"; };
 		4CB91CC124B7ADCD00B452D3 /* PlayerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRow.swift; sourceTree = "<group>"; };
 		4CB91CC524B7B0DA00B452D3 /* TeamRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRow.swift; sourceTree = "<group>"; };
 		4CB98402295714EB00512E98 /* ScoresPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoresPersistence.swift; sourceTree = "<group>"; };
@@ -159,6 +155,8 @@
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
+				4C4CDBEB29B3D66100EC6812 /* StyleCore in Frameworks */,
+				4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */,
 				4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
@@ -312,7 +310,6 @@
 				4C8E60FE2679395000010C8B /* Scores */,
 				4C2B6C4B296A0B4000B960C3 /* Settings */,
 				4CFDCAD928F224D4002DBF2D /* Standing */,
-				4C49458224BE22EB00A7A81A /* Styles */,
 				4CFCE6F524A341EF0030114B /* Teams */,
 			);
 			path = MixTeam;
@@ -348,14 +345,6 @@
 				4C3763C424A3DF5E00FA040B /* CompositionTests.swift */,
 			);
 			path = Composition;
-			sourceTree = "<group>";
-		};
-		4C49458224BE22EB00A7A81A /* Styles */ = {
-			isa = PBXGroup;
-			children = (
-				4C5F13312472F88C007B9F3E /* DashedStyles.swift */,
-			);
-			path = Styles;
 			sourceTree = "<group>";
 		};
 		4C5F63BD293D2FA1006FBE85 /* Persistence */ = {
@@ -450,8 +439,6 @@
 			isa = PBXGroup;
 			children = (
 				4C1ED56024D0B6F8005D6749 /* Splash.swift */,
-				4CA5BC99297DA5A500A3B960 /* ErrorCard.swift */,
-				4CA5BC9B297DAC2E00A3B960 /* LoadingCard.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -529,6 +516,8 @@
 				4CF355372946909000366084 /* SwiftUINavigation */,
 				4C8D13A429AFF11200EB68B5 /* ImagePicker */,
 				4C8D13A629AFFCEF00EB68B5 /* Assets */,
+				4C4CDBE829B3D66100EC6812 /* LoaderCore */,
+				4C4CDBEA29B3D66100EC6812 /* StyleCore */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -679,12 +668,10 @@
 				4CFDCAE128F40D16002DBF2D /* Scores.swift in Sources */,
 				4CF35535294284E200366084 /* PersistenceError.swift in Sources */,
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
-				4CA5BC9C297DAC2E00A3B960 /* LoadingCard.swift in Sources */,
 				4C5F63C5293D499F006FBE85 /* PlayerPersistence.swift in Sources */,
 				4CBF593B268E502700BF23F7 /* TotalScoresView.swift in Sources */,
 				4C38973E2495016900D6D182 /* EditTeamView.swift in Sources */,
 				4CF2BE9E29884A9D00EC1539 /* MigrationV2toV3.swift in Sources */,
-				4CA5BC9A297DA5A500A3B960 /* ErrorCard.swift in Sources */,
 				4CBA6B22249E166600CA3851 /* EditPlayerView.swift in Sources */,
 				4CB91CC224B7ADCD00B452D3 /* PlayerRow.swift in Sources */,
 				4C12BE272981BF88003BB002 /* CompositionLoader.swift in Sources */,
@@ -703,7 +690,6 @@
 				4C8E61002679399E00010C8B /* ScoreboardView.swift in Sources */,
 				4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */,
 				4C12BE2B29832769003BB002 /* CompositionView.swift in Sources */,
-				4C5F13322472F88C007B9F3E /* DashedStyles.swift in Sources */,
 				4CFDCADF28F2BD8C002DBF2D /* RandomTeam.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
 				4C03CF05299D61DE003C3584 /* ShufflePlayers.swift in Sources */,
@@ -1062,6 +1048,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4C4CDBE829B3D66100EC6812 /* LoaderCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LoaderCore;
+		};
+		4C4CDBEA29B3D66100EC6812 /* StyleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StyleCore;
+		};
 		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;

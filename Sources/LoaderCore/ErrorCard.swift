@@ -1,25 +1,36 @@
 import Assets
 import ComposableArchitecture
 import SwiftUI
+import StyleCore
 
-struct ErrorCard: ReducerProtocol {
-    struct State: Equatable {
+public struct ErrorCard: ReducerProtocol {
+    public struct State: Equatable {
         var description = ""
+
+        public init(description: String = "") {
+            self.description = description
+        }
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case reload
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         EmptyReducer()
     }
 }
 
-struct ErrorCardView: View {
+public struct ErrorCardView: View {
     let store: StoreOf<ErrorCard>
 
-    var body: some View {
+    public init(store: StoreOf<ErrorCard>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
                 Text(viewStore.description)
