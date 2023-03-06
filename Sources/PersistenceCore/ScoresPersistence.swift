@@ -69,10 +69,10 @@ private final class Persistence {
 }
 
 public struct ScoresPersistence {
-    var load: () async throws -> Scores
-    var save: (Scores) async throws -> Void
-    var updateRound: (Round) async throws -> Void
-    var updateScore: (Score) async throws -> Void
+    public var load: () async throws -> Scores
+    public var save: (Scores) async throws -> Void
+    public var updateRound: (Round) async throws -> Void
+    public var updateScore: (Score) async throws -> Void
 }
 
 extension ScoresPersistence {

@@ -1,29 +1,38 @@
 import ComposableArchitecture
 import Foundation
+import PersistenceCore
+import TeamsCore
 
-struct Score: ReducerProtocol {
-    struct State: Equatable, Identifiable {
-        let id: UUID
-        var team: Team.State
-        @BindingState var points: Int = 0
+public struct Score: ReducerProtocol {
+    public typealias Team = TeamsCore.Team
 
-        var accumulatedPoints = 0
+    public struct State: Equatable, Identifiable {
+        public let id: UUID
+        public var team: Team.State
+        @BindingState public var points: Int = 0
+        public var accumulatedPoints = 0
     }
 
-    enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case remove
     }
 
     @Dependency(\.scoresPersistence) var scorePersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             if case let .binding(binding) = action, binding.keyPath == \.$points {
-                return .fireAndForget { [state] in try await scorePersistence.updateScore(state) }
+                return .fireAndForget { [state] in try await scorePersistence.updateScore(state.toPersist) }
             }
             return .none
         }
+    }
+}
+
+extension Score.State {
+    var toPersist: PersistenceCore.Score {
+        PersistenceCore.Score(id: id, teamID: team.id, points: points)
     }
 }

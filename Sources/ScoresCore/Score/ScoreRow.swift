@@ -1,12 +1,21 @@
 import Assets
 import ComposableArchitecture
+import PersistenceCore
 import SwiftUI
+import TeamsCore
 
-struct ScoreRow: View {
+public struct ScoreRow: View {
     let store: StoreOf<Score>
     @FocusState var focusedField: Score.State?
 
-    var body: some View {
+    typealias Team = TeamsCore.Team
+
+    public init(store: StoreOf<Score>, focusedField: FocusState<Score.State?>) {
+        self.store = store
+        self._focusedField = focusedField
+    }
+
+    public var body: some View {
         WithViewStore(store) { viewStore in
             HStack {
                 Image(mtImage: viewStore.team.image)
@@ -19,7 +28,9 @@ struct ScoreRow: View {
                 TextField("", text: viewStore.binding(\.$points).string, prompt: Text("123"))
                     .frame(maxWidth: 70)
                     .focused($focusedField, equals: viewStore.state)
+                    #if os(iOS)
                     .keyboardType(.numberPad)
+                    #endif
 
                 Spacer()
 
@@ -32,7 +43,9 @@ struct ScoreRow: View {
                     Label("Delete", systemImage: "trash")
                 }
             }
+            #if os(iOS)
             .listRowSeparator(.hidden)
+            #endif
             .backgroundAndForeground(color: viewStore.team.color)
             .textFieldStyle(.roundedBorder)
         }
@@ -51,7 +64,9 @@ struct ScoreRow: View {
                 TextField("", text: viewStore.binding(\.$points).string, prompt: Text("123"))
                     .frame(maxWidth: 70)
                     .focused($focusedField, equals: viewStore.state)
+                    #if os(iOS)
                     .keyboardType(.numberPad)
+                    #endif
 
                 Spacer()
 
@@ -105,11 +120,19 @@ extension Score.State {
 }
 
 private extension TeamPersistence {
-    static let previewWithDelay: () async throws -> IdentifiedArrayOf<Team.State> = {
+    static let previewWithDelay: () async throws -> IdentifiedArrayOf<PersistenceCore.Team> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
-        return [.preview]
+        let team = Team.State.preview
+        return [PersistenceCore.Team(
+            id: team.id,
+            name: team.name,
+            color: team.color,
+            image: team.image,
+            playerIDs: team.players.map(\.id),
+            isArchived: team.isArchived
+        )]
     }
-    static let previewWithError: () async throws -> IdentifiedArrayOf<Team.State> = {
+    static let previewWithError: () async throws -> IdentifiedArrayOf<PersistenceCore.Team> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
         struct PreviewError: Error {}
         throw PreviewError()

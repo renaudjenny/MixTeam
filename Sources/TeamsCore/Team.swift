@@ -75,3 +75,22 @@ extension Team.State {
         )
     }
 }
+
+extension PersistenceCore.Team {
+    var state: TeamsCore.Team.State {
+        get async throws {
+            @Dependency(\.playerPersistence) var playerPersistence
+
+            let players = try await playerPersistence.load()
+            let teamPlayers = IdentifiedArrayOf(uniqueElements: playerIDs.compactMap { players[id: $0]?.state })
+            return TeamsCore.Team.State(
+                id: id,
+                name: name,
+                color: color,
+                image: image,
+                players: teamPlayers,
+                isArchived: isArchived
+            )
+        }
+    }
+}

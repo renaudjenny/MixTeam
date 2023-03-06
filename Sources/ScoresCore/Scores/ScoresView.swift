@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 import SwiftUINavigation
+import TeamsCore
 
 struct ScoresView: View {
     let store: StoreOf<Scores>
@@ -44,11 +45,19 @@ struct ScoresView: View {
                 }
                 .navigationTitle(Text("Scoreboard"))
                 .toolbar {
+                    #if os(iOS)
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button { viewStore.send(.addRound, animation: .default) } label: {
                             Label("Add a new round", systemImage: "plus")
                         }
                     }
+                    #else
+                    ToolbarItem() {
+                        Button { viewStore.send(.addRound, animation: .default) } label: {
+                            Label("Add a new round", systemImage: "plus")
+                        }
+                    }
+                    #endif
                 }
             }
             .backgroundAndForeground(color: .aluminium)
@@ -77,7 +86,7 @@ struct ScoresView: View {
 }
 
 extension Score.State: Hashable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 }
@@ -103,7 +112,7 @@ extension Store where State == Scores.State, Action == Scores.Action {
     }
 }
 
-extension Scores.State {
+public extension Scores.State {
     static var preview: Self {
         Self(teams: .example)
     }

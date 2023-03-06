@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
+import TeamsCore
 
 struct TotalScoresView: View {
     let store: StoreOf<Scores>
@@ -18,7 +19,9 @@ struct TotalScoresView: View {
                     }
                     .font(.body.bold())
                     .backgroundAndForeground(color: team.color)
+                    #if os(iOS)
                     .listRowSeparator(.hidden)
+                    #endif
                 }
             }
         }

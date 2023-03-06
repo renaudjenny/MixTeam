@@ -11,6 +11,13 @@ public struct Player: ReducerProtocol {
         public var image: MTImage = .unknown
         public var color: MTColor = .aluminium
 
+        public init(id: UUID, name: String = "", image: MTImage = .unknown, color: MTColor = .aluminium) {
+            self.id = id
+            self.name = name
+            self.image = image
+            self.color = color
+        }
+
         var illustrationPicker: IllustrationPicker.State {
             IllustrationPicker.State(
                 images: IdentifiedArrayOf(uniqueElements: MTImage.players),
@@ -46,5 +53,11 @@ public struct Player: ReducerProtocol {
 extension Player.State {
     var toPersist: PersistenceCore.Player {
         PersistenceCore.Player(id: id, name: name, image: image)
+    }
+}
+
+public extension PersistenceCore.Player {
+    var state: PlayersCore.Player.State {
+        PlayersCore.Player.State(id: id, name: name, image: image)
     }
 }

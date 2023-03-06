@@ -20,7 +20,9 @@ struct CompositionView: View {
                     addTeamButton
                 }
                 .listRowBackground(Color.clear)
+                #if os(iOS)
                 .listRowSeparator(.hidden)
+                #endif
             }
             .backgroundAndForeground(color: .aluminium)
             .confirmationDialog(

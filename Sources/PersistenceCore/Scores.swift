@@ -3,6 +3,10 @@ import IdentifiedCollections
 
 public struct Scores: Codable {
     public internal(set) var rounds: IdentifiedArrayOf<Round>
+
+    public init(rounds: IdentifiedArrayOf<Round>) {
+        self.rounds = rounds
+    }
 }
 
 public struct Round: Codable, Identifiable {
@@ -21,4 +25,10 @@ public struct Score: Codable, Identifiable {
     public let id: UUID
     public let teamID: Team.ID
     public let points: Int
+
+    public init(id: UUID, teamID: Team.ID, points: Int) {
+        self.id = id
+        self.teamID = teamID
+        self.points = points
+    }
 }

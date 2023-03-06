@@ -1,4 +1,4 @@
-enum PersistenceError: Error, Equatable {
+public enum PersistenceError: Error, Equatable {
     case cannotGetDocumentDirectoryWithUserDomainMask
     case notFound
 }

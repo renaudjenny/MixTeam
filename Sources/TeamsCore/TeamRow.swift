@@ -64,7 +64,9 @@ struct TeamRow_Previews: PreviewProvider {
         NavigationView {
             List {
                 TeamRow(store: .previewWithPlayers)
+                    #if os(iOS)
                     .listRowSeparator(.hidden)
+                    #endif
             }
             .listStyle(.plain)
             .padding()
@@ -82,7 +84,7 @@ extension Store where State == Team.State, Action == Team.Action {
     }
 }
 
-extension Team.State {
+public extension Team.State {
     static var preview: Self {
         guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
             fatalError("Cannot generate UUID from a defined UUID String")

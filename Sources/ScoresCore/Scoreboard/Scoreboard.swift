@@ -1,14 +1,15 @@
 import ComposableArchitecture
 import LoaderCore
+import PersistenceCore
 
-struct Scoreboard: ReducerProtocol {
-    enum State: Equatable {
+public struct Scoreboard: ReducerProtocol {
+    public enum State: Equatable {
         case loadingCard
         case loaded(Scores.State)
         case errorCard(ErrorCard.State)
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case update(TaskResult<Scores.State>)
         case loadingCard(LoadingCard.Action)
         case scores(Scores.Action)
@@ -18,7 +19,9 @@ struct Scoreboard: ReducerProtocol {
     @Dependency(\.scoresPersistence) var scoresPersistence
     @Dependency(\.teamPersistence) var teamPersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -57,4 +60,25 @@ struct Scoreboard: ReducerProtocol {
         state = .loadingCard
         return .task { await .update(TaskResult { try await scoresPersistence.load() }) }
     }
+
+//    private func loadScores() async throws -> TaskResult<Scores.State> {
+//        TaskResult {
+//            let scores = try await scoresPersistence.load()
+//            let teams = try await teamPersistence.load()
+//
+//            return .loaded(Scores.State(
+//                teams: teams,
+//                rounds: IdentifiedArrayOf(uniqueElements: scores.rounds.map { Round.State(
+//                    id: $0.id,
+//                    name: $0.name,
+//                    scores: IdentifiedArrayOf(uniqueElements: $0.scores.map { Score.State(
+//                        id: $0.id,
+//                        team: <#T##Score.Team.State#>,
+//                        points: <#T##Int#>,
+//                        accumulatedPoints: 0
+//                    ) }
+//                ) }
+//            ))
+//        }
+//    }
 }

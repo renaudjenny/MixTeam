@@ -1,21 +1,22 @@
 import ComposableArchitecture
 import Foundation
+import PersistenceCore
 
-struct Round: ReducerProtocol {
-    struct State: Identifiable, Equatable, Hashable {
-        let id: UUID
-        @BindingState var name: String
-        var scores: IdentifiedArrayOf<Score.State> = []
+public struct Round: ReducerProtocol {
+    public struct State: Identifiable, Equatable, Hashable {
+        public let id: UUID
+        @BindingState public var name: String
+        public var scores: IdentifiedArrayOf<Score.State> = []
     }
 
-    enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case score(id: Score.State.ID, action: Score.Action)
     }
 
     @Dependency(\.scoresPersistence.updateRound) var updateRound
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
@@ -35,7 +36,7 @@ struct Round: ReducerProtocol {
 }
 
 extension Round.State {
-    var toPersistent: Round {
-        Round(id: id, name: name, scores: scores)
+    var toPersist: PersistenceCore.Round {
+        PersistenceCore.Round(id: id, name: name, scores: IdentifiedArrayOf(uniqueElements: scores.map(\.toPersist)))
     }
 }
