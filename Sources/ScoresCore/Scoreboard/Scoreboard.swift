@@ -36,7 +36,7 @@ public struct Scoreboard: ReducerProtocol {
             case .loadingCard:
                 return load(state: &state).concatenate(with: .run { send in
                     for try await _ in teamPersistence.publisher() {
-                        await send(.update(TaskResult { try await scoresPersistence.load() }))
+                        await send(.update(TaskResult { try await scoresPersistence.load().state }))
                     }
                 })
             case .scores:
@@ -58,27 +58,31 @@ public struct Scoreboard: ReducerProtocol {
 
     private func load(state: inout State) -> EffectTask<Action> {
         state = .loadingCard
-        return .task { await .update(TaskResult { try await scoresPersistence.load() }) }
+        return .task { await .update(TaskResult { try await scoresPersistence.load().state }) }
     }
+}
 
-//    private func loadScores() async throws -> TaskResult<Scores.State> {
-//        TaskResult {
-//            let scores = try await scoresPersistence.load()
-//            let teams = try await teamPersistence.load()
-//
-//            return .loaded(Scores.State(
-//                teams: teams,
-//                rounds: IdentifiedArrayOf(uniqueElements: scores.rounds.map { Round.State(
-//                    id: $0.id,
-//                    name: $0.name,
-//                    scores: IdentifiedArrayOf(uniqueElements: $0.scores.map { Score.State(
-//                        id: $0.id,
-//                        team: <#T##Score.Team.State#>,
-//                        points: <#T##Int#>,
-//                        accumulatedPoints: 0
-//                    ) }
-//                ) }
-//            ))
-//        }
-//    }
+public extension PersistenceCore.Scores {
+    var state: Scores.State {
+        get async throws {
+            @Dependency(\.teamPersistence) var teamPersistence
+            let teams = try await teamPersistence.load().states
+            return Scores.State(
+                teams: try await teamPersistence.load().states,
+                rounds: IdentifiedArrayOf(uniqueElements: rounds.map { Round.State(
+                    id: $0.id,
+                    name: $0.name,
+                    scores: IdentifiedArrayOf(uniqueElements: $0.scores.compactMap {
+                        guard let team = teams[id: $0.teamID] else { return nil }
+                        return Score.State(
+                            id: $0.id,
+                            team: team,
+                            points: $0.points,
+                            accumulatedPoints: 0
+                        )
+                    })
+                )})
+            )
+        }
+    }
 }

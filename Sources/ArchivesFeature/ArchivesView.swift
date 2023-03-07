@@ -39,7 +39,7 @@ public struct Archives: ReducerProtocol {
             case .loadingCard:
                 return load(state: &state).concatenate(with: .run { send in
                     for try await teams in teamPersistence.publisher() {
-                        await send(.update(TaskResult { teams }))
+                        await send(.update(TaskResult { try await teams.states }))
                     }
                 } catch: { error, send in
                     await send(.update(TaskResult { throw error }))
@@ -66,7 +66,7 @@ public struct Archives: ReducerProtocol {
 
     private func load(state: inout State) -> EffectTask<Action> {
         state = .loadingCard
-        return .task { await .update(TaskResult { try await teamPersistence.load() }) }
+        return .task { await .update(TaskResult { try await teamPersistence.load().states }) }
     }
 }
 
@@ -77,7 +77,7 @@ public struct ArchivesView: View {
         self.store = store
     }
 
-    var body: some View {
+    public var body: some View {
         SwitchStore(store) {
             CaseLet(
                 state: /Archives.State.loadingCard,
@@ -137,7 +137,7 @@ struct ArchivesView_Previews: PreviewProvider {
 extension Archives.State {
     static var preview: Self { .loaded(rows: []) }
     static var previewWithTeamsAndPlayers: Self {
-        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<TeamsCore.Team.State>.example.map {
             var team = $0
             team.isArchived = true
             return ArchiveRow.State(team: team)
@@ -147,8 +147,8 @@ extension Archives.State {
 
 extension StoreOf<Archives> {
     static var preview: StoreOf<Archives> {
-        let example: IdentifiedArrayOf<Team.State> = .example
-        let archiveExample: IdentifiedArrayOf<Team.State> = IdentifiedArrayOf(uniqueElements: example.map {
+        let example: IdentifiedArrayOf<PersistenceCore.Team> = .example
+        let archiveExample: IdentifiedArrayOf<PersistenceCore.Team> = IdentifiedArrayOf(uniqueElements: example.map {
             var team = $0
             team.isArchived = true
             return team

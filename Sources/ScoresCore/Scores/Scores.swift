@@ -45,7 +45,7 @@ public struct Scores: ReducerProtocol {
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
                 return .fireAndForget { [state] in
-                    try await scoresPersistence.save(state)
+                    try await scoresPersistence.save(state.toPersist)
                 }
             case let .updateAccumulatedPoints(rounds):
                 state.rounds = rounds
@@ -55,7 +55,7 @@ public struct Scores: ReducerProtocol {
                     state.rounds.remove(id: id)
                 }
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state) },
+                    .fireAndForget { [state] in try await scoresPersistence.save(state.toPersist) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case let .round(_, .score(_, .binding(binding))) where binding.keyPath == \.$points:
@@ -69,7 +69,7 @@ public struct Scores: ReducerProtocol {
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state) },
+                    .fireAndForget { [state] in try await scoresPersistence.save(state.toPersist) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case .binding:

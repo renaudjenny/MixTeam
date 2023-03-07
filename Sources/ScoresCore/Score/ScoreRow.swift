@@ -10,7 +10,7 @@ public struct ScoreRow: View {
 
     typealias Team = TeamsCore.Team
 
-    public init(store: StoreOf<Score>, focusedField: FocusState<Score.State?>) {
+    public init(store: StoreOf<Score>, focusedField: FocusState<Score.State?> = FocusState<Score.State?>()) {
         self.store = store
         self._focusedField = focusedField
     }

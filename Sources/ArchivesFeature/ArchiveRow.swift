@@ -4,9 +4,9 @@ import TeamsCore
 
 public struct ArchiveRow: ReducerProtocol {
     public struct State: Equatable, Identifiable {
-        var team: Team.State
-        var deleteConfirmationDialog: ConfirmationDialogState<Action>?
-        var id: Team.State.ID { team.id }
+        public var team: Team.State
+        public var deleteConfirmationDialog: ConfirmationDialogState<Action>?
+        public var id: Team.State.ID { team.id }
 
         public init(team: Team.State) {
             self.team = team
@@ -27,13 +27,13 @@ public struct ArchiveRow: ReducerProtocol {
             switch action {
             case .unarchive:
                 state.team.isArchived = false
-                return .fireAndForget { [team = state.team] in try await teamPersistence.updateOrAppend(team) }
+                return .fireAndForget { [team = state.team] in try await teamPersistence.updateOrAppend(team.toPersist) }
             case .remove:
                 state.deleteConfirmationDialog = .removeTeam
                 return .none
             case .confirmRemove:
                 state.deleteConfirmationDialog = nil
-                return .fireAndForget { [team = state.team] in try await teamPersistence.remove(team) }
+                return .fireAndForget { [team = state.team] in try await teamPersistence.remove(team.toPersist) }
             case .cancelRemove:
                 state.deleteConfirmationDialog = nil
                 return .none
@@ -62,7 +62,7 @@ public struct ArchiveRowView: View {
         self.store = store
     }
 
-    var body: some View {
+    public var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             HStack {
                 Text(viewStore.team.name)

@@ -95,6 +95,7 @@ extension PlayerPersistence {
     )
 }
 
+// TODO: remove the redundancy with `public extension IdentifiedArrayOf<Player.State>`
 extension IdentifiedArrayOf<Player> {
     static var example: Self {
         guard let ameliaID = UUID(uuidString: "F336E7F8-78AC-439B-8E32-202DE58CFAC2"),

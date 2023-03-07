@@ -8,8 +8,6 @@ import XCTestDynamicOverlay
 private final class Persistence {
     private let scoresFileName = "MixTeamScoresV3_1_0"
 
-//    @Dependency(\.teamPersistence) var team
-
     var value: Scores {
         didSet { Task { try await persist(value) } }
     }
@@ -38,25 +36,6 @@ private final class Persistence {
         try data.write(to: url.appendingPathComponent(scoresFileName, conformingTo: .json))
     }
 
-    func inflated(value: Scores) async throws -> Scores {
-//        let teams = try await team.load()
-
-        // TODO: maybe this should be made by the feature instead
-//        return Scores(
-//            rounds: IdentifiedArrayOf(uniqueElements: value.rounds.map {
-//                var round = $0
-//                round.scores = IdentifiedArrayOf(uniqueElements: round.scores.compactMap {
-//                    guard teams.contains($0.team) else { return nil }
-//                    var score = $0
-//                    score.team = teams[id: score.team.id] ?? score.team
-//                    return score
-//                })
-//                return round
-//            })
-//        )
-        return value
-    }
-
     func update(round: Round) async throws {
         value.rounds.updateOrAppend(round)
     }
@@ -80,7 +59,7 @@ extension ScoresPersistence {
         do {
             let persistence = try Persistence()
             return Self(
-                load: { try await persistence.inflated(value: persistence.value) },
+                load: { persistence.value },
                 save: { try await persistence.save($0) },
                 updateRound: { try await persistence.update(round: $0) },
                 updateScore: { try await persistence.update(score: $0) }

@@ -43,35 +43,19 @@ private final class Persistence {
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
-    func inflated(value: IdentifiedArrayOf<Team>) async throws -> IdentifiedArrayOf<Team> {
-//        let players = try await player.load()
-
-        // TODO: This should return a IdentifiedArrayOf<InflatedTeam> with a populated `var players: IdentifiedArrayOf<Player>`
-//        return IdentifiedArrayOf(uniqueElements: value.compactMap {
-//            guard var team = value[id: $0.id] else { return nil }
-//            team.players = IdentifiedArrayOf(uniqueElements: team.players.compactMap {
-//                var player = players[id: $0.id]
-//                player?.color = team.color
-//                return  player
-//            })
-//            return team
-//        })
-        return value
-    }
-
     func updateOrAppend(state: Team) async throws {
         value.updateOrAppend(state)
-        subject.send(try await inflated(value: value))
+        subject.send(value)
     }
     func update(values: IdentifiedArrayOf<Team>) async throws {
         for value in values {
             self.value.updateOrAppend(value)
         }
-        subject.send(try await inflated(value: value))
+        subject.send(value)
     }
     func remove(state: Team) async throws {
         value.remove(state)
-        subject.send(try await inflated(value: value))
+        subject.send(value)
     }
 }
 
@@ -90,7 +74,7 @@ extension TeamPersistence {
             let persistence = try Persistence()
             return Self(
                 publisher: { persistence.subject.eraseToAnyPublisher().values },
-                load: { try await persistence.inflated(value: persistence.value) },
+                load: { persistence.value },
                 save: { try await persistence.save($0) },
                 updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
                 updateValues: { try await persistence.update(values: $0) },
@@ -125,7 +109,8 @@ extension TeamPersistence {
     )
 }
 
-extension IdentifiedArrayOf<Team> {
+// TODO: remove the redundancy with `public extension IdentifiedArrayOf<Team.State>`
+public extension IdentifiedArrayOf<Team> {
     static var example: Self {
         guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
               let purpleElephantId = UUID(uuidString: "98DBAF6C-685D-461F-9F81-E5E1E003B9AA"),
