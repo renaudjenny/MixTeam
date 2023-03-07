@@ -1,5 +1,7 @@
 import ComposableArchitecture
+import PlayersCore
 import SwiftUI
+import TeamsCore
 
 struct StandingView: View {
     let store: StoreOf<Standing>
@@ -71,7 +73,6 @@ extension Store where State == Standing.State, Action == Standing.Action {
 private extension Standing.State {
     static var preview: Self {
         Self(players: (IdentifiedArrayOf<Team.State>.example.first?.players[0]).map { [$0] } ?? [])
-
     }
 }
 #endif

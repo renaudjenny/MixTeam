@@ -58,7 +58,7 @@ public struct PlayerPersistence {
     public var remove: (Player.ID) async throws -> Void
 }
 
-extension PlayerPersistence {
+public extension PlayerPersistence {
     static let live = {
         do {
             let persistence = try Persistence()
@@ -126,7 +126,6 @@ public extension DependencyValues {
 
 #if DEBUG
 extension AsyncThrowingPublisher where P == AnyPublisher<IdentifiedArrayOf<Player>, Error> {
-
     static func with(value: Element) -> Self {
         Result.Publisher(value).eraseToAnyPublisher().values
     }

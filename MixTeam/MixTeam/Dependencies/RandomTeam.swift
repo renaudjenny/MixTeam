@@ -1,6 +1,7 @@
 import Assets
 import Dependencies
 import Foundation
+import TeamsCore
 import XCTestDynamicOverlay
 
 struct RandomTeamDepedencyKey: DependencyKey {

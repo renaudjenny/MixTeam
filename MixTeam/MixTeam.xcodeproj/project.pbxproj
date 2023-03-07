@@ -31,6 +31,7 @@
 		4C4CDBEF29B7D84300EC6812 /* ScoresCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBEE29B7D84300EC6812 /* ScoresCore */; };
 		4C4CDBF129B7D84300EC6812 /* TeamsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF029B7D84300EC6812 /* TeamsCore */; };
 		4C4CDBF329B7D8B400EC6812 /* PersistenceCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF229B7D8B400EC6812 /* PersistenceCore */; };
+		4C4CDBF529B7EF3600EC6812 /* ArchivesFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF429B7EF3600EC6812 /* ArchivesFeature */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
@@ -109,6 +110,7 @@
 				4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */,
 				4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */,
 				4C4CDBF129B7D84300EC6812 /* TeamsCore in Frameworks */,
+				4C4CDBF529B7EF3600EC6812 /* ArchivesFeature in Frameworks */,
 				4C4CDBED29B7D84300EC6812 /* PlayersCore in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
@@ -366,6 +368,7 @@
 				4C4CDBEE29B7D84300EC6812 /* ScoresCore */,
 				4C4CDBF029B7D84300EC6812 /* TeamsCore */,
 				4C4CDBF229B7D8B400EC6812 /* PersistenceCore */,
+				4C4CDBF429B7EF3600EC6812 /* ArchivesFeature */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -891,6 +894,10 @@
 		4C4CDBF229B7D8B400EC6812 /* PersistenceCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PersistenceCore;
+		};
+		4C4CDBF429B7EF3600EC6812 /* ArchivesFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArchivesFeature;
 		};
 		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

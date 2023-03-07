@@ -22,6 +22,8 @@ public struct Archives: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
+    public init() {}
+
     public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {

@@ -177,8 +177,8 @@ private enum ImageIdentifier: String, Codable {
 }
 
 public struct Migration {
-    var v2toV3: () async throws -> Void
-    var v3_0toV3_1: () async throws -> Void
+    public var v2toV3: () async throws -> Void
+    public var v3_0toV3_1: () async throws -> Void
 }
 
 public extension Migration {

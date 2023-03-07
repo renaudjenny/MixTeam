@@ -73,15 +73,15 @@ struct CompositionLoader: ReducerProtocol {
     private var loadTaskResult: TaskResult<Composition.State> {
         get async {
             await TaskResult {
-                let teams = try await teamPersistence.load().filter { !$0.isArchived }
+                let teams = try await teamPersistence.load().filter { !$0.isArchived }.states
                 let playersInTeams = teams.flatMap(\.players)
-                let standingPlayers = try await playerPersistence.load().filter {
-                    !playersInTeams.map(\.id).contains($0.id)
-                }
+                let standingPlayers = try await playerPersistence.load()
+                    .filter { !playersInTeams.map(\.id).contains($0.id) }
+                    .map(\.state)
 
                 return Composition.State(
                     teams: teams,
-                    standing: Standing.State(players: standingPlayers)
+                    standing: Standing.State(players: IdentifiedArrayOf(uniqueElements: standingPlayers))
                 )
             }
         }

@@ -23,6 +23,22 @@ public struct Team: ReducerProtocol {
                 selectedImage: image
             )
         }
+
+        public init(
+            id: UUID,
+            name: String,
+            color: MTColor,
+            image: MTImage,
+            players: IdentifiedArrayOf<Player.State> = [],
+            isArchived: Bool = false
+        ) {
+            self.id = id
+            self.name = name
+            self.color = color
+            self.image = image
+            self.players = players
+            self.isArchived = isArchived
+        }
     }
 
     public enum Action: BindableAction, Equatable {

@@ -35,7 +35,7 @@ struct Composition: ReducerProtocol {
             case .addTeam:
                 let team = randomTeam()
                 state.teams.append(team)
-                return .fireAndForget { try await teamPersistance.updateOrAppend(team) }
+                return .fireAndForget { try await teamPersistance.updateOrAppend(team.toPersist) }
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsConfirmationDialog = .notEnoughTeams
@@ -98,6 +98,6 @@ struct Composition: ReducerProtocol {
 
 extension IdentifiedArrayOf<TeamsCore.Team.State> {
     var toPersist: IdentifiedArrayOf<PersistenceCore.Team> {
-        IdentifiedArrayOf(uniqueElements: map(\.toPersist))
+        return IdentifiedArrayOf<PersistenceCore.Team>(uniqueElements: map(\.toPersist))
     }
 }
