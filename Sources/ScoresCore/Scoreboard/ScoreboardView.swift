@@ -3,10 +3,14 @@ import LoaderCore
 import PersistenceCore
 import SwiftUI
 
-struct ScoreboardView: View {
+public struct ScoreboardView: View {
     let store: StoreOf<Scoreboard>
 
-    var body: some View {
+    public init(store: StoreOf<Scoreboard>) {
+        self.store = store
+    }
+
+    public var body: some View {
         SwitchStore(store) {
             CaseLet(
                 state: /Scoreboard.State.loadingCard,

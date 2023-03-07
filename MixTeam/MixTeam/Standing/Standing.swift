@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import PlayersCore
 
 struct Standing: ReducerProtocol {
     struct State: Equatable {
@@ -21,7 +22,7 @@ struct Standing: ReducerProtocol {
             case .createPlayer:
                 let player = randomPlayer()
                 state.players.append(player)
-                return .fireAndForget { try await playerPersistence.updateOrAppend(player) }
+                return .fireAndForget { try await playerPersistence.updateOrAppend(player.toPersist) }
             case let .deletePlayer(id):
                 state.players.remove(id: id)
                 return .fireAndForget { try await playerPersistence.remove(id) }

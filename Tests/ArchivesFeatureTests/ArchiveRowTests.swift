@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import ArchivesCore
+import ArchivesFeature
 import XCTest
 
 @MainActor

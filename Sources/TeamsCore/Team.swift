@@ -34,6 +34,8 @@ public struct Team: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
+    public init() {}
+
     public var body: some ReducerProtocol<State, Action> {
         BindingReducer()
         Reduce { state, action in

@@ -3,10 +3,14 @@ import ComposableArchitecture
 import PlayersCore
 import SwiftUI
 
-struct TeamRow: View {
+public struct TeamRow: View {
     let store: StoreOf<Team>
 
-    var body: some View {
+    public init(store: StoreOf<Team>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store.stateless) { viewStore in
             Section {
                 header

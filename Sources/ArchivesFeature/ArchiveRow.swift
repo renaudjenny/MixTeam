@@ -22,6 +22,8 @@ public struct ArchiveRow: ReducerProtocol {
 
     @Dependency(\.teamPersistence) var teamPersistence
 
+    public init() {}
+
     public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
@@ -90,7 +92,7 @@ struct ArchiveRowView_Previews: PreviewProvider {
     }
 }
 
-extension Team.State {
+public extension Team.State {
     static var previewArchived: Self {
         var team: Self = .preview
         team.isArchived = true

@@ -1,7 +1,11 @@
 import ComposableArchitecture
 import Foundation
+import PersistenceCore
+import TeamsCore
 
 struct Composition: ReducerProtocol {
+    typealias Team = TeamsCore.Team
+
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var standing = Standing.State()
@@ -62,7 +66,7 @@ struct Composition: ReducerProtocol {
                     }
                 )
                 state.standing.players = []
-                return .fireAndForget { [state] in try await teamPersistance.updateValues(state.teams) }
+                return .fireAndForget { [state] in try await teamPersistance.updateValues(state.teams.toPersist) }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsConfirmationDialog = nil
                 return .none
@@ -82,12 +86,18 @@ struct Composition: ReducerProtocol {
                         team.isArchived = true
                         return team
                     })
-                    try await teamPersistance.updateValues(archivedTeams)
+                    try await teamPersistance.updateValues(archivedTeams.toPersist)
                 }
             }
         }
         .forEach(\.teams, action: /Action.team) {
             Team()
         }
+    }
+}
+
+extension IdentifiedArrayOf<TeamsCore.Team.State> {
+    var toPersist: IdentifiedArrayOf<PersistenceCore.Team> {
+        IdentifiedArrayOf(uniqueElements: map(\.toPersist))
     }
 }

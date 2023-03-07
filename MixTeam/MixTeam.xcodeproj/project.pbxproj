@@ -27,6 +27,10 @@
 		4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* CompositionTests.swift */; };
 		4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBE829B3D66100EC6812 /* LoaderCore */; };
 		4C4CDBEB29B3D66100EC6812 /* StyleCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBEA29B3D66100EC6812 /* StyleCore */; };
+		4C4CDBED29B7D84300EC6812 /* PlayersCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBEC29B7D84300EC6812 /* PlayersCore */; };
+		4C4CDBEF29B7D84300EC6812 /* ScoresCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBEE29B7D84300EC6812 /* ScoresCore */; };
+		4C4CDBF129B7D84300EC6812 /* TeamsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF029B7D84300EC6812 /* TeamsCore */; };
+		4C4CDBF329B7D8B400EC6812 /* PersistenceCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF229B7D8B400EC6812 /* PersistenceCore */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
@@ -96,12 +100,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C4CDBEF29B7D84300EC6812 /* ScoresCore in Frameworks */,
 				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */,
 				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C4CDBEB29B3D66100EC6812 /* StyleCore in Frameworks */,
+				4C4CDBF329B7D8B400EC6812 /* PersistenceCore in Frameworks */,
 				4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */,
 				4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */,
+				4C4CDBF129B7D84300EC6812 /* TeamsCore in Frameworks */,
+				4C4CDBED29B7D84300EC6812 /* PlayersCore in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
 			);
@@ -354,6 +362,10 @@
 				4C8D13A629AFFCEF00EB68B5 /* Assets */,
 				4C4CDBE829B3D66100EC6812 /* LoaderCore */,
 				4C4CDBEA29B3D66100EC6812 /* StyleCore */,
+				4C4CDBEC29B7D84300EC6812 /* PlayersCore */,
+				4C4CDBEE29B7D84300EC6812 /* ScoresCore */,
+				4C4CDBF029B7D84300EC6812 /* TeamsCore */,
+				4C4CDBF229B7D8B400EC6812 /* PersistenceCore */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -863,6 +875,22 @@
 		4C4CDBEA29B3D66100EC6812 /* StyleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StyleCore;
+		};
+		4C4CDBEC29B7D84300EC6812 /* PlayersCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PlayersCore;
+		};
+		4C4CDBEE29B7D84300EC6812 /* ScoresCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ScoresCore;
+		};
+		4C4CDBF029B7D84300EC6812 /* TeamsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TeamsCore;
+		};
+		4C4CDBF229B7D8B400EC6812 /* PersistenceCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PersistenceCore;
 		};
 		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
