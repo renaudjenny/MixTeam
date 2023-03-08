@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "Assets", targets: ["Assets"]),
         .library(name: "ImagePicker", targets: ["ImagePicker"]),
         .library(name: "LoaderCore", targets: ["LoaderCore"]),
+        .library(name: "Models", targets: ["Models"]),
         .library(name: "PersistenceCore", targets: ["PersistenceCore"]),
         .library(name: "PlayersFeature", targets: ["PlayersFeature"]),
         .library(name: "ScoresFeature", targets: ["ScoresFeature"]),
@@ -48,10 +49,12 @@ let package = Package(
                 "StyleCore"
             ]
         ),
+        .target(name: "Models", dependencies: ["Assets"]),
         .target(
             name: "PersistenceCore",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "Models",
             ]
         ),
         .target(
