@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import PlayersCore
+import PlayersFeature
 import SwiftUI
 import TeamsCore
 

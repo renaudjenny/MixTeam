@@ -3,7 +3,7 @@ import ComposableArchitecture
 import SwiftUI
 import StyleCore
 import TeamsCore
-import PlayersCore
+import PlayersFeature
 
 struct CompositionView: View {
     let store: StoreOf<Composition>

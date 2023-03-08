@@ -12,8 +12,8 @@ let package = Package(
         .library(name: "ImagePicker", targets: ["ImagePicker"]),
         .library(name: "LoaderCore", targets: ["LoaderCore"]),
         .library(name: "PersistenceCore", targets: ["PersistenceCore"]),
-        .library(name: "PlayersCore", targets: ["PlayersCore"]),
-        .library(name: "ScoresCore", targets: ["ScoresCore"]),
+        .library(name: "PlayersFeature", targets: ["PlayersFeature"]),
+        .library(name: "ScoresFeature", targets: ["ScoresFeature"]),
         .library(name: "StyleCore", targets: ["StyleCore"]),
         .library(name: "TeamsCore", targets: ["TeamsCore"]),
     ],
@@ -55,7 +55,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "PlayersCore",
+            name: "PlayersFeature",
             dependencies: [
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -63,8 +63,9 @@ let package = Package(
                 "PersistenceCore",
             ]
         ),
+        .testTarget(name: "PlayersFeatureTests", dependencies: ["PlayersFeature"]),
         .target(
-            name: "ScoresCore",
+            name: "ScoresFeature",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "PersistenceCore",
@@ -72,6 +73,7 @@ let package = Package(
                 "TeamsCore",
             ]
         ),
+        .testTarget(name: "ScoresFeatureTests", dependencies: ["ScoresFeature"]),
         .target(name: "StyleCore", dependencies: ["Assets"]),
         .target(
             name: "TeamsCore",
@@ -79,7 +81,7 @@ let package = Package(
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "ImagePicker",
-                "PlayersCore",
+                "PlayersFeature",
                 "PersistenceCore",
             ]
         ),

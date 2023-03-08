@@ -57,8 +57,8 @@ public extension Player.State {
 }
 
 public extension PersistenceCore.Player {
-    var state: PlayersCore.Player.State {
-        PlayersCore.Player.State(id: id, name: name, image: image)
+    var state: Player.State {
+        Player.State(id: id, name: name, image: image)
     }
 }
 

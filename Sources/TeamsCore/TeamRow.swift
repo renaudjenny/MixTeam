@@ -1,6 +1,6 @@
 import Assets
 import ComposableArchitecture
-import PlayersCore
+import PlayersFeature
 import SwiftUI
 
 public struct TeamRow: View {

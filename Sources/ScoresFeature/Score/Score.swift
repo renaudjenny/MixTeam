@@ -11,6 +11,13 @@ public struct Score: ReducerProtocol {
         public var team: Team.State
         @BindingState public var points: Int = 0
         public var accumulatedPoints = 0
+
+        public init(id: UUID, team: Team.State, points: Int = 0, accumulatedPoints: Int = 0) {
+            self.id = id
+            self.team = team
+            self.points = points
+            self.accumulatedPoints = accumulatedPoints
+        }
     }
 
     public enum Action: BindableAction, Equatable {
@@ -19,6 +26,8 @@ public struct Score: ReducerProtocol {
     }
 
     @Dependency(\.scoresPersistence) var scorePersistence
+
+    public init() {}
 
     public var body: some ReducerProtocol<State, Action> {
         BindingReducer()

@@ -75,7 +75,7 @@ extension Store where State == Scoreboard.State, Action == Scoreboard.Action {
 
 extension PersistenceCore.Scores {
     static func previewWithScores(count: Int) -> Self {
-        ScoresCore.Scores.State.previewWithScores(count: count).toPersist
+        ScoresFeature.Scores.State.previewWithScores(count: count).toPersist
     }
 }
 #endif

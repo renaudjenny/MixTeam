@@ -3,11 +3,11 @@ import ComposableArchitecture
 import Foundation
 import ImagePicker
 import PersistenceCore
-import PlayersCore
+import PlayersFeature
 
 public struct Team: ReducerProtocol {
 
-    public typealias Player = PlayersCore.Player
+    public typealias Player = PlayersFeature.Player
 
     public struct State: Equatable, Identifiable {
         public let id: UUID
@@ -132,8 +132,8 @@ public extension IdentifiedArrayOf<Team.State> {
               let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
-        let playersExample: IdentifiedArrayOf<PlayersCore.Player.State> = .example
-        let players = IdentifiedArrayOf<PlayersCore.Player.State>(uniqueElements: playersExample.suffix(1))
+        let playersExample: IdentifiedArrayOf<PlayersFeature.Player.State> = .example
+        let players = IdentifiedArrayOf<PlayersFeature.Player.State>(uniqueElements: playersExample.suffix(1))
 
         return [
             Team.State(

@@ -1,6 +1,6 @@
 import Dependencies
 import XCTestDynamicOverlay
-import PlayersCore
+import PlayersFeature
 
 struct ShufflePlayersDepedencyKey: DependencyKey {
     static let liveValue: ShufflePlayers = .live

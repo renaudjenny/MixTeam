@@ -8,9 +8,9 @@ public struct Scores: ReducerProtocol {
     public typealias Team = TeamsCore.Team
 
     public struct State: Equatable {
-        var teams: IdentifiedArrayOf<Team.State> = []
-        var rounds: IdentifiedArrayOf<Round.State> = []
-        @BindingState var focusedField: Score.State?
+        public var teams: IdentifiedArrayOf<Team.State> = []
+        public var rounds: IdentifiedArrayOf<Round.State> = []
+        @BindingState public var focusedField: Score.State?
     }
 
     public enum Action: BindableAction, Equatable {
@@ -26,6 +26,8 @@ public struct Scores: ReducerProtocol {
     @Dependency(\.scoresPersistence) var scoresPersistence
     @Dependency(\.teamPersistence) var teamPersistence
     private enum RecalculateTaskID {}
+
+    public init() {}
 
     public var body: some ReducerProtocol<State, Action> {
         BindingReducer()

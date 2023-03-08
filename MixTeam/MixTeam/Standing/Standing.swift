@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import PlayersCore
+import PlayersFeature
 
 struct Standing: ReducerProtocol {
     struct State: Equatable {

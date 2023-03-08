@@ -50,7 +50,7 @@ extension Store where State == Player.State, Action == Player.Action {
     }
 }
 
-extension Player.State {
+public extension Player.State {
     static func preview(isStanding: Bool = false) -> Self {
         Player.State(
             id: UUIDGenerator.incrementing(),

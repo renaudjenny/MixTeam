@@ -7,6 +7,12 @@ public struct Round: ReducerProtocol {
         public let id: UUID
         @BindingState public var name: String
         public var scores: IdentifiedArrayOf<Score.State> = []
+
+        public init(id: UUID, name: String, scores: IdentifiedArrayOf<Score.State> = []) {
+            self.id = id
+            self.name = name
+            self.scores = scores
+        }
     }
 
     public enum Action: BindableAction, Equatable {
@@ -15,6 +21,8 @@ public struct Round: ReducerProtocol {
     }
 
     @Dependency(\.scoresPersistence.updateRound) var updateRound
+
+    public init() {}
 
     public var body: some ReducerProtocol<State, Action> {
         BindingReducer()

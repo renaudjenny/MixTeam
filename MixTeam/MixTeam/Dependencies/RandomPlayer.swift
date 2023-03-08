@@ -2,7 +2,7 @@ import Assets
 import Dependencies
 import Foundation
 import XCTestDynamicOverlay
-import PlayersCore
+import PlayersFeature
 
 struct RandomPlayerDepedencyKey: DependencyKey {
     static let liveValue: RandomPlayer = .live

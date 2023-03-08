@@ -1,10 +1,9 @@
 import ComposableArchitecture
-@testable import MixTeam
+import PlayersFeature
 import XCTest
 
 @MainActor
 final class PlayersTests: XCTestCase {
-
     func testUpdateName() async throws {
         let store = TestStore(initialState: Player.State.preview, reducer: Player())
 

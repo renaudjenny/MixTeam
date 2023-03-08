@@ -1,5 +1,5 @@
 import ComposableArchitecture
-@testable import MixTeam
+import ScoresFeature
 import XCTest
 
 @MainActor

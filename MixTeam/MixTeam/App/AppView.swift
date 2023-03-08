@@ -1,5 +1,5 @@
 import ComposableArchitecture
-import ScoresCore
+import ScoresFeature
 import SwiftUI
 
 struct AppView: View {
