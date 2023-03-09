@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import LoaderCore
+import Models
 import PersistenceCore
 
 public struct Scoreboard: ReducerProtocol {
@@ -62,7 +63,7 @@ public struct Scoreboard: ReducerProtocol {
     }
 }
 
-public extension PersistenceCore.Scores {
+public extension PersistedScores {
     var state: Scores.State {
         get async throws {
             @Dependency(\.teamPersistence) var teamPersistence

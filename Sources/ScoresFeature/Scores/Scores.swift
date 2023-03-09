@@ -1,10 +1,10 @@
 import ComposableArchitecture
+import Models
 import PersistenceCore
 import SwiftUI
 import TeamsCore
 
 public struct Scores: ReducerProtocol {
-
     public typealias Team = TeamsCore.Team
 
     public struct State: Equatable {
@@ -47,7 +47,7 @@ public struct Scores: ReducerProtocol {
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
                 return .fireAndForget { [state] in
-                    try await scoresPersistence.save(state.toPersist)
+                    try await scoresPersistence.save(state.persisted)
                 }
             case let .updateAccumulatedPoints(rounds):
                 state.rounds = rounds
@@ -57,7 +57,7 @@ public struct Scores: ReducerProtocol {
                     state.rounds.remove(id: id)
                 }
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state.toPersist) },
+                    .fireAndForget { [state] in try await scoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case let .round(_, .score(_, .binding(binding))) where binding.keyPath == \.$points:
@@ -71,7 +71,7 @@ public struct Scores: ReducerProtocol {
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state.toPersist) },
+                    .fireAndForget { [state] in try await scoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case .binding:
@@ -108,7 +108,7 @@ private extension IdentifiedArrayOf<Round.State> {
 }
 
 extension Scores.State {
-    var toPersist: PersistenceCore.Scores {
-        PersistenceCore.Scores(rounds: IdentifiedArrayOf(uniqueElements: rounds.map(\.toPersist)))
+    var persisted: PersistedScores {
+        PersistedScores(rounds: IdentifiedArrayOf(uniqueElements: rounds.map(\.persisted)))
     }
 }

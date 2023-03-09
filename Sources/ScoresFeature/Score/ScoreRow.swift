@@ -1,5 +1,6 @@
 import Assets
 import ComposableArchitecture
+import Models
 import PersistenceCore
 import SwiftUI
 import TeamsCore
@@ -120,10 +121,10 @@ extension Score.State {
 }
 
 private extension TeamPersistence {
-    static let previewWithDelay: () async throws -> IdentifiedArrayOf<PersistenceCore.Team> = {
+    static let previewWithDelay: () async throws -> IdentifiedArrayOf<PersistedTeam> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
         let team = Team.State.preview
-        return [PersistenceCore.Team(
+        return [PersistedTeam(
             id: team.id,
             name: team.name,
             color: team.color,
@@ -132,7 +133,7 @@ private extension TeamPersistence {
             isArchived: team.isArchived
         )]
     }
-    static let previewWithError: () async throws -> IdentifiedArrayOf<PersistenceCore.Team> = {
+    static let previewWithError: () async throws -> IdentifiedArrayOf<PersistedTeam> = {
         try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
         struct PreviewError: Error {}
         throw PreviewError()

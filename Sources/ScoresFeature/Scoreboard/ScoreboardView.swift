@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import LoaderCore
+import Models
 import PersistenceCore
 import SwiftUI
 
@@ -73,9 +74,9 @@ extension Store where State == Scoreboard.State, Action == Scoreboard.Action {
     struct FakeError: Error {}
 }
 
-extension PersistenceCore.Scores {
+extension PersistedScores {
     static func previewWithScores(count: Int) -> Self {
-        ScoresFeature.Scores.State.previewWithScores(count: count).toPersist
+        ScoresFeature.Scores.State.previewWithScores(count: count).persisted
     }
 }
 #endif

@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Foundation
+import Models
 import PersistenceCore
 
 public struct Round: ReducerProtocol {
@@ -29,7 +30,7 @@ public struct Round: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .binding:
-                return .fireAndForget { [state] in try await updateRound(state.toPersist) }
+                return .fireAndForget { [state] in try await updateRound(state.persisted) }
             case let .score(id: id, action: .remove):
                 state.scores.remove(id: id)
                 return .none
@@ -44,7 +45,7 @@ public struct Round: ReducerProtocol {
 }
 
 extension Round.State {
-    var toPersist: PersistenceCore.Round {
-        PersistenceCore.Round(id: id, name: name, scores: IdentifiedArrayOf(uniqueElements: scores.map(\.toPersist)))
+    var persisted: PersistedRound {
+        PersistedRound(id: id, name: name, scores: IdentifiedArrayOf(uniqueElements: scores.map(\.persisted)))
     }
 }

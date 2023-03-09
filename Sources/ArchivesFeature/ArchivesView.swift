@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import LoaderCore
+import Models
 import PersistenceCore
 import SwiftUI
 import TeamsCore
@@ -149,8 +150,8 @@ extension Archives.State {
 
 extension StoreOf<Archives> {
     static var preview: StoreOf<Archives> {
-        let example: IdentifiedArrayOf<PersistenceCore.Team> = .example
-        let archiveExample: IdentifiedArrayOf<PersistenceCore.Team> = IdentifiedArrayOf(uniqueElements: example.map {
+        let example: IdentifiedArrayOf<PersistedTeam> = .example
+        let archiveExample: IdentifiedArrayOf<PersistedTeam> = IdentifiedArrayOf(uniqueElements: example.map {
             var team = $0
             team.isArchived = true
             return team

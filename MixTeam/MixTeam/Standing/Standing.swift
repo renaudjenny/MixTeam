@@ -22,7 +22,7 @@ struct Standing: ReducerProtocol {
             case .createPlayer:
                 let player = randomPlayer()
                 state.players.append(player)
-                return .fireAndForget { try await playerPersistence.updateOrAppend(player.toPersist) }
+                return .fireAndForget { try await playerPersistence.updateOrAppend(player.persisted) }
             case let .deletePlayer(id):
                 state.players.remove(id: id)
                 return .fireAndForget { try await playerPersistence.remove(id) }

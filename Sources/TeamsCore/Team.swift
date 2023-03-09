@@ -2,6 +2,7 @@ import Assets
 import ComposableArchitecture
 import Foundation
 import ImagePicker
+import Models
 import PersistenceCore
 import PlayersFeature
 
@@ -82,8 +83,8 @@ public struct Team: ReducerProtocol {
 }
 
 public extension Team.State {
-    var toPersist: PersistenceCore.Team {
-        PersistenceCore.Team(
+    var toPersist: PersistedTeam {
+        PersistedTeam(
             id: id,
             name: name,
             color: color,
@@ -94,7 +95,7 @@ public extension Team.State {
     }
 }
 
-public extension PersistenceCore.Team {
+public extension PersistedTeam {
     var state: Team.State {
         get async throws {
             @Dependency(\.playerPersistence) var playerPersistence
@@ -113,7 +114,7 @@ public extension PersistenceCore.Team {
     }
 }
 
-public extension IdentifiedArrayOf<PersistenceCore.Team> {
+public extension IdentifiedArrayOf<PersistedTeam> {
     var states: IdentifiedArrayOf<Team.State> {
         get async throws {
             var states: [Team.State] = []

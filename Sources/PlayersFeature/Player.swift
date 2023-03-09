@@ -2,6 +2,7 @@ import Assets
 import ComposableArchitecture
 import Foundation
 import ImagePicker
+import Models
 import PersistenceCore
 
 public struct Player: ReducerProtocol {
@@ -41,22 +42,22 @@ public struct Player: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .binding:
-                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.persisted) }
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.persisted) }
             }
         }
     }
 }
 
 public extension Player.State {
-    var toPersist: PersistenceCore.Player {
-        PersistenceCore.Player(id: id, name: name, image: image)
+    var persisted: PersistedPlayer {
+        PersistedPlayer(id: id, name: name, image: image)
     }
 }
 
-public extension PersistenceCore.Player {
+public extension PersistedPlayer {
     var state: Player.State {
         Player.State(id: id, name: name, image: image)
     }

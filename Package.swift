@@ -63,6 +63,7 @@ let package = Package(
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "ImagePicker",
+                "Models",
                 "PersistenceCore",
             ]
         ),

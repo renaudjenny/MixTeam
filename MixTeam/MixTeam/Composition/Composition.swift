@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Foundation
+import Models
 import PersistenceCore
 import TeamsCore
 
@@ -97,7 +98,7 @@ struct Composition: ReducerProtocol {
 }
 
 extension IdentifiedArrayOf<TeamsCore.Team.State> {
-    var toPersist: IdentifiedArrayOf<PersistenceCore.Team> {
-        return IdentifiedArrayOf<PersistenceCore.Team>(uniqueElements: map(\.toPersist))
+    var toPersist: IdentifiedArrayOf<PersistedTeam> {
+        return IdentifiedArrayOf<PersistedTeam>(uniqueElements: map(\.toPersist))
     }
 }

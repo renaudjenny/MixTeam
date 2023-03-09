@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Foundation
+import Models
 import PersistenceCore
 import TeamsCore
 
@@ -33,7 +34,7 @@ public struct Score: ReducerProtocol {
         BindingReducer()
         Reduce { state, action in
             if case let .binding(binding) = action, binding.keyPath == \.$points {
-                return .fireAndForget { [state] in try await scorePersistence.updateScore(state.toPersist) }
+                return .fireAndForget { [state] in try await scorePersistence.updateScore(state.persisted) }
             }
             return .none
         }
@@ -41,7 +42,7 @@ public struct Score: ReducerProtocol {
 }
 
 extension Score.State {
-    var toPersist: PersistenceCore.Score {
-        PersistenceCore.Score(id: id, teamID: team.id, points: points)
+    var persisted: PersistedScore {
+        PersistedScore(id: id, teamID: team.id, points: points)
     }
 }

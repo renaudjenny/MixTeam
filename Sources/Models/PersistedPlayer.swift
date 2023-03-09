@@ -1,7 +1,7 @@
 import Assets
 import Foundation
 
-public struct PersistedPlayer: Codable, Identifiable {
+public struct PersistedPlayer: Codable, Identifiable, Equatable {
     public let id: UUID
     public let name: String
     public let image: MTImage
