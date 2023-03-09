@@ -63,17 +63,17 @@ public struct Team: ReducerProtocol {
                     player.color = state.color
                     return player
                 })
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.persisted) }
             case .binding:
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.persisted) }
             case let .moveBackPlayer(id):
                 state.players.remove(id: id)
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.persisted) }
             case .player:
                 return .none
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.toPersist) }
+                return .fireAndForget { [state] in try await teamPersistence.updateOrAppend(state.persisted) }
             }
         }
         .forEach(\.players, action: /Team.Action.player) {
@@ -83,7 +83,7 @@ public struct Team: ReducerProtocol {
 }
 
 public extension Team.State {
-    var toPersist: PersistedTeam {
+    var persisted: PersistedTeam {
         PersistedTeam(
             id: id,
             name: name,

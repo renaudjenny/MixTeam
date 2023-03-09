@@ -2,13 +2,14 @@ import ComposableArchitecture
 import Dependencies
 import Foundation
 import IdentifiedCollections
+import Models
 import XCTestDynamicOverlay
 
 // TODO: change `(state: Scores)` to `(scores: Scores)`
 private final class Persistence {
     private let scoresFileName = "MixTeamScoresV3_1_0"
 
-    var value: Scores {
+    var value: PersistedScores {
         didSet { Task { try await persist(value) } }
     }
 
@@ -21,26 +22,26 @@ private final class Persistence {
             return
         }
 
-        let decodedValue = try JSONDecoder().decode(Scores.self, from: data)
+        let decodedValue = try JSONDecoder().decode(PersistedScores.self, from: data)
         value = decodedValue
     }
 
-    func save(_ state: Scores) async throws {
+    func save(_ state: PersistedScores) async throws {
         value = state
     }
 
-    private func persist(_ state: Scores) async throws {
+    private func persist(_ state: PersistedScores) async throws {
         let data = try JSONEncoder().encode(state)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(scoresFileName, conformingTo: .json))
     }
 
-    func update(round: Round) async throws {
+    func update(round: PersistedRound) async throws {
         value.rounds.updateOrAppend(round)
     }
 
-    func update(score: Score) async throws {
+    func update(score: PersistedScore) async throws {
         guard var round = value.rounds.first(where: { $0.scores.contains(score) }) else { return }
         round.scores.updateOrAppend(score)
         try await update(round: round)
@@ -48,10 +49,10 @@ private final class Persistence {
 }
 
 public struct ScoresPersistence {
-    public var load: () async throws -> Scores
-    public var save: (Scores) async throws -> Void
-    public var updateRound: (Round) async throws -> Void
-    public var updateScore: (Score) async throws -> Void
+    public var load: () async throws -> PersistedScores
+    public var save: (PersistedScores) async throws -> Void
+    public var updateRound: (PersistedRound) async throws -> Void
+    public var updateScore: (PersistedScore) async throws -> Void
 }
 
 extension ScoresPersistence {
@@ -87,7 +88,7 @@ extension ScoresPersistence {
     )
 }
 
-extension Scores {
+extension PersistedScores {
     static var example: Self {
         Self(rounds: [])
     }

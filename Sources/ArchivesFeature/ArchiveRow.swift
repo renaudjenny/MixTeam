@@ -29,13 +29,13 @@ public struct ArchiveRow: ReducerProtocol {
             switch action {
             case .unarchive:
                 state.team.isArchived = false
-                return .fireAndForget { [team = state.team] in try await teamPersistence.updateOrAppend(team.toPersist) }
+                return .fireAndForget { [team = state.team] in try await teamPersistence.updateOrAppend(team.persisted) }
             case .remove:
                 state.deleteConfirmationDialog = .removeTeam
                 return .none
             case .confirmRemove:
                 state.deleteConfirmationDialog = nil
-                return .fireAndForget { [team = state.team] in try await teamPersistence.remove(team.toPersist) }
+                return .fireAndForget { [team = state.team] in try await teamPersistence.remove(team.persisted) }
             case .cancelRemove:
                 state.deleteConfirmationDialog = nil
                 return .none

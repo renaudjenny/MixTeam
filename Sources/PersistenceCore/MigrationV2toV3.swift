@@ -2,12 +2,13 @@ import Assets
 import Dependencies
 import Foundation
 import IdentifiedCollections
+import Models
 import XCTestDynamicOverlay
 
 private struct MigrationV2toV3 {
-    private let team: IdentifiedArrayOf<Team>
-    private let player: IdentifiedArrayOf<Player>
-    private let scores: Scores
+    private let team: IdentifiedArrayOf<PersistedTeam>
+    private let player: IdentifiedArrayOf<PersistedPlayer>
+    private let scores: PersistedScores
 
     @Dependency(\.teamPersistence) var teamPersistence
     @Dependency(\.playerPersistence) var playerPersistence
@@ -20,7 +21,7 @@ private struct MigrationV2toV3 {
         let roundsData = UserDefaults.standard.string(forKey: "Scores.rounds")?.data(using: .utf8)
         let rounds = roundsData.flatMap { (try? JSONDecoder().decode([DprRound].self, from: $0)) }
 
-        let archivedTeams: [Team] = (rounds?.flatMap(\.scores).map(\.team) ?? [])
+        let archivedTeams: [PersistedTeam] = (rounds?.flatMap(\.scores).map(\.team) ?? [])
             .filter { !(teams?.map(\.id).contains($0.id) ?? false) }
             .map {
                 var team = $0.state.team
@@ -31,14 +32,14 @@ private struct MigrationV2toV3 {
         if let teams, let rounds {
             team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state).map(\.team)) + archivedTeams
             player = IdentifiedArrayOf(uniqueElements: teams.map(\.state).flatMap(\.players))
-            let rounds: IdentifiedArrayOf<Round> = IdentifiedArrayOf(
+            let rounds: IdentifiedArrayOf<PersistedRound> = IdentifiedArrayOf(
                 uniqueElements: Self.roundStates(rounds: rounds)
             )
-            scores = Scores(rounds: rounds)
+            scores = PersistedScores(rounds: rounds)
         } else if let teams {
             team = IdentifiedArrayOf(uniqueElements: teams.dropFirst().map(\.state).map(\.team))
             player = IdentifiedArrayOf(uniqueElements: teams.map(\.state).flatMap(\.players))
-            scores = Scores(rounds: [])
+            scores = PersistedScores(rounds: [])
         } else {
             return nil
         }
@@ -68,9 +69,9 @@ extension MigrationV2toV3 {
         var imageIdentifier: ImageIdentifier = .unknown
         var players: [DprPlayer] = []
 
-        var state: (team: Team, players: IdentifiedArrayOf<Player>) {
+        var state: (team: PersistedTeam, players: IdentifiedArrayOf<PersistedPlayer>) {
             (
-                team: Team(
+                team: PersistedTeam(
                     id: id,
                     name: name,
                     color: colorIdentifier.mtColor,
@@ -78,7 +79,7 @@ extension MigrationV2toV3 {
                     playerIDs: players.map(\.id),
                     isArchived: false
                 ),
-                players: IdentifiedArrayOf(uniqueElements: players.map { Player(
+                players: IdentifiedArrayOf(uniqueElements: players.map { PersistedPlayer(
                     id: $0.id,
                     name: $0.name,
                     image: $0.imageIdentifier.mtImage
@@ -99,12 +100,12 @@ extension MigrationV2toV3 {
         var id: DprTeam.ID { team.id }
     }
 
-    private static func roundStates(rounds: [DprRound]) -> [Round] {
+    private static func roundStates(rounds: [DprRound]) -> [PersistedRound] {
         rounds.reduce([]) { result, round in
-            let state = Round(
+            let state = PersistedRound(
                 id: round.id,
                 name: round.name,
-                scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in Score(
+                scores: IdentifiedArrayOf(uniqueElements: round.scores.map { score in PersistedScore(
                     id: UUID(),
                     teamID: score.team.id,
                     points: score.points

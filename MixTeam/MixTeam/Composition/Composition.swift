@@ -36,7 +36,7 @@ struct Composition: ReducerProtocol {
             case .addTeam:
                 let team = randomTeam()
                 state.teams.append(team)
-                return .fireAndForget { try await teamPersistance.updateOrAppend(team.toPersist) }
+                return .fireAndForget { try await teamPersistance.updateOrAppend(team.persisted) }
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsConfirmationDialog = .notEnoughTeams
@@ -67,7 +67,7 @@ struct Composition: ReducerProtocol {
                     }
                 )
                 state.standing.players = []
-                return .fireAndForget { [state] in try await teamPersistance.updateValues(state.teams.toPersist) }
+                return .fireAndForget { [state] in try await teamPersistance.updateValues(state.teams.persisted) }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsConfirmationDialog = nil
                 return .none
@@ -87,7 +87,7 @@ struct Composition: ReducerProtocol {
                         team.isArchived = true
                         return team
                     })
-                    try await teamPersistance.updateValues(archivedTeams.toPersist)
+                    try await teamPersistance.updateValues(archivedTeams.persisted)
                 }
             }
         }
@@ -98,7 +98,7 @@ struct Composition: ReducerProtocol {
 }
 
 extension IdentifiedArrayOf<TeamsCore.Team.State> {
-    var toPersist: IdentifiedArrayOf<PersistedTeam> {
-        return IdentifiedArrayOf<PersistedTeam>(uniqueElements: map(\.toPersist))
+    var persisted: IdentifiedArrayOf<PersistedTeam> {
+        IdentifiedArrayOf<PersistedTeam>(uniqueElements: map(\.persisted))
     }
 }

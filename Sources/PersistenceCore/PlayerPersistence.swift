@@ -2,14 +2,15 @@ import Combine
 import Foundation
 import Dependencies
 import IdentifiedCollections
+import Models
 import XCTestDynamicOverlay
 
 // TODO: change `(state: Player)` to `(player: Player)`
 private final class Persistence {
     private let playerFileName = "MixTeamPlayerV3_1_0"
 
-    let subject = PassthroughSubject<IdentifiedArrayOf<Player>, Error>()
-    var value: IdentifiedArrayOf<Player> {
+    let subject = PassthroughSubject<IdentifiedArrayOf<PersistedPlayer>, Error>()
+    var value: IdentifiedArrayOf<PersistedPlayer> {
         didSet { Task { try await persist(value) } }
     }
 
@@ -23,39 +24,39 @@ private final class Persistence {
             return
         }
 
-        let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<Player>.self, from: data)
+        let decodedValue = try JSONDecoder().decode(IdentifiedArrayOf<PersistedPlayer>.self, from: data)
         value = decodedValue
         subject.send(value)
     }
 
-    func save(_ states: IdentifiedArrayOf<Player>) async throws {
+    func save(_ states: IdentifiedArrayOf<PersistedPlayer>) async throws {
         value = states
         subject.send(value)
     }
 
-    func persist(_ states: IdentifiedArrayOf<Player>) async throws {
+    func persist(_ states: IdentifiedArrayOf<PersistedPlayer>) async throws {
         let data = try JSONEncoder().encode(states)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
 
-    func updateOrAppend(state: Player) async throws {
+    func updateOrAppend(state: PersistedPlayer) async throws {
         value.updateOrAppend(state)
         subject.send(value)
     }
-    func remove(id: Player.ID) async throws {
+    func remove(id: PersistedPlayer.ID) async throws {
         value.remove(id: id)
         subject.send(value)
     }
 }
 
 public struct PlayerPersistence {
-    public var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Player>, Error>>
-    public var load: () async throws -> IdentifiedArrayOf<Player>
-    public var save: (IdentifiedArrayOf<Player>) async throws -> Void
-    public var updateOrAppend: (Player) async throws -> Void
-    public var remove: (Player.ID) async throws -> Void
+    public var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<PersistedPlayer>, Error>>
+    public var load: () async throws -> IdentifiedArrayOf<PersistedPlayer>
+    public var save: (IdentifiedArrayOf<PersistedPlayer>) async throws -> Void
+    public var updateOrAppend: (PersistedPlayer) async throws -> Void
+    public var remove: (PersistedPlayer.ID) async throws -> Void
 }
 
 public extension PlayerPersistence {
@@ -96,7 +97,7 @@ public extension PlayerPersistence {
 }
 
 // TODO: remove the redundancy with `public extension IdentifiedArrayOf<Player.State>`
-extension IdentifiedArrayOf<Player> {
+extension IdentifiedArrayOf<PersistedPlayer> {
     static var example: Self {
         guard let ameliaID = UUID(uuidString: "F336E7F8-78AC-439B-8E32-202DE58CFAC2"),
               let joseID = UUID(uuidString: "C0F0266B-FFF1-47B0-8A2C-CC90BC36CF15"),
@@ -104,9 +105,9 @@ extension IdentifiedArrayOf<Player> {
         else { fatalError("Cannot generate UUID from a defined UUID String") }
 
         return [
-            Player(id: ameliaID, name: "Amelia", image: .amelie),
-            Player(id: joseID, name: "José", image: .santa),
-            Player(id: jackID, name: "Jack", image: .jack),
+            PersistedPlayer(id: ameliaID, name: "Amelia", image: .amelie),
+            PersistedPlayer(id: joseID, name: "José", image: .santa),
+            PersistedPlayer(id: jackID, name: "Jack", image: .jack),
         ]
     }
 }
@@ -125,7 +126,7 @@ public extension DependencyValues {
 }
 
 #if DEBUG
-extension AsyncThrowingPublisher where P == AnyPublisher<IdentifiedArrayOf<Player>, Error> {
+extension AsyncThrowingPublisher where P == AnyPublisher<IdentifiedArrayOf<PersistedPlayer>, Error> {
     static func with(value: Element) -> Self {
         Result.Publisher(value).eraseToAnyPublisher().values
     }

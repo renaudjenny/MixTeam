@@ -1,12 +1,13 @@
 import Dependencies
 import Foundation
 import IdentifiedCollections
+import Models
 
 // swiftlint:disable:next type_name
 struct MigrationV3_0toV3_1 {
-    private let team: IdentifiedArrayOf<Team>
-    private let player: IdentifiedArrayOf<Player>
-    private let scores: Scores
+    private let team: IdentifiedArrayOf<PersistedTeam>
+    private let player: IdentifiedArrayOf<PersistedPlayer>
+    private let scores: PersistedScores
 
     private let legacyTeamFileName = "MixTeamTeamV3_0_0"
     private let legacyPlayerFileName = "MixTeamPlayerV3_0_0"
@@ -26,8 +27,8 @@ struct MigrationV3_0toV3_1 {
               ),
               let teamData = try? Data(contentsOf: url.appendingPathComponent(legacyTeamFileName, conformingTo: .json)),
               let app = try? JSONDecoder().decode(AppDataState.self, from: appData),
-              let player = try? JSONDecoder().decode(IdentifiedArrayOf<Player>.self, from: playerData),
-              let team = try? JSONDecoder().decode(IdentifiedArrayOf<Team>.self, from: teamData)
+              let player = try? JSONDecoder().decode(IdentifiedArrayOf<PersistedPlayer>.self, from: playerData),
+              let team = try? JSONDecoder().decode(IdentifiedArrayOf<PersistedTeam>.self, from: teamData)
         else { return nil }
 
         self.team = team
@@ -51,6 +52,6 @@ struct MigrationV3_0toV3_1 {
 
 private extension MigrationV3_0toV3_1 {
     struct AppDataState: Decodable {
-        var scores: Scores
+        var scores: PersistedScores
     }
 }
