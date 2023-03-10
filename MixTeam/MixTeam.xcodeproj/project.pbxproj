@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4C03CF05299D61DE003C3584 /* ShufflePlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF04299D61DE003C3584 /* ShufflePlayers.swift */; };
 		4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */; };
-		4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C05209F29A3911E007A12A8 /* SettingsTests.swift */; };
 		4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A529A573ED007A12A8 /* StandingTests.swift */; };
 		4C0520A829A5755C007A12A8 /* RandomPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0520A729A5755C007A12A8 /* RandomPlayer.swift */; };
 		4C12BE2529807B9E003BB002 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2429807B9E003BB002 /* Composition.swift */; };
@@ -17,7 +16,6 @@
 		4C12BE292981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */; };
 		4C12BE2B29832769003BB002 /* CompositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C12BE2A29832769003BB002 /* CompositionView.swift */; };
 		4C1ED55824C82196005D6749 /* StandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1ED55724C82196005D6749 /* StandingView.swift */; };
-		4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */; };
 		4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C3732E91EBF8E8100A5785E /* Assets.xcassets */; };
 		4C3733031EBF8E8100A5785E /* MixTeamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */; };
 		4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3763C424A3DF5E00FA040B /* CompositionTests.swift */; };
@@ -28,6 +26,7 @@
 		4C4CDBF529B7EF3600EC6812 /* ArchivesFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF429B7EF3600EC6812 /* ArchivesFeature */; };
 		4C4CDBF729B910E100EC6812 /* PlayersFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF629B910E100EC6812 /* PlayersFeature */; };
 		4C4CDBF929B9119000EC6812 /* ScoresFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBF829B9119000EC6812 /* ScoresFeature */; };
+		4C4CDBFB29BBC34400EC6812 /* SettingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBFA29BBC34400EC6812 /* SettingsFeature */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
 		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
 		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
@@ -62,7 +61,6 @@
 /* Begin PBXFileReference section */
 		4C03CF04299D61DE003C3584 /* ShufflePlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShufflePlayers.swift; sourceTree = "<group>"; };
 		4C03CF0A29A0F4C0003C3584 /* TeamsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsTests.swift; sourceTree = "<group>"; };
-		4C05209F29A3911E007A12A8 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		4C0520A529A573ED007A12A8 /* StandingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingTests.swift; sourceTree = "<group>"; };
 		4C0520A729A5755C007A12A8 /* RandomPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomPlayer.swift; sourceTree = "<group>"; };
 		4C12BE2429807B9E003BB002 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
@@ -70,7 +68,6 @@
 		4C12BE282981C148003BB002 /* ConfirmationDialog+NotEnoughTeams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationDialog+NotEnoughTeams.swift"; sourceTree = "<group>"; };
 		4C12BE2A29832769003BB002 /* CompositionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionView.swift; sourceTree = "<group>"; };
 		4C1ED55724C82196005D6749 /* StandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingView.swift; sourceTree = "<group>"; };
-		4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +102,7 @@
 				4C4CDBF129B7D84300EC6812 /* TeamsCore in Frameworks */,
 				4C4CDBF529B7EF3600EC6812 /* ArchivesFeature in Frameworks */,
 				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
+				4C4CDBFB29BBC34400EC6812 /* SettingsFeature in Frameworks */,
 				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,14 +132,6 @@
 			path = Teams;
 			sourceTree = "<group>";
 		};
-		4C05209E29A39109007A12A8 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				4C05209F29A3911E007A12A8 /* SettingsTests.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
 		4C0520A429A573C1007A12A8 /* Standing */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,14 +149,6 @@
 				4C12BE2A29832769003BB002 /* CompositionView.swift */,
 			);
 			path = Composition;
-			sourceTree = "<group>";
-		};
-		4C2B6C4B296A0B4000B960C3 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				4C2B6C4C296A0B5300B960C3 /* SettingsView.swift */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		4C3732D41EBF8E8100A5785E = {
@@ -200,7 +182,6 @@
 				4CFDCAD228F0B624002DBF2D /* Dependencies */,
 				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 				4C8E60FE2679395000010C8B /* Scores */,
-				4C2B6C4B296A0B4000B960C3 /* Settings */,
 				4CFDCAD928F224D4002DBF2D /* Standing */,
 			);
 			path = MixTeam;
@@ -212,7 +193,6 @@
 				4C78F78A299C2415003A2DDD /* App */,
 				4C3763C324A3DF3300FA040B /* Composition */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
-				4C05209E29A39109007A12A8 /* Settings */,
 				4C0520A429A573C1007A12A8 /* Standing */,
 				4C03CF0929A0F4B0003C3584 /* Teams */,
 			);
@@ -317,6 +297,7 @@
 				4C4CDBF429B7EF3600EC6812 /* ArchivesFeature */,
 				4C4CDBF629B910E100EC6812 /* PlayersFeature */,
 				4C4CDBF829B9119000EC6812 /* ScoresFeature */,
+				4C4CDBFA29BBC34400EC6812 /* SettingsFeature */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -469,7 +450,6 @@
 				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
 				4C1ED55824C82196005D6749 /* StandingView.swift in Sources */,
 				4C12BE2529807B9E003BB002 /* Composition.swift in Sources */,
-				4C2B6C4D296A0B5300B960C3 /* SettingsView.swift in Sources */,
 				4C12BE2B29832769003BB002 /* CompositionView.swift in Sources */,
 				4CFDCADF28F2BD8C002DBF2D /* RandomTeam.swift in Sources */,
 				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
@@ -485,7 +465,6 @@
 			files = (
 				4C3763C524A3DF5E00FA040B /* CompositionTests.swift in Sources */,
 				4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */,
-				4C0520A029A3911E007A12A8 /* SettingsTests.swift in Sources */,
 				4C03CF0B29A0F55B003C3584 /* TeamsTests.swift in Sources */,
 				4C0520A629A573ED007A12A8 /* StandingTests.swift in Sources */,
 			);
@@ -842,6 +821,10 @@
 		4C4CDBF829B9119000EC6812 /* ScoresFeature */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ScoresFeature;
+		};
+		4C4CDBFA29BBC34400EC6812 /* SettingsFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SettingsFeature;
 		};
 		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;

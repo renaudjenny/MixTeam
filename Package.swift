@@ -15,12 +15,14 @@ let package = Package(
         .library(name: "PersistenceCore", targets: ["PersistenceCore"]),
         .library(name: "PlayersFeature", targets: ["PlayersFeature"]),
         .library(name: "ScoresFeature", targets: ["ScoresFeature"]),
+        .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
         .library(name: "StyleCore", targets: ["StyleCore"]),
         .library(name: "TeamsCore", targets: ["TeamsCore"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.51.0"),
         .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.6.1"),
+        .package(url: "https://github.com/renaudjenny/RenaudJennyAboutView", branch: "main"),
     ],
     targets: [
         .target(
@@ -78,6 +80,16 @@ let package = Package(
             ]
         ),
         .testTarget(name: "ScoresFeatureTests", dependencies: ["ScoresFeature"]),
+        .target(
+            name: "SettingsFeature",
+            dependencies: [
+                "ArchivesFeature",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "PersistenceCore",
+                .product(name: "RenaudJennyAboutView", package: "RenaudJennyAboutView"),
+            ]
+        ),
+        .testTarget(name: "SettingsFeatureTests", dependencies: ["SettingsFeature"]),
         .target(name: "StyleCore", dependencies: ["Assets"]),
         .target(
             name: "TeamsCore",

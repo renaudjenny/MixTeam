@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import ScoresFeature
+import SettingsFeature
 import SwiftUI
 
 struct AppView: View {

@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import PersistenceCore
 import ScoresFeature
+import SettingsFeature
 import SwiftUI
 
 struct App: ReducerProtocol {

@@ -3,27 +3,37 @@ import ComposableArchitecture
 import RenaudJennyAboutView
 import SwiftUI
 
-struct Settings: ReducerProtocol {
-    struct State: Equatable {
+public struct Settings: ReducerProtocol {
+    public struct State: Equatable {
         var archives: Archives.State = .loadingCard
+
+        public init(archives: Archives.State = .loadingCard) {
+            self.archives = archives
+        }
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case archives(Archives.Action)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         Scope(state: \.archives, action: /Action.archives) {
             Archives()
         }
     }
 }
 
-struct SettingsView: View {
+public struct SettingsView: View {
     let store: StoreOf<Settings>
     @Environment(\.colorScheme) private var colorScheme
 
-    var body: some View {
+    public init(store: StoreOf<Settings>) {
+        self.store = store
+    }
+
+    public var body: some View {
         NavigationView {
             List {
                 NavigationLink { aboutView } label: { Text("About") }
@@ -42,11 +52,19 @@ struct SettingsView: View {
 
     private var aboutView: some View {
         RenaudJennyAboutView.AboutView(appId: "id1526493495") {
+            #if os(iOS)
             Image(uiImage: #imageLiteral(resourceName: "Logo"))
                 .cornerRadius(16)
                 .padding()
                 .padding(.top)
                 .shadow(radius: 5)
+            #else
+            Image(nsImage: #imageLiteral(resourceName: "Logo"))
+                .cornerRadius(16)
+                .padding()
+                .padding(.top)
+                .shadow(radius: 5)
+            #endif
         }
     }
 }
