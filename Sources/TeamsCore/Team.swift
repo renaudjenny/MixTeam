@@ -7,9 +7,6 @@ import PersistenceCore
 import PlayersFeature
 
 public struct Team: ReducerProtocol {
-
-    public typealias Player = PlayersFeature.Player
-
     public struct State: Equatable, Identifiable {
         public let id: UUID
         @BindingState public var name: String = ""
@@ -128,39 +125,25 @@ public extension IdentifiedArrayOf<PersistedTeam> {
 
 public extension IdentifiedArrayOf<Team.State> {
     static var example: Self {
-        guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),
-              let purpleElephantId = UUID(uuidString: "98DBAF6C-685D-461F-9F81-E5E1E003B9AA"),
-              let blueLionId = UUID(uuidString: "6634515C-19C9-47DF-8B2B-036736F9AEA9")
-        else { fatalError("Cannot generate UUID from a defined UUID String") }
+        let players = IdentifiedArrayOf<Player.State>.example
+        var teams: Self = []
 
-        let playersExample: IdentifiedArrayOf<PlayersFeature.Player.State> = .example
-        let players = IdentifiedArrayOf<PlayersFeature.Player.State>(uniqueElements: playersExample.suffix(1))
-
-        return [
-            Team.State(
-                id: koalaTeamId,
-                name: "Strawberry Koala",
-                color: .strawberry,
-                image: .koala,
-                players: players,
-                isArchived: false
-            ),
-            Team.State(
-                id: purpleElephantId,
-                name: "Lilac Elephant",
-                color: .lilac,
-                image: .elephant,
-                players: [],
-                isArchived: false
-            ),
-            Team.State(
-                id: blueLionId,
-                name: "Bluejeans Lion",
-                color: .bluejeans,
-                image: .lion,
-                players: [],
-                isArchived: false
-            ),
-        ]
+        for team in IdentifiedArrayOf<PersistedTeam>.example {
+            var playerStates: IdentifiedArrayOf<Player.State> = []
+            for playerID in team.playerIDs {
+                if let playerState = players[id: playerID] {
+                    playerStates.updateOrAppend(playerState)
+                }
+            }
+            teams.updateOrAppend(Team.State(
+                id: team.id,
+                name: team.name,
+                color: team.color,
+                image: team.image,
+                players: playerStates,
+                isArchived: team.isArchived
+            ))
+        }
+        return teams
     }
 }

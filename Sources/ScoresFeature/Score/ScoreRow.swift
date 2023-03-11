@@ -9,8 +9,6 @@ public struct ScoreRow: View {
     let store: StoreOf<Score>
     @FocusState var focusedField: Score.State?
 
-    typealias Team = TeamsCore.Team
-
     public init(store: StoreOf<Score>, focusedField: FocusState<Score.State?> = FocusState<Score.State?>()) {
         self.store = store
         self._focusedField = focusedField

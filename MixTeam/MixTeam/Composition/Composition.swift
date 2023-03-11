@@ -5,8 +5,6 @@ import PersistenceCore
 import TeamsCore
 
 struct Composition: ReducerProtocol {
-    typealias Team = TeamsCore.Team
-
     struct State: Equatable {
         var teams: IdentifiedArrayOf<Team.State> = []
         var standing = Standing.State()

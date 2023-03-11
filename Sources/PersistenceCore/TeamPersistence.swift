@@ -6,7 +6,6 @@ import IdentifiedCollections
 import Models
 import XCTestDynamicOverlay
 
-// TODO: change `(state: Team)` to `(team: Team)`
 private final class Persistence {
     private let teamFileName = "MixTeamTeamV3_1_0"
 
@@ -30,20 +29,20 @@ private final class Persistence {
         subject.send(value)
     }
 
-    func save(_ states: IdentifiedArrayOf<PersistedTeam>) async throws {
-        value = states
+    func save(_ teams: IdentifiedArrayOf<PersistedTeam>) async throws {
+        value = teams
         subject.send(value)
     }
 
-    private func persist(_ states: IdentifiedArrayOf<PersistedTeam>) async throws {
-        let data = try JSONEncoder().encode(states)
+    private func persist(_ teams: IdentifiedArrayOf<PersistedTeam>) async throws {
+        let data = try JSONEncoder().encode(teams)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(teamFileName, conformingTo: .json))
     }
 
-    func updateOrAppend(state: PersistedTeam) async throws {
-        value.updateOrAppend(state)
+    func updateOrAppend(team: PersistedTeam) async throws {
+        value.updateOrAppend(team)
         subject.send(value)
     }
     func update(values: IdentifiedArrayOf<PersistedTeam>) async throws {
@@ -52,8 +51,8 @@ private final class Persistence {
         }
         subject.send(value)
     }
-    func remove(state: PersistedTeam) async throws {
-        value.remove(state)
+    func remove(team: PersistedTeam) async throws {
+        value.remove(team)
         subject.send(value)
     }
 }
@@ -75,9 +74,9 @@ extension TeamPersistence {
                 publisher: { persistence.subject.eraseToAnyPublisher().values },
                 load: { persistence.value },
                 save: { try await persistence.save($0) },
-                updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
+                updateOrAppend: { try await persistence.updateOrAppend(team: $0) },
                 updateValues: { try await persistence.update(values: $0) },
-                remove: { try await persistence.remove(state: $0) }
+                remove: { try await persistence.remove(team: $0) }
             )
         } catch {
             return Self(
@@ -108,7 +107,6 @@ extension TeamPersistence {
     )
 }
 
-// TODO: remove the redundancy with `public extension IdentifiedArrayOf<Team.State>`
 public extension IdentifiedArrayOf<PersistedTeam> {
     static var example: Self {
         guard let koalaTeamId = UUID(uuidString: "00E9D827-9FAD-4686-83F2-FAD24D2531A2"),

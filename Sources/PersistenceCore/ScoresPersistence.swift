@@ -5,7 +5,6 @@ import IdentifiedCollections
 import Models
 import XCTestDynamicOverlay
 
-// TODO: change `(state: Scores)` to `(scores: Scores)`
 private final class Persistence {
     private let scoresFileName = "MixTeamScoresV3_1_0"
 
@@ -26,12 +25,12 @@ private final class Persistence {
         value = decodedValue
     }
 
-    func save(_ state: PersistedScores) async throws {
-        value = state
+    func save(_ scores: PersistedScores) async throws {
+        value = scores
     }
 
-    private func persist(_ state: PersistedScores) async throws {
-        let data = try JSONEncoder().encode(state)
+    private func persist(_ scores: PersistedScores) async throws {
+        let data = try JSONEncoder().encode(scores)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(scoresFileName, conformingTo: .json))

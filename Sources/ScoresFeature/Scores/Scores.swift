@@ -5,8 +5,6 @@ import SwiftUI
 import TeamsCore
 
 public struct Scores: ReducerProtocol {
-    public typealias Team = TeamsCore.Team
-
     public struct State: Equatable {
         public var teams: IdentifiedArrayOf<Team.State> = []
         public var rounds: IdentifiedArrayOf<Round.State> = []

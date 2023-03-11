@@ -6,8 +6,6 @@ import SwiftUI
 import TeamsCore
 
 public struct Archives: ReducerProtocol {
-    public typealias Team = TeamsCore.Team
-
     public enum State: Equatable {
         case loadingCard
         case loaded(rows: IdentifiedArrayOf<ArchiveRow.State>)

@@ -5,8 +5,6 @@ import PersistenceCore
 import TeamsCore
 
 public struct Score: ReducerProtocol {
-    public typealias Team = TeamsCore.Team
-
     public struct State: Equatable, Identifiable {
         public let id: UUID
         public var team: Team.State

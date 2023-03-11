@@ -65,15 +65,8 @@ public extension PersistedPlayer {
 
 public extension IdentifiedArrayOf<Player.State> {
     static var example: Self {
-        guard let ameliaID = UUID(uuidString: "F336E7F8-78AC-439B-8E32-202DE58CFAC2"),
-              let joseID = UUID(uuidString: "C0F0266B-FFF1-47B0-8A2C-CC90BC36CF15"),
-              let jackID = UUID(uuidString: "34BC8929-C2F6-42D5-8131-8F048CE649A6")
-        else { fatalError("Cannot generate UUID from a defined UUID String") }
-
-        return [
-            Player.State(id: ameliaID, name: "Amelia", image: .amelie),
-            Player.State(id: joseID, name: "José", image: .santa),
-            Player.State(id: jackID, name: "Jack", image: .jack),
-        ]
+        return Self(uniqueElements: IdentifiedArrayOf<PersistedPlayer>.example.map {
+            Player.State(id: $0.id, name: $0.name, image: $0.image)
+        })
     }
 }

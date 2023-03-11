@@ -5,7 +5,6 @@ import IdentifiedCollections
 import Models
 import XCTestDynamicOverlay
 
-// TODO: change `(state: Player)` to `(player: Player)`
 private final class Persistence {
     private let playerFileName = "MixTeamPlayerV3_1_0"
 
@@ -29,20 +28,20 @@ private final class Persistence {
         subject.send(value)
     }
 
-    func save(_ states: IdentifiedArrayOf<PersistedPlayer>) async throws {
-        value = states
+    func save(_ players: IdentifiedArrayOf<PersistedPlayer>) async throws {
+        value = players
         subject.send(value)
     }
 
-    func persist(_ states: IdentifiedArrayOf<PersistedPlayer>) async throws {
-        let data = try JSONEncoder().encode(states)
+    func persist(_ players: IdentifiedArrayOf<PersistedPlayer>) async throws {
+        let data = try JSONEncoder().encode(players)
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }
         try data.write(to: url.appendingPathComponent(playerFileName, conformingTo: .json))
     }
 
-    func updateOrAppend(state: PersistedPlayer) async throws {
-        value.updateOrAppend(state)
+    func updateOrAppend(player: PersistedPlayer) async throws {
+        value.updateOrAppend(player)
         subject.send(value)
     }
     func remove(id: PersistedPlayer.ID) async throws {
@@ -67,7 +66,7 @@ public extension PlayerPersistence {
                 publisher: { persistence.subject.eraseToAnyPublisher().values },
                 load: { persistence.value },
                 save: { try await persistence.save($0) },
-                updateOrAppend: { try await persistence.updateOrAppend(state: $0) },
+                updateOrAppend: { try await persistence.updateOrAppend(player: $0) },
                 remove: { try await persistence.remove(id: $0) }
             )
         } catch {
@@ -96,8 +95,7 @@ public extension PlayerPersistence {
     )
 }
 
-// TODO: remove the redundancy with `public extension IdentifiedArrayOf<Player.State>`
-extension IdentifiedArrayOf<PersistedPlayer> {
+public extension IdentifiedArrayOf<PersistedPlayer> {
     static var example: Self {
         guard let ameliaID = UUID(uuidString: "F336E7F8-78AC-439B-8E32-202DE58CFAC2"),
               let joseID = UUID(uuidString: "C0F0266B-FFF1-47B0-8A2C-CC90BC36CF15"),
