@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import CompositionFeature
 import ScoresFeature
 import SettingsFeature
 import SwiftUI

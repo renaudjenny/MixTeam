@@ -2,14 +2,14 @@ import ComposableArchitecture
 import LoaderCore
 import SwiftUI
 
-struct CompositionLoader: ReducerProtocol {
-    enum State: Equatable {
+public struct CompositionLoader: ReducerProtocol {
+    public enum State: Equatable {
         case loadingCard
         case loaded(Composition.State)
         case errorCard(ErrorCard.State)
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case update(TaskResult<Composition.State>)
         case loadingCard(LoadingCard.Action)
         case composition(Composition.Action)
@@ -19,7 +19,9 @@ struct CompositionLoader: ReducerProtocol {
     @Dependency(\.teamPersistence) var teamPersistence
     @Dependency(\.playerPersistence) var playerPersistence
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -88,10 +90,14 @@ struct CompositionLoader: ReducerProtocol {
     }
 }
 
-struct CompositionLoaderView: View {
+public struct CompositionLoaderView: View {
     let store: StoreOf<CompositionLoader>
 
-    var body: some View {
+    public init(store: StoreOf<CompositionLoader>) {
+        self.store = store
+    }
+
+    public var body: some View {
         NavigationView {
             SwitchStore(store) {
                 CaseLet(
@@ -112,7 +118,9 @@ struct CompositionLoaderView: View {
             }
             .listStyle(.plain)
             .navigationTitle("MixTeam")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
         }
         .tabItem {
             Label("Composition", systemImage: "person.2.crop.square.stack")

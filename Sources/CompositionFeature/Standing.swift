@@ -1,12 +1,16 @@
 import ComposableArchitecture
 import PlayersFeature
 
-struct Standing: ReducerProtocol {
-    struct State: Equatable {
-        var players: IdentifiedArrayOf<Player.State> = []
+public struct Standing: ReducerProtocol {
+    public struct State: Equatable {
+        public var players: IdentifiedArrayOf<Player.State> = []
+
+        public init(players: IdentifiedArrayOf<Player.State> = []) {
+            self.players = players
+        }
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case createPlayer
         case deletePlayer(id: Player.State.ID)
         case player(id: Player.State.ID, action: Player.Action)
@@ -16,7 +20,9 @@ struct Standing: ReducerProtocol {
     @Dependency(\.playerPersistence) var playerPersistence
     @Dependency(\.randomPlayer) var randomPlayer
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
             case .createPlayer:

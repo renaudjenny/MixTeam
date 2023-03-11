@@ -1,7 +1,6 @@
 import Assets
 import Dependencies
 import Foundation
-import TeamsCore
 import XCTestDynamicOverlay
 
 struct RandomTeamDepedencyKey: DependencyKey {
@@ -9,14 +8,14 @@ struct RandomTeamDepedencyKey: DependencyKey {
     static let testValue: RandomTeam = .test
     static let previewValue: RandomTeam = .strawberryBunny
 }
-extension DependencyValues {
+public extension DependencyValues {
     var randomTeam: RandomTeam {
         get { self[RandomTeamDepedencyKey.self] }
         set { self[RandomTeamDepedencyKey.self] = newValue }
     }
 }
 
-struct RandomTeam {
+public struct RandomTeam {
     private let random: () -> Team.State
 
     static let live = Self {
@@ -31,7 +30,7 @@ struct RandomTeam {
         XCTFail(#"Unimplemented: @Dependency(\.shufflePlayers)"#)
         return live.random()
     }
-    static let strawberryBunny = Self {
+    public static let strawberryBunny = Self {
         @Dependency(\.uuid) var uuid
 
         let image: MTImage = .bunny
@@ -40,7 +39,7 @@ struct RandomTeam {
         return Team.State(id: uuid(), name: name, color: color, image: image)
     }
 
-    func callAsFunction() -> Team.State {
+    public func callAsFunction() -> Team.State {
         random()
     }
 }

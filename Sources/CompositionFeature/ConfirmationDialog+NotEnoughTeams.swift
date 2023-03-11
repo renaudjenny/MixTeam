@@ -1,6 +1,6 @@
 import ComposableArchitecture
 
-extension ConfirmationDialogState where Action == Composition.Action {
+public extension ConfirmationDialogState where Action == Composition.Action {
     static var notEnoughTeams: Self {
         ConfirmationDialogState(titleVisibility: .visible) {
             TextState("Couldn't Mix Team")

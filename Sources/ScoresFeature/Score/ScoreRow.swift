@@ -3,7 +3,7 @@ import ComposableArchitecture
 import Models
 import PersistenceCore
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 public struct ScoreRow: View {
     let store: StoreOf<Score>

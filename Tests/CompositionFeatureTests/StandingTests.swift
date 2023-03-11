@@ -1,5 +1,6 @@
 import ComposableArchitecture
-@testable import MixTeam
+import CompositionFeature
+import PlayersFeature
 import XCTest
 
 @MainActor
@@ -22,7 +23,7 @@ final class StandingTests: XCTestCase {
 
     func testDeletePlayer() async throws {
         let removePlayerExpectation = expectation(description: "Remove Player")
-        let store = TestStore(initialState: Standing.State.example, reducer: Standing()) { dependencies in
+        let store = TestStore(initialState: .example, reducer: Standing()) { dependencies in
             dependencies.playerPersistence.remove = { _ in removePlayerExpectation.fulfill() }
         }
         let playerToRemove = try XCTUnwrap(store.state.players.first)

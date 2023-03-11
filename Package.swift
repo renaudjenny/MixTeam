@@ -9,6 +9,7 @@ let package = Package(
     products: [
         .library(name: "ArchivesFeature", targets: ["ArchivesFeature"]),
         .library(name: "Assets", targets: ["Assets"]),
+        .library(name: "CompositionFeature", targets: ["CompositionFeature"]),
         .library(name: "ImagePicker", targets: ["ImagePicker"]),
         .library(name: "LoaderCore", targets: ["LoaderCore"]),
         .library(name: "Models", targets: ["Models"]),
@@ -17,7 +18,7 @@ let package = Package(
         .library(name: "ScoresFeature", targets: ["ScoresFeature"]),
         .library(name: "SettingsFeature", targets: ["SettingsFeature"]),
         .library(name: "StyleCore", targets: ["StyleCore"]),
-        .library(name: "TeamsCore", targets: ["TeamsCore"]),
+        .library(name: "TeamsFeature", targets: ["TeamsFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.51.0"),
@@ -30,11 +31,22 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "LoaderCore",
-                "TeamsCore",
+                "TeamsFeature",
             ]
         ),
         .testTarget(name: "ArchivesFeatureTests", dependencies: ["ArchivesFeature"]),
         .target(name: "Assets", dependencies: [], resources: [.process("Illustrations.xcassets")]),
+        .target(
+            name: "CompositionFeature",
+            dependencies: [
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "Models",
+                "PersistenceCore",
+                "PlayersFeature",
+                "TeamsFeature",
+            ]
+        ),
+        .testTarget(name: "CompositionFeatureTests", dependencies: ["CompositionFeature"]),
         .target(
             name: "ImagePicker",
             dependencies: [
@@ -76,7 +88,7 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "PersistenceCore",
                 .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
-                "TeamsCore",
+                "TeamsFeature",
             ]
         ),
         .testTarget(name: "ScoresFeatureTests", dependencies: ["ScoresFeature"]),
@@ -92,7 +104,7 @@ let package = Package(
         .testTarget(name: "SettingsFeatureTests", dependencies: ["SettingsFeature"]),
         .target(name: "StyleCore", dependencies: ["Assets"]),
         .target(
-            name: "TeamsCore",
+            name: "TeamsFeature",
             dependencies: [
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
@@ -101,5 +113,6 @@ let package = Package(
                 "PersistenceCore",
             ]
         ),
+        .testTarget(name: "TeamsFeatureTests", dependencies: ["TeamsFeature"]),
     ]
 )

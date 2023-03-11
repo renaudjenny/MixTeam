@@ -1,6 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 public struct ArchiveRow: ReducerProtocol {
     public struct State: Equatable, Identifiable {

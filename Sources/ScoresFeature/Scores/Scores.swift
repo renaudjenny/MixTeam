@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Models
 import PersistenceCore
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 public struct Scores: ReducerProtocol {
     public struct State: Equatable {
@@ -99,7 +99,7 @@ public struct Scores: ReducerProtocol {
 }
 
 private extension IdentifiedArrayOf<Round.State> {
-    func accumulatedPoints(for team: TeamsCore.Team.State, roundCount: Int) -> Int {
+    func accumulatedPoints(for team: Team.State, roundCount: Int) -> Int {
         guard roundCount > 0, roundCount <= count else { return 0 }
         return self[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
     }

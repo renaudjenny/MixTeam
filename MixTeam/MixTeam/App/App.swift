@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import CompositionFeature
 import PersistenceCore
 import ScoresFeature
 import SettingsFeature

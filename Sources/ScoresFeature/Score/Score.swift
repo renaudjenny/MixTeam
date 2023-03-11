@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Foundation
 import Models
 import PersistenceCore
-import TeamsCore
+import TeamsFeature
 
 public struct Score: ReducerProtocol {
     public struct State: Equatable, Identifiable {

@@ -2,16 +2,26 @@ import ComposableArchitecture
 import Foundation
 import Models
 import PersistenceCore
-import TeamsCore
+import TeamsFeature
 
-struct Composition: ReducerProtocol {
-    struct State: Equatable {
-        var teams: IdentifiedArrayOf<Team.State> = []
-        var standing = Standing.State()
-        var notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>?
+public struct Composition: ReducerProtocol {
+    public struct State: Equatable {
+        public var teams: IdentifiedArrayOf<Team.State> = []
+        public var standing = Standing.State()
+        public var notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>?
+
+        public init(
+            teams: IdentifiedArrayOf<Team.State> = [],
+            standing: Standing.State = Standing.State(),
+            notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>? = nil
+        ) {
+            self.teams = teams
+            self.standing = standing
+            self.notEnoughTeamsConfirmationDialog = notEnoughTeamsConfirmationDialog
+        }
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case addTeam
         case mixTeam
         case dismissNotEnoughTeamsAlert
@@ -25,7 +35,9 @@ struct Composition: ReducerProtocol {
     @Dependency(\.randomTeam) var randomTeam
     @Dependency(\.uuid) var uuid
 
-    var body: some ReducerProtocol<State, Action> {
+    public init() {}
+
+    public var body: some ReducerProtocol<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
         }
@@ -95,7 +107,7 @@ struct Composition: ReducerProtocol {
     }
 }
 
-extension IdentifiedArrayOf<TeamsCore.Team.State> {
+extension IdentifiedArrayOf<Team.State> {
     var persisted: IdentifiedArrayOf<PersistedTeam> {
         IdentifiedArrayOf<PersistedTeam>(uniqueElements: map(\.persisted))
     }

@@ -1,6 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 struct TotalScoresView: View {
     let store: StoreOf<Scores>

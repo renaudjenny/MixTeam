@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import PlayersFeature
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 struct StandingView: View {
     let store: StoreOf<Standing>

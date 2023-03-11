@@ -1,14 +1,18 @@
 import Assets
 import ComposableArchitecture
+import PlayersFeature
 import SwiftUI
 import StyleCore
-import TeamsCore
-import PlayersFeature
+import TeamsFeature
 
-struct CompositionView: View {
+public struct CompositionView: View {
     let store: StoreOf<Composition>
 
-    var body: some View {
+    public init(store: StoreOf<Composition>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store.stateless) { viewStore in
             List {
                 Group {
@@ -70,13 +74,13 @@ extension Store where State == Composition.State, Action == Composition.Action {
     }
 }
 
-extension Composition.State {
+public extension Composition.State {
     static var example: Self {
         Self(teams: .example, standing: .example)
     }
 }
 
-extension Standing.State {
+public extension Standing.State {
     static var example: Self {
         let players = IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Player.State>.example.prefix(2))
         return Self(players: players)

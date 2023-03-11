@@ -2,22 +2,25 @@ import Assets
 import Dependencies
 import Foundation
 import XCTestDynamicOverlay
-import PlayersFeature
 
 struct RandomPlayerDepedencyKey: DependencyKey {
     static let liveValue: RandomPlayer = .live
     static let testValue: RandomPlayer = .test
     static let previewValue: RandomPlayer = .amelie
 }
-extension DependencyValues {
+public extension DependencyValues {
     var randomPlayer: RandomPlayer {
         get { self[RandomPlayerDepedencyKey.self] }
         set { self[RandomPlayerDepedencyKey.self] = newValue }
     }
 }
 
-struct RandomPlayer {
+public struct RandomPlayer {
     let random: () -> Player.State
+
+    public init(random: @escaping () -> Player.State) {
+        self.random = random
+    }
 
     static let live = Self {
         @Dependency(\.uuid) var uuid
@@ -38,7 +41,7 @@ struct RandomPlayer {
         return Player.State(id: uuid(), name: name, image: image, color: .aluminium)
     }
 
-    func callAsFunction() -> Player.State {
+    public func callAsFunction() -> Player.State {
         random()
     }
 }

@@ -3,7 +3,7 @@ import LoaderCore
 import Models
 import PersistenceCore
 import SwiftUI
-import TeamsCore
+import TeamsFeature
 
 public struct Archives: ReducerProtocol {
     public enum State: Equatable {
@@ -138,7 +138,7 @@ struct ArchivesView_Previews: PreviewProvider {
 extension Archives.State {
     static var preview: Self { .loaded(rows: []) }
     static var previewWithTeamsAndPlayers: Self {
-        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<TeamsCore.Team.State>.example.map {
+        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
             var team = $0
             team.isArchived = true
             return ArchiveRow.State(team: team)

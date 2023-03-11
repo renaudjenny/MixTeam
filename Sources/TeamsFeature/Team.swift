@@ -99,7 +99,7 @@ public extension PersistedTeam {
 
             let players = try await playerPersistence.load()
             let teamPlayers = IdentifiedArrayOf(uniqueElements: playerIDs.compactMap { players[id: $0]?.state })
-            return TeamsCore.Team.State(
+            return Team.State(
                 id: id,
                 name: name,
                 color: color,

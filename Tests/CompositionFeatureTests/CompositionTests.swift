@@ -1,7 +1,8 @@
 import ComposableArchitecture
-import XCTest
-@testable import MixTeam
+import CompositionFeature
 import SwiftUI
+import TeamsFeature
+import XCTest
 
 @MainActor
 class CompositionTests: XCTestCase {
