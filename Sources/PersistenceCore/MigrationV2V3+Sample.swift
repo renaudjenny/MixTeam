@@ -2,7 +2,7 @@
 import Foundation
 
 // swiftlint:disable function_body_length
-func addV2PersistedData() {
+public func addV2PersistedData() {
     let teamsJSON = """
     [{
         "colorIdentifier": "gray",

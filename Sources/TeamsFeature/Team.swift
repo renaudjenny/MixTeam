@@ -98,7 +98,11 @@ public extension PersistedTeam {
             @Dependency(\.playerPersistence) var playerPersistence
 
             let players = try await playerPersistence.load()
-            let teamPlayers = IdentifiedArrayOf(uniqueElements: playerIDs.compactMap { players[id: $0]?.state })
+            let teamPlayers = IdentifiedArrayOf(uniqueElements: playerIDs.compactMap {
+                var player = players[id: $0]?.state
+                player?.color = color
+                return player
+            })
             return Team.State(
                 id: id,
                 name: name,

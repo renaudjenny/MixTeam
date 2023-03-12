@@ -3,7 +3,7 @@ import Foundation
 import IdentifiedCollections
 
 // swiftlint:disable:next function_body_length
-func addV3_0toV3_1PersistedData() throws {
+public func addV3_0toV3_1PersistedData() throws {
     let teamJSON = """
     [{
         "image": "koala",
