@@ -18,16 +18,10 @@
 		4C4CDBFB29BBC34400EC6812 /* SettingsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBFA29BBC34400EC6812 /* SettingsFeature */; };
 		4C4CDBFD29BC7E7100EC6812 /* TeamsFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBFC29BC7E7100EC6812 /* TeamsFeature */; };
 		4C4CDBFF29BCE2DC00EC6812 /* CompositionFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDBFE29BCE2DC00EC6812 /* CompositionFeature */; };
+		4C4CDC0129BDDA1500EC6812 /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 4C4CDC0029BDDA1500EC6812 /* AppFeature */; };
 		4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */; };
-		4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */; };
-		4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 4C75738128F0ADC600A6E1EF /* Dependencies */; };
-		4C75738528F0AE1200A6E1EF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C75738428F0AE1200A6E1EF /* App.swift */; };
-		4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C78F78B299C2424003A2DDD /* AppTests.swift */; };
-		4C7FE787245A166A0011E8AB /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7FE786245A166A0011E8AB /* AppView.swift */; };
-		4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */ = {isa = PBXBuildFile; productRef = 4C86575C255479C20040EA04 /* RenaudJennyAboutView */; };
 		4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 4C8D13A429AFF11200EB68B5 /* ImagePicker */; };
 		4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */ = {isa = PBXBuildFile; productRef = 4C8D13A629AFFCEF00EB68B5 /* Assets */; };
-		4CF355382946909000366084 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 4CF355372946909000366084 /* SwiftUINavigation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,9 +50,6 @@
 		4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamUITests.swift; sourceTree = "<group>"; };
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamApp.swift; sourceTree = "<group>"; };
-		4C75738428F0AE1200A6E1EF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		4C78F78B299C2424003A2DDD /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
-		4C7FE786245A166A0011E8AB /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4CCD52C929AFEFDA002B163C /* MixTeam */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MixTeam; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,20 +59,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4CDBF729B910E100EC6812 /* PlayersFeature in Frameworks */,
-				4C75738228F0ADC600A6E1EF /* Dependencies in Frameworks */,
 				4C8D13A729AFFCEF00EB68B5 /* Assets in Frameworks */,
 				4C4CDBFF29BCE2DC00EC6812 /* CompositionFeature in Frameworks */,
 				4C4CDBF929B9119000EC6812 /* ScoresFeature in Frameworks */,
-				4C75738028F0ADC600A6E1EF /* ComposableArchitecture in Frameworks */,
 				4C4CDBEB29B3D66100EC6812 /* StyleCore in Frameworks */,
+				4C4CDC0129BDDA1500EC6812 /* AppFeature in Frameworks */,
 				4C4CDBF329B7D8B400EC6812 /* PersistenceCore in Frameworks */,
 				4C4CDBE929B3D66100EC6812 /* LoaderCore in Frameworks */,
 				4C8D13A529AFF11200EB68B5 /* ImagePicker in Frameworks */,
 				4C4CDBF529B7EF3600EC6812 /* ArchivesFeature in Frameworks */,
-				4C86575D255479C20040EA04 /* RenaudJennyAboutView in Frameworks */,
 				4C4CDBFB29BBC34400EC6812 /* SettingsFeature in Frameworks */,
 				4C4CDBFD29BC7E7100EC6812 /* TeamsFeature in Frameworks */,
-				4CF355382946909000366084 /* SwiftUINavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,7 +115,6 @@
 		4C3732DF1EBF8E8100A5785E /* MixTeam */ = {
 			isa = PBXGroup;
 			children = (
-				4C75738328F0ADFF00A6E1EF /* App */,
 				4C3732E91EBF8E8100A5785E /* Assets.xcassets */,
 				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 			);
@@ -137,7 +124,6 @@
 		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
 			isa = PBXGroup;
 			children = (
-				4C78F78A299C2415003A2DDD /* App */,
 				4C3732F91EBF8E8100A5785E /* Info.plist */,
 			);
 			path = MixTeamTests;
@@ -150,23 +136,6 @@
 				4C3733041EBF8E8100A5785E /* Info.plist */,
 			);
 			path = MixTeamUITests;
-			sourceTree = "<group>";
-		};
-		4C75738328F0ADFF00A6E1EF /* App */ = {
-			isa = PBXGroup;
-			children = (
-				4C75738428F0AE1200A6E1EF /* App.swift */,
-				4C7FE786245A166A0011E8AB /* AppView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		4C78F78A299C2415003A2DDD /* App */ = {
-			isa = PBXGroup;
-			children = (
-				4C78F78B299C2424003A2DDD /* AppTests.swift */,
-			);
-			path = App;
 			sourceTree = "<group>";
 		};
 		4CCD52B429AFE6BB002B163C /* Frameworks */ = {
@@ -194,10 +163,6 @@
 			);
 			name = MixTeam;
 			packageProductDependencies = (
-				4C86575C255479C20040EA04 /* RenaudJennyAboutView */,
-				4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */,
-				4C75738128F0ADC600A6E1EF /* Dependencies */,
-				4CF355372946909000366084 /* SwiftUINavigation */,
 				4C8D13A429AFF11200EB68B5 /* ImagePicker */,
 				4C8D13A629AFFCEF00EB68B5 /* Assets */,
 				4C4CDBE829B3D66100EC6812 /* LoaderCore */,
@@ -209,6 +174,7 @@
 				4C4CDBFA29BBC34400EC6812 /* SettingsFeature */,
 				4C4CDBFC29BC7E7100EC6812 /* TeamsFeature */,
 				4C4CDBFE29BCE2DC00EC6812 /* CompositionFeature */,
+				4C4CDC0029BDDA1500EC6812 /* AppFeature */,
 			);
 			productName = MixTeam;
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
@@ -290,9 +256,6 @@
 			);
 			mainGroup = 4C3732D41EBF8E8100A5785E;
 			packageReferences = (
-				4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */,
-				4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
-				4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
 			);
 			productRefGroup = 4C3732DE1EBF8E8100A5785E /* Products */;
 			projectDirPath = "";
@@ -356,8 +319,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C75737D28EF73D200A6E1EF /* MixTeamApp.swift in Sources */,
-				4C75738528F0AE1200A6E1EF /* App.swift in Sources */,
-				4C7FE787245A166A0011E8AB /* AppView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +326,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C78F78C299C24AF003A2DDD /* AppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,33 +625,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.51.0;
-			};
-		};
-		4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/renaudjenny/RenaudJennyAboutView";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swiftui-navigation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.3;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		4C4CDBE829B3D66100EC6812 /* LoaderCore */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -729,20 +662,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CompositionFeature;
 		};
-		4C75737F28F0ADC600A6E1EF /* ComposableArchitecture */ = {
+		4C4CDC0029BDDA1500EC6812 /* AppFeature */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
-		};
-		4C75738128F0ADC600A6E1EF /* Dependencies */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4C75737E28F0ADC600A6E1EF /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = Dependencies;
-		};
-		4C86575C255479C20040EA04 /* RenaudJennyAboutView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4C86575B255479C20040EA04 /* XCRemoteSwiftPackageReference "RenaudJennyAboutView" */;
-			productName = RenaudJennyAboutView;
+			productName = AppFeature;
 		};
 		4C8D13A429AFF11200EB68B5 /* ImagePicker */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -751,11 +673,6 @@
 		4C8D13A629AFFCEF00EB68B5 /* Assets */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Assets;
-		};
-		4CF355372946909000366084 /* SwiftUINavigation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4CF355362946909000366084 /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
-			productName = SwiftUINavigation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

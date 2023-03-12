@@ -4,14 +4,16 @@ import ScoresFeature
 import SettingsFeature
 import SwiftUI
 
-struct AppView: View {
+public struct AppView: View {
     let store: StoreOf<App>
     @Environment(\.colorScheme) private var colorScheme
-    @State private var isAboutPresented = false
-    @State private var isScoreboardPresented = false
     private let buttonSize = CGSize(width: 60, height: 60)
 
-    var body: some View {
+    public init(store: StoreOf<App>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store, observe: \.selectedTab) { viewStore in
             TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
                 CompositionLoaderView(
@@ -28,7 +30,9 @@ struct AppView: View {
                 .tag(App.Tab.settings)
             }
             .task { viewStore.send(.task) }
+            #if os(iOS)
             .navigationViewStyle(.stack)
+            #endif
         }
     }
 }
@@ -43,7 +47,7 @@ struct AppView_Previews: PreviewProvider {
     }
 }
 
-extension App.State {
+public extension App.State {
     static var example: Self {
         Self(compositionLoader: .loaded(.example))
     }

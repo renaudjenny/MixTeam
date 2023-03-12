@@ -1,14 +1,12 @@
+import AppFeature
 import Combine
 import ComposableArchitecture
 import XCTest
-@testable import MixTeam
 
 @MainActor
 class AppTests: XCTestCase {
     func testSelectTab() async throws {
-        let store = TestStore(initialState: .example, reducer: App()) { dependencies in
-            dependencies.teamPersistence.publisher = { .test }
-        }
+        let store = TestStore(initialState: App.State.example, reducer: App())
 
         await store.send(.tabSelected(.scoreboard)) {
             $0.selectedTab = .scoreboard
@@ -34,11 +32,5 @@ class AppTests: XCTestCase {
 
         await store.send(.task)
         wait(for: [migrationV2toV3Expectation, migrationV3_0toV3_1Expectation], timeout: 0.1)
-    }
-}
-
-extension AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<Team.State>, Error>> {
-    static var test: Self {
-        Result.Publisher(IdentifiedArrayOf<Team.State>.example).eraseToAnyPublisher().values
     }
 }

@@ -7,6 +7,7 @@ let package = Package(
     name: "MixTeam",
     platforms: [.iOS(.v15), .macOS(.v12)],
     products: [
+        .library(name: "AppFeature", targets: ["AppFeature"]),
         .library(name: "ArchivesFeature", targets: ["ArchivesFeature"]),
         .library(name: "Assets", targets: ["Assets"]),
         .library(name: "CompositionFeature", targets: ["CompositionFeature"]),
@@ -21,11 +22,23 @@ let package = Package(
         .library(name: "TeamsFeature", targets: ["TeamsFeature"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.51.0"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.52.0"),
+        .package(url: "https://github.com/pointfreeco/swift-identified-collections", from: "0.7.0"),
         .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.6.1"),
         .package(url: "https://github.com/renaudjenny/RenaudJennyAboutView", branch: "main"),
     ],
     targets: [
+        .target(
+            name: "AppFeature",
+            dependencies: [
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "CompositionFeature",
+                "PersistenceCore",
+                "ScoresFeature",
+                "SettingsFeature",
+            ]
+        ),
+        .testTarget(name: "AppFeatureTests", dependencies: ["AppFeature"]),
         .target(
             name: "ArchivesFeature",
             dependencies: [
@@ -63,7 +76,10 @@ let package = Package(
                 "StyleCore"
             ]
         ),
-        .target(name: "Models", dependencies: ["Assets"]),
+        .target(name: "Models", dependencies: [
+            "Assets",
+            .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
+        ]),
         .target(
             name: "PersistenceCore",
             dependencies: [

@@ -5,22 +5,24 @@ import ScoresFeature
 import SettingsFeature
 import SwiftUI
 
-struct App: ReducerProtocol {
-    struct State: Equatable {
-        var compositionLoader: CompositionLoader.State = .loadingCard
-        var scoreboard: Scoreboard.State = .loadingCard
-        var settings = Settings.State()
+public typealias Settings = SettingsFeature.Settings
 
-        var selectedTab: Tab = .compositionLoader
+public struct App: ReducerProtocol {
+    public struct State: Equatable {
+        public var compositionLoader: CompositionLoader.State = .loadingCard
+        public var scoreboard: Scoreboard.State = .loadingCard
+        public var settings = Settings.State()
+
+        public var selectedTab: Tab = .compositionLoader
     }
 
-    enum Tab: Equatable {
+    public enum Tab: Equatable {
         case compositionLoader
         case scoreboard
         case settings
     }
 
-    enum Action: Equatable {
+    public enum Action: Equatable {
         case task
         case tabSelected(Tab)
         case compositionLoader(CompositionLoader.Action)
@@ -28,9 +30,11 @@ struct App: ReducerProtocol {
         case settings(Settings.Action)
     }
 
+    public init() {}
+
     @Dependency(\.migration) var migration
 
-    var body: some ReducerProtocol<State, Action> {
+    public var body: some ReducerProtocol<State, Action> {
         Scope(state: \.compositionLoader, action: /Action.compositionLoader) {
             CompositionLoader()
         }
@@ -59,4 +63,31 @@ struct App: ReducerProtocol {
             }
         }
     }
+}
+
+public extension StoreOf<App> {
+    static var live: StoreOf<App> {
+        Store(initialState: App.State(), reducer: App())
+    }
+    #if DEBUG
+    static var preview: StoreOf<App> {
+        Store(
+            initialState: .example,
+            reducer: App()
+                .dependency(\.playerPersistence, .preview)
+        )
+    }
+
+    static var withError: StoreOf<App> {
+        Store(
+            initialState: App.State(),
+            reducer: App()
+                .dependency(\.playerPersistence, .preview)
+                .dependency(\.teamPersistence.load, {
+                    try await Task.sleep(nanoseconds: 500_000_000)
+                    throw PersistenceError.notFound
+                })
+        )
+    }
+    #endif
 }
