@@ -25,13 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4C3732F41EBF8E8100A5785E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C3732D51EBF8E8100A5785E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4C3732DC1EBF8E8100A5785E;
-			remoteInfo = MixTeam;
-		};
 		4C3732FF1EBF8E8100A5785E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4C3732D51EBF8E8100A5785E /* Project object */;
@@ -44,8 +37,6 @@
 /* Begin PBXFileReference section */
 		4C3732DD1EBF8E8100A5785E /* MixTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MixTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3732E91EBF8E8100A5785E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C3732F91EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3732FE1EBF8E8100A5785E /* MixTeamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MixTeamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C3733021EBF8E8100A5785E /* MixTeamUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixTeamUITests.swift; sourceTree = "<group>"; };
 		4C3733041EBF8E8100A5785E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,13 +64,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4C3732F01EBF8E8100A5785E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C3732FB1EBF8E8100A5785E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -96,7 +80,6 @@
 				4CCD52B429AFE6BB002B163C /* Frameworks */,
 				4C3732DF1EBF8E8100A5785E /* MixTeam */,
 				4CCD52C929AFEFDA002B163C /* MixTeam */,
-				4C3732F61EBF8E8100A5785E /* MixTeamTests */,
 				4C3733011EBF8E8100A5785E /* MixTeamUITests */,
 				4C3732DE1EBF8E8100A5785E /* Products */,
 			);
@@ -106,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				4C3732DD1EBF8E8100A5785E /* MixTeam.app */,
-				4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */,
 				4C3732FE1EBF8E8100A5785E /* MixTeamUITests.xctest */,
 			);
 			name = Products;
@@ -119,14 +101,6 @@
 				4C75737C28EF73D200A6E1EF /* MixTeamApp.swift */,
 			);
 			path = MixTeam;
-			sourceTree = "<group>";
-		};
-		4C3732F61EBF8E8100A5785E /* MixTeamTests */ = {
-			isa = PBXGroup;
-			children = (
-				4C3732F91EBF8E8100A5785E /* Info.plist */,
-			);
-			path = MixTeamTests;
 			sourceTree = "<group>";
 		};
 		4C3733011EBF8E8100A5785E /* MixTeamUITests */ = {
@@ -180,24 +154,6 @@
 			productReference = 4C3732DD1EBF8E8100A5785E /* MixTeam.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4C3732F21EBF8E8100A5785E /* MixTeamTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4C37330A1EBF8E8100A5785E /* Build configuration list for PBXNativeTarget "MixTeamTests" */;
-			buildPhases = (
-				4C3732EF1EBF8E8100A5785E /* Sources */,
-				4C3732F01EBF8E8100A5785E /* Frameworks */,
-				4C3732F11EBF8E8100A5785E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4C3732F51EBF8E8100A5785E /* PBXTargetDependency */,
-			);
-			name = MixTeamTests;
-			productName = MixTeamTests;
-			productReference = 4C3732F31EBF8E8100A5785E /* MixTeamTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		4C3732FD1EBF8E8100A5785E /* MixTeamUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4C37330D1EBF8E8100A5785E /* Build configuration list for PBXNativeTarget "MixTeamUITests" */;
@@ -232,12 +188,6 @@
 						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
-					4C3732F21EBF8E8100A5785E = {
-						CreatedOnToolsVersion = 8.3.2;
-						LastSwiftMigration = 1150;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 4C3732DC1EBF8E8100A5785E;
-					};
 					4C3732FD1EBF8E8100A5785E = {
 						CreatedOnToolsVersion = 8.3.2;
 						LastSwiftMigration = 1140;
@@ -262,7 +212,6 @@
 			projectRoot = "";
 			targets = (
 				4C3732DC1EBF8E8100A5785E /* MixTeam */,
-				4C3732F21EBF8E8100A5785E /* MixTeamTests */,
 				4C3732FD1EBF8E8100A5785E /* MixTeamUITests */,
 			);
 		};
@@ -274,13 +223,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C3732EA1EBF8E8100A5785E /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C3732F11EBF8E8100A5785E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,13 +264,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4C3732EF1EBF8E8100A5785E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C3732FA1EBF8E8100A5785E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -340,11 +275,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4C3732F51EBF8E8100A5785E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4C3732DC1EBF8E8100A5785E /* MixTeam */;
-			targetProxy = 4C3732F41EBF8E8100A5785E /* PBXContainerItemProxy */;
-		};
 		4C3733001EBF8E8100A5785E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4C3732DC1EBF8E8100A5785E /* MixTeam */;
@@ -507,47 +437,6 @@
 			};
 			name = Release;
 		};
-		4C37330B1EBF8E8100A5785E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = MixTeamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixTeam.app/MixTeam";
-			};
-			name = Debug;
-		};
-		4C37330C1EBF8E8100A5785E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = MixTeamTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = renaud.jenny.MixTeamTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MixTeam.app/MixTeam";
-			};
-			name = Release;
-		};
 		4C37330E1EBF8E8100A5785E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -601,15 +490,6 @@
 			buildConfigurations = (
 				4C3733081EBF8E8100A5785E /* Debug */,
 				4C3733091EBF8E8100A5785E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4C37330A1EBF8E8100A5785E /* Build configuration list for PBXNativeTarget "MixTeamTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4C37330B1EBF8E8100A5785E /* Debug */,
-				4C37330C1EBF8E8100A5785E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
