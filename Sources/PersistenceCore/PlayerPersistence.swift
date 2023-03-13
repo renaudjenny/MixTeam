@@ -71,7 +71,7 @@ public extension PlayerPersistence {
             )
         } catch {
             return Self(
-                publisher: { .with(error: error) },
+                publisher: { Fail(error: error).eraseToAnyPublisher().values },
                 load: { throw error },
                 save: { _ in throw error },
                 updateOrAppend: { _ in throw error },
@@ -122,15 +122,3 @@ public extension DependencyValues {
         set { self[PlayerPersistenceDependencyKey.self] = newValue }
     }
 }
-
-#if DEBUG
-extension AsyncThrowingPublisher where P == AnyPublisher<IdentifiedArrayOf<PersistedPlayer>, Error> {
-    static func with(value: Element) -> Self {
-        Result.Publisher(value).eraseToAnyPublisher().values
-    }
-
-    static func with(error: Error) -> Self {
-        Fail(error: error).eraseToAnyPublisher().values
-    }
-}
-#endif

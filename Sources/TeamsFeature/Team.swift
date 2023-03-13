@@ -135,7 +135,8 @@ public extension IdentifiedArrayOf<Team.State> {
         for team in IdentifiedArrayOf<PersistedTeam>.example {
             var playerStates: IdentifiedArrayOf<Player.State> = []
             for playerID in team.playerIDs {
-                if let playerState = players[id: playerID] {
+                if var playerState = players[id: playerID] {
+                    playerState.color = team.color
                     playerStates.updateOrAppend(playerState)
                 }
             }
