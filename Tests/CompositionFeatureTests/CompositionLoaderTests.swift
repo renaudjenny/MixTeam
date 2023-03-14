@@ -1,6 +1,7 @@
 import Combine
 import ComposableArchitecture
 import CompositionFeature
+import LoaderCore
 import XCTest
 
 @MainActor
@@ -24,5 +25,20 @@ final class CompositionLoaderTests: XCTestCase {
         }
         await store.receive(.update(.success(expectedState)))
         await store.receive(.update(.success(expectedState)))
+    }
+
+    func testReloadOnError() async {
+        let store = TestStore(initialState: .errorCard(ErrorCard.State(description: "Test error")), reducer: CompositionLoader()) { dependencies in
+            dependencies.teamPersistence.load = { .example }
+            dependencies.playerPersistence.load = { .example }
+        }
+
+        await store.send(.errorCard(.reload)) {
+            $0 = .loadingCard
+        }
+        let expectedState: Composition.State = Composition.State(teams: .example, standing: .example)
+        await store.receive(.update(.success(expectedState))) {
+            $0 = .loaded(expectedState)
+        }
     }
 }
