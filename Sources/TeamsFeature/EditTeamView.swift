@@ -44,6 +44,7 @@ public struct EditTeamView: View {
             }
             .backgroundAndForeground(color: viewStore.color)
             .animation(.easeInOut, value: viewStore.color)
+            .navigationTitle("Editing \(viewStore.name)")
         }
     }
     #else

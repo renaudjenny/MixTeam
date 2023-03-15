@@ -117,10 +117,7 @@ public struct CompositionLoaderView: View {
                 )
             }
             .listStyle(.plain)
-            .navigationTitle("MixTeam")
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
+            .navigationTitle("Composition")
         }
         .tabItem {
             Label("Composition", systemImage: "person.2.crop.square.stack")

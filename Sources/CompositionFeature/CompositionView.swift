@@ -64,6 +64,8 @@ struct CompositionView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CompositionView(store: .preview)
+                .navigationTitle("Composition")
+                .listStyle(.plain)
         }
     }
 }

@@ -19,6 +19,7 @@ struct EditPlayerView: View {
                 )
             }
             .backgroundAndForeground(color: viewStore.color)
+            .navigationTitle("Editing \(viewStore.name)")
         }
     }
 }

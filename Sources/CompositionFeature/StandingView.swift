@@ -33,6 +33,7 @@ struct StandingView: View {
                 Text("Players standing for a team")
                     .font(.title3)
                     .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 Button { viewStore.send(.createPlayer, animation: .easeInOut) } label: {
                     Label { Text("Add Player") } icon: {
                         HStack {
@@ -54,13 +55,17 @@ struct StandingView: View {
 #if DEBUG
 struct FirstTeamRow_Previews: PreviewProvider {
     static var previews: some View {
-        List {
-            StandingView(store: .preview)
+        NavigationView {
+            List {
+                StandingView(store: .preview)
+            }
+            .listStyle(.plain)
+            #if os(iOS)
+            .listRowSeparator(.hidden)
+            #endif
+            .navigationTitle("Composition")
+            .backgroundAndForeground(color: .aluminium)
         }
-        .listStyle(.plain)
-        #if os(iOS)
-        .listRowSeparator(.hidden)
-        #endif
     }
 }
 

@@ -53,9 +53,11 @@ let package = Package(
             name: "CompositionFeature",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "LoaderCore",
                 "Models",
                 "PersistenceCore",
                 "PlayersFeature",
+                "StyleCore",
                 "TeamsFeature",
             ]
         ),
@@ -73,7 +75,7 @@ let package = Package(
             dependencies: [
                 "Assets",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-                "StyleCore"
+                "StyleCore",
             ]
         ),
         .target(name: "Models", dependencies: [
@@ -95,6 +97,7 @@ let package = Package(
                 "ImagePicker",
                 "Models",
                 "PersistenceCore",
+                "StyleCore",
             ]
         ),
         .testTarget(name: "PlayersFeatureTests", dependencies: ["PlayersFeature"]),
