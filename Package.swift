@@ -1,11 +1,11 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "MixTeam",
-    platforms: [.iOS(.v15), .macOS(.v12)],
+    platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
         .library(name: "AppFeature", targets: ["AppFeature"]),
         .library(name: "ArchivesFeature", targets: ["ArchivesFeature"]),
@@ -22,9 +22,7 @@ let package = Package(
         .library(name: "TeamsFeature", targets: ["TeamsFeature"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "0.52.0"),
-        .package(url: "https://github.com/pointfreeco/swift-identified-collections", from: "0.7.0"),
-        .package(url: "https://github.com/pointfreeco/swiftui-navigation", from: "0.6.1"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.11.2"),
         .package(url: "https://github.com/renaudjenny/RenaudJennyAboutView", branch: "main"),
     ],
     targets: [
@@ -78,9 +76,9 @@ let package = Package(
                 "StyleCore",
             ]
         ),
-        .target(name: "Models", dependencies: [
+        .target(name: "Models", dependencies: [        
+            .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             "Assets",
-            .product(name: "IdentifiedCollections", package: "swift-identified-collections"),
         ]),
         .target(
             name: "PersistenceCore",
@@ -106,7 +104,6 @@ let package = Package(
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "PersistenceCore",
-                .product(name: "SwiftUINavigation", package: "swiftui-navigation"),
                 "TeamsFeature",
             ]
         ),

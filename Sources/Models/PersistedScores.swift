@@ -1,5 +1,5 @@
+import ComposableArchitecture
 import Foundation
-import IdentifiedCollections
 
 public struct PersistedScores: Codable {
     public var rounds: IdentifiedArrayOf<PersistedRound>

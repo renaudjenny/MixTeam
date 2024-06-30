@@ -3,7 +3,10 @@ import ComposableArchitecture
 import SwiftUI
 import StyleCore
 
-public struct ErrorCard: ReducerProtocol {
+@Reducer
+public struct ErrorCard {
+
+    @ObservableState
     public struct State: Equatable {
         var description = ""
 
@@ -18,7 +21,7 @@ public struct ErrorCard: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         EmptyReducer()
     }
 }
@@ -26,35 +29,21 @@ public struct ErrorCard: ReducerProtocol {
 public struct ErrorCardView: View {
     let store: StoreOf<ErrorCard>
 
-    public init(store: StoreOf<ErrorCard>) {
-        self.store = store
-    }
-
     public var body: some View {
-        WithViewStore(store) { viewStore in
-            VStack {
-                Text(viewStore.description)
-                Button { viewStore.send(.reload, animation: .default) } label: {
-                    Text("Retry")
-                }
-                .buttonStyle(.dashed(color: .strawberry))
+        VStack {
+            Text(store.description)
+            Button { store.send(.reload, animation: .default) } label: {
+                Text("Retry")
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .backgroundAndForeground(color: .strawberry)
+            .buttonStyle(.dashed(color: .strawberry))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .backgroundAndForeground(color: .strawberry)
     }
 }
 
-#if DEBUG
-struct ErrorCard_Previews: PreviewProvider {
-    static var previews: some View {
-        ErrorCardView(store: .preview)
-    }
+#Preview {
+    ErrorCardView(store: Store(initialState: ErrorCard.State(description: "Preview Error")) {
+        ErrorCard()
+    })
 }
-
-extension StoreOf where State == ErrorCard.State, Action == ErrorCard.Action {
-    static var preview: StoreOf<ErrorCard> {
-        Store(initialState: ErrorCard.State(description: "Preview Error"), reducer: ErrorCard())
-    }
-}
-#endif
