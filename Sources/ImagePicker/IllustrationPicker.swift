@@ -2,8 +2,10 @@ import Assets
 import ComposableArchitecture
 import SwiftUI
 
-public struct IllustrationPicker: ReducerProtocol {
+@Reducer
+public struct IllustrationPicker {
 
+    @ObservableState
     public struct State: Equatable {
         public let images: IdentifiedArrayOf<MTImage>
         public let color: MTColor
@@ -22,11 +24,13 @@ public struct IllustrationPicker: ReducerProtocol {
 
     public init() {}
 
-    public func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case let .imageTapped(image):
-            state.selectedImage = image
-            return .none
+    public var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            switch action {
+            case let .imageTapped(image):
+                state.selectedImage = image
+                return .none
+            }
         }
     }
 }
@@ -81,21 +85,11 @@ private struct Cell: View {
     }
 }
 
-#if DEBUG
-struct IllustrationPicker_Previews: PreviewProvider {
-    static var previews: some View {
-        IllustrationPickerView(store: Store(initialState: .preview, reducer: IllustrationPicker()))
-            .backgroundAndForeground(color: .strawberry)
-    }
+#Preview {
+    IllustrationPickerView(store: Store(initialState: IllustrationPicker.State(
+        images: IdentifiedArrayOf(uniqueElements: MTImage.players),
+        color: .strawberry,
+        selectedImage: nil
+    )) { IllustrationPicker() })
+        .backgroundAndForeground(color: .strawberry)
 }
-
-public extension IllustrationPicker.State {
-    static var preview: Self {
-        IllustrationPicker.State(
-            images: IdentifiedArrayOf(uniqueElements: MTImage.players),
-            color: .strawberry,
-            selectedImage: nil
-        )
-    }
-}
-#endif

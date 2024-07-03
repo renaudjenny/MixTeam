@@ -4,32 +4,26 @@ import StyleCore
 import SwiftUI
 
 struct EditPlayerView: View {
-    let store: StoreOf<Player>
+    @Bindable var store: StoreOf<Player>
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            ScrollView {
-                TextField("Edit", text: viewStore.binding(\.$name))
-                    .font(.title)
-                    .dashedCardStyle(color: viewStore.color)
-                    .padding()
-                IllustrationPickerView(
-                    store: store.scope(state: \.illustrationPicker, action: Player.Action.illustrationPicker)
-                )
-            }
-            .backgroundAndForeground(color: viewStore.color)
-            .navigationTitle("Editing \(viewStore.name)")
+        ScrollView {
+            TextField("Edit", text: $store.name.sending(\.nameChanged))
+                .font(.title)
+                .dashedCardStyle(color: store.color)
+                .padding()
+            IllustrationPickerView(
+                store: store.scope(state: \.illustrationPicker, action: Player.Action.illustrationPicker)
+            )
         }
+        .backgroundAndForeground(color: store.color)
+        .navigationTitle("Editing \(store.name)")
     }
 }
 
-#if DEBUG
-struct EditPlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            EditPlayerView(store: .preview)
-        }
+#Preview {
+    NavigationView {
+        EditPlayerView(store: Store(initialState: .preview, reducer: { Player() }))
     }
 }
-#endif

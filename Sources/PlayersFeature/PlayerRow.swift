@@ -10,46 +10,33 @@ public struct PlayerRow: View {
     }
 
     public var body: some View {
-        WithViewStore(store) { viewStore in
-            NavigationLink(destination: EditPlayerView(store: store)) {
-                HStack {
-                    Image(mtImage: viewStore.image)
-                        .resizable()
-                        .frame(width: 48, height: 48)
-                    Text(viewStore.name)
-                        .fontWeight(.medium)
-                }
+        NavigationLink(destination: EditPlayerView(store: store)) {
+            HStack {
+                Image(mtImage: store.image)
+                    .resizable()
+                    .frame(width: 48, height: 48)
+                Text(store.name)
+                    .fontWeight(.medium)
             }
-            .backgroundAndForeground(color: viewStore.color)
-            .padding(.leading, 24)
+        }
+        .backgroundAndForeground(color: store.color)
+        .padding(.leading, 24)
+    }
+}
+
+#Preview {
+    List {
+        ForEach(0..<2) {
+            PlayerRow(store: Store(initialState: .preview(isStanding: $0 != 1)) { Player() })
         }
     }
+    .listStyle(.plain)
+    #if os(iOS)
+    .listRowSeparator(.hidden)
+    #endif
 }
 
 #if DEBUG
-struct PlayerRow_Previews: PreviewProvider {
-    static var previews: some View {
-        List {
-            ForEach(0..<2) {
-                PlayerRow(store: .preview(isStanding: $0 != 1))
-            }
-        }
-        .listStyle(.plain)
-        #if os(iOS)
-        .listRowSeparator(.hidden)
-        #endif
-    }
-}
-
-extension Store where State == Player.State, Action == Player.Action {
-    static func preview(isStanding: Bool = false) -> Self {
-        Self(initialState: .preview(isStanding: isStanding), reducer: Player())
-    }
-    static var preview: Self {
-        .preview()
-    }
-}
-
 public extension Player.State {
     static func preview(isStanding: Bool = false) -> Self {
         Player.State(

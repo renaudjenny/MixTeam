@@ -5,10 +5,13 @@ import ImagePicker
 import Models
 import PersistenceCore
 
-public struct Player: ReducerProtocol {
+@Reducer
+public struct Player {
+    @ObservableState
     public struct State: Equatable, Identifiable {
         public let id: UUID
-        @BindingState public var name = ""
+        // TODO: name & image should be persisted
+        public var name = ""
         public var image: MTImage = .unknown
         public var color: MTColor = .aluminium
 
@@ -28,8 +31,8 @@ public struct Player: ReducerProtocol {
         }
     }
 
-    public enum Action: BindableAction, Equatable {
-        case binding(BindingAction<State>)
+    public enum Action: Equatable {
+        case nameChanged(String)
         case illustrationPicker(IllustrationPicker.Action)
     }
 
@@ -37,36 +40,16 @@ public struct Player: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
-        BindingReducer()
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
-            case .binding:
-                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.persisted) }
+            case let .nameChanged(name):
+                state.name = name
+                return .run { [state] _ in try await playerPersistence.updateOrAppend(state.persisted) }
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .fireAndForget { [state] in try await playerPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await playerPersistence.updateOrAppend(state.persisted) }
             }
         }
-    }
-}
-
-public extension Player.State {
-    var persisted: PersistedPlayer {
-        PersistedPlayer(id: id, name: name, image: image)
-    }
-}
-
-public extension PersistedPlayer {
-    var state: Player.State {
-        Player.State(id: id, name: name, image: image)
-    }
-}
-
-public extension IdentifiedArrayOf<Player.State> {
-    static var example: Self {
-        return Self(uniqueElements: IdentifiedArrayOf<PersistedPlayer>.example.map {
-            Player.State(id: $0.id, name: $0.name, image: $0.image)
-        })
     }
 }
