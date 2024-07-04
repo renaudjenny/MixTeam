@@ -2,7 +2,9 @@ import ComposableArchitecture
 import LoaderCore
 import SwiftUI
 
-public struct CompositionLoader: ReducerProtocol {
+@Reducer
+public struct CompositionLoader {
+    @ObservableState
     public enum State: Equatable {
         case loadingCard
         case loaded(Composition.State)
@@ -21,7 +23,7 @@ public struct CompositionLoader: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -67,9 +69,9 @@ public struct CompositionLoader: ReducerProtocol {
         }
     }
 
-    private func load(state: inout State) -> EffectTask<Action> {
+    private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .task { await .update(loadTaskResult) }
+        return .run { _ in await Action.update(loadTaskResult) }
     }
 
     private var loadTaskResult: TaskResult<Composition.State> {
@@ -99,22 +101,21 @@ public struct CompositionLoaderView: View {
 
     public var body: some View {
         NavigationView {
-            SwitchStore(store) {
-                CaseLet(
-                    state: /CompositionLoader.State.loadingCard,
-                    action: CompositionLoader.Action.loadingCard,
-                    then: LoadingCardView.init
-                )
-                CaseLet(
-                    state: /CompositionLoader.State.loaded,
-                    action: CompositionLoader.Action.composition,
-                    then: CompositionView.init
-                )
-                CaseLet(
-                    state: /CompositionLoader.State.errorCard,
-                    action: CompositionLoader.Action.errorCard,
-                    then: ErrorCardView.init
-                )
+            Group {
+                switch store.state {
+                case .loadingCard:
+                    if let store = store.scope(state: \.loadingCard, action: \.loadingCard) {
+                        LoadingCardView(store: store)
+                    }
+                case .loaded:
+                    if let store = store.scope(state: \.loaded, action: \.composition) {
+                        CompositionView(store: store)
+                    }
+                case .errorCard:
+                    if let store = store.scope(state: \.errorCard, action: \.errorCard) {
+                        ErrorCardView(store: store)
+                    }
+                }
             }
             .listStyle(.plain)
             .navigationTitle("Composition")

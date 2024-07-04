@@ -29,6 +29,10 @@ public struct ErrorCard {
 public struct ErrorCardView: View {
     let store: StoreOf<ErrorCard>
 
+    public init(store: StoreOf<ErrorCard>) {
+        self.store = store
+    }
+
     public var body: some View {
         VStack {
             Text(store.description)

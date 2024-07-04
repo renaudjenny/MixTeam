@@ -4,7 +4,9 @@ import Models
 import PersistenceCore
 import TeamsFeature
 
-public struct Composition: ReducerProtocol {
+@Reducer
+public struct Composition {
+    @ObservableState
     public struct State: Equatable {
         public var teams: IdentifiedArrayOf<Team.State> = []
         public var standing = Standing.State()
@@ -37,7 +39,7 @@ public struct Composition: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Scope(state: \.standing, action: /Action.standing) {
             Standing()
         }
@@ -46,7 +48,7 @@ public struct Composition: ReducerProtocol {
             case .addTeam:
                 let team = randomTeam()
                 state.teams.append(team)
-                return .fireAndForget { try await teamPersistance.updateOrAppend(team.persisted) }
+                return .run { _ in try await teamPersistance.updateOrAppend(team.persisted) }
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsConfirmationDialog = .notEnoughTeams
@@ -77,7 +79,7 @@ public struct Composition: ReducerProtocol {
                     }
                 )
                 state.standing.players = []
-                return .fireAndForget { [state] in try await teamPersistance.updateValues(state.teams.persisted) }
+                return .run { [state] _ in try await teamPersistance.updateValues(state.teams.persisted) }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsConfirmationDialog = nil
                 return .none
@@ -90,7 +92,7 @@ public struct Composition: ReducerProtocol {
                     uniqueElements: indexSet.map { state.teams[$0] }
                 )
                 state.teams.remove(atOffsets: indexSet)
-                return .fireAndForget {
+                return .run { _ in
                     let archivedTeams = IdentifiedArrayOf(uniqueElements: archivedTeams.map {
                         var team = $0
                         team.players = []

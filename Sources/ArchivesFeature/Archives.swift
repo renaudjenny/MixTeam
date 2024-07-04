@@ -5,7 +5,9 @@ import PersistenceCore
 import SwiftUI
 import TeamsFeature
 
-public struct Archives: ReducerProtocol {
+@Reducer
+public struct Archives {
+    @ObservableState
     public enum State: Equatable {
         case loadingCard
         case loaded(rows: IdentifiedArrayOf<ArchiveRow.State>)
@@ -23,7 +25,7 @@ public struct Archives: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -65,9 +67,9 @@ public struct Archives: ReducerProtocol {
         }
     }
 
-    private func load(state: inout State) -> EffectTask<Action> {
+    private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .task { await .update(TaskResult { try await teamPersistence.load().states }) }
+        return .run { _ in await .update(TaskResult { try await teamPersistence.load().states }) }
     }
 }
 

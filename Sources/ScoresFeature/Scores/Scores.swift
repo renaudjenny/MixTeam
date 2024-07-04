@@ -4,11 +4,13 @@ import PersistenceCore
 import SwiftUI
 import TeamsFeature
 
-public struct Scores: ReducerProtocol {
+@Reducer
+public struct Scores {
+    @ObservableState
     public struct State: Equatable {
         public var teams: IdentifiedArrayOf<Team.State> = []
         public var rounds: IdentifiedArrayOf<Round.State> = []
-        @BindingState public var focusedField: Score.State?
+        public var focusedField: Score.State?
     }
 
     public enum Action: BindableAction, Equatable {
@@ -23,11 +25,11 @@ public struct Scores: ReducerProtocol {
     @Dependency(\.uuid) var uuid
     @Dependency(\.scoresPersistence) var scoresPersistence
     @Dependency(\.teamPersistence) var teamPersistence
-    private enum RecalculateTaskID {}
+    private enum CancelID { case recalculateTask }
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         BindingReducer()
         Reduce { state, action in
             switch action {
@@ -44,7 +46,7 @@ public struct Scores: ReducerProtocol {
                     )
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
-                return .fireAndForget { [state] in
+                return .run { [state] _ in
                     try await scoresPersistence.save(state.persisted)
                 }
             case let .updateAccumulatedPoints(rounds):
@@ -55,7 +57,7 @@ public struct Scores: ReducerProtocol {
                     state.rounds.remove(id: id)
                 }
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state.persisted) },
+                    .run { [state] _ in try await scoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case let .round(_, .score(_, .binding(binding))) where binding.keyPath == \.$points:
@@ -69,7 +71,7 @@ public struct Scores: ReducerProtocol {
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
                 return .merge(
-                    .fireAndForget { [state] in try await scoresPersistence.save(state.persisted) },
+                    .run { [state] _ in try await scoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case .binding:
@@ -81,20 +83,21 @@ public struct Scores: ReducerProtocol {
         }
     }
 
-    private func recalculateAccumulatedPoints(state: inout State) -> EffectTask<Action> {
-        .cancel(id: RecalculateTaskID.self).concatenate(with: .task { [rounds = state.rounds] in
-            var rounds = rounds
-            for (index, round) in rounds.enumerated() {
-                for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
-                    let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
-                    guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
-                    else { continue }
-                    rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
-                }
-            }
-            return .updateAccumulatedPoints(rounds)
+    private func recalculateAccumulatedPoints(state: inout State) -> Effect<Action> {
+        .cancel(id: CancelID.recalculateTask).concatenate(with: .run { [rounds = state.rounds] _ in
+//            var rounds = rounds
+//            for (index, round) in rounds.enumerated() {
+//                for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
+//                    let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
+//                    guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+//                    else { continue }
+//                    rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
+//                }
+//            }
+//            return .updateAccumulatedPoints(rounds)
+            // TODO: to fix!
         })
-        .cancellable(id: RecalculateTaskID.self)
+        .cancellable(id: CancelID.recalculateTask)
     }
 }
 
@@ -102,11 +105,5 @@ private extension IdentifiedArrayOf<Round.State> {
     func accumulatedPoints(for team: Team.State, roundCount: Int) -> Int {
         guard roundCount > 0, roundCount <= count else { return 0 }
         return self[...(roundCount - 1)].flatMap(\.scores).filter { $0.team == team }.map(\.points).reduce(0, +)
-    }
-}
-
-extension Scores.State {
-    var persisted: PersistedScores {
-        PersistedScores(rounds: IdentifiedArrayOf(uniqueElements: rounds.map(\.persisted)))
     }
 }

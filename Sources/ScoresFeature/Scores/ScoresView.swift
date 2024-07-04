@@ -1,6 +1,5 @@
 import ComposableArchitecture
 import SwiftUI
-import SwiftUINavigation
 import TeamsFeature
 
 struct ScoresView: View {
