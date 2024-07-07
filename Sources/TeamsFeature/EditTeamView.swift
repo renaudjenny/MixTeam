@@ -5,7 +5,7 @@ import StyleCore
 import SwiftUI
 
 public struct EditTeamView: View {
-    let store: StoreOf<Team>
+    @Bindable var store: StoreOf<Team>
     #if os(iOS)
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     #endif
@@ -16,66 +16,60 @@ public struct EditTeamView: View {
 
     #if os(iOS)
     public var body: some View {
-        WithViewStore(store) { viewStore in
-            ScrollView {
-                teamNameField
-                if verticalSizeClass == .compact {
-                    GeometryReader { geometry in
-                        HStack {
-                            IllustrationPickerView(
-                                store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
-                            )
-                            .frame(width: geometry.size.width * 3/4)
-                            colorPicker
-                                .frame(width: geometry.size.width * 1/4)
-                        }
-                    }
-                } else {
-                    VStack(spacing: 16) {
+        ScrollView {
+            teamNameField
+            if verticalSizeClass == .compact {
+                GeometryReader { geometry in
+                    HStack {
+                        IllustrationPickerView(
+                            store: store.scope(state: \.illustrationPicker, action: \.illustrationPicker)
+                        )
+                        .frame(width: geometry.size.width * 3/4)
                         colorPicker
-                        VStack(spacing: 0) {
-                            Text("Choose a mascot")
-                            IllustrationPickerView(
-                                store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
-                            )
-                        }
+                            .frame(width: geometry.size.width * 1/4)
                     }
                 }
-            }
-            .backgroundAndForeground(color: viewStore.color)
-            .animation(.easeInOut, value: viewStore.color)
-            .navigationTitle("Editing \(viewStore.name)")
-        }
-    }
-    #else
-    public var body: some View {
-        WithViewStore(store) { viewStore in
-            ScrollView {
-                teamNameField
+            } else {
                 VStack(spacing: 16) {
                     colorPicker
                     VStack(spacing: 0) {
                         Text("Choose a mascot")
                         IllustrationPickerView(
-                            store: store.scope(state: \.illustrationPicker, action: Team.Action.illustrationPicker)
+                            store: store.scope(state: \.illustrationPicker, action: \.illustrationPicker)
                         )
                     }
                 }
             }
-            .backgroundAndForeground(color: viewStore.color)
-            .animation(.easeInOut, value: viewStore.color)
         }
+        .backgroundAndForeground(color: store.color)
+        .animation(.easeInOut, value: store.color)
+        .navigationTitle("Editing \(store.name)")
+    }
+    #else
+    public var body: some View {
+        ScrollView {
+            teamNameField
+            VStack(spacing: 16) {
+                colorPicker
+                VStack(spacing: 0) {
+                    Text("Choose a mascot")
+                    IllustrationPickerView(
+                        store: store.scope(state: \.illustrationPicker, action: \.illustrationPicker)
+                    )
+                }
+            }
+        }
+        .backgroundAndForeground(color: store.color)
+        .animation(.easeInOut, value: store.color)
     }
     #endif
 
     private var teamNameField: some View {
-        WithViewStore(store) { viewStore in
-            TextField("Edit", text: viewStore.binding(\.$name))
-                .font(.title2.weight(.black))
-                .multilineTextAlignment(.center)
-                .dashedCardStyle(color: viewStore.color)
-                .padding()
-        }
+        TextField("Edit", text: $store.name)
+            .font(.title2.weight(.black))
+            .multilineTextAlignment(.center)
+            .dashedCardStyle(color: store.color)
+            .padding()
     }
 
     private var colorPicker: some View {
@@ -131,25 +125,35 @@ public struct EditTeamView: View {
     }
 
     private func color(_ color: MTColor) -> some View {
-        WithViewStore(store) { viewStore in
-            Button { viewStore.send(.set(\.$color, color)) } label: {
-                Color.clear
-                    .frame(width: 48, height: 48)
-                    .overlay(Splash(animatableData: viewStore.color == color ? 1 : 0).stroke(lineWidth: 2.5))
-                    .backgroundAndForeground(color: color)
-                    .clipShape(Splash(animatableData: viewStore.color == color ? 1 : 0))
-            }
-            .accessibility(label: Text("\(color.rawValue)"))
+        Button { store.send(.set(\.color, color)) } label: {
+            Color.clear
+                .frame(width: 48, height: 48)
+                .overlay(Splash(animatableData: store.color == color ? 1 : 0).stroke(lineWidth: 2.5))
+                .backgroundAndForeground(color: color)
+                .clipShape(Splash(animatableData: store.color == color ? 1 : 0))
         }
+        .accessibility(label: Text("\(color.rawValue)"))
     }
 }
 
 #if DEBUG
-struct EditTeamView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            EditTeamView(store: .preview)
+public extension Team.State {
+    static var preview: Self {
+        guard let id = UUID(uuidString: "EF9D6B84-B19A-4177-B5F7-6E2478FAAA18") else {
+            fatalError("Cannot generate UUID from a defined UUID String")
         }
+        return Team.State(
+            id: id,
+            name: "Team test",
+            color: .strawberry,
+            image: .koala
+        )
+    }
+}
+
+#Preview {
+    NavigationView {
+        EditTeamView(store: Store(initialState: .preview) { Team() })
     }
 }
 #endif

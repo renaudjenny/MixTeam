@@ -6,23 +6,21 @@ struct TotalScoresView: View {
     let store: StoreOf<Scores>
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            Section(header: Text("Total")) {
-                ForEach(viewStore.teams) { team in
-                    HStack {
-                        Image(mtImage: team.image)
-                            .resizable()
-                            .frame(maxWidth: 24, maxHeight: 24)
-                        Text("\(team.name)")
-                        Spacer()
-                        Text(viewStore.state.total(for: team))
-                    }
-                    .font(.body.bold())
-                    .backgroundAndForeground(color: team.color)
-                    #if os(iOS)
-                    .listRowSeparator(.hidden)
-                    #endif
+        Section(header: Text("Total")) {
+            ForEach(store.teams) { team in
+                HStack {
+                    Image(mtImage: team.image)
+                        .resizable()
+                        .frame(maxWidth: 24, maxHeight: 24)
+                    Text("\(team.name)")
+                    Spacer()
+                    Text(store.state.total(for: team))
                 }
+                .font(.body.bold())
+                .backgroundAndForeground(color: team.color)
+                #if os(iOS)
+                .listRowSeparator(.hidden)
+                #endif
             }
         }
     }

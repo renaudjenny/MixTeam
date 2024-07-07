@@ -60,7 +60,7 @@ public struct Scores {
                     .run { [state] _ in try await scoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
-            case let .round(_, .score(_, .binding(binding))) where binding.keyPath == \.$points:
+            case let .round(_, .score(_, .binding(binding))):
                 return recalculateAccumulatedPoints(state: &state)
             case .round:
                 return .none

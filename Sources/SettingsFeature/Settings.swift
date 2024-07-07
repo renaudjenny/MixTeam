@@ -39,7 +39,7 @@ public struct SettingsView: View {
             List {
                 NavigationLink { aboutView } label: { Text("About") }
                 NavigationLink {
-                    ArchivesView(store: store.scope(state: \.archives, action: Settings.Action.archives))
+                    ArchivesView(store: store.scope(state: \.archives, action: \.archives))
                 } label: {
                     Text("Archives")
                 }
@@ -70,16 +70,8 @@ public struct SettingsView: View {
     }
 }
 
-#if DEBUG
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView(store: .preview)
-    }
+#Preview {
+    SettingsView(store: Store(initialState: Settings.State()) {
+        Settings()
+    })
 }
-
-extension StoreOf<Settings> {
-    static var preview: StoreOf<Settings> {
-        StoreOf<Settings>(initialState: Settings.State(), reducer: Settings())
-    }
-}
-#endif

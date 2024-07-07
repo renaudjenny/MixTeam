@@ -59,9 +59,9 @@ public struct Scoreboard {
         }
     }
 
-    private func load(state: inout State) -> EffectTask<Action> {
+    private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .run { _ in await .update(TaskResult { try await scoresPersistence.load().state }) }
+        return .run { _ in await Action.update(TaskResult { try await scoresPersistence.load().state }) }
     }
 }
 

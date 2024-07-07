@@ -10,7 +10,7 @@ public struct Score {
     public struct State: Equatable, Identifiable {
         public let id: UUID
         public var team: Team.State
-        @BindingState public var points: Int = 0
+        public var points: Int = 0
         public var accumulatedPoints = 0
 
         public init(id: UUID, team: Team.State, points: Int = 0, accumulatedPoints: Int = 0) {
@@ -33,8 +33,9 @@ public struct Score {
     public var body: some Reducer<State, Action> {
         BindingReducer()
         Reduce { state, action in
-            if case let .binding(binding) = action, binding.keyPath == \.$points {
-                return .fireAndForget { [state] in try await scorePersistence.updateScore(state.persisted) }
+            if case .binding = action {
+                return .run { [state] _ in try await scorePersistence.updateScore(state.persisted)
+                }
             }
             return .none
         }

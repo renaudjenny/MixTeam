@@ -7,7 +7,9 @@ import SwiftUI
 
 public typealias Settings = SettingsFeature.Settings
 
-public struct App: ReducerProtocol {
+@Reducer
+public struct App {
+    @ObservableState
     public struct State: Equatable {
         public var compositionLoader: CompositionLoader.State = .loadingCard
         public var scoreboard: Scoreboard.State = .loadingCard
@@ -34,7 +36,7 @@ public struct App: ReducerProtocol {
 
     @Dependency(\.migration) var migration
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Scope(state: \.compositionLoader, action: /Action.compositionLoader) {
             CompositionLoader()
         }
@@ -47,7 +49,7 @@ public struct App: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .task:
-                return .fireAndForget {
+                return .run { _ in
                     try await migration.v2toV3()
                     try await migration.v3_0toV3_1()
                 }
@@ -63,31 +65,4 @@ public struct App: ReducerProtocol {
             }
         }
     }
-}
-
-public extension StoreOf<App> {
-    static var live: StoreOf<App> {
-        Store(initialState: App.State(), reducer: App())
-    }
-    #if DEBUG
-    static var preview: StoreOf<App> {
-        Store(
-            initialState: .example,
-            reducer: App()
-                .dependency(\.playerPersistence, .preview)
-        )
-    }
-
-    static var withError: StoreOf<App> {
-        Store(
-            initialState: App.State(),
-            reducer: App()
-                .dependency(\.playerPersistence, .preview)
-                .dependency(\.teamPersistence.load, {
-                    try await Task.sleep(nanoseconds: 500_000_000)
-                    throw PersistenceError.notFound
-                })
-        )
-    }
-    #endif
 }
