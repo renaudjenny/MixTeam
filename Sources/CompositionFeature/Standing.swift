@@ -1,7 +1,9 @@
 import ComposableArchitecture
 import PlayersFeature
 
-public struct Standing: ReducerProtocol {
+@Reducer
+public struct Standing {
+    @ObservableState
     public struct State: Equatable {
         public var players: IdentifiedArrayOf<Player.State> = []
 
@@ -22,16 +24,16 @@ public struct Standing: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .createPlayer:
                 let player = randomPlayer()
                 state.players.append(player)
-                return .fireAndForget { try await playerPersistence.updateOrAppend(player.persisted) }
+                return .run { _ in try await playerPersistence.updateOrAppend(player.persisted) }
             case let .deletePlayer(id):
                 state.players.remove(id: id)
-                return .fireAndForget { try await playerPersistence.remove(id) }
+                return .run { _ in try await playerPersistence.remove(id) }
             case .player:
                 return .none
             }

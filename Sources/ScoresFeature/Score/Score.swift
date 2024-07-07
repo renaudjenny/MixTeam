@@ -4,7 +4,9 @@ import Models
 import PersistenceCore
 import TeamsFeature
 
-public struct Score: ReducerProtocol {
+@Reducer
+public struct Score {
+    @ObservableState
     public struct State: Equatable, Identifiable {
         public let id: UUID
         public var team: Team.State
@@ -28,7 +30,7 @@ public struct Score: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         BindingReducer()
         Reduce { state, action in
             if case let .binding(binding) = action, binding.keyPath == \.$points {
@@ -36,11 +38,5 @@ public struct Score: ReducerProtocol {
             }
             return .none
         }
-    }
-}
-
-extension Score.State {
-    var persisted: PersistedScore {
-        PersistedScore(id: id, teamID: team.id, points: points)
     }
 }

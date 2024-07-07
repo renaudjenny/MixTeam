@@ -17,7 +17,7 @@ public struct Archives {
     public enum Action: Equatable {
         case update(TaskResult<IdentifiedArrayOf<Team.State>>)
         case loadingCard(LoadingCard.Action)
-        case archiveRow(id: Team.State.ID, action: ArchiveRow.Action)
+        case archiveRow(IdentifiedActionOf<ArchiveRow>)
         case errorCard(ErrorCard.Action)
     }
 
@@ -56,7 +56,7 @@ public struct Archives {
         .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
             LoadingCard()
         }
-        .ifCaseLet(/State.loaded(rows:), action: /Action.archiveRow(id:action:)) {
+        .ifCaseLet(\.loaded(rows:), action: \.archiveRow) {
             EmptyReducer()
                 .forEach(\.self, action: /.self) {
                     ArchiveRow()
@@ -69,7 +69,7 @@ public struct Archives {
 
     private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .run { _ in await .update(TaskResult { try await teamPersistence.load().states }) }
+        return .run { _ in await Action.update(TaskResult { try await teamPersistence.load().states }) }
     }
 }
 
@@ -81,89 +81,55 @@ public struct ArchivesView: View {
     }
 
     public var body: some View {
-        SwitchStore(store) {
-            CaseLet(
-                state: /Archives.State.loadingCard,
-                action: Archives.Action.loadingCard,
-                then: LoadingCardView.init
-            )
-            CaseLet(state: /Archives.State.loaded(rows:), action: Archives.Action.archiveRow(id:action:)) { store in
-                WithViewStore(store, observe: { $0 }) { viewStore in
-                    if viewStore.isEmpty {
-                        Text("No archived teams")
-                    } else {
-                        List {
-                            Section("Teams") {
-                                ForEachStore(store, content: ArchiveRowView.init)
-                            }
+        switch store.state {
+        case .loadingCard:
+            if let store = store.scope(state: \.loadingCard, action: \.loadingCard) {
+                LoadingCardView(store: store)
+            }
+        case .loaded:
+            if let store = store.scope(state: \.loaded, action: \.archiveRow) {
+                if store.isEmpty {
+                    Text("No archived teams")
+                } else {
+                    List {
+                        Section("Teams") {
+                            ForEachStore(store, content: ArchiveRowView.init)
                         }
                     }
                 }
             }
-            CaseLet(
-                state: /Archives.State.errorCard,
-                action: Archives.Action.errorCard,
-                then: ErrorCardView.init
-            )
+        case .errorCard:
+            if let store = store.scope(state: \.errorCard, action: \.errorCard) {
+                ErrorCardView(store: store)
+            }
         }
     }
 }
 
-#if DEBUG
-import Combine
-
-struct ArchivesView_Previews: PreviewProvider {
-    static var previews: some View {
-        ArchivesView(store: .preview)
-
-        ArchivesView(store: Store(
-            initialState: .previewWithTeamsAndPlayers,
-            reducer: Archives()
-        ))
-        .previewDisplayName("Archives With Teams and Players")
-
-        ArchivesView(store: Store(
-            initialState: .loadingCard,
-            reducer: Archives()
-                .dependency(\.teamPersistence.load, {
-                    try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
-                    throw PersistenceError.notFound
-                })
-                .dependency(\.teamPersistence.publisher, {
-                    Fail(error: PersistenceError.notFound).eraseToAnyPublisher().values
-                })
-        ))
-        .previewDisplayName("Archives With Error")
-    }
+#Preview {
+    ArchivesView(store: Store(initialState: Archives.State.loaded(rows: [])) { Archives() })
 }
 
-extension Archives.State {
-    static var preview: Self { .loaded(rows: []) }
-    static var previewWithTeamsAndPlayers: Self {
-        .loaded(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+#Preview("Archives With Teams and Players") {
+    ArchivesView(store: Store(initialState: Archives.State.loaded(
+        rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
             var team = $0
             team.isArchived = true
             return ArchiveRow.State(team: team)
-        }))
-    }
+        })
+    )) { Archives() })
 }
 
-extension StoreOf<Archives> {
-    static var preview: StoreOf<Archives> {
-        let example: IdentifiedArrayOf<PersistedTeam> = .example
-        let archiveExample: IdentifiedArrayOf<PersistedTeam> = IdentifiedArrayOf(uniqueElements: example.map {
-            var team = $0
-            team.isArchived = true
-            return team
-        })
-        return StoreOf<Archives>(
-            initialState: .preview,
-            reducer: Archives()
-                .dependency(\.teamPersistence.load, { archiveExample })
-                .dependency(\.teamPersistence.publisher, {
-                    Result.Publisher(archiveExample).eraseToAnyPublisher().values
-                })
-        )
-    }
+#Preview("Archives With Error") {
+    ArchivesView(store: Store(initialState: .loadingCard) {
+        Archives()
+            .dependency(\.teamPersistence.load, {
+                try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
+                throw PersistenceError.notFound
+            })
+        // TODO: Fix the missing important if necessary (with Shared API, it shouldn't be)
+        //            .dependency(\.teamPersistence.publisher, {
+        //                Fail(error: PersistenceError.notFound).eraseToAnyPublisher().values
+        //            })
+    })
 }
-#endif

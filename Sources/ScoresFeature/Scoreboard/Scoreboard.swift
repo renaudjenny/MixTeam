@@ -3,7 +3,9 @@ import LoaderCore
 import Models
 import PersistenceCore
 
-public struct Scoreboard: ReducerProtocol {
+@Reducer
+public struct Scoreboard {
+    @ObservableState
     public enum State: Equatable {
         case loadingCard
         case loaded(Scores.State)
@@ -22,7 +24,7 @@ public struct Scoreboard: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case let .update(result):
@@ -59,7 +61,7 @@ public struct Scoreboard: ReducerProtocol {
 
     private func load(state: inout State) -> EffectTask<Action> {
         state = .loadingCard
-        return .task { await .update(TaskResult { try await scoresPersistence.load().state }) }
+        return .run { _ in await .update(TaskResult { try await scoresPersistence.load().state }) }
     }
 }
 

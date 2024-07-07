@@ -3,7 +3,8 @@ import ComposableArchitecture
 import RenaudJennyAboutView
 import SwiftUI
 
-public struct Settings: ReducerProtocol {
+@Reducer
+public struct Settings {
     public struct State: Equatable {
         var archives: Archives.State = .loadingCard
 
@@ -18,7 +19,7 @@ public struct Settings: ReducerProtocol {
 
     public init() {}
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Scope(state: \.archives, action: /Action.archives) {
             Archives()
         }
