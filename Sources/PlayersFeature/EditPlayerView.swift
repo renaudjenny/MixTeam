@@ -14,7 +14,7 @@ struct EditPlayerView: View {
                 .dashedCardStyle(color: store.color)
                 .padding()
             IllustrationPickerView(
-                store: store.scope(state: \.illustrationPicker, action: Player.Action.illustrationPicker)
+                store: store.scope(state: \.illustrationPicker, action: \.illustrationPicker)
             )
         }
         .backgroundAndForeground(color: store.color)

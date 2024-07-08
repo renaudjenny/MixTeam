@@ -17,15 +17,15 @@ public struct AppView: View {
         WithViewStore(store, observe: \.selectedTab) { viewStore in
             TabView(selection: viewStore.binding(send: App.Action.tabSelected)) {
                 CompositionLoaderView(
-                    store: store.scope(state: \.compositionLoader, action: App.Action.compositionLoader)
+                    store: store.scope(state: \.compositionLoader, action: \.compositionLoader)
                 )
                 .tag(App.Tab.compositionLoader)
                 ScoreboardView(
-                    store: store.scope(state: \.scoreboard, action: App.Action.scoreboard)
+                    store: store.scope(state: \.scoreboard, action: \.scoreboard)
                 )
                 .tag(App.Tab.scoreboard)
                 SettingsView(
-                    store: store.scope(state: \.settings, action: App.Action.settings)
+                    store: store.scope(state: \.settings, action: \.settings)
                 )
                 .tag(App.Tab.settings)
             }
