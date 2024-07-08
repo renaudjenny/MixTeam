@@ -5,7 +5,7 @@ public extension ConfirmationDialogState where Action == Composition.Action {
         ConfirmationDialogState(titleVisibility: .visible) {
             TextState("Couldn't Mix Team")
         } actions: {
-            ButtonState(role: .cancel, action: .send(.dismissNotEnoughTeamsAlert)) {
+            ButtonState(role: .cancel) {
                 TextState("OK")
             }
             ButtonState(action: .send(.addTeam, animation: .default)) {

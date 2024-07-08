@@ -49,7 +49,10 @@ struct AppView_Previews: PreviewProvider {
 
 public extension App.State {
     static var example: Self {
-        Self(compositionLoader: .loaded(.example))
+        Self(compositionLoader: .loaded(Composition.State(
+            teams: .example,
+            standing: .example
+        )))
     }
 }
 #endif

@@ -10,14 +10,14 @@ public struct Archives {
     @ObservableState
     public enum State: Equatable {
         case loadingCard
-        case loaded(rows: IdentifiedArrayOf<ArchiveRow.State>)
+        case loaded(rows: ArchiveRows.State)
         case errorCard(ErrorCard.State)
     }
 
     public enum Action: Equatable {
         case update(TaskResult<IdentifiedArrayOf<Team.State>>)
         case loadingCard(LoadingCard.Action)
-        case archiveRow(IdentifiedActionOf<ArchiveRow>)
+        case archiveRow(ArchiveRows.Action)
         case errorCard(ErrorCard.Action)
     }
 
@@ -31,9 +31,9 @@ public struct Archives {
             case let .update(result):
                 switch result {
                 case let .success(result):
-                    state = .loaded(rows: IdentifiedArrayOf(
+                    state = .loaded(rows: ArchiveRows.State(rows: IdentifiedArrayOf(
                         uniqueElements: result.filter(\.isArchived).map(ArchiveRow.State.init)
-                    ))
+                    )))
                     return .none
                 case let .failure(error):
                     state = .errorCard(ErrorCard.State(description: error.localizedDescription))
@@ -56,11 +56,8 @@ public struct Archives {
         .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
             LoadingCard()
         }
-        .ifCaseLet(\.loaded(rows:), action: \.archiveRow) {
-            EmptyReducer()
-                .forEach(\.self, action: /.self) {
-                    ArchiveRow()
-                }
+        .ifCaseLet(\.loaded, action: \.archiveRow) {
+            ArchiveRows()
         }
         .ifCaseLet(/State.errorCard, action: /Action.errorCard) {
             ErrorCard()
@@ -88,12 +85,12 @@ public struct ArchivesView: View {
             }
         case .loaded:
             if let store = store.scope(state: \.loaded, action: \.archiveRow) {
-                if store.isEmpty {
+                if store.rows.isEmpty {
                     Text("No archived teams")
                 } else {
                     List {
                         Section("Teams") {
-                            ForEachStore(store, content: ArchiveRowView.init)
+                            ForEachStore(store.scope(state: \.rows, action: \.rows), content: ArchiveRowView.init)
                         }
                     }
                 }
@@ -106,17 +103,39 @@ public struct ArchivesView: View {
     }
 }
 
+@Reducer
+public struct ArchiveRows {
+    @ObservableState
+    public struct State: Equatable {
+        let rows: IdentifiedArrayOf<ArchiveRow.State>
+    }
+
+    public enum Action: Equatable {
+        case rows(IdentifiedActionOf<ArchiveRow>)
+    }
+
+    public var body: some Reducer<State, Action> {
+        Reduce { state, action in
+            return .none
+        }
+        // TODO: check why it's not compiling
+//        .forEach(\.rows, action: \.rows) {
+//            ArchiveRow()
+//        }
+    }
+}
+
 #Preview {
-    ArchivesView(store: Store(initialState: Archives.State.loaded(rows: [])) { Archives() })
+    ArchivesView(store: Store(initialState: Archives.State.loaded(rows: ArchiveRows.State(rows: []))) { Archives() })
 }
 
 #Preview("Archives With Teams and Players") {
     ArchivesView(store: Store(initialState: Archives.State.loaded(
-        rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
+        rows: ArchiveRows.State(rows: IdentifiedArrayOf(uniqueElements: IdentifiedArrayOf<Team.State>.example.map {
             var team = $0
             team.isArchived = true
             return ArchiveRow.State(team: team)
-        })
+        }))
     )) { Archives() })
 }
 

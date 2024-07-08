@@ -2,6 +2,7 @@ import ComposableArchitecture
 import Foundation
 import Models
 import PersistenceCore
+import SwiftUI
 
 @Reducer
 public struct Round {
@@ -42,6 +43,23 @@ public struct Round {
         }
         .forEach(\.scores, action: /Round.Action.score) {
             Score()
+        }
+    }
+}
+
+struct RoundView: View {
+    @Bindable var store: StoreOf<Round>
+    @FocusState var focusedField: Score.State?
+    @FocusState var focusedHeader: Round.State?
+
+    var body: some View {
+        Section(
+            header: TextField("Round name", text: $store.name)
+                .focused($focusedHeader, equals: store.state)
+        ) {
+            ForEachStore(store.scope(state: \.scores, action: \.score)) { store in
+                ScoreRow(store: store, focusedField: _focusedField)
+            }
         }
     }
 }

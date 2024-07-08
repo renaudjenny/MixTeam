@@ -3,82 +3,70 @@ import SwiftUI
 import TeamsFeature
 
 struct ScoresView: View {
-    let store: StoreOf<Scores>
+    @Bindable var store: StoreOf<Scores>
     @FocusState private var focusedField: Score.State?
     @FocusState private var focusedHeader: Round.State?
 
     var body: some View {
-        WithViewStore(store) { viewStore in
-            NavigationView {
-                ZStack {
-                    if viewStore.rounds.count > 0 {
-                        list
-                            .bind(viewStore.binding(\.$focusedField), to: $focusedField)
-                            .toolbar {
-                                ToolbarItemGroup(placement: .keyboard) {
-                                    if focusedHeader == nil {
-                                        Button { viewStore.send(.minusScore(score: focusedField)) } label: {
-                                            Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
-                                        }
+        NavigationView {
+            ZStack {
+                if store.rounds.count > 0 {
+                    list
+                        .bind($store.focusedField, to: $focusedField)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                if focusedHeader == nil {
+                                    Button { store.send(.minusScore(score: focusedField)) } label: {
+                                        Label("Positive/Negative", systemImage: "plus.forwardslash.minus")
+                                    }
 
-                                        Button {
-                                            focusedField = nil
-                                            focusedHeader = nil
-                                        } label: {
-                                            Label("Done", systemImage: "checkmark")
-                                        }
+                                    Button {
+                                        focusedField = nil
+                                        focusedHeader = nil
+                                    } label: {
+                                        Label("Done", systemImage: "checkmark")
                                     }
                                 }
                             }
-                    } else {
-                        VStack {
-                            Text("Add your first round by tapping on the plus button")
-                            Button { viewStore.send(.addRound) } label: {
-                                Label("Add a new round", systemImage: "plus")
-                                    .labelStyle(.iconOnly)
-                            }
-                            .padding()
+                        }
+                } else {
+                    VStack {
+                        Text("Add your first round by tapping on the plus button")
+                        Button { store.send(.addRound) } label: {
+                            Label("Add a new round", systemImage: "plus")
+                                .labelStyle(.iconOnly)
                         }
                         .padding()
                     }
-                }
-                .navigationTitle(Text("Scoreboard"))
-                .toolbar {
-                    #if os(iOS)
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button { viewStore.send(.addRound, animation: .default) } label: {
-                            Label("Add a new round", systemImage: "plus")
-                        }
-                    }
-                    #else
-                    ToolbarItem() {
-                        Button { viewStore.send(.addRound, animation: .default) } label: {
-                            Label("Add a new round", systemImage: "plus")
-                        }
-                    }
-                    #endif
+                    .padding()
                 }
             }
-            .backgroundAndForeground(color: .aluminium)
-            .task { viewStore.send(.task) }
+            .navigationTitle(Text("Scoreboard"))
+            .toolbar {
+                #if os(iOS)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { store.send(.addRound, animation: .default) } label: {
+                        Label("Add a new round", systemImage: "plus")
+                    }
+                }
+                #else
+                ToolbarItem() {
+                    Button { store.send(.addRound, animation: .default) } label: {
+                        Label("Add a new round", systemImage: "plus")
+                    }
+                }
+                #endif
+            }
         }
+        .backgroundAndForeground(color: .aluminium)
+        .task { store.send(.task) }
     }
 
     private var list: some View {
         List {
-            ForEachStore(store.scope(state: \.rounds, action: Scores.Action.round)) { store in
-                WithViewStore(store) { viewStore in
-                    Section(
-                        header: TextField("Round name", text: viewStore.binding(\.$name))
-                            .focused($focusedHeader, equals: viewStore.state)
-                    ) {
-                        ForEachStore(store.scope(state: \.scores, action: Round.Action.score)) { store in
-                            ScoreRow(store: store, focusedField: _focusedField)
-                        }
-                    }
-                }
+            ForEachStore(store.scope(state: \.rounds, action: \.round)) { store in
+                RoundView(store: store, focusedField: _focusedField, focusedHeader: _focusedHeader)
             }
-
             TotalScoresView(store: store)
         }
     }
@@ -101,13 +89,13 @@ struct ScoresView_Previews: PreviewProvider {
 
 extension Store where State == Scores.State, Action == Scores.Action {
     static var preview: Self {
-        Self(initialState: .preview, reducer: Scores())
+        Self(initialState: .preview) { Scores() }
     }
     static var previewWithScores: Self {
-        Self(initialState: .previewWithScores(count: 5), reducer: Scores())
+        Self(initialState: .previewWithScores(count: 5)) { Scores() }
     }
     static var previewWithManyScores: Self {
-        Self(initialState: .previewWithScores(count: 300), reducer: Scores())
+        Self(initialState: .previewWithScores(count: 300)) { Scores() }
     }
 }
 

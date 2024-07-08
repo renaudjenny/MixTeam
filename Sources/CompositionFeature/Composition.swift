@@ -10,7 +10,7 @@ public struct Composition {
     public struct State: Equatable {
         public var teams: IdentifiedArrayOf<Team.State> = []
         public var standing = Standing.State()
-        public var notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>?
+        @Presents public var notEnoughTeamsConfirmationDialog: ConfirmationDialogState<Action>?
 
         public init(
             teams: IdentifiedArrayOf<Team.State> = [],
@@ -26,7 +26,7 @@ public struct Composition {
     public enum Action: Equatable {
         case addTeam
         case mixTeam
-        case dismissNotEnoughTeamsAlert
+        case dismissNotEnoughTeamsAlert(PresentationAction<Action>)
         case standing(Standing.Action)
         case team(id: Team.State.ID, action: Team.Action)
         case archiveTeams(IndexSet)
