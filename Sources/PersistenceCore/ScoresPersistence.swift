@@ -47,14 +47,14 @@ private final class Persistence {
     }
 }
 
-public struct ScoresPersistence {
+public struct LegacyScoresPersistence {
     public var load: () async throws -> PersistedScores
     public var save: (PersistedScores) async throws -> Void
     public var updateRound: (PersistedRound) async throws -> Void
     public var updateScore: (PersistedScore) async throws -> Void
 }
 
-extension ScoresPersistence {
+extension LegacyScoresPersistence {
     static let live = {
         do {
             let persistence = try Persistence()
@@ -94,13 +94,13 @@ extension PersistedScores {
 }
 
 private enum ScoresPersistenceDependencyKey: DependencyKey {
-    static let liveValue = ScoresPersistence.live
-    static let testValue = ScoresPersistence.test
-    static let previewValue = ScoresPersistence.preview
+    static let liveValue = LegacyScoresPersistence.live
+    static let testValue = LegacyScoresPersistence.test
+    static let previewValue = LegacyScoresPersistence.preview
 }
 
 public extension DependencyValues {
-    var scoresPersistence: ScoresPersistence {
+    var legacyScoresPersistence: LegacyScoresPersistence {
         get { self[ScoresPersistenceDependencyKey.self] }
         set { self[ScoresPersistenceDependencyKey.self] = newValue }
     }

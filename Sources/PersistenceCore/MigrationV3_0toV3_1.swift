@@ -13,9 +13,9 @@ struct MigrationV3_0toV3_1 {
     private let legacyPlayerFileName = "MixTeamPlayerV3_0_0"
     private let legacyAppFileName = "MixTeamAppV3_0_0"
 
-    @Dependency(\.teamPersistence) var teamPersistence
-    @Dependency(\.playerPersistence) var playerPersistence
-    @Dependency(\.scoresPersistence) var scoresPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
+    @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
+    @Dependency(\.legacyScoresPersistence) var legacyScoresPersistence
 
     init?() {
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -37,9 +37,9 @@ struct MigrationV3_0toV3_1 {
     }
 
     func migrate() async throws {
-        try await teamPersistence.save(team)
-        try await playerPersistence.save(player)
-        try await scoresPersistence.save(scores)
+        try await legacyTeamPersistence.save(team)
+        try await legacyPlayerPersistence.save(player)
+        try await legacyScoresPersistence.save(scores)
 
         guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         else { throw PersistenceError.cannotGetDocumentDirectoryWithUserDomainMask }

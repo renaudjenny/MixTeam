@@ -18,8 +18,8 @@ public struct CompositionLoader {
         case errorCard(ErrorCard.Action)
     }
 
-    @Dependency(\.teamPersistence) var teamPersistence
-    @Dependency(\.playerPersistence) var playerPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
+    @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
 
     public init() {}
 
@@ -38,14 +38,14 @@ public struct CompositionLoader {
             case .loadingCard:
                 return load(state: &state).concatenate(with: .merge(
                     .run { send in
-                        for try await _ in teamPersistence.publisher() {
+                        for try await _ in legacyTeamPersistence.publisher() {
                             await send(.update(await loadTaskResult))
                         }
                     } catch: { error, send in
                         await send(.update(.failure(error)))
                     },
                     .run { send in
-                        for try await _ in playerPersistence.publisher() {
+                        for try await _ in legacyPlayerPersistence.publisher() {
                             await send(.update(await loadTaskResult))
                         }
                     } catch: { error, send in
@@ -77,9 +77,9 @@ public struct CompositionLoader {
     private var loadTaskResult: TaskResult<Composition.State> {
         get async {
             await TaskResult {
-                let teams = try await teamPersistence.load().filter { !$0.isArchived }.states
+                let teams = try await legacyTeamPersistence.load().filter { !$0.isArchived }.states
                 let playersInTeams = teams.flatMap(\.players)
-                let standingPlayers = try await playerPersistence.load()
+                let standingPlayers = try await legacyPlayerPersistence.load()
                     .filter { !playersInTeams.map(\.id).contains($0.id) }
                     .map(\.state)
 

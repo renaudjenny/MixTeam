@@ -24,7 +24,7 @@ public struct Round {
         case score(id: Score.State.ID, action: Score.Action)
     }
 
-    @Dependency(\.scoresPersistence.updateRound) var updateRound
+    @Dependency(\.legacyScoresPersistence.updateRound) var legacyUpdateRound
 
     public init() {}
 
@@ -33,7 +33,7 @@ public struct Round {
         Reduce { state, action in
             switch action {
             case .binding:
-                return .run { [state] _ in try await updateRound(state.persisted) }
+                return .run { [state] _ in try await legacyUpdateRound(state.persisted) }
             case let .score(id: id, action: .remove):
                 state.scores.remove(id: id)
                 return .none

@@ -23,8 +23,8 @@ public struct Scores {
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.scoresPersistence) var scoresPersistence
-    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.legacyScoresPersistence) var legacyScoresPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
     private enum CancelID { case recalculateTask }
 
     public init() {}
@@ -47,7 +47,7 @@ public struct Scores {
                 })
                 state.rounds.append(Round.State(id: uuid(), name: "Round \(roundCount + 1)", scores: scores))
                 return .run { [state] _ in
-                    try await scoresPersistence.save(state.persisted)
+                    try await legacyScoresPersistence.save(state.persisted)
                 }
             case let .updateAccumulatedPoints(rounds):
                 state.rounds = rounds
@@ -57,7 +57,7 @@ public struct Scores {
                     state.rounds.remove(id: id)
                 }
                 return .merge(
-                    .run { [state] _ in try await scoresPersistence.save(state.persisted) },
+                    .run { [state] _ in try await legacyScoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case let .round(_, .score(_, .binding(binding))):
@@ -71,7 +71,7 @@ public struct Scores {
 
                 state.rounds[id: roundID]?.scores[id: score.id]?.points = -score.points
                 return .merge(
-                    .run { [state] _ in try await scoresPersistence.save(state.persisted) },
+                    .run { [state] _ in try await legacyScoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
             case .binding:

@@ -10,9 +10,9 @@ private struct MigrationV2toV3 {
     private let player: IdentifiedArrayOf<PersistedPlayer>
     private let scores: PersistedScores
 
-    @Dependency(\.teamPersistence) var teamPersistence
-    @Dependency(\.playerPersistence) var playerPersistence
-    @Dependency(\.scoresPersistence) var scoresPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
+    @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
+    @Dependency(\.legacyScoresPersistence) var legacyScoresPersistence
 
     init?() {
         let teamsData = UserDefaults.standard.data(forKey: "teams")
@@ -46,9 +46,9 @@ private struct MigrationV2toV3 {
     }
 
     func migrate() async throws {
-        try await teamPersistence.save(team)
-        try await playerPersistence.save(player)
-        try await scoresPersistence.save(scores)
+        try await legacyTeamPersistence.save(team)
+        try await legacyPlayerPersistence.save(player)
+        try await legacyScoresPersistence.save(scores)
 
         UserDefaults.standard.removeObject(forKey: "teams")
         UserDefaults.standard.removeObject(forKey: "Scores.rounds")

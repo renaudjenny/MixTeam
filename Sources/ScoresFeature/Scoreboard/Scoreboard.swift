@@ -19,8 +19,8 @@ public struct Scoreboard {
         case errorCard(ErrorCard.Action)
     }
 
-    @Dependency(\.scoresPersistence) var scoresPersistence
-    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.legacyScoresPersistence) var legacyScoresPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
 
     public init() {}
 
@@ -38,8 +38,8 @@ public struct Scoreboard {
                 }
             case .loadingCard:
                 return load(state: &state).concatenate(with: .run { send in
-                    for try await _ in teamPersistence.publisher() {
-                        await send(.update(TaskResult { try await scoresPersistence.load().state }))
+                    for try await _ in legacyTeamPersistence.publisher() {
+                        await send(.update(TaskResult { try await legacyScoresPersistence.load().state }))
                     }
                 })
             case .scores:
@@ -61,17 +61,17 @@ public struct Scoreboard {
 
     private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .run { send in await send(.update(TaskResult { try await scoresPersistence.load().state })) }
+        return .run { send in await send(.update(TaskResult { try await legacyScoresPersistence.load().state })) }
     }
 }
 
 public extension PersistedScores {
     var state: Scores.State {
         get async throws {
-            @Dependency(\.teamPersistence) var teamPersistence
-            let teams = try await teamPersistence.load().states
+            @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
+            let teams = try await legacyTeamPersistence.load().states
             return Scores.State(
-                teams: try await teamPersistence.load().states,
+                teams: try await legacyTeamPersistence.load().states,
                 rounds: IdentifiedArrayOf(uniqueElements: rounds.map { Round.State(
                     id: $0.id,
                     name: $0.name,

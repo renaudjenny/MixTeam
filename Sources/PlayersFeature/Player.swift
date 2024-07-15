@@ -36,7 +36,7 @@ public struct Player {
         case illustrationPicker(IllustrationPicker.Action)
     }
 
-    @Dependency(\.playerPersistence) var playerPersistence
+    @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
 
     public init() {}
 
@@ -45,10 +45,10 @@ public struct Player {
             switch action {
             case let .nameChanged(name):
                 state.name = name
-                return .run { [state] _ in try await playerPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await legacyPlayerPersistence.updateOrAppend(state.persisted) }
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .run { [state] _ in try await playerPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await legacyPlayerPersistence.updateOrAppend(state.persisted) }
             }
         }
     }

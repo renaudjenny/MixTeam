@@ -26,7 +26,7 @@ public struct Score {
         case remove
     }
 
-    @Dependency(\.scoresPersistence) var scorePersistence
+    @Dependency(\.legacyScoresPersistence) var legacyScorePersistence
 
     public init() {}
 
@@ -34,7 +34,7 @@ public struct Score {
         BindingReducer()
         Reduce { state, action in
             if case .binding = action {
-                return .run { [state] _ in try await scorePersistence.updateScore(state.persisted)
+                return .run { [state] _ in try await legacyScorePersistence.updateScore(state.persisted)
                 }
             }
             return .none

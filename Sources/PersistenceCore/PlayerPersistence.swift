@@ -50,7 +50,7 @@ private final class Persistence {
     }
 }
 
-public struct PlayerPersistence {
+public struct LegacyPlayerPersistence {
     public var publisher: () -> AsyncThrowingPublisher<AnyPublisher<IdentifiedArrayOf<PersistedPlayer>, Error>>
     public var load: () async throws -> IdentifiedArrayOf<PersistedPlayer>
     public var save: (IdentifiedArrayOf<PersistedPlayer>) async throws -> Void
@@ -58,7 +58,7 @@ public struct PlayerPersistence {
     public var remove: (PersistedPlayer.ID) async throws -> Void
 }
 
-public extension PlayerPersistence {
+public extension LegacyPlayerPersistence {
     static let live = {
         do {
             let persistence = try Persistence()
@@ -111,13 +111,13 @@ public extension IdentifiedArrayOf<PersistedPlayer> {
 }
 
 private enum PlayerPersistenceDependencyKey: DependencyKey {
-    static let liveValue = PlayerPersistence.live
-    static let testValue = PlayerPersistence.test
-    static let previewValue = PlayerPersistence.test
+    static let liveValue = LegacyPlayerPersistence.live
+    static let testValue = LegacyPlayerPersistence.test
+    static let previewValue = LegacyPlayerPersistence.test
 }
 
 public extension DependencyValues {
-    var playerPersistence: PlayerPersistence {
+    var legacyPlayerPersistence: LegacyPlayerPersistence {
         get { self[PlayerPersistenceDependencyKey.self] }
         set { self[PlayerPersistenceDependencyKey.self] = newValue }
     }

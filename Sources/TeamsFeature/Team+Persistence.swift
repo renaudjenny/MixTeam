@@ -19,9 +19,9 @@ public extension Team.State {
 public extension PersistedTeam {
     var state: Team.State {
         get async throws {
-            @Dependency(\.playerPersistence) var playerPersistence
+            @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
 
-            let players = try await playerPersistence.load()
+            let players = try await legacyPlayerPersistence.load()
             let teamPlayers = IdentifiedArrayOf(uniqueElements: playerIDs.compactMap {
                 var player = players[id: $0]?.state
                 player?.color = color

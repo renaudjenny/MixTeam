@@ -22,7 +22,7 @@ public struct ArchiveRow {
         case cancelRemove(PresentationAction<Action>)
     }
 
-    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
 
     public init() {}
 
@@ -31,13 +31,13 @@ public struct ArchiveRow {
             switch action {
             case .unarchive:
                 state.team.isArchived = false
-                return .run { [team = state.team] _ in try await teamPersistence.updateOrAppend(team.persisted) }
+                return .run { [team = state.team] _ in try await legacyTeamPersistence.updateOrAppend(team.persisted) }
             case .remove:
                 state.deleteConfirmationDialog = .removeTeam
                 return .none
             case .confirmRemove:
                 state.deleteConfirmationDialog = nil
-                return .run { [team = state.team] _ in try await teamPersistence.remove(team.persisted) }
+                return .run { [team = state.team] _ in try await legacyTeamPersistence.remove(team.persisted) }
             case .cancelRemove:
                 state.deleteConfirmationDialog = nil
                 return .none

@@ -19,7 +19,7 @@ public struct Standing {
     }
 
     @Dependency(\.uuid) var uuid
-    @Dependency(\.playerPersistence) var playerPersistence
+    @Dependency(\.legacyPlayerPersistence) var legacyPlayerPersistence
     @Dependency(\.randomPlayer) var randomPlayer
 
     public init() {}
@@ -30,10 +30,10 @@ public struct Standing {
             case .createPlayer:
                 let player = randomPlayer()
                 state.players.append(player)
-                return .run { _ in try await playerPersistence.updateOrAppend(player.persisted) }
+                return .run { _ in try await legacyPlayerPersistence.updateOrAppend(player.persisted) }
             case let .deletePlayer(id):
                 state.players.remove(id: id)
-                return .run { _ in try await playerPersistence.remove(id) }
+                return .run { _ in try await legacyPlayerPersistence.remove(id) }
             case .player:
                 return .none
             }

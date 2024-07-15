@@ -21,7 +21,7 @@ public struct Archives {
         case errorCard(ErrorCard.Action)
     }
 
-    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
 
     public init() {}
 
@@ -41,7 +41,7 @@ public struct Archives {
                 }
             case .loadingCard:
                 return load(state: &state).concatenate(with: .run { send in
-                    for try await teams in teamPersistence.publisher() {
+                    for try await teams in legacyTeamPersistence.publisher() {
                         await send(.update(TaskResult { try await teams.states }))
                     }
                 } catch: { error, send in
@@ -53,20 +53,20 @@ public struct Archives {
                 return load(state: &state)
             }
         }
-        .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
+        .ifCaseLet(\.loadingCard, action: \.loadingCard) {
             LoadingCard()
         }
         .ifCaseLet(\.loaded, action: \.archiveRow) {
             ArchiveRows()
         }
-        .ifCaseLet(/State.errorCard, action: /Action.errorCard) {
+        .ifCaseLet(\.errorCard, action: \.errorCard) {
             ErrorCard()
         }
     }
 
     private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .run { send in await send(.update(TaskResult { try await teamPersistence.load().states })) }
+        return .run { send in await send(.update(TaskResult { try await legacyTeamPersistence.load().states })) }
     }
 }
 
@@ -142,7 +142,7 @@ public struct ArchiveRows {
 #Preview("Archives With Error") {
     ArchivesView(store: Store(initialState: .loadingCard) {
         Archives()
-            .dependency(\.teamPersistence.load, {
+            .dependency(\.legacyTeamPersistence.load, {
                 try await Task.sleep(nanoseconds: 1_000_000_000 * 2)
                 throw PersistenceError.notFound
             })

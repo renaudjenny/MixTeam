@@ -32,7 +32,7 @@ public struct Composition {
         case archiveTeams(IndexSet)
     }
 
-    @Dependency(\.teamPersistence) var teamPersistance
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistance
     @Dependency(\.shufflePlayers) var shufflePlayers
     @Dependency(\.randomTeam) var randomTeam
     @Dependency(\.uuid) var uuid
@@ -48,7 +48,7 @@ public struct Composition {
             case .addTeam:
                 let team = randomTeam()
                 state.teams.append(team)
-                return .run { _ in try await teamPersistance.updateOrAppend(team.persisted) }
+                return .run { _ in try await legacyTeamPersistance.updateOrAppend(team.persisted) }
             case .mixTeam:
                 guard state.teams.count > 1 else {
                     state.notEnoughTeamsConfirmationDialog = .notEnoughTeams
@@ -79,7 +79,7 @@ public struct Composition {
                     }
                 )
                 state.standing.players = []
-                return .run { [state] _ in try await teamPersistance.updateValues(state.teams.persisted) }
+                return .run { [state] _ in try await legacyTeamPersistance.updateValues(state.teams.persisted) }
             case .dismissNotEnoughTeamsAlert:
                 state.notEnoughTeamsConfirmationDialog = nil
                 return .none
@@ -99,7 +99,7 @@ public struct Composition {
                         team.isArchived = true
                         return team
                     })
-                    try await teamPersistance.updateValues(archivedTeams.persisted)
+                    try await legacyTeamPersistance.updateValues(archivedTeams.persisted)
                 }
             }
         }

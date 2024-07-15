@@ -49,7 +49,7 @@ public struct Team {
         case illustrationPicker(IllustrationPicker.Action)
     }
 
-    @Dependency(\.teamPersistence) var teamPersistence
+    @Dependency(\.legacyTeamPersistence) var legacyTeamPersistence
 
     public init() {}
 
@@ -58,15 +58,15 @@ public struct Team {
         Reduce { state, action in
             switch action {
             case .binding:
-                return .run { [state] _ in try await teamPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await legacyTeamPersistence.updateOrAppend(state.persisted) }
             case let .moveBackPlayer(id):
                 state.players.remove(id: id)
-                return .run { [state] _ in try await teamPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await legacyTeamPersistence.updateOrAppend(state.persisted) }
             case .player:
                 return .none
             case let .illustrationPicker(.imageTapped(image)):
                 state.image = image
-                return .run { [state] _ in try await teamPersistence.updateOrAppend(state.persisted) }
+                return .run { [state] _ in try await legacyTeamPersistence.updateOrAppend(state.persisted) }
             }
         }
         .forEach(\.players, action: /Team.Action.player) {
