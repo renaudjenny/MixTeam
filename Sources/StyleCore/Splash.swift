@@ -626,7 +626,7 @@ struct Splash_Previews: PreviewProvider {
                     self.width = geometry.size.width
                     self.height = geometry.size.height/2
                 }
-                .onChange(of: animate) { _ in animateAutomatically() }
+                .onChange(of: animate) { animateAutomatically() }
             }.padding()
         }
 

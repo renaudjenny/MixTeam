@@ -37,13 +37,13 @@ public struct App {
     @Dependency(\.migration) var migration
 
     public var body: some Reducer<State, Action> {
-        Scope(state: \.compositionLoader, action: /Action.compositionLoader) {
+        Scope(state: \.compositionLoader, action: \.compositionLoader) {
             CompositionLoader()
         }
-        Scope(state: \.scoreboard, action: /Action.scoreboard) {
+        Scope(state: \.scoreboard, action: \.scoreboard) {
             Scoreboard()
         }
-        Scope(state: \.settings, action: /Action.settings) {
+        Scope(state: \.settings, action: \.settings) {
             Settings()
         }
         Reduce { state, action in

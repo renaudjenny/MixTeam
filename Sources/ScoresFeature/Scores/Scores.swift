@@ -84,18 +84,17 @@ public struct Scores {
     }
 
     private func recalculateAccumulatedPoints(state: inout State) -> Effect<Action> {
-        .cancel(id: CancelID.recalculateTask).concatenate(with: .run { [rounds = state.rounds] _ in
-//            var rounds = rounds
-//            for (index, round) in rounds.enumerated() {
-//                for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
-//                    let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
-//                    guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
-//                    else { continue }
-//                    rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
-//                }
-//            }
-//            return .updateAccumulatedPoints(rounds)
-            // TODO: to fix!
+        .cancel(id: CancelID.recalculateTask).concatenate(with: .run { [rounds = state.rounds] send in
+            var rounds = rounds
+            for (index, round) in rounds.enumerated() {
+                for team in rounds[id: round.id]?.scores.map(\.team) ?? [] {
+                    let accumulatedPoints = rounds.accumulatedPoints(for: team, roundCount: index + 1)
+                    guard let scoreID = rounds[id: round.id]?.scores.first(where: { $0.team == team })?.id
+                    else { continue }
+                    rounds[id: round.id]?.scores[id: scoreID]?.accumulatedPoints = accumulatedPoints
+                }
+            }
+            await send(.updateAccumulatedPoints(rounds))
         })
         .cancellable(id: CancelID.recalculateTask)
     }

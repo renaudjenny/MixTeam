@@ -58,20 +58,20 @@ public struct CompositionLoader {
                 return load(state: &state)
             }
         }
-        .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
+        .ifCaseLet(\.loadingCard, action: \.loadingCard) {
             LoadingCard()
         }
-        .ifCaseLet(/State.loaded, action: /Action.composition) {
+        .ifCaseLet(\.loaded, action: \.composition) {
             Composition()
         }
-        .ifCaseLet(/State.errorCard, action: /Action.errorCard) {
+        .ifCaseLet(\.errorCard, action: \.errorCard) {
             ErrorCard()
         }
     }
 
     private func load(state: inout State) -> Effect<Action> {
         state = .loadingCard
-        return .run { _ in await Action.update(loadTaskResult) }
+        return .run { send in await send(.update(loadTaskResult)) }
     }
 
     private var loadTaskResult: TaskResult<Composition.State> {
