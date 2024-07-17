@@ -107,7 +107,7 @@ public struct ArchivesView: View {
 public struct ArchiveRows {
     @ObservableState
     public struct State: Equatable {
-        let rows: IdentifiedArrayOf<ArchiveRow.State>
+        var rows: IdentifiedArrayOf<ArchiveRow.State>
     }
 
     public enum Action: Equatable {
@@ -115,13 +115,9 @@ public struct ArchiveRows {
     }
 
     public var body: some Reducer<State, Action> {
-        Reduce { state, action in
-            return .none
+        EmptyReducer().forEach(\.rows, action: \.rows) {
+            ArchiveRow()
         }
-        // TODO: check why it's not compiling
-//        .forEach(\.rows, action: \.rows) {
-//            ArchiveRow()
-//        }
     }
 }
 

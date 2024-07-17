@@ -40,7 +40,7 @@ public struct Composition {
     public init() {}
 
     public var body: some Reducer<State, Action> {
-        Scope(state: \.standing, action: /Action.standing) {
+        Scope(state: \.standing, action: \.standing) {
             Standing()
         }
         Reduce { state, action in

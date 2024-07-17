@@ -21,7 +21,7 @@ public struct Round {
 
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
-        case score(id: Score.State.ID, action: Score.Action)
+        case scores(IdentifiedActionOf<Score>)
     }
 
     @Dependency(\.legacyScoresPersistence.updateRound) var legacyUpdateRound
@@ -34,14 +34,14 @@ public struct Round {
             switch action {
             case .binding:
                 return .run { [state] _ in try await legacyUpdateRound(state.persisted) }
-            case let .score(id: id, action: .remove):
+            case let .scores(.element(id: id, action: .remove)):
                 state.scores.remove(id: id)
                 return .none
-            case .score:
+            case .scores:
                 return .none
             }
         }
-        .forEach(\.scores, action: /Round.Action.score) {
+        .forEach(\.scores, action: \.scores) {
             Score()
         }
     }
@@ -57,7 +57,7 @@ struct RoundView: View {
             header: TextField("Round name", text: $store.name)
                 .focused($focusedHeader, equals: store.state)
         ) {
-            ForEachStore(store.scope(state: \.scores, action: \.score)) { store in
+            ForEachStore(store.scope(state: \.scores, action: \.scores)) { store in
                 ScoreRow(store: store, focusedField: _focusedField)
             }
         }

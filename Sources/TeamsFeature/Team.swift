@@ -45,7 +45,7 @@ public struct Team {
     public enum Action: BindableAction, Equatable {
         case binding(BindingAction<State>)
         case moveBackPlayer(id: Player.State.ID)
-        case player(id: Player.State.ID, action: Player.Action)
+        case player(IdentifiedActionOf<Player>)
         case illustrationPicker(IllustrationPicker.Action)
     }
 
@@ -69,7 +69,7 @@ public struct Team {
                 return .run { [state] _ in try await legacyTeamPersistence.updateOrAppend(state.persisted) }
             }
         }
-        .forEach(\.players, action: /Team.Action.player) {
+        .forEach(\.players, action: \.player) {
             Player()
         }
     }

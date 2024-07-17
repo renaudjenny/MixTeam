@@ -15,7 +15,7 @@ public struct Standing {
     public enum Action: Equatable {
         case createPlayer
         case deletePlayer(id: Player.State.ID)
-        case player(id: Player.State.ID, action: Player.Action)
+        case player(IdentifiedActionOf<Player>)
     }
 
     @Dependency(\.uuid) var uuid
@@ -38,7 +38,7 @@ public struct Standing {
                 return .none
             }
         }
-        .forEach(\.players, action: /Action.player) {
+        .forEach(\.players, action: \.player) {
             Player()
         }
     }

@@ -6,7 +6,7 @@ struct RoundRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            ForEachStore(store.scope(state: \.scores, action: \.score)) { store in
+            ForEachStore(store.scope(state: \.scores, action: \.scores)) { store in
                 ScoreRow(store: store)
             }
         }

@@ -64,7 +64,7 @@ struct ScoresView: View {
 
     private var list: some View {
         List {
-            ForEachStore(store.scope(state: \.rounds, action: \.round)) { store in
+            ForEachStore(store.scope(state: \.rounds, action: \.rounds)) { store in
                 RoundView(store: store, focusedField: _focusedField, focusedHeader: _focusedHeader)
             }
             TotalScoresView(store: store)

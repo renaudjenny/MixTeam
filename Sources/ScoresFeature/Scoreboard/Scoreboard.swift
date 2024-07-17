@@ -48,13 +48,13 @@ public struct Scoreboard {
                 return load(state: &state)
             }
         }
-        .ifCaseLet(/State.loadingCard, action: /Action.loadingCard) {
+        .ifCaseLet(\.loadingCard, action: \.loadingCard) {
             LoadingCard()
         }
-        .ifCaseLet(/State.loaded, action: /Action.scores) {
+        .ifCaseLet(\.loaded, action: \.scores) {
             Scores()
         }
-        .ifCaseLet(/State.errorCard, action: /Action.errorCard) {
+        .ifCaseLet(\.errorCard, action: \.errorCard) {
             ErrorCard()
         }
     }

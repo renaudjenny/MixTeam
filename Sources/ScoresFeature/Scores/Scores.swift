@@ -17,7 +17,7 @@ public struct Scores {
         case task
         case addRound
         case updateAccumulatedPoints(IdentifiedArrayOf<Round.State>)
-        case round(id: Round.State.ID, action: Round.Action)
+        case rounds(IdentifiedActionOf<Round>)
         case minusScore(score: Score.State?)
         case binding(BindingAction<State>)
     }
@@ -52,7 +52,7 @@ public struct Scores {
             case let .updateAccumulatedPoints(rounds):
                 state.rounds = rounds
                 return .none
-            case let .round(id, action: .score(_, action: .remove)):
+            case let .rounds(.element(id, action: .scores(.element(_, action: .remove)))):
                 if state.rounds[id: id]?.scores.isEmpty == true {
                     state.rounds.remove(id: id)
                 }
@@ -60,9 +60,9 @@ public struct Scores {
                     .run { [state] _ in try await legacyScoresPersistence.save(state.persisted) },
                     recalculateAccumulatedPoints(state: &state)
                 )
-            case let .round(_, .score(_, .binding(binding))):
+            case .rounds(.element(_, action: .scores(.element(_, action: .binding)))):
                 return recalculateAccumulatedPoints(state: &state)
-            case .round:
+            case .rounds:
                 return .none
             case let .minusScore(score):
                 guard let score,
@@ -78,7 +78,7 @@ public struct Scores {
                 return .none
             }
         }
-        .forEach(\.rounds, action: /Action.round) {
+        .forEach(\.rounds, action: \.rounds) {
             Round()
         }
     }

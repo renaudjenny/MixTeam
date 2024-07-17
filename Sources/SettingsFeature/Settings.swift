@@ -20,7 +20,7 @@ public struct Settings {
     public init() {}
 
     public var body: some Reducer<State, Action> {
-        Scope(state: \.archives, action: /Action.archives) {
+        Scope(state: \.archives, action: \.archives) {
             Archives()
         }
     }
